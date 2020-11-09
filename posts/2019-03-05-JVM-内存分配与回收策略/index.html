@@ -8,6 +8,8 @@
   
   <title>JVM-内存分配与回收策略 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -202,8 +208,8 @@
 <p>Minor GC vs Major GC/Full GC：</p>
 <pre><code>Minor GC：回收新生代（包括 Eden 和 Survivor 区域），因为 Java 对象大多都具备朝生夕灭的特性，所以 Minor GC 非常频繁，一般回收速度也比较快。
 
-Major GC / Full GC: 回收老年代，出现了 Major GC，经常会伴随至少一次的 Minor GC，但这并非绝对。Major GC 的速度一般会比 Minor GC 慢 10 倍 以上。
-</code></pre><p>在 JVM 规范中，Major GC 和 Full GC 都没有一个正式的定义，所以有人也简单地认为 Major GC 清理老年代，而 Full GC 清理整个内存堆。</p>
+Major GC / Full GC: 回收老年代，出现了 Major GC，经常会伴随至少一次的 Minor GC，但这并非绝对。Major GC 的速度一般会比 Minor GC 慢 10 倍 以上。</code></pre>
+<p>在 JVM 规范中，Major GC 和 Full GC 都没有一个正式的定义，所以有人也简单地认为 Major GC 清理老年代，而 Full GC 清理整个内存堆。</p>
 <h2 id="2-大对象直接进入老年代"><a href="#2-大对象直接进入老年代" class="headerlink" title="2 大对象直接进入老年代"></a>2 大对象直接进入老年代</h2><p>所谓“大对象”就是指一个占用大量连续存储空间的对象，如数组。</p>
 <p>大对象是指需要大量连续内存空间的 Java 对象，如很长的字符串或数据。</p>
 <p>当发现一个大对象在Eden区＋Survior1区中存不下的时候就需要分配担保机制把当前Eden区＋Survior1区的所有对象都复制到老年代中去。</p>
@@ -252,7 +258,7 @@ Major GC / Full GC: 回收老年代，出现了 Major GC，经常会伴随至少
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-对象优先在-Eden-区中分配"><span class="toc-text"><a href="#1-&#x5BF9;&#x8C61;&#x4F18;&#x5148;&#x5728;-Eden-&#x533A;&#x4E2D;&#x5206;&#x914D;" class="headerlink" title="1 &#x5BF9;&#x8C61;&#x4F18;&#x5148;&#x5728; Eden &#x533A;&#x4E2D;&#x5206;&#x914D;"></a>1 &#x5BF9;&#x8C61;&#x4F18;&#x5148;&#x5728; Eden &#x533A;&#x4E2D;&#x5206;&#x914D;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-大对象直接进入老年代"><span class="toc-text"><a href="#2-&#x5927;&#x5BF9;&#x8C61;&#x76F4;&#x63A5;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;" class="headerlink" title="2 &#x5927;&#x5BF9;&#x8C61;&#x76F4;&#x63A5;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;"></a>2 &#x5927;&#x5BF9;&#x8C61;&#x76F4;&#x63A5;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-生命周期较长的对象进入老年代-长期存活的对象将进入老年代"><span class="toc-text"><a href="#3-&#x751F;&#x547D;&#x5468;&#x671F;&#x8F83;&#x957F;&#x7684;&#x5BF9;&#x8C61;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;-&#x957F;&#x671F;&#x5B58;&#x6D3B;&#x7684;&#x5BF9;&#x8C61;&#x5C06;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;" class="headerlink" title="3 &#x751F;&#x547D;&#x5468;&#x671F;&#x8F83;&#x957F;&#x7684;&#x5BF9;&#x8C61;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;(&#x957F;&#x671F;&#x5B58;&#x6D3B;&#x7684;&#x5BF9;&#x8C61;&#x5C06;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;)"></a>3 &#x751F;&#x547D;&#x5468;&#x671F;&#x8F83;&#x957F;&#x7684;&#x5BF9;&#x8C61;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;(&#x957F;&#x671F;&#x5B58;&#x6D3B;&#x7684;&#x5BF9;&#x8C61;&#x5C06;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-相同年龄的对象内存超过Survior内存一半的对象进入老年代-动态对象年龄判定"><span class="toc-text"><a href="#4-&#x76F8;&#x540C;&#x5E74;&#x9F84;&#x7684;&#x5BF9;&#x8C61;&#x5185;&#x5B58;&#x8D85;&#x8FC7;Survior&#x5185;&#x5B58;&#x4E00;&#x534A;&#x7684;&#x5BF9;&#x8C61;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;-&#x52A8;&#x6001;&#x5BF9;&#x8C61;&#x5E74;&#x9F84;&#x5224;&#x5B9A;" class="headerlink" title="4 &#x76F8;&#x540C;&#x5E74;&#x9F84;&#x7684;&#x5BF9;&#x8C61;&#x5185;&#x5B58;&#x8D85;&#x8FC7;Survior&#x5185;&#x5B58;&#x4E00;&#x534A;&#x7684;&#x5BF9;&#x8C61;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;(&#x52A8;&#x6001;&#x5BF9;&#x8C61;&#x5E74;&#x9F84;&#x5224;&#x5B9A;)"></a>4 &#x76F8;&#x540C;&#x5E74;&#x9F84;&#x7684;&#x5BF9;&#x8C61;&#x5185;&#x5B58;&#x8D85;&#x8FC7;Survior&#x5185;&#x5B58;&#x4E00;&#x534A;&#x7684;&#x5BF9;&#x8C61;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;(&#x52A8;&#x6001;&#x5BF9;&#x8C61;&#x5E74;&#x9F84;&#x5224;&#x5B9A;)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-“分配担保”策略详解-空间分配担保"><span class="toc-text"><a href="#5-&#x201C;&#x5206;&#x914D;&#x62C5;&#x4FDD;&#x201D;&#x7B56;&#x7565;&#x8BE6;&#x89E3;-&#x7A7A;&#x95F4;&#x5206;&#x914D;&#x62C5;&#x4FDD;" class="headerlink" title="5 &#x201C;&#x5206;&#x914D;&#x62C5;&#x4FDD;&#x201D;&#x7B56;&#x7565;&#x8BE6;&#x89E3;(&#x7A7A;&#x95F4;&#x5206;&#x914D;&#x62C5;&#x4FDD;)"></a>5 &#x201C;&#x5206;&#x914D;&#x62C5;&#x4FDD;&#x201D;&#x7B56;&#x7565;&#x8BE6;&#x89E3;(&#x7A7A;&#x95F4;&#x5206;&#x914D;&#x62C5;&#x4FDD;)</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AF%B9%E8%B1%A1%E4%BC%98%E5%85%88%E5%9C%A8-Eden-%E5%8C%BA%E4%B8%AD%E5%88%86%E9%85%8D"><span class="toc-text">1 对象优先在 Eden 区中分配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A4%A7%E5%AF%B9%E8%B1%A1%E7%9B%B4%E6%8E%A5%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3"><span class="toc-text">2 大对象直接进入老年代</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E8%BE%83%E9%95%BF%E7%9A%84%E5%AF%B9%E8%B1%A1%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3-%E9%95%BF%E6%9C%9F%E5%AD%98%E6%B4%BB%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%B0%86%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3"><span class="toc-text">3 生命周期较长的对象进入老年代(长期存活的对象将进入老年代)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%9B%B8%E5%90%8C%E5%B9%B4%E9%BE%84%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%86%85%E5%AD%98%E8%B6%85%E8%BF%87Survior%E5%86%85%E5%AD%98%E4%B8%80%E5%8D%8A%E7%9A%84%E5%AF%B9%E8%B1%A1%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3-%E5%8A%A8%E6%80%81%E5%AF%B9%E8%B1%A1%E5%B9%B4%E9%BE%84%E5%88%A4%E5%AE%9A"><span class="toc-text">4 相同年龄的对象内存超过Survior内存一半的对象进入老年代(动态对象年龄判定)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E2%80%9C%E5%88%86%E9%85%8D%E6%8B%85%E4%BF%9D%E2%80%9D%E7%AD%96%E7%95%A5%E8%AF%A6%E8%A7%A3-%E7%A9%BA%E9%97%B4%E5%88%86%E9%85%8D%E6%8B%85%E4%BF%9D"><span class="toc-text">5 “分配担保”策略详解(空间分配担保)</span></a></li></ol>
   </div>
 </aside>
   
@@ -261,11 +267,11 @@ Major GC / Full GC: 回收老年代，出现了 Major GC，经常会伴随至少
       
         <div>
           原文链接: 
-          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-05-JVM-内存分配与回收策略/</a>
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-05-JVM-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6%E7%AD%96%E7%95%A5/</a>
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
@@ -410,10 +416,10 @@ Major GC / Full GC: 回收老年代，出现了 Major GC，经常会伴随至少
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="/posts/2019-03-06-JVM-JVM性能调优/" data-enable="true">
+    <a href="/posts/2019-03-06-JVM-JVM%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/posts/2019-03-04-JVM-HotSpot垃圾收集器/" data-enable="true">
+    <a href="/posts/2019-03-04-JVM-HotSpot%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>

@@ -8,6 +8,8 @@
   
   <title>Ubuntu安装Tomcat | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -184,48 +190,103 @@
   <article class="passage-article">
     <p><strong>一、下载tomcat</strong></p>
 <p>(1)方法一：先下载到本地，然后ftp上传到服务器</p>
-<p>官方 Apache Tomcat 的下载页面：</p>
-<p><div></div></p>
-<p><div id="highlighter_424358" class="syntaxhighlighter java"></div></p>
-<p><div class="toolbar"></div></p>
-<p><pre class="prettyprint linenums"><a href="http://tomcat.apache.org/download-70.cgi" target="_blank" rel="noopener">http://tomcat.apache.org/download-70.cgi</a><br></pre><br><br><br><br>(2)方法二：直接在服务器下载（windows版本的区分32位与64位，ubuntu（linux）版本的不区分）</p>
-<p><div></div></p>
-<p><div id="highlighter_162434" class="syntaxhighlighter java"></div></p>
-<p><div class="toolbar"></div></p>
-<p><pre class="prettyprint linenums"><a href="http://mirrors.hust.edu.cn/apache/tomcat/tomcat-7/v7.0.64/bin/apache-tomcat-7.0.64.tar.gz" target="_blank" rel="noopener">http://mirrors.hust.edu.cn/apache/tomcat/tomcat-7/v7.0.64/bin/apache-tomcat-7.0.64.tar.gz</a><br></pre><br><br><br><br>(3)方法三：去我的云盘下载</p>
-<p><pre class="prettyprint linenums"><a href="https://yunpan.cn/c6kfTbwPQxRSb" target="_blank" rel="noopener">https://yunpan.cn/c6kfTbwPQxRSb</a>  访问密码 ce9c<br></pre><br>&nbsp;</p>
+<p>官方 Apache Tomcat 的下载页面：</p>
+<div>
+<div id="highlighter_424358" class="syntaxhighlighter java">
+<div class="toolbar">
+<pre class="prettyprint linenums">http://tomcat.apache.org/download-70.cgi
+</pre>
+</div>
+</div>
+</div>
+(2)方法二：直接在服务器下载（windows版本的区分32位与64位，ubuntu（linux）版本的不区分）
+<div>
+<div id="highlighter_162434" class="syntaxhighlighter java">
+<div class="toolbar">
+<pre class="prettyprint linenums">http://mirrors.hust.edu.cn/apache/tomcat/tomcat-7/v7.0.64/bin/apache-tomcat-7.0.64.tar.gz
+</pre>
+</div>
+</div>
+</div>
+(3)方法三：去我的云盘下载
+<pre class="prettyprint linenums">https://yunpan.cn/c6kfTbwPQxRSb  访问密码 ce9c
+</pre>
+&nbsp;
+
 <p><strong>二、解压安装</strong></p>
 <p>先解压</p>
-<p><pre class="prettyprint linenums">tar zxvf apache-tomcat-7.0.64.tar.gz -C /java<br></pre><br>然后改名为tomcat7</p>
-<p><pre class="prettyprint linenums">ca /java<br>mv apache-tomcat-7.0.64 tomcat7<br></pre></p>
-<p><div></div></p>
-<p><div id="highlighter_971158" class="syntaxhighlighter java">更改用户</div><br></p>
-<p><div></div></p>
-<p><div id="highlighter_898825" class="syntaxhighlighter java"></div></p>
-<p><div class="toolbar"></div></p>
-<p><pre class="prettyprint linenums">cd /java/tomcat7<br>chown -R root .<br>chgrp -R root .<br></pre><br><br><br><br><strong>三、配置环境变量</strong></p>
-<p><pre class="prettyprint linenums">vi /etc/profile<br></pre><br>在最后面加上如下两句</p>
-<p><pre class="prettyprint linenums">CATALINA_HOME=/java/tomcat7</pre></p>
-<p>export CATALINA_HOME<br><br>保存后退出vi 刷新变量使配置立即生效</p>
-<p><pre class="prettyprint linenums">source /etc/profile<br></pre><br>进入tomcat的bin目录</p>
-<p><pre class="prettyprint linenums">cd $CATALINA_HOME/bin<br></pre><br>或者:</p>
-<p><pre class="prettyprint linenums">cd /java/tomcat7/bin<br></pre><br>修改catalina.sh</p>
-<p><pre class="prettyprint linenums">vi catalina.sh<br></pre><br>找到如下这行</p>
-<p><pre class="prettyprint linenums"># OS specific support. $var <em>must</em> be set to either true or false.<br></pre><br>在这行下面新增如下配置语句</p>
+<pre class="prettyprint linenums">tar zxvf apache-tomcat-7.0.64.tar.gz -C /java
+</pre>
+<p>然后改名为tomcat7</p>
+<pre class="prettyprint linenums">ca /java
+mv apache-tomcat-7.0.64 tomcat7
+</pre>
+<div>
+<div id="highlighter_971158" class="syntaxhighlighter java">更改用户</div>
+</div>
+<div>
+<div id="highlighter_898825" class="syntaxhighlighter java">
+<div class="toolbar">
+<pre class="prettyprint linenums">cd /java/tomcat7
+chown -R root .
+chgrp -R root .
+</pre>
+</div>
+</div>
+</div>
+**三、配置环境变量**
+<pre class="prettyprint linenums">vi /etc/profile
+</pre>
+在最后面加上如下两句
+<pre class="prettyprint linenums">CATALINA_HOME=/java/tomcat7
+
+<p>export CATALINA_HOME<br></pre><br>保存后退出vi 刷新变量使配置立即生效</p>
+<pre class="prettyprint linenums">source /etc/profile
+</pre>
+<p>进入tomcat的bin目录</p>
+<pre class="prettyprint linenums">cd $CATALINA_HOME/bin
+</pre>
+<p>或者:</p>
+<pre class="prettyprint linenums">cd /java/tomcat7/bin
+</pre>
+<p>修改catalina.sh</p>
+<pre class="prettyprint linenums">vi catalina.sh
+</pre>
+<p>找到如下这行</p>
+<pre class="prettyprint linenums"># OS specific support. $var _must_ be set to either true or false.
+</pre>
+<p>在这行下面新增如下配置语句</p>
 <p>指定tomcat的目录以及jdk的目录</p>
-<p><pre class="prettyprint linenums">CATALINA_HOME=/java/tomcat7</pre></p>
-<p>JAVA_HOME=/java/jdk7<br><br>保存后退出vi 尝试下启动tomcat是否成功</p>
+<pre class="prettyprint linenums">CATALINA_HOME=/java/tomcat7
+
+JAVA_HOME=/java/jdk7
+</pre>
+<p>保存后退出vi 尝试下启动tomcat是否成功</p>
 <p>在tomcat下的bin目录下直接运行startup.sh</p>
-<p><pre class="prettyprint linenums">sh startup.sh<br></pre><br>或者</p>
-<p><pre class="prettyprint linenums">./startup.sh<br></pre><br><strong>四、安装tomcat服务</strong></p>
+<pre class="prettyprint linenums">sh startup.sh
+</pre>
+<p>或者</p>
+<pre class="prettyprint linenums">./startup.sh
+</pre>
+<p><strong>四、安装tomcat服务</strong></p>
 <p>当前所在目录是tomcat的bin目录</p>
-<p><pre class="prettyprint linenums">cp catalina.sh /etc/init.d/tomcat<br></pre><br>让tomcat在服务器启动时就启动，配置以下语句</p>
-<p><pre class="prettyprint linenums">update-rc.d -f tomcat defaults<br></pre><br>这样就可以用service启动tomcat了：</p>
-<p><pre class="prettyprint linenums">service tomcat start<br></pre><br>关闭tomcat:</p>
-<p><pre class="prettyprint linenums">service tomcat stop<br></pre><br><strong>五、查看tomcat日志</strong></p>
+<pre class="prettyprint linenums">cp catalina.sh /etc/init.d/tomcat
+</pre>
+<p>让tomcat在服务器启动时就启动，配置以下语句</p>
+<pre class="prettyprint linenums">update-rc.d -f tomcat defaults
+</pre>
+<p>这样就可以用service启动tomcat了：</p>
+<pre class="prettyprint linenums">service tomcat start
+</pre>
+<p>关闭tomcat:</p>
+<pre class="prettyprint linenums">service tomcat stop
+</pre>
+<p><strong>五、查看tomcat日志</strong></p>
 <p>cd进入tomcat下的logs目录 即/java/tomcat7/logs</p>
 <p>关于日志的切割问题，可以查看我的另外一篇博客：<a href="https://blog.iyu.pub/posts/tomcat-catalina-out/">Tomcat的catalina.out日志的cronolog分割</a></p>
-<p><pre class="prettyprint linenums">tail -f catalina.out<br></pre><br>ok，到这里，tomcat就安装完毕了。</p>
+<pre class="prettyprint linenums">tail -f catalina.out
+</pre>
+<p>ok，到这里，tomcat就安装完毕了。</p>
 <p>&nbsp;</p>
 
   </article>
@@ -248,7 +309,7 @@
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   

@@ -8,6 +8,8 @@
   
   <title>有道云笔记 去除左下角广告 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -184,26 +190,26 @@
   <article class="passage-article">
     <p>找到有道云笔记的安装路径，xxx\Youdao\YoudaoNote\theme\build.xml</p>
 <p>用notepad++打开这个文件，根据type=”adpanel”找到如下代码：</p>
-<pre><code>PanelAd type=&quot;adpanel&quot; css=&quot;public&quot; ass=&quot;mainform panelclient PanelAd&quot;&gt;
-    &lt;panelTopLine type=&quot;panel&quot; css=&quot;AdPanel&quot; Dockstyle=&quot;top&quot; Bounds=&quot;0,0,0,1&quot;/&gt;
-    &lt;MiddlePhotoPanel type=&quot;panel&quot; css=&quot;public&quot; DockStyle=&quot;top&quot; Bounds=&quot;0,0,250,160&quot; Margin=&quot;0,13,0,13&quot;&gt;
-        &lt;AdPhoto type=&quot;photo&quot; css=&quot;Ad AdPhoto&quot; AnchorStyle=&quot;center&quot; AutoZoom=&quot;ZoomEqual&quot; Bounds=&quot;0,0,200,130&quot;&gt;
-            &lt;AdClose type=&quot;button&quot; css=&quot;adclear&quot; AnchorStyle=&quot;topright&quot; Bounds=&quot;-1,1,24,24&quot; /&gt;
-            &lt;AdText type=&quot;label&quot; css=&quot;AdText&quot; AnchorStyle=&quot;bottomleft&quot; Bounds=&quot;6,-6,25,10&quot;/&gt;
-        &lt;/AdPhoto&gt;
+<pre><code>    PanelAd type=&quot;adpanel&quot; css=&quot;public&quot; ass=&quot;mainform panelclient PanelAd&quot;&gt;
+        &lt;panelTopLine type=&quot;panel&quot; css=&quot;AdPanel&quot; Dockstyle=&quot;top&quot; Bounds=&quot;0,0,0,1&quot;/&gt;
+        &lt;MiddlePhotoPanel type=&quot;panel&quot; css=&quot;public&quot; DockStyle=&quot;top&quot; Bounds=&quot;0,0,250,160&quot; Margin=&quot;0,13,0,13&quot;&gt;
+            &lt;AdPhoto type=&quot;photo&quot; css=&quot;Ad AdPhoto&quot; AnchorStyle=&quot;center&quot; AutoZoom=&quot;ZoomEqual&quot; Bounds=&quot;0,0,200,130&quot;&gt;
+                &lt;AdClose type=&quot;button&quot; css=&quot;adclear&quot; AnchorStyle=&quot;topright&quot; Bounds=&quot;-1,1,24,24&quot; /&gt;
+                &lt;AdText type=&quot;label&quot; css=&quot;AdText&quot; AnchorStyle=&quot;bottomleft&quot; Bounds=&quot;6,-6,25,10&quot;/&gt;
+            &lt;/AdPhoto&gt;
 
-    &lt;/MiddlePhotoPanel&gt;
-&lt;/PanelAd&gt;
-</code></pre><p>修改上面的这段代码：</p>
+        &lt;/MiddlePhotoPanel&gt;
+    &lt;/PanelAd&gt;</code></pre>
+<p>修改上面的这段代码：</p>
 <p>（1）修改第2行：</p>
-<pre><code>&lt;panelTopLine type=&quot;panel&quot; css=&quot;AdPanel&quot; Dockstyle=&quot;top&quot; Bounds=&quot;0,0,0,1&quot;/&gt;
-</code></pre><p>改为：</p>
-<pre><code>&lt;panelTopLine type=&quot;panel&quot; css=&quot;AdPanel&quot; Dockstyle=&quot;top&quot; Bounds=&quot;0,0,0,0&quot;/&gt;
-</code></pre><p>（2）修改第4行：</p>
-<pre><code>&lt;AdPhoto type=&quot;photo&quot; css=&quot;Ad AdPhoto&quot; AnchorStyle=&quot;center&quot; AutoZoom=&quot;ZoomEqual&quot; Bounds=&quot;0,0,200,130&quot;&gt;
-</code></pre><p>改为：</p>
-<pre><code>&lt;AdPhoto type=&quot;photo&quot; css=&quot;Ad AdPhoto&quot; AnchorStyle=&quot;center&quot; AutoZoom=&quot;ZoomEqual&quot; Bounds=&quot;0,0,0,0&quot;&gt;
-</code></pre><p>保存之后重启有道云笔记，就可以了。</p>
+<pre><code>&lt;panelTopLine type=&quot;panel&quot; css=&quot;AdPanel&quot; Dockstyle=&quot;top&quot; Bounds=&quot;0,0,0,1&quot;/&gt;</code></pre>
+<p>改为：</p>
+<pre><code>&lt;panelTopLine type=&quot;panel&quot; css=&quot;AdPanel&quot; Dockstyle=&quot;top&quot; Bounds=&quot;0,0,0,0&quot;/&gt;</code></pre>
+<p>（2）修改第4行：</p>
+<pre><code>&lt;AdPhoto type=&quot;photo&quot; css=&quot;Ad AdPhoto&quot; AnchorStyle=&quot;center&quot; AutoZoom=&quot;ZoomEqual&quot; Bounds=&quot;0,0,200,130&quot;&gt;</code></pre>
+<p>改为：</p>
+<pre><code>&lt;AdPhoto type=&quot;photo&quot; css=&quot;Ad AdPhoto&quot; AnchorStyle=&quot;center&quot; AutoZoom=&quot;ZoomEqual&quot; Bounds=&quot;0,0,0,0&quot;&gt;</code></pre>
+<p>保存之后重启有道云笔记，就可以了。</p>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -225,16 +231,16 @@
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
   
     <div class="passage-tags">
      
-      <a href="/tags/软件/"><i class="fa fa-tags"></i>软件</a>
+      <a href="/tags/%E8%BD%AF%E4%BB%B6/"><i class="fa fa-tags"></i>软件</a>
      
-      <a href="/tags/去广告/"><i class="fa fa-tags"></i>去广告</a>
+      <a href="/tags/%E5%8E%BB%E5%B9%BF%E5%91%8A/"><i class="fa fa-tags"></i>去广告</a>
     
     </div>
   

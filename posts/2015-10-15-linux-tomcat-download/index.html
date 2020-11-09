@@ -8,6 +8,8 @@
   
   <title>Linux使用tomcat做下载服务器 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -187,8 +193,8 @@
 <p>/tomcat7/conf/Catalina/localhost</p>
 <p>2.新建一个xml文件</p>
 <p>我这里在做APP的自动更新，所以就新建一个app.xml如下：</p>
-<p>&lt;?xml version=”1.0” encoding=”UTF-8”?&gt;</p>
-<p>&lt;Context path=”/app” reloadable=”true” docBase=”/appupdate” crossContext=”true”&gt;</p>
+<p>&lt;?xml version=”1.0” encoding=”UTF-8”?&gt;</p>
+<p>&lt;Context path=”/app” reloadable=”true” docBase=”/appupdate” crossContext=”true”&gt;</p>
 <p>&lt;/Context&gt;</p>
 <p>说明：/app为通过ip地址访问的虚拟目录，它被指向/appupdate</p>
 <p>3.编辑tomcat下conf/web.xml</p>
@@ -199,7 +205,7 @@
 <p>&lt;param-value&gt;false&lt;/param-value&gt;</p>
 <p>&lt;/init-param&gt;</p>
 <p>&nbsp;</p>
-<p>将 默认的  &lt;param-value&gt;false&lt;/param-value&gt;改为   &lt;param-value&gt;true&lt;/param-value&gt;</p>
+<p>将 默认的  &lt;param-value&gt;false&lt;/param-value&gt;改为   &lt;param-value&gt;true&lt;/param-value&gt;</p>
 <p>结果如下所示：</p>
 <p>&lt;init-param&gt;</p>
 <p>&lt;param-name&gt;listings&lt;/param-name&gt;</p>
@@ -208,7 +214,7 @@
 <p>4.重启Tomcat</p>
 <p>service tomcat restart</p>
 <p>5.访问文件：</p>
-<p>访问：<a href="http://域名:8080/app/" target="_blank" rel="noopener">http://域名:8080/app/</a>    就可以看到目录下的文件了。<u><br></u></p>
+<p>访问：http://域名:8080/app/    就可以看到目录下的文件了。<u><br></u></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -233,7 +239,7 @@
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   

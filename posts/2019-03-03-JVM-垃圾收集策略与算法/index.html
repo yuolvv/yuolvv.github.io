@@ -8,6 +8,8 @@
   
   <title>JVM-垃圾收集策略与算法 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -209,15 +215,15 @@
 
 (2)可达性分析法
 
-所有和GC Roots直接或间接关联的对象都是有效对象，和GC Roots没有关联的对象就是无效对象。
-</code></pre><p>GC Roots是指：</p>
+所有和GC Roots直接或间接关联的对象都是有效对象，和GC Roots没有关联的对象就是无效对象。</code></pre>
+<p>GC Roots是指：</p>
 <p>Java虚拟机栈所引用的对象(栈帧中局部变量表中引用类型的变量所引用的对象)</p>
 <pre><code>方法区中静态属性引用的对象
 
 方法区中常量所引用的对象
 
-本地方法栈所引用的对象
-</code></pre><p>GC Roots 并不包括堆中对象所引用的对象，这样就不会有循环引用的问题。</p>
+本地方法栈所引用的对象</code></pre>
+<p>GC Roots 并不包括堆中对象所引用的对象，这样就不会有循环引用的问题。</p>
 <p>两者对比：</p>
 <p>引用计数法虽然简单，但存在一个严重的问题，它无法解决循环引用的问题。</p>
 <p>因此，目前主流语言均使用可达性分析方法来判断对象是否有效。</p>
@@ -259,8 +265,8 @@
 <p>方法区中主要清除两种垃圾：</p>
 <pre><code>废弃常量
 
-废弃的类
-</code></pre><h3 id="3-1-如何判定废弃常量？"><a href="#3-1-如何判定废弃常量？" class="headerlink" title="3.1 如何判定废弃常量？"></a>3.1 如何判定废弃常量？</h3><p>清除废弃的常量和清除对象类似，只要常量池中的常量不被任何变量或对象引用，那么这些常量就会被清除掉。比如，一个字符串 “blog” 进入了常量池，但是当前系统没有任何一个 String 对象引用常量池中的 “blog” 常量，也没有其它地方引用这个字面量，必要的话，”blog”常量会被清理出常量池。</p>
+废弃的类</code></pre>
+<h3 id="3-1-如何判定废弃常量？"><a href="#3-1-如何判定废弃常量？" class="headerlink" title="3.1 如何判定废弃常量？"></a>3.1 如何判定废弃常量？</h3><p>清除废弃的常量和清除对象类似，只要常量池中的常量不被任何变量或对象引用，那么这些常量就会被清除掉。比如，一个字符串 “blog” 进入了常量池，但是当前系统没有任何一个 String 对象引用常量池中的 “blog” 常量，也没有其它地方引用这个字面量，必要的话，”blog”常量会被清理出常量池。</p>
 <h3 id="3-2-如何废弃废弃的类？"><a href="#3-2-如何废弃废弃的类？" class="headerlink" title="3.2 如何废弃废弃的类？"></a>3.2 如何废弃废弃的类？</h3><p>清除废弃类的条件较为苛刻：</p>
 <p>(1)该类的所有对象都已被清除</p>
 <p>(2)该类的java.lang.Class对象没有被任何对象或变量引用,无法在任何地方通过反射访问该类的方法</p>
@@ -302,7 +308,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-堆内存的回收"><span class="toc-text"><a href="#1-&#x5806;&#x5185;&#x5B58;&#x7684;&#x56DE;&#x6536;" class="headerlink" title="1 &#x5806;&#x5185;&#x5B58;&#x7684;&#x56DE;&#x6536;"></a>1 &#x5806;&#x5185;&#x5B58;&#x7684;&#x56DE;&#x6536;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-如何判定哪些对象需要回收？"><span class="toc-text"><a href="#1-1-&#x5982;&#x4F55;&#x5224;&#x5B9A;&#x54EA;&#x4E9B;&#x5BF9;&#x8C61;&#x9700;&#x8981;&#x56DE;&#x6536;&#xFF1F;" class="headerlink" title="1.1 &#x5982;&#x4F55;&#x5224;&#x5B9A;&#x54EA;&#x4E9B;&#x5BF9;&#x8C61;&#x9700;&#x8981;&#x56DE;&#x6536;&#xFF1F;"></a>1.1 &#x5982;&#x4F55;&#x5224;&#x5B9A;&#x54EA;&#x4E9B;&#x5BF9;&#x8C61;&#x9700;&#x8981;&#x56DE;&#x6536;&#xFF1F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-回收无效对象的过程"><span class="toc-text"><a href="#1-2-&#x56DE;&#x6536;&#x65E0;&#x6548;&#x5BF9;&#x8C61;&#x7684;&#x8FC7;&#x7A0B;" class="headerlink" title="1.2 &#x56DE;&#x6536;&#x65E0;&#x6548;&#x5BF9;&#x8C61;&#x7684;&#x8FC7;&#x7A0B;"></a>1.2 &#x56DE;&#x6536;&#x65E0;&#x6548;&#x5BF9;&#x8C61;&#x7684;&#x8FC7;&#x7A0B;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Java中引用的种类"><span class="toc-text"><a href="#2-Java&#x4E2D;&#x5F15;&#x7528;&#x7684;&#x79CD;&#x7C7B;" class="headerlink" title="2 Java&#x4E2D;&#x5F15;&#x7528;&#x7684;&#x79CD;&#x7C7B;"></a>2 Java&#x4E2D;&#x5F15;&#x7528;&#x7684;&#x79CD;&#x7C7B;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-强引用（Strong-Reference）"><span class="toc-text"><a href="#2-1-&#x5F3A;&#x5F15;&#x7528;&#xFF08;Strong-Reference&#xFF09;" class="headerlink" title="2.1 &#x5F3A;&#x5F15;&#x7528;&#xFF08;Strong Reference&#xFF09;"></a>2.1 &#x5F3A;&#x5F15;&#x7528;&#xFF08;Strong Reference&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-软引用（Soft-Reference）"><span class="toc-text"><a href="#2-2-&#x8F6F;&#x5F15;&#x7528;&#xFF08;Soft-Reference&#xFF09;" class="headerlink" title="2.2 &#x8F6F;&#x5F15;&#x7528;&#xFF08;Soft Reference&#xFF09;"></a>2.2 &#x8F6F;&#x5F15;&#x7528;&#xFF08;Soft Reference&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-弱引用（Weak-Reference）"><span class="toc-text"><a href="#2-3-&#x5F31;&#x5F15;&#x7528;&#xFF08;Weak-Reference&#xFF09;" class="headerlink" title="2.3 &#x5F31;&#x5F15;&#x7528;&#xFF08;Weak Reference&#xFF09;"></a>2.3 &#x5F31;&#x5F15;&#x7528;&#xFF08;Weak Reference&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-虚引用（Phantom-Reference）"><span class="toc-text"><a href="#2-4-&#x865A;&#x5F15;&#x7528;&#xFF08;Phantom-Reference&#xFF09;" class="headerlink" title="2.4 &#x865A;&#x5F15;&#x7528;&#xFF08;Phantom Reference&#xFF09;"></a>2.4 &#x865A;&#x5F15;&#x7528;&#xFF08;Phantom Reference&#xFF09;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-方法区的内存回收"><span class="toc-text"><a href="#3-&#x65B9;&#x6CD5;&#x533A;&#x7684;&#x5185;&#x5B58;&#x56DE;&#x6536;" class="headerlink" title="3 &#x65B9;&#x6CD5;&#x533A;&#x7684;&#x5185;&#x5B58;&#x56DE;&#x6536;"></a>3 &#x65B9;&#x6CD5;&#x533A;&#x7684;&#x5185;&#x5B58;&#x56DE;&#x6536;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-如何判定废弃常量？"><span class="toc-text"><a href="#3-1-&#x5982;&#x4F55;&#x5224;&#x5B9A;&#x5E9F;&#x5F03;&#x5E38;&#x91CF;&#xFF1F;" class="headerlink" title="3.1 &#x5982;&#x4F55;&#x5224;&#x5B9A;&#x5E9F;&#x5F03;&#x5E38;&#x91CF;&#xFF1F;"></a>3.1 &#x5982;&#x4F55;&#x5224;&#x5B9A;&#x5E9F;&#x5F03;&#x5E38;&#x91CF;&#xFF1F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-如何废弃废弃的类？"><span class="toc-text"><a href="#3-2-&#x5982;&#x4F55;&#x5E9F;&#x5F03;&#x5E9F;&#x5F03;&#x7684;&#x7C7B;&#xFF1F;" class="headerlink" title="3.2 &#x5982;&#x4F55;&#x5E9F;&#x5F03;&#x5E9F;&#x5F03;&#x7684;&#x7C7B;&#xFF1F;"></a>3.2 &#x5982;&#x4F55;&#x5E9F;&#x5F03;&#x5E9F;&#x5F03;&#x7684;&#x7C7B;&#xFF1F;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-垃圾收集算法"><span class="toc-text"><a href="#4-&#x5783;&#x573E;&#x6536;&#x96C6;&#x7B97;&#x6CD5;" class="headerlink" title="4 &#x5783;&#x573E;&#x6536;&#x96C6;&#x7B97;&#x6CD5;"></a>4 &#x5783;&#x573E;&#x6536;&#x96C6;&#x7B97;&#x6CD5;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-标记-清除算法"><span class="toc-text"><a href="#4-1-&#x6807;&#x8BB0;-&#x6E05;&#x9664;&#x7B97;&#x6CD5;" class="headerlink" title="4.1 &#x6807;&#x8BB0;-&#x6E05;&#x9664;&#x7B97;&#x6CD5;"></a>4.1 &#x6807;&#x8BB0;-&#x6E05;&#x9664;&#x7B97;&#x6CD5;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-复制算法（新生代）"><span class="toc-text"><a href="#4-2-&#x590D;&#x5236;&#x7B97;&#x6CD5;&#xFF08;&#x65B0;&#x751F;&#x4EE3;&#xFF09;" class="headerlink" title="4.2 &#x590D;&#x5236;&#x7B97;&#x6CD5;&#xFF08;&#x65B0;&#x751F;&#x4EE3;&#xFF09;"></a>4.2 &#x590D;&#x5236;&#x7B97;&#x6CD5;&#xFF08;&#x65B0;&#x751F;&#x4EE3;&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-标记-整理算法（老年代）"><span class="toc-text"><a href="#4-3-&#x6807;&#x8BB0;-&#x6574;&#x7406;&#x7B97;&#x6CD5;&#xFF08;&#x8001;&#x5E74;&#x4EE3;&#xFF09;" class="headerlink" title="4.3 &#x6807;&#x8BB0;-&#x6574;&#x7406;&#x7B97;&#x6CD5;&#xFF08;&#x8001;&#x5E74;&#x4EE3;&#xFF09;"></a>4.3 &#x6807;&#x8BB0;-&#x6574;&#x7406;&#x7B97;&#x6CD5;&#xFF08;&#x8001;&#x5E74;&#x4EE3;&#xFF09;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-分代收集算法"><span class="toc-text"><a href="#4-4-&#x5206;&#x4EE3;&#x6536;&#x96C6;&#x7B97;&#x6CD5;" class="headerlink" title="4.4 &#x5206;&#x4EE3;&#x6536;&#x96C6;&#x7B97;&#x6CD5;"></a>4.4 &#x5206;&#x4EE3;&#x6536;&#x96C6;&#x7B97;&#x6CD5;</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%A0%86%E5%86%85%E5%AD%98%E7%9A%84%E5%9B%9E%E6%94%B6"><span class="toc-text">1 堆内存的回收</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%A6%82%E4%BD%95%E5%88%A4%E5%AE%9A%E5%93%AA%E4%BA%9B%E5%AF%B9%E8%B1%A1%E9%9C%80%E8%A6%81%E5%9B%9E%E6%94%B6%EF%BC%9F"><span class="toc-text">1.1 如何判定哪些对象需要回收？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%9B%9E%E6%94%B6%E6%97%A0%E6%95%88%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">1.2 回收无效对象的过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Java%E4%B8%AD%E5%BC%95%E7%94%A8%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="toc-text">2 Java中引用的种类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%BC%BA%E5%BC%95%E7%94%A8%EF%BC%88Strong-Reference%EF%BC%89"><span class="toc-text">2.1 强引用（Strong Reference）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E8%BD%AF%E5%BC%95%E7%94%A8%EF%BC%88Soft-Reference%EF%BC%89"><span class="toc-text">2.2 软引用（Soft Reference）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%BC%B1%E5%BC%95%E7%94%A8%EF%BC%88Weak-Reference%EF%BC%89"><span class="toc-text">2.3 弱引用（Weak Reference）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E8%99%9A%E5%BC%95%E7%94%A8%EF%BC%88Phantom-Reference%EF%BC%89"><span class="toc-text">2.4 虚引用（Phantom Reference）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%96%B9%E6%B3%95%E5%8C%BA%E7%9A%84%E5%86%85%E5%AD%98%E5%9B%9E%E6%94%B6"><span class="toc-text">3 方法区的内存回收</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%A6%82%E4%BD%95%E5%88%A4%E5%AE%9A%E5%BA%9F%E5%BC%83%E5%B8%B8%E9%87%8F%EF%BC%9F"><span class="toc-text">3.1 如何判定废弃常量？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%A6%82%E4%BD%95%E5%BA%9F%E5%BC%83%E5%BA%9F%E5%BC%83%E7%9A%84%E7%B1%BB%EF%BC%9F"><span class="toc-text">3.2 如何废弃废弃的类？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-text">4 垃圾收集算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95"><span class="toc-text">4.1 标记-清除算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95%EF%BC%88%E6%96%B0%E7%94%9F%E4%BB%A3%EF%BC%89"><span class="toc-text">4.2 复制算法（新生代）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E6%A0%87%E8%AE%B0-%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95%EF%BC%88%E8%80%81%E5%B9%B4%E4%BB%A3%EF%BC%89"><span class="toc-text">4.3 标记-整理算法（老年代）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-text">4.4 分代收集算法</span></a></li></ol></li></ol>
   </div>
 </aside>
   
@@ -311,11 +317,11 @@
       
         <div>
           原文链接: 
-          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-03-JVM-垃圾收集策略与算法/</a>
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-03-JVM-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AD%96%E7%95%A5%E4%B8%8E%E7%AE%97%E6%B3%95/</a>
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
@@ -460,10 +466,10 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="/posts/2019-03-04-JVM-HotSpot垃圾收集器/" data-enable="true">
+    <a href="/posts/2019-03-04-JVM-HotSpot%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/posts/2019-03-02-JVM-HotSpot虚拟机对象探秘/" data-enable="true">
+    <a href="/posts/2019-03-02-JVM-HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AF%B9%E8%B1%A1%E6%8E%A2%E7%A7%98/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>

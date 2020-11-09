@@ -8,6 +8,8 @@
   
   <title>树莓派配置WIFI信息 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -183,45 +189,44 @@
   
   <article class="passage-article">
     <p>&emsp;&emsp;通过配置wpa_supplicant.conf可以设置要连接的无线网。</p>
-<pre><code>sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
-</code></pre><p>&emsp;&emsp;在文件末尾出添加一下代码，并替换掉ssid_name以及password即可。</p>
-<pre><code>network={
+<pre><code>sudo nano /etc/wpa_supplicant/wpa_supplicant.conf</code></pre>
+<p>&emsp;&emsp;在文件末尾出添加一下代码，并替换掉ssid_name以及password即可。</p>
+<pre><code>network=&#123;
         ssid=&quot;ssid_name&quot;
         key_mgmt=WPA-PSK
         psk=&quot;password&quot;
-}
-</code></pre><p>&emsp;&emsp;添加多个无线网络配置,只要添加多个network即可。</p>
-<pre><code>network={
+&#125;</code></pre>
+<p>&emsp;&emsp;添加多个无线网络配置,只要添加多个network即可。</p>
+<pre><code>network=&#123;
     ssid=&quot;SSID1&quot;
     psk=&quot;passwordl&quot;
     id_str=&quot;ssidl&quot;
-}
+&#125;
 
-network={
+network=&#123;
     ssid=&quot;SSID2&quot;
     psk=&quot;password2&quot;
     id_str=&quot;ssid2&quot;
-}
-</code></pre><p>&emsp;&emsp;如果有多个网络，可以添加优先级选项来选择具体连接哪一个网络。具有最高优先级的范围内的网络将是优先连接的网络。</p>
-<pre><code>network={
+&#125;</code></pre>
+<p>&emsp;&emsp;如果有多个网络，可以添加优先级选项来选择具体连接哪一个网络。具有最高优先级的范围内的网络将是优先连接的网络。</p>
+<pre><code>network=&#123;
     ssid=&quot;SSID1&quot;
     psk=&quot;password1&quot;
     priority=1
     id_str=&quot;ssid1&quot;
-}
+&#125;
 
-network={
+network=&#123;
     ssid=&quot;SSID2&quot;
     psk=&quot;password2&quot;
     priority=2
     id_str=&quot;ssid2&quot;
-}
-</code></pre><p>&emsp;&emsp;添加没有密码的WIFI网络，只要将key_mgmt设置为NONE</p>
-<pre><code>network={
+&#125;</code></pre>
+<p>&emsp;&emsp;添加没有密码的WIFI网络，只要将key_mgmt设置为NONE</p>
+<pre><code>network=&#123;
         ssid=&quot;ssid_name&quot;
         key_mgmt=NONE
-}
-</code></pre>
+&#125;</code></pre>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -242,14 +247,14 @@ network={
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
   
     <div class="passage-tags">
      
-      <a href="/tags/树莓派/"><i class="fa fa-tags"></i>树莓派</a>
+      <a href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/"><i class="fa fa-tags"></i>树莓派</a>
      
       <a href="/tags/raspberry-pi/"><i class="fa fa-tags"></i>raspberry pi</a>
      

@@ -8,6 +8,8 @@
   
   <title>统计网站运行时间的JavaScript代码 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -186,15 +192,15 @@
 
 &lt;script type=”text/javascript”&gt;
 
-    function NewDate(str) {
+    function NewDate(str) &#123;
         str = str.split(‘-‘);
         var date = new Date();
         date.setUTCFullYear(str[0], str[1] – 1, str[2]);
         date.setUTCHours(0, 0, 0, 0);
         return date;
-    }
+    &#125;
 
-    function showsectime() {
+    function showsectime() &#123;
         var birthDay =NewDate(“2014-08-14”);
         var today=new Date();
         var timeold=today.getTime()-birthDay.getTime();
@@ -213,12 +219,11 @@
         var seconds=Math.floor((minsold-e_minsold)*-60).toString();
         document.getElementById(“showsectime”).innerHTML = “网站已安全运行”+daysold+”天”+hrsold+”时”+minsold+”分”+seconds+”秒”;
         setTimeout(showsectime, 1000);
-    }
+    &#125;
 
     showsectime();
 
-&lt;/script&gt;
-</code></pre>
+&lt;/script&gt;</code></pre>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -239,7 +244,7 @@
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   

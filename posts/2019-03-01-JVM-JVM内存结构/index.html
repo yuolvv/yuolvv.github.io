@@ -8,6 +8,8 @@
   
   <title>JVM-JVM内存结构 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -191,8 +197,8 @@
 2.Java 虚拟机栈
 3.本地方法栈
 4.堆
-5.方法区
-</code></pre><center><img src="https://i.loli.net/2019/11/13/UWxqubeJp6Rs3Pj.png" alt="JVM_01.png"></center>
+5.方法区</code></pre>
+<center>![JVM_01.png](https://i.loli.net/2019/11/13/UWxqubeJp6Rs3Pj.png)</center>
 
 <p>JDK 1.8 同 JDK 1.7 比，最大的差别就是：元数据区取代了永久代。元空间的本质和永久代类似，都是对 JVM 规范中方法区的实现。不过元空间与永久代之间最大的区别在于：元数据空间并不在虚拟机中，而是使用本地内存。</p>
 <h2 id="1-程序计数器（PC-寄存器）"><a href="#1-程序计数器（PC-寄存器）" class="headerlink" title="1 程序计数器（PC 寄存器）"></a>1 程序计数器（PC 寄存器）</h2><h3 id="1-1-程序计数器的定义"><a href="#1-1-程序计数器的定义" class="headerlink" title="1.1 程序计数器的定义"></a>1.1 程序计数器的定义</h3><p>程序计数器是一块较小的内存空间，是当前线程正在执行的字节码的行号指示器，即当前线程正在执行的那一条字节码指令的地址。</p>
@@ -210,8 +216,8 @@
 （2）存放基本数据类型变量、引用类型的变量、returnAddress类型的变量。
 （3）操作数栈
 （4）动态链接
-（5）方法出口信息
-</code></pre><center><img src="https://i.loli.net/2019/11/13/qLQ9Egmw31akKfT.png" alt="JVM_02.png"></center>
+（5）方法出口信息</code></pre>
+<center>![JVM_02.png](https://i.loli.net/2019/11/13/qLQ9Egmw31akKfT.png)</center>
 
 <h3 id="2-2-压栈出栈过程"><a href="#2-2-压栈出栈过程" class="headerlink" title="2.2 压栈出栈过程"></a>2.2 压栈出栈过程</h3><p>当一个方法即将被运行时，Java虚拟机栈首先会在Java虚拟机栈中为该方法创建一块“栈帧”，栈帧中包含局部变量表、操作数栈、动态链接、方法出口信息等。当方法在运行过程中需要创建局部变量时，就将局部变量的值存入栈帧的局部变量表中。</p>
 <p>Java 虚拟机栈的栈顶的栈帧是当前正在执行的活动栈，也就是当前正在执行的方法，PC 寄存器也会指向这个地址。只有这个活动的栈帧的本地变量可以被操作数栈使用，当在这个栈帧中调用另一个方法，与之对应的栈帧又会被创建，新创建的栈帧压入栈顶，变为当前的活动栈帧。方法结束后，当前栈帧被移出，栈帧的返回值变成新的活动栈帧中操作数栈的一个操作数。如果没有返回值，那么新的活动栈帧中操作数栈的操作数没有变化。</p>
@@ -223,8 +229,8 @@
 <p>（2）Java 虚拟机栈会出现两种异常：StackOverFlowError 和 OutOfMemoryError。</p>
 <pre><code>a) StackOverFlowError： 若Java虚拟机栈的内存大小不允许动态扩展，那么当线程请求栈的深度超过当前Java虚拟机栈的最大深度的时候，就抛出StackOverFlowError异常。
 
-b) OutOfMemoryError： 若Java虚拟机栈的内存大小允许动态扩展，且当线程请求栈时内存用完了，无法再动态扩展了，此时抛出OutOfMemoryError异常。
-</code></pre><p>（3）Java虚拟机栈也是线程私有的，每个线程都有各自的Java虚拟机栈，而且随着线程的创建而创建，随着线程的结束而销毁。</p>
+b) OutOfMemoryError： 若Java虚拟机栈的内存大小允许动态扩展，且当线程请求栈时内存用完了，无法再动态扩展了，此时抛出OutOfMemoryError异常。</code></pre>
+<p>（3）Java虚拟机栈也是线程私有的，每个线程都有各自的Java虚拟机栈，而且随着线程的创建而创建，随着线程的结束而销毁。</p>
 <p>注：StackOverFlowError和OutOfMemoryError的异同？ StackOverFlowError表示当前线程申请的栈超过了事先定好的栈的最大深度，但内存空间可能还有很多。而OutOfMemoryError是指当线程申请栈时发现栈已经满了，而且内存也全都用光了。</p>
 <h2 id="3-本地方法栈（C-栈）"><a href="#3-本地方法栈（C-栈）" class="headerlink" title="3 本地方法栈（C 栈）"></a>3 本地方法栈（C 栈）</h2><h3 id="3-1-本地方法栈的定义"><a href="#3-1-本地方法栈的定义" class="headerlink" title="3.1 本地方法栈的定义"></a>3.1 本地方法栈的定义</h3><p>本地方法栈是为 JVM 运行 Native 方法准备的空间，由于很多 Native 方法都是用 C 语言实现的，所以它通常又叫 C 栈。</p>
 <p>本地方法栈和Java虚拟机栈实现的功能类似，只不过本地方法区是本地方法运行的内存模型。</p>
@@ -276,7 +282,7 @@ b) OutOfMemoryError： 若Java虚拟机栈的内存大小允许动态扩展，�
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-程序计数器（PC-寄存器）"><span class="toc-text"><a href="#1-&#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;&#xFF08;PC-&#x5BC4;&#x5B58;&#x5668;&#xFF09;" class="headerlink" title="1 &#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;&#xFF08;PC &#x5BC4;&#x5B58;&#x5668;&#xFF09;"></a>1 &#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;&#xFF08;PC &#x5BC4;&#x5B58;&#x5668;&#xFF09;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-程序计数器的定义"><span class="toc-text"><a href="#1-1-&#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;&#x7684;&#x5B9A;&#x4E49;" class="headerlink" title="1.1 &#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;&#x7684;&#x5B9A;&#x4E49;"></a>1.1 &#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;&#x7684;&#x5B9A;&#x4E49;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-程序计数器的作用"><span class="toc-text"><a href="#1-2-&#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;&#x7684;&#x4F5C;&#x7528;" class="headerlink" title="1.2 &#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;&#x7684;&#x4F5C;&#x7528;"></a>1.2 &#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;&#x7684;&#x4F5C;&#x7528;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-程序计数器的特点"><span class="toc-text"><a href="#1-3-&#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;&#x7684;&#x7279;&#x70B9;" class="headerlink" title="1.3 &#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;&#x7684;&#x7279;&#x70B9;"></a>1.3 &#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;&#x7684;&#x7279;&#x70B9;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Java虚拟机栈（JVM-Stack）（Java-栈）"><span class="toc-text"><a href="#2-Java&#x865A;&#x62DF;&#x673A;&#x6808;&#xFF08;JVM-Stack&#xFF09;&#xFF08;Java-&#x6808;&#xFF09;" class="headerlink" title="2 Java&#x865A;&#x62DF;&#x673A;&#x6808;&#xFF08;JVM Stack&#xFF09;&#xFF08;Java &#x6808;&#xFF09;"></a>2 Java&#x865A;&#x62DF;&#x673A;&#x6808;&#xFF08;JVM Stack&#xFF09;&#xFF08;Java &#x6808;&#xFF09;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Java虚拟机栈的定义"><span class="toc-text"><a href="#2-1-Java&#x865A;&#x62DF;&#x673A;&#x6808;&#x7684;&#x5B9A;&#x4E49;" class="headerlink" title="2.1 Java&#x865A;&#x62DF;&#x673A;&#x6808;&#x7684;&#x5B9A;&#x4E49;"></a>2.1 Java&#x865A;&#x62DF;&#x673A;&#x6808;&#x7684;&#x5B9A;&#x4E49;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-压栈出栈过程"><span class="toc-text"><a href="#2-2-&#x538B;&#x6808;&#x51FA;&#x6808;&#x8FC7;&#x7A0B;" class="headerlink" title="2.2 &#x538B;&#x6808;&#x51FA;&#x6808;&#x8FC7;&#x7A0B;"></a>2.2 &#x538B;&#x6808;&#x51FA;&#x6808;&#x8FC7;&#x7A0B;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Java-虚拟机栈的特点"><span class="toc-text"><a href="#2-3-Java-&#x865A;&#x62DF;&#x673A;&#x6808;&#x7684;&#x7279;&#x70B9;" class="headerlink" title="2.3 Java &#x865A;&#x62DF;&#x673A;&#x6808;&#x7684;&#x7279;&#x70B9;"></a>2.3 Java &#x865A;&#x62DF;&#x673A;&#x6808;&#x7684;&#x7279;&#x70B9;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-本地方法栈（C-栈）"><span class="toc-text"><a href="#3-&#x672C;&#x5730;&#x65B9;&#x6CD5;&#x6808;&#xFF08;C-&#x6808;&#xFF09;" class="headerlink" title="3 &#x672C;&#x5730;&#x65B9;&#x6CD5;&#x6808;&#xFF08;C &#x6808;&#xFF09;"></a>3 &#x672C;&#x5730;&#x65B9;&#x6CD5;&#x6808;&#xFF08;C &#x6808;&#xFF09;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-本地方法栈的定义"><span class="toc-text"><a href="#3-1-&#x672C;&#x5730;&#x65B9;&#x6CD5;&#x6808;&#x7684;&#x5B9A;&#x4E49;" class="headerlink" title="3.1 &#x672C;&#x5730;&#x65B9;&#x6CD5;&#x6808;&#x7684;&#x5B9A;&#x4E49;"></a>3.1 &#x672C;&#x5730;&#x65B9;&#x6CD5;&#x6808;&#x7684;&#x5B9A;&#x4E49;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-栈帧变化过程"><span class="toc-text"><a href="#3-2-&#x6808;&#x5E27;&#x53D8;&#x5316;&#x8FC7;&#x7A0B;" class="headerlink" title="3.2 &#x6808;&#x5E27;&#x53D8;&#x5316;&#x8FC7;&#x7A0B;"></a>3.2 &#x6808;&#x5E27;&#x53D8;&#x5316;&#x8FC7;&#x7A0B;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-堆"><span class="toc-text"><a href="#4-&#x5806;" class="headerlink" title="4 &#x5806;"></a>4 &#x5806;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-堆的定义"><span class="toc-text"><a href="#4-1-&#x5806;&#x7684;&#x5B9A;&#x4E49;" class="headerlink" title="4.1 &#x5806;&#x7684;&#x5B9A;&#x4E49;"></a>4.1 &#x5806;&#x7684;&#x5B9A;&#x4E49;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-堆的特点"><span class="toc-text"><a href="#4-2-&#x5806;&#x7684;&#x7279;&#x70B9;" class="headerlink" title="4.2 &#x5806;&#x7684;&#x7279;&#x70B9;"></a>4.2 &#x5806;&#x7684;&#x7279;&#x70B9;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-方法区"><span class="toc-text"><a href="#5-&#x65B9;&#x6CD5;&#x533A;" class="headerlink" title="5 &#x65B9;&#x6CD5;&#x533A;"></a>5 &#x65B9;&#x6CD5;&#x533A;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-方法区的定义"><span class="toc-text"><a href="#5-1-&#x65B9;&#x6CD5;&#x533A;&#x7684;&#x5B9A;&#x4E49;" class="headerlink" title="5.1 &#x65B9;&#x6CD5;&#x533A;&#x7684;&#x5B9A;&#x4E49;"></a>5.1 &#x65B9;&#x6CD5;&#x533A;&#x7684;&#x5B9A;&#x4E49;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-方法区的特点"><span class="toc-text"><a href="#5-2-&#x65B9;&#x6CD5;&#x533A;&#x7684;&#x7279;&#x70B9;" class="headerlink" title="5.2 &#x65B9;&#x6CD5;&#x533A;&#x7684;&#x7279;&#x70B9;"></a>5.2 &#x65B9;&#x6CD5;&#x533A;&#x7684;&#x7279;&#x70B9;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-运行时常量池"><span class="toc-text"><a href="#5-3-&#x8FD0;&#x884C;&#x65F6;&#x5E38;&#x91CF;&#x6C60;" class="headerlink" title="5.3 &#x8FD0;&#x884C;&#x65F6;&#x5E38;&#x91CF;&#x6C60;"></a>5.3 &#x8FD0;&#x884C;&#x65F6;&#x5E38;&#x91CF;&#x6C60;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-直接内存（堆外内存）"><span class="toc-text"><a href="#6-&#x76F4;&#x63A5;&#x5185;&#x5B58;&#xFF08;&#x5806;&#x5916;&#x5185;&#x5B58;&#xFF09;" class="headerlink" title="6 &#x76F4;&#x63A5;&#x5185;&#x5B58;&#xFF08;&#x5806;&#x5916;&#x5185;&#x5B58;&#xFF09;"></a>6 &#x76F4;&#x63A5;&#x5185;&#x5B58;&#xFF08;&#x5806;&#x5916;&#x5185;&#x5B58;&#xFF09;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-操作直接内存"><span class="toc-text"><a href="#6-1-&#x64CD;&#x4F5C;&#x76F4;&#x63A5;&#x5185;&#x5B58;" class="headerlink" title="6.1 &#x64CD;&#x4F5C;&#x76F4;&#x63A5;&#x5185;&#x5B58;"></a>6.1 &#x64CD;&#x4F5C;&#x76F4;&#x63A5;&#x5185;&#x5B58;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-直接内存与堆内存比较"><span class="toc-text"><a href="#6-2-&#x76F4;&#x63A5;&#x5185;&#x5B58;&#x4E0E;&#x5806;&#x5185;&#x5B58;&#x6BD4;&#x8F83;" class="headerlink" title="6.2 &#x76F4;&#x63A5;&#x5185;&#x5B58;&#x4E0E;&#x5806;&#x5185;&#x5B58;&#x6BD4;&#x8F83;"></a>6.2 &#x76F4;&#x63A5;&#x5185;&#x5B58;&#x4E0E;&#x5806;&#x5185;&#x5B58;&#x6BD4;&#x8F83;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-总结"><span class="toc-text"><a href="#7-&#x603B;&#x7ED3;" class="headerlink" title="7 &#x603B;&#x7ED3;"></a>7 &#x603B;&#x7ED3;</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8%EF%BC%88PC-%E5%AF%84%E5%AD%98%E5%99%A8%EF%BC%89"><span class="toc-text">1 程序计数器（PC 寄存器）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">1.1 程序计数器的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">1.2 程序计数器的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-text">1.3 程序计数器的特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%EF%BC%88JVM-Stack%EF%BC%89%EF%BC%88Java-%E6%A0%88%EF%BC%89"><span class="toc-text">2 Java虚拟机栈（JVM Stack）（Java 栈）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">2.1 Java虚拟机栈的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%8E%8B%E6%A0%88%E5%87%BA%E6%A0%88%E8%BF%87%E7%A8%8B"><span class="toc-text">2.2 压栈出栈过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Java-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-text">2.3 Java 虚拟机栈的特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88%EF%BC%88C-%E6%A0%88%EF%BC%89"><span class="toc-text">3 本地方法栈（C 栈）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">3.1 本地方法栈的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%A0%88%E5%B8%A7%E5%8F%98%E5%8C%96%E8%BF%87%E7%A8%8B"><span class="toc-text">3.2 栈帧变化过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A0%86"><span class="toc-text">4 堆</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%A0%86%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">4.1 堆的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%A0%86%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-text">4.2 堆的特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="toc-text">5 方法区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%96%B9%E6%B3%95%E5%8C%BA%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">5.1 方法区的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%96%B9%E6%B3%95%E5%8C%BA%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-text">5.2 方法区的特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="toc-text">5.3 运行时常量池</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98%EF%BC%88%E5%A0%86%E5%A4%96%E5%86%85%E5%AD%98%EF%BC%89"><span class="toc-text">6 直接内存（堆外内存）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E6%93%8D%E4%BD%9C%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98"><span class="toc-text">6.1 操作直接内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98%E4%B8%8E%E5%A0%86%E5%86%85%E5%AD%98%E6%AF%94%E8%BE%83"><span class="toc-text">6.2 直接内存与堆内存比较</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%80%BB%E7%BB%93"><span class="toc-text">7 总结</span></a></li></ol>
   </div>
 </aside>
   
@@ -285,11 +291,11 @@ b) OutOfMemoryError： 若Java虚拟机栈的内存大小允许动态扩展，�
       
         <div>
           原文链接: 
-          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-01-JVM-JVM内存结构/</a>
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-01-JVM-JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/</a>
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
@@ -434,7 +440,7 @@ b) OutOfMemoryError： 若Java虚拟机栈的内存大小允许动态扩展，�
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="/posts/2019-03-02-JVM-HotSpot虚拟机对象探秘/" data-enable="true">
+    <a href="/posts/2019-03-02-JVM-HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AF%B9%E8%B1%A1%E6%8E%A2%E7%A7%98/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
     <a href="/posts/2019-01-20-wpsgov/" data-enable="true">

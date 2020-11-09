@@ -8,6 +8,8 @@
   
   <title>《Go从B站学起》第一讲:Go环境搭建 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -183,18 +189,18 @@
   
   <article class="passage-article">
     <p>&emsp;&emsp;首先就是搭建Go语言环境。</p>
-<p>&emsp;&emsp;Go官网：<a href="https://golang.google.cn" target="_blank" rel="noopener">https://golang.google.cn</a></p>
+<p>&emsp;&emsp;Go官网：<a target="_blank" rel="noopener" href="https://golang.google.cn/">https://golang.google.cn</a></p>
 <p>&emsp;&emsp;这里教程以在Ubuntu上搭建Go环境为例：</p>
-<h2 id="下载Go压缩包"><a href="#下载Go压缩包" class="headerlink" title="下载Go压缩包"></a>下载Go压缩包</h2><p>&emsp;&emsp;点击<a href="https://golang.google.cn/dl/" target="_blank" rel="noopener">https://golang.google.cn/dl/</a>下载 go$VERSION.$OS-$ARCH.tar.gz</p>
-<p>&emsp;&emsp;当前最新版本为<a href="https://dl.google.com/go/go1.12.4.linux-amd64.tar.gz" target="_blank" rel="noopener">go1.12.4.linux-amd64</a></p>
-<h2 id="解压Go压缩包："><a href="#解压Go压缩包：" class="headerlink" title="解压Go压缩包："></a>解压Go压缩包：</h2><pre><code>tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz
-</code></pre><h2 id="配置环境变量："><a href="#配置环境变量：" class="headerlink" title="配置环境变量："></a>配置环境变量：</h2><pre><code>nano /etc/profile
-</code></pre><p>&emsp;&emsp;在/etc/profile的最后面加上</p>
-<pre><code>export PATH=$PATH:/usr/local/go/bin
-</code></pre><p>&emsp;&emsp;让配置文件生效：</p>
-<pre><code>source /etc/profile
-</code></pre><h2 id="验证Go环境"><a href="#验证Go环境" class="headerlink" title="验证Go环境"></a>验证Go环境</h2><pre><code>go version
-</code></pre><p>&emsp;&emsp;OK，安装完成。下一讲，你懂的，Hello World!!!(手动滑稽)</p>
+<h2 id="下载Go压缩包"><a href="#下载Go压缩包" class="headerlink" title="下载Go压缩包"></a>下载Go压缩包</h2><p>&emsp;&emsp;点击<a target="_blank" rel="noopener" href="https://golang.google.cn/dl/">https://golang.google.cn/dl/</a>下载 go$VERSION.$OS-$ARCH.tar.gz</p>
+<p>&emsp;&emsp;当前最新版本为<a target="_blank" rel="noopener" href="https://dl.google.com/go/go1.12.4.linux-amd64.tar.gz">go1.12.4.linux-amd64</a></p>
+<h2 id="解压Go压缩包："><a href="#解压Go压缩包：" class="headerlink" title="解压Go压缩包："></a>解压Go压缩包：</h2><pre><code>tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz</code></pre>
+<h2 id="配置环境变量："><a href="#配置环境变量：" class="headerlink" title="配置环境变量："></a>配置环境变量：</h2><pre><code>nano /etc/profile</code></pre>
+<p>&emsp;&emsp;在/etc/profile的最后面加上</p>
+<pre><code>export PATH=$PATH:/usr/local/go/bin</code></pre>
+<p>&emsp;&emsp;让配置文件生效：</p>
+<pre><code>source /etc/profile</code></pre>
+<h2 id="验证Go环境"><a href="#验证Go环境" class="headerlink" title="验证Go环境"></a>验证Go环境</h2><pre><code>go version</code></pre>
+<p>&emsp;&emsp;OK，安装完成。下一讲，你懂的，Hello World!!!(手动滑稽)</p>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -202,7 +208,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载Go压缩包"><span class="toc-text"><a href="#&#x4E0B;&#x8F7D;Go&#x538B;&#x7F29;&#x5305;" class="headerlink" title="&#x4E0B;&#x8F7D;Go&#x538B;&#x7F29;&#x5305;"></a>&#x4E0B;&#x8F7D;Go&#x538B;&#x7F29;&#x5305;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解压Go压缩包："><span class="toc-text"><a href="#&#x89E3;&#x538B;Go&#x538B;&#x7F29;&#x5305;&#xFF1A;" class="headerlink" title="&#x89E3;&#x538B;Go&#x538B;&#x7F29;&#x5305;&#xFF1A;"></a>&#x89E3;&#x538B;Go&#x538B;&#x7F29;&#x5305;&#xFF1A;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置环境变量："><span class="toc-text"><a href="#&#x914D;&#x7F6E;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#xFF1A;" class="headerlink" title="&#x914D;&#x7F6E;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#xFF1A;"></a>&#x914D;&#x7F6E;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#xFF1A;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#验证Go环境"><span class="toc-text"><a href="#&#x9A8C;&#x8BC1;Go&#x73AF;&#x5883;" class="headerlink" title="&#x9A8C;&#x8BC1;Go&#x73AF;&#x5883;"></a>&#x9A8C;&#x8BC1;Go&#x73AF;&#x5883;</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDGo%E5%8E%8B%E7%BC%A9%E5%8C%85"><span class="toc-text">下载Go压缩包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8BGo%E5%8E%8B%E7%BC%A9%E5%8C%85%EF%BC%9A"><span class="toc-text">解压Go压缩包：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%EF%BC%9A"><span class="toc-text">配置环境变量：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81Go%E7%8E%AF%E5%A2%83"><span class="toc-text">验证Go环境</span></a></li></ol>
   </div>
 </aside>
   
@@ -215,7 +221,7 @@
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
@@ -224,7 +230,7 @@
      
       <a href="/tags/Go/"><i class="fa fa-tags"></i>Go</a>
      
-      <a href="/tags/B站/"><i class="fa fa-tags"></i>B站</a>
+      <a href="/tags/B%E7%AB%99/"><i class="fa fa-tags"></i>B站</a>
      
       <a href="/tags/Bilibili/"><i class="fa fa-tags"></i>Bilibili</a>
     
@@ -365,7 +371,7 @@
     <a href="/posts/2019-10-01-Redis/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/posts/2019-03-10-JVM-JVM参数/" data-enable="true">
+    <a href="/posts/2019-03-10-JVM-JVM%E5%8F%82%E6%95%B0/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>

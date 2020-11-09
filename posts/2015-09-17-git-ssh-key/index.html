@@ -8,6 +8,8 @@
   
   <title>Git配置多个SSH-Key | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -189,14 +195,14 @@
     <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>当有多个git账号时，比如：</p>
 <pre><code>a. 一个gitlab，用于公司内部的工作开发；
 b. 一个github，用于自己进行一些开发活动；
-c. 一个gitee，用于其他的一些开发活动；
-</code></pre><h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>（1）生成一个gitlab用的SSH-Key</p>
-<pre><code>ssh-keygen -t rsa -C &apos;xxx@iyu.pub&apos; -f ~/.ssh/id_rsa_gitlab
-</code></pre><p>（2）生成一个github用的SSH-Key</p>
-<pre><code>ssh-keygen -t rsa -C &apos;xxx@iyu.pub&apos; -f ~/.ssh/id_rsa_github
-</code></pre><p> (3)生成一个gitee用的SSH-Key</p>
-<pre><code>ssh-keygen -t rsa -C &apos;xxx@iyu.pub&apos; -f ~/.ssh/id_rsa_gitee
-</code></pre><p> (4)在 ~/.ssh 目录下新建一个config文件，添加如下内容（其中Host和HostName填写git服务器的域名，IdentityFile指定私钥的路径）</p>
+c. 一个gitee，用于其他的一些开发活动；</code></pre>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>（1）生成一个gitlab用的SSH-Key</p>
+<pre><code>ssh-keygen -t rsa -C &#39;xxx@iyu.pub&#39; -f ~/.ssh/id_rsa_gitlab</code></pre>
+<p>（2）生成一个github用的SSH-Key</p>
+<pre><code>ssh-keygen -t rsa -C &#39;xxx@iyu.pub&#39; -f ~/.ssh/id_rsa_github</code></pre>
+<p> (3)生成一个gitee用的SSH-Key</p>
+<pre><code>ssh-keygen -t rsa -C &#39;xxx@iyu.pub&#39; -f ~/.ssh/id_rsa_gitee</code></pre>
+<p> (4)在 ~/.ssh 目录下新建一个config文件，添加如下内容（其中Host和HostName填写git服务器的域名，IdentityFile指定私钥的路径）</p>
 <pre><code># gitee
 Host gitee.com
 HostName gitee.com
@@ -211,17 +217,16 @@ IdentityFile ~/.ssh/id_rsa_github
 Host gitlab.com
 HostName gitlab.com
 PreferredAuthentications publickey
-IdentityFile ~/.ssh/id_rsa_gitlab
-</code></pre><p> (5) 用ssh命令分别测试</p>
+IdentityFile ~/.ssh/id_rsa_gitlab</code></pre>
+<p> (5) 用ssh命令分别测试</p>
 <pre><code>1.ssh -T git@gitlab.com    
 成功返回 ==&gt;  Welcome to GitLab, @xxx!
 
 2.ssh -T git@github.com
-成功返回 ==&gt;  Hi xxx! You&apos;ve successfully authenticated, but GitHub does not provide shell access.
+成功返回 ==&gt;  Hi xxx! You&#39;ve successfully authenticated, but GitHub does not provide shell access.
 
 3.ssh -T git@gitee.com
-成功返回 ==&gt;  Hi xxx! You&apos;ve successfully authenticated, but GITEE.COM does not provide shell access.
-</code></pre>
+成功返回 ==&gt;  Hi xxx! You&#39;ve successfully authenticated, but GITEE.COM does not provide shell access.</code></pre>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -229,7 +234,7 @@ IdentityFile ~/.ssh/id_rsa_gitlab
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#背景"><span class="toc-text"><a href="#&#x80CC;&#x666F;" class="headerlink" title="&#x80CC;&#x666F;"></a>&#x80CC;&#x666F;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#解决方法"><span class="toc-text"><a href="#&#x89E3;&#x51B3;&#x65B9;&#x6CD5;" class="headerlink" title="&#x89E3;&#x51B3;&#x65B9;&#x6CD5;"></a>&#x89E3;&#x51B3;&#x65B9;&#x6CD5;</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="toc-text">解决方法</span></a></li></ol>
   </div>
 </aside>
   
@@ -242,7 +247,7 @@ IdentityFile ~/.ssh/id_rsa_gitlab
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   

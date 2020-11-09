@@ -8,6 +8,8 @@
   
   <title>使用深度学习识别12306图片验证码 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -168,7 +174,7 @@
     </span>
     
       <span>
-        | <a href="/categories/图片识别/"><i class="fa fa-bookmark"></i>图片识别</a>
+        | <a href="/categories/%E5%9B%BE%E7%89%87%E8%AF%86%E5%88%AB/"><i class="fa fa-bookmark"></i>图片识别</a>
       </span>
     
     
@@ -183,7 +189,7 @@
   
   <article class="passage-article">
     <p>&emsp;&emsp;12306的图片验证码是从8个图片中找到要求的物体，如下图所示：</p>
-<center><img src="https://i.loli.net/2019/04/26/5cc2716a52c66.jpg" alt="12306_captcha_01.jpg"></center>
+<center>![12306_captcha_01.jpg](https://i.loli.net/2019/04/26/5cc2716a52c66.jpg)</center>
 
 <p>&emsp;&emsp;统计了1000个左右的样本图片，发现12306的图片类别只有80个，如下列表：</p>
 <pre><code>药片        中国结    仪表盘    公交卡    冰箱
@@ -201,19 +207,19 @@
 蜡烛        蜥蜴        订书机    话梅        调色板
 跑步机    路灯        辣椒酱    金字塔    钟表
 铃铛        锅铲        锣        锦旗        雨靴
-鞭炮        风铃        高压锅    黑板        龙舟
-</code></pre><p>&emsp;&emsp;通过一轮又一轮的训练12306的图片，生成了识别的模型。关于具体的模型训练，此处省略一亿字。</p>
+鞭炮        风铃        高压锅    黑板        龙舟</code></pre>
+<p>&emsp;&emsp;通过一轮又一轮的训练12306的图片，生成了识别的模型。关于具体的模型训练，此处省略一亿字。</p>
 <p>&emsp;&emsp;由于是小白，这里图片的识别不是很高，没有达到100%，测试总体的准确率在75% - 85% 之间，还有完善的空间。</p>
 <p>&emsp;&emsp;这里，在本地搭建了个临时访问的web网站，可以体验体验图片的识别。</p>
-<p>&emsp;&emsp;<a href="http://idl.free.idcfengye.com/" target="_blank" rel="noopener">请用电脑浏览器打开 http://idl.free.idcfengye.com/</a></p>
+<p>&emsp;&emsp;<a target="_blank" rel="noopener" href="http://idl.free.idcfengye.com/">请用电脑浏览器打开 http://idl.free.idcfengye.com/</a></p>
 <h1 id="演示："><a href="#演示：" class="headerlink" title="演示："></a>演示：</h1><p>&emsp;&emsp;打开上面的演示地址：</p>
-<center><img src="https://i.loli.net/2019/04/26/5cc2716a8ecee.jpg" alt="12306_captcha_02.jpg"></center>
+<center>![12306_captcha_02.jpg](https://i.loli.net/2019/04/26/5cc2716a8ecee.jpg)</center>
 
 <p>&emsp;&emsp;演示的图片验证码文件：</p>
-<center><img src="https://i.loli.net/2019/04/26/5cc2716a547b0.jpg" alt="12306_captcha_03.jpg"></center>
+<center>![12306_captcha_03.jpg](https://i.loli.net/2019/04/26/5cc2716a547b0.jpg)</center>
 
 <p>&emsp;&emsp;上传文件之后，跳到显示识别出来的结果的页面：</p>
-<center><img src="https://i.loli.net/2019/04/26/5cc2716a91118.jpg" alt="12306_captcha_04.jpg"></center>
+<center>![12306_captcha_04.jpg](https://i.loli.net/2019/04/26/5cc2716a91118.jpg)</center>
 
 <p>&emsp;&emsp;OK，最后有个问题，最近一直在思考：Deep Learning 真的是泡沫吗？</p>
   </article>
@@ -223,7 +229,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#演示："><span class="toc-text"><a href="#&#x6F14;&#x793A;&#xFF1A;" class="headerlink" title="&#x6F14;&#x793A;&#xFF1A;"></a>&#x6F14;&#x793A;&#xFF1A;</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BC%94%E7%A4%BA%EF%BC%9A"><span class="toc-text">演示：</span></a></li></ol>
   </div>
 </aside>
   
@@ -236,7 +242,7 @@
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
@@ -245,11 +251,11 @@
      
       <a href="/tags/12306/"><i class="fa fa-tags"></i>12306</a>
      
-      <a href="/tags/深度学习/"><i class="fa fa-tags"></i>深度学习</a>
+      <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa fa-tags"></i>深度学习</a>
      
-      <a href="/tags/验证码/"><i class="fa fa-tags"></i>验证码</a>
+      <a href="/tags/%E9%AA%8C%E8%AF%81%E7%A0%81/"><i class="fa fa-tags"></i>验证码</a>
      
-      <a href="/tags/图片识别/"><i class="fa fa-tags"></i>图片识别</a>
+      <a href="/tags/%E5%9B%BE%E7%89%87%E8%AF%86%E5%88%AB/"><i class="fa fa-tags"></i>图片识别</a>
     
     </div>
   

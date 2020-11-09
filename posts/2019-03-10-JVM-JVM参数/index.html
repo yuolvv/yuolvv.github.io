@@ -8,6 +8,8 @@
   
   <title>JVM参数 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -214,8 +220,8 @@ MaxPermSize、MetaspaceSize
 Xss
 英文释义：Thread Stack Size(in Kbytes)
 中文释义：线程栈最大值
-使用方法：-Xss256k 或 -XX:ThreadStackSize=256k
-</code></pre><h1 id="GC-策略相关"><a href="#GC-策略相关" class="headerlink" title="GC 策略相关"></a>GC 策略相关</h1><pre><code>SurvivorRatio
+使用方法：-Xss256k 或 -XX:ThreadStackSize=256k</code></pre>
+<h1 id="GC-策略相关"><a href="#GC-策略相关" class="headerlink" title="GC 策略相关"></a>GC 策略相关</h1><pre><code>SurvivorRatio
 英文释义：Rato of eden/survivor space size
 中文释义：Eden 区和 Survivor 的比值
 使用方法：-XX:SurvivorRatio=6
@@ -323,8 +329,8 @@ DisableExplicitGC
 英文释义：Ignore calls to System.gc()
 中文释义：禁用 System.gc() 触发FullGC
 使用方法：开启 -XX:+DisableExplicitGC、关闭 -XX:-DisableExplicitGC
-使用经验：不建议开启，如果开启了这个参数可能会导致对外内存无法及时回收造成对外内存溢出
-</code></pre><h1 id="GC日志相关"><a href="#GC日志相关" class="headerlink" title="GC日志相关"></a>GC日志相关</h1><pre><code>Xloggc
+使用经验：不建议开启，如果开启了这个参数可能会导致对外内存无法及时回收造成对外内存溢出</code></pre>
+<h1 id="GC日志相关"><a href="#GC日志相关" class="headerlink" title="GC日志相关"></a>GC日志相关</h1><pre><code>Xloggc
 英文释义：GC log file
 中文释义：GC日志文件路径
 使用方法：-Xloggc:/data/gclog/gc.log
@@ -369,8 +375,8 @@ PrintGCApplicationStoppedTime
 PrintHeapAtGC
 英文释义：Print heap layout before and after each GC
 中文释义：GC前后打印堆区使用信息
-使用方法：开启 -XX:+PrintHeapAtGC、关闭 -XX:-PrintHeapAtGC
-</code></pre><h1 id="异常相关"><a href="#异常相关" class="headerlink" title="异常相关"></a>异常相关</h1><pre><code>HeapDumpOnOutOfMemoryError
+使用方法：开启 -XX:+PrintHeapAtGC、关闭 -XX:-PrintHeapAtGC</code></pre>
+<h1 id="异常相关"><a href="#异常相关" class="headerlink" title="异常相关"></a>异常相关</h1><pre><code>HeapDumpOnOutOfMemoryError
 英文释义：Dump heap to file when java.lang.OutOfMemoryError is thrown
 中文释义：抛出内存溢出错误时导出堆信息到指定文件
 使用方法：开启 -XX:+HeapDumpOnOutOfMemoryError、关闭 -XX:-HeapDumpOnOutOfMemoryError
@@ -379,8 +385,8 @@ PrintHeapAtGC
 HeapDumpPath
 英文释义：When HeapDumpOnOutOfMemoryError is on, the path(filename or directory) of the dump file(defaults to java_pid.hprof in the working directory)
 中文释义：当 HeapDumpOnOutOfMemoryError 开启的时候，dump 文件的保存路径，默认为工作目录下的 java_pid.hprof 文件
-使用方法：-XX:HeapDumpPath=/data/dump/jvm.dump
-</code></pre><h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><pre><code>server
+使用方法：-XX:HeapDumpPath=/data/dump/jvm.dump</code></pre>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><pre><code>server
 英文释义：server mode
 中文释义：服务端模式
 使用方法：-server
@@ -388,8 +394,7 @@ HeapDumpPath
 TieredCompilation
 英文释义：Enable tiered compilation
 中文释义：启用多层编译
-使用方法：开启 -XX:+TieredCompilation、关闭 -XX:-TieredCompilation
-</code></pre>
+使用方法：开启 -XX:+TieredCompilation、关闭 -XX:-TieredCompilation</code></pre>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -397,7 +402,7 @@ TieredCompilation
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#内存分配相关"><span class="toc-text"><a href="#&#x5185;&#x5B58;&#x5206;&#x914D;&#x76F8;&#x5173;" class="headerlink" title="&#x5185;&#x5B58;&#x5206;&#x914D;&#x76F8;&#x5173;"></a>&#x5185;&#x5B58;&#x5206;&#x914D;&#x76F8;&#x5173;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GC-策略相关"><span class="toc-text"><a href="#GC-&#x7B56;&#x7565;&#x76F8;&#x5173;" class="headerlink" title="GC &#x7B56;&#x7565;&#x76F8;&#x5173;"></a>GC &#x7B56;&#x7565;&#x76F8;&#x5173;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GC日志相关"><span class="toc-text"><a href="#GC&#x65E5;&#x5FD7;&#x76F8;&#x5173;" class="headerlink" title="GC&#x65E5;&#x5FD7;&#x76F8;&#x5173;"></a>GC&#x65E5;&#x5FD7;&#x76F8;&#x5173;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#异常相关"><span class="toc-text"><a href="#&#x5F02;&#x5E38;&#x76F8;&#x5173;" class="headerlink" title="&#x5F02;&#x5E38;&#x76F8;&#x5173;"></a>&#x5F02;&#x5E38;&#x76F8;&#x5173;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#其他"><span class="toc-text"><a href="#&#x5176;&#x4ED6;" class="headerlink" title="&#x5176;&#x4ED6;"></a>&#x5176;&#x4ED6;</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9B%B8%E5%85%B3"><span class="toc-text">内存分配相关</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GC-%E7%AD%96%E7%95%A5%E7%9B%B8%E5%85%B3"><span class="toc-text">GC 策略相关</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GC%E6%97%A5%E5%BF%97%E7%9B%B8%E5%85%B3"><span class="toc-text">GC日志相关</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E7%9B%B8%E5%85%B3"><span class="toc-text">异常相关</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a></li></ol>
   </div>
 </aside>
   
@@ -406,11 +411,11 @@ TieredCompilation
       
         <div>
           原文链接: 
-          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-10-JVM-JVM参数/</a>
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-10-JVM-JVM%E5%8F%82%E6%95%B0/</a>
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
@@ -558,7 +563,7 @@ TieredCompilation
     <a href="/posts/2019-05-01-go_learn/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/posts/2019-03-09-JVM-锁优化策略/" data-enable="true">
+    <a href="/posts/2019-03-09-JVM-%E9%94%81%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>

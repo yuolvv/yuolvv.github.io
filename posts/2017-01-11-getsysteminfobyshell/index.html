@@ -8,6 +8,8 @@
   
   <title>CentOS获取系统信息的Shell脚本 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -182,47 +188,111 @@
   </h1>
   
   <article class="passage-article">
-    <br>&nbsp;</p>
-<p><pre class="prettyprint linenums">##########################################################################</pre></p>
-<p>#File Name:systemmonitor.sh</p>
-<p>#Author:Yuolvv</p>
-<p>#Blog:<a href="http://blog.iyu.pub">http://blog.iyu.pub</a></p>
-<p>##########################################################################</p>
-<p>#!/bin/bash</p>
-<p>#把屏幕上的内容清空<br>clear<br>if [[ $# -eq 0 ]]<br>then</p>
-<p>echo -e ‘\E[33m’”#########################系统分析#########################”</p>
-<p>#定义一个高亮输出的变量<br>output=$(tput sgr0)</p>
-<p>#检查系统类型，使用uname -o命令<br>os=$(uname -o)<br>echo -e ‘\E[32m’”系统类型:”$output $os</p>
-<p>#获取操作系统版本类型</p>
-<p>#os_name=$(cat /etc/issue | grep -e “Server”)</p>
-<p>#os_name=$(lsb_release -a | grep -e “Description”)<br>os_name=$(cat /etc/redhat-release)<br>echo -e ‘\E[33m’”系统版本:”$output $os_name</p>
-<p>#获取CPU的指令集<br>os_bit=$(uname -m)<br>echo -e ‘\E[34m’”系统位数:”$output $os_bit</p>
-<p>#获取内核版本<br>os_kernel=$(uname -r)<br>echo -e ‘\E[35m’”内核版本:”$output $os_kernel</p>
-<p>#获取主机名￥hostname或者uname -n<br>hostname=$(hostname)</p>
-<p>#获取内网IP<br>inner=$(hostname -I)<br>echo -e ‘\E[36m’”内网IP:”$output $inner</p>
-<p>#获取外网IP<br>outer=$(curl -s <a href="http://ipecho.net/plain" target="_blank" rel="noopener">http://ipecho.net/plain</a>)<br>echo -e ‘\E[29m’”外网IP:”$output $outer</p>
-<p>#获取DNS，从/etc/resolv.conf文件提取匹配<br>nameservers=$(cat /etc/resolv.conf | grep -E “\&lt;nameserver[ ]”+|awk ‘{print $NF}’)<br>echo -e ‘\E[31m’”系统DNS:”$output $nameservers </p>
-<p>#判断当前网络的连通性，直接使用ping命令测试<br>ping -c 2 www.ifeng.com &amp;&gt;/dev/null &amp;&amp; echo “网络连通:yes”||echo “网络连通:no”</p>
-<p>#检查当前登录的用户，使用who命令输出到一个临时文件中<br>who &gt;/tmp/who<br>echo -e ‘\E[32m’”当前登录用户:”$output &amp;&amp; cat /tmp/who</p>
-<p>#命令输出后删除临时文件<br>rm -rf /tmp/who</p>
-<p>echo -e ‘\E[33m’”##########################################################”</p>
-<p>echo -e ‘\E[33m’”#########################运行状态#########################”</p>
-<p>#获取系统已经使用的内存，通过awk命令文本进行提取，然后计算出结果转换成MB<br>system_men=$(awk ‘/MemTotal/{total=$2}/MemFree/{free=$2}END{print (total-free)/1024}’ /proc/meminfo)<br>echo -e ‘\E[36m’”系统使用内存:”$output $system_men”M”</p>
-<p>#获取应用使用内存，通过awk命令文本进行提取，然后计算出结果换算成MB<br>app_men=$(awk ‘/MemTotal/{total=$2}/MemFree/{free=$2}/Cached/{cached=$2}/Buffers/{buffers=$2}END{print (total-free-cached-buffers)/1024}’ /proc/meminfo)<br>echo -e ‘\E[36m’”应用程序使用内存:”$output $app_men”M”</p>
-<p>#获取系统CPU负载<br>load_average=$(top -n 1 -b | grep “load average:” | awk ‘{print $12 $13 $14}’)<br>echo -e ‘\E[33m’”CPU负载:”$output $load_average</p>
-<p>#获取磁盘状况<br>disk=$(df -hP | grep -vE ‘Filesystem|tmpfs’|awk ‘{print $1 “总量:”$2 “已使用:”$3 “使用率:”$5}’)<br>echo -e ‘\E[33m’”磁盘状况:”$output $disk</p>
-<p>echo -e ‘\E[33m’”##########################################################”</p>
-<p>else</p>
-<p>echo “shell脚本不能运行请联系我Email:1@iyu.pub”</p>
-<p>fi</p>
-<p><br>代码浅显易懂，也加上了注释，这里就不逐行解释了。</p>
+    <p>&nbsp;</p>
+<pre class="prettyprint linenums">##########################################################################
+#File Name:systemmonitor.sh
+#Author:Yuolvv
+#Blog:http://blog.iyu.pub
+##########################################################################
+
+#!/bin/bash
+#把屏幕上的内容清空
+clear
+if [[ $# -eq 0 ]]
+then
+
+echo -e '\E[33m'"#########################系统分析#########################"
+
+#定义一个高亮输出的变量
+output=$(tput sgr0)
+
+#检查系统类型，使用uname -o命令
+os=$(uname -o)
+echo -e '\E[32m'"系统类型:"$output $os
+
+#获取操作系统版本类型
+#os_name=$(cat /etc/issue | grep -e "Server")
+#os_name=$(lsb_release -a | grep -e "Description")
+os_name=$(cat /etc/redhat-release)
+echo -e '\E[33m'"系统版本:"$output $os_name
+
+#获取CPU的指令集
+os_bit=$(uname -m)
+echo -e '\E[34m'"系统位数:"$output $os_bit
+
+#获取内核版本
+os_kernel=$(uname -r)
+echo -e '\E[35m'"内核版本:"$output $os_kernel
+
+#获取主机名￥hostname或者uname -n
+hostname=$(hostname)
+#获取内网IP
+inner=$(hostname -I)
+echo -e '\E[36m'"内网IP:"$output $inner
+
+#获取外网IP
+outer=$(curl -s http://ipecho.net/plain)
+echo -e '\E[29m'"外网IP:"$output $outer
+
+#获取DNS，从/etc/resolv.conf文件提取匹配
+nameservers=$(cat /etc/resolv.conf | grep -E "\&lt;nameserver[ ]"+|awk '{print $NF}') 
+echo -e '\E[31m'"系统DNS:"$output $nameservers 
+
+#判断当前网络的连通性，直接使用ping命令测试 
+ping -c 2 www.ifeng.com &amp;&gt;/dev/null &amp;&amp; echo "网络连通:yes"||echo "网络连通:no"
+
+#检查当前登录的用户，使用who命令输出到一个临时文件中
+who &gt;/tmp/who
+echo -e '\E[32m'"当前登录用户:"$output &amp;&amp; cat /tmp/who
+
+#命令输出后删除临时文件
+rm -rf /tmp/who
+
+echo -e '\E[33m'"##########################################################"
+
+echo -e '\E[33m'"#########################运行状态#########################"
+
+#获取系统已经使用的内存，通过awk命令文本进行提取，然后计算出结果转换成MB
+system_men=$(awk '/MemTotal/{total=$2}/MemFree/{free=$2}END{print (total-free)/1024}' /proc/meminfo)
+echo -e '\E[36m'"系统使用内存:"$output $system_men"M"
+
+#获取应用使用内存，通过awk命令文本进行提取，然后计算出结果换算成MB
+app_men=$(awk '/MemTotal/{total=$2}/MemFree/{free=$2}/Cached/{cached=$2}/Buffers/{buffers=$2}END{print (total-free-cached-buffers)/1024}' /proc/meminfo)
+echo -e '\E[36m'"应用程序使用内存:"$output $app_men"M"
+
+#获取系统CPU负载
+load_average=$(top -n 1 -b | grep "load average:" | awk '{print $12 $13 $14}')
+echo -e '\E[33m'"CPU负载:"$output $load_average
+
+#获取磁盘状况
+disk=$(df -hP | grep -vE 'Filesystem|tmpfs'|awk '{print $1 "总量:"$2 "已使用:"$3 "使用率:"$5}')
+echo -e '\E[33m'"磁盘状况:"$output $disk
+
+echo -e '\E[33m'"##########################################################"
+
+else
+
+echo "shell脚本不能运行请联系我Email:1@iyu.pub"
+
+fi
+
+</pre>
+<p>代码浅显易懂，也加上了注释，这里就不逐行解释了。</p>
 <p>代码的运行方法：</p>
 <p>1.新建个sh文件systemmonitor.sh,把上面的代码复制进去。</p>
 <p>或者使用wget命令：</p>
-<p><pre class="prettyprint linenums">wget <a href="http://www.iyu.pub/fun/systemmonitor.sh" target="_blank" rel="noopener">http://www.iyu.pub/fun/systemmonitor.sh</a><br></pre><br>2.给文件执行的权限：</p>
-<p><pre class="prettyprint linenums">chmod +x systemmonitor.sh<br></pre><br>3.运行脚本：</p>
-<p><pre class="prettyprint linenums">sh systemmonitor.sh<br></pre><br>或者</p>
-<p><pre class="prettyprint linenums">./systemmonitor.sh<br></pre><br>&nbsp;</p>
+<pre class="prettyprint linenums">wget http://www.iyu.pub/fun/systemmonitor.sh
+</pre>
+<p>2.给文件执行的权限：</p>
+<pre class="prettyprint linenums">chmod +x systemmonitor.sh
+</pre>
+<p>3.运行脚本：</p>
+<pre class="prettyprint linenums">sh systemmonitor.sh
+</pre>
+<p>或者</p>
+<pre class="prettyprint linenums">./systemmonitor.sh
+</pre>
+<p>&nbsp;</p>
 <p>好了，简单的分享就到这了。</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -246,7 +316,7 @@
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
@@ -255,7 +325,7 @@
      
       <a href="/tags/CentOS/"><i class="fa fa-tags"></i>CentOS</a>
      
-      <a href="/tags/脚本/"><i class="fa fa-tags"></i>脚本</a>
+      <a href="/tags/%E8%84%9A%E6%9C%AC/"><i class="fa fa-tags"></i>脚本</a>
      
       <a href="/tags/Shell/"><i class="fa fa-tags"></i>Shell</a>
     

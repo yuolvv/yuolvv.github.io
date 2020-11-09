@@ -8,6 +8,8 @@
   
   <title>JVM-类加载 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -186,17 +192,17 @@
     </div>
   
   <article class="passage-article">
-    <h1 id="1-类加载的时机"><a href="#1-类加载的时机" class="headerlink" title="1 类加载的时机"></a>1 类加载的时机</h1><h2 id="1-1-类的生命周期"><a href="#1-1-类的生命周期" class="headerlink" title="1.1 类的生命周期"></a>1.1 类的生命周期</h2><center><img src="https://i.loli.net/2019/11/13/hVylYoAd3ic5P69.png" alt="JVM_09.png"></center>
+    <h1 id="1-类加载的时机"><a href="#1-类加载的时机" class="headerlink" title="1 类加载的时机"></a>1 类加载的时机</h1><h2 id="1-1-类的生命周期"><a href="#1-1-类的生命周期" class="headerlink" title="1.1 类的生命周期"></a>1.1 类的生命周期</h2><center>![JVM_09.png](https://i.loli.net/2019/11/13/hVylYoAd3ic5P69.png)</center>
 
 <p>一个类从加载进内存到卸载出内存为止，一共经历7个阶段：</p>
-<pre><code>加载——&gt;验证——&gt;准备——&gt;解析——&gt;初始化——&gt;使用——&gt;卸载
-</code></pre><p>其中，类加载包括5个阶段：</p>
-<pre><code>加载——&gt;验证——&gt;准备——&gt;解析——&gt;初始化
-</code></pre><p>在类加载的过程中，以下3个过程称为连接：</p>
-<pre><code>验证——&gt;准备——&gt;解析
-</code></pre><p>因此，JVM的类加载过程也可以概括为3个过程：</p>
-<pre><code>加载——&gt;连接——&gt;初始化
-</code></pre><p>加载、验证、准备、初始化和卸载这 5 个阶段的顺序是确定的，类的加载过程必须按照这种顺序按部就班地开始（注意是“开始”，而不是“进行”或“完成”），而解析阶段则不一定：它在某些情况下可以在初始化后再开始，这是为了支持 Java 语言的运行时绑定。</p>
+<pre><code>加载——&gt;验证——&gt;准备——&gt;解析——&gt;初始化——&gt;使用——&gt;卸载</code></pre>
+<p>其中，类加载包括5个阶段：</p>
+<pre><code>加载——&gt;验证——&gt;准备——&gt;解析——&gt;初始化</code></pre>
+<p>在类加载的过程中，以下3个过程称为连接：</p>
+<pre><code>验证——&gt;准备——&gt;解析</code></pre>
+<p>因此，JVM的类加载过程也可以概括为3个过程：</p>
+<pre><code>加载——&gt;连接——&gt;初始化</code></pre>
+<p>加载、验证、准备、初始化和卸载这 5 个阶段的顺序是确定的，类的加载过程必须按照这种顺序按部就班地开始（注意是“开始”，而不是“进行”或“完成”），而解析阶段则不一定：它在某些情况下可以在初始化后再开始，这是为了支持 Java 语言的运行时绑定。</p>
 <p>C/C++在运行前需要完成预处理、编译、汇编、链接；而在Java中，类加载(加载、连接、初始化)是在程序运行期间完成的。</p>
 <p>在程序运行期间进行类加载会稍微增加程序的开销，但随之会带来更大的好处——提高程序的灵活性。Java语言的灵活性体现在它可以在运行期间 动态扩展 ，所谓动态扩展就是在运行期间 动态加载 和 动态连接 。</p>
 <h2 id="1-2-类加载的时机"><a href="#1-2-类加载的时机" class="headerlink" title="1.2 类加载的时机"></a>1.2 类加载的时机</h2><h3 id="1-2-1-类加载过程中每个步骤的顺序"><a href="#1-2-1-类加载过程中每个步骤的顺序" class="headerlink" title="1.2.1 类加载过程中每个步骤的顺序"></a>1.2.1 类加载过程中每个步骤的顺序</h3><p>我们已经知道，类加载的过程包括：加载、连接、初始化，连接又分为：验证、准备、解析，所以说类加载一共分为5步：加载、验证、准备、解析、初始化。</p>
@@ -223,59 +229,59 @@
 <p>其中，直接满足上述初始化条件的情况叫做 主动引用 ；间接满足上述初始化过程的情况叫做 被动引用 。</p>
 <p>那么，只有当程序在运行过程中满足主动引用的时候才会初始化一个类，若满足被动引用就不会初始化一个类。</p>
 <h3 id="1-2-4-被动引用的场景示例"><a href="#1-2-4-被动引用的场景示例" class="headerlink" title="1.2.4 被动引用的场景示例"></a>1.2.4 被动引用的场景示例</h3><p>Demo1</p>
-<pre><code>public class Fu{
+<pre><code>public class Fu&#123;
     public static String name = &quot;听风行&quot;;
-        static{
+        static&#123;
             System.out.println(&quot;父类被初始化！&quot;);
-        }
-    }
+        &#125;
+    &#125;
 
-    public class Zi{
-        static{
+    public class Zi&#123;
+        static&#123;
             System.out.println(&quot;子类被初始化！&quot;);
-        }
-    }
+        &#125;
+    &#125;
 
-    public static void main(String[] args){
+    public static void main(String[] args)&#123;
         System.out.println(Zi.name);
-    }
-}
-</code></pre><p>输出结果：</p>
+    &#125;
+&#125;</code></pre>
+<p>输出结果：</p>
 <pre><code>父类被初始化！
 
-听风行
-</code></pre><p>原因分析：</p>
+听风行</code></pre>
+<p>原因分析：</p>
 <p>本示例看似满足初始化时机的第一条：当要获取某一个类的静态成员变量的时候如果该类尚未初始化，则对该类进行初始化。</p>
 <p>但由于这个静态成员变量属于Fu类，Zi类只是间接调用Fu类中的静态成员变量，因此Zi类调用name属性属于间接引用，而Fu类调用name属性属于直接引用，由于JVM只初始化直接引用的类，因此只有Fu类被初始化。</p>
 <p>Demo2</p>
-<pre><code>public class A{
-    public static void main(String[] args){
+<pre><code>public class A&#123;
+    public static void main(String[] args)&#123;
         Fu[] arr = new Fu[10];
-    }
+    &#125;
 
-}
-</code></pre><p>输出结果：</p>
+&#125;</code></pre>
+<p>输出结果：</p>
 <p>并没有输出“父类被初始化！”</p>
 <p>原因分析：</p>
 <p>这个过程看似满足初始化时机的第一条：遇到new创建对象时若类没被初始化，则初始化该类。</p>
 <p>但现在通过new要创建的是一个数组对象，而非Fu类对象，因此也属于间接引用，不会初始化Fu类。</p>
 <p>Demo3</p>
-<pre><code>public class Fu{
+<pre><code>public class Fu&#123;
     public static final String name = &quot;听风行&quot;;
-        static{
+        static&#123;
             System.out.println(&quot;父类被初始化！&quot;);
-        }
-    }
+        &#125;
+    &#125;
 
-    public class A{
-        public static void main(String[] args){
+    public class A&#123;
+        public static void main(String[] args)&#123;
             System.out.println(Fu.name);
-        }
-    }
-}
-</code></pre><p>输出结果：</p>
-<pre><code>听风行
-</code></pre><p>原因分析：</p>
+        &#125;
+    &#125;
+&#125;</code></pre>
+<p>输出结果：</p>
+<pre><code>听风行</code></pre>
+<p>原因分析：</p>
 <p>本示例看似满足类初始化时机的第一个条件：获取一个类静态成员变量的时候若类尚未初始化则初始化类。</p>
 <p>但是，Fu类的静态成员变量被final修饰，它已经是一个常量。被final修饰的常量在Java代码编译的过程中就会被放入它被引用的class文件的常量池中（这里是A的常量池）。所以程序在运行期间如果需要调用这个常量，直接去当前类的常量池中取，而不需要初始化这个类。</p>
 <p>Demo4</p>
@@ -283,57 +289,57 @@
  * 被动引用 Demo1:
  * 通过子类引用父类的静态字段，不会导致子类初始化。
  */
-class SuperClass {
-    static {
+class SuperClass &#123;
+    static &#123;
         System.out.println(&quot;SuperClass init!&quot;);
-    }
+    &#125;
     public static int value = 123;
-}
+&#125;
 
-class SubClass extends SuperClass {
-    static {
+class SubClass extends SuperClass &#123;
+    static &#123;
         System.out.println(&quot;SubClass init!&quot;);
-    }
-}
+    &#125;
+&#125;
 
-public class NotInitialization {
-    public static void main(String[] args) {
+public class NotInitialization &#123;
+    public static void main(String[] args) &#123;
         System.out.println(SubClass.value);
         // SuperClass init!
-    }
-}
-</code></pre><p>对于静态字段，只有直接定义这个字段的类才会被初始化，因此通过其子类来引用父类中定义的静态字段，只会触发父类的初始化而不会触发子类的初始化。</p>
+    &#125;
+&#125;</code></pre>
+<p>对于静态字段，只有直接定义这个字段的类才会被初始化，因此通过其子类来引用父类中定义的静态字段，只会触发父类的初始化而不会触发子类的初始化。</p>
 <p>Demo5</p>
 <pre><code>/**
  * 被动引用 Demo2:
  * 通过数组定义来引用类，不会触发此类的初始化。
  */
 
-public class NotInitialization {
-    public static void main(String[] args) {
+public class NotInitialization &#123;
+    public static void main(String[] args) &#123;
         SuperClass[] superClasses = new SuperClass[10];
-    }
-}
-</code></pre><p>这段代码不会触发父类的初始化，但会触发“[L 全类名”这个类的初始化，它由虚拟机自动生成，直接继承自 java.lang.Object，创建动作由字节码指令 newarray 触发。</p>
+    &#125;
+&#125;</code></pre>
+<p>这段代码不会触发父类的初始化，但会触发“[L 全类名”这个类的初始化，它由虚拟机自动生成，直接继承自 java.lang.Object，创建动作由字节码指令 newarray 触发。</p>
 <p>Demo6</p>
 <pre><code>/**
  * 被动引用 Demo3:
  * 常量在编译阶段会存入调用类的常量池中，本质上并没有直接引用到定义常量的类，因此不会触发定义常量的类的初始化。
  */
-class ConstClass {
-    static {
+class ConstClass &#123;
+    static &#123;
         System.out.println(&quot;ConstClass init!&quot;);
-    }
+    &#125;
     public static final String HELLO_BINGO = &quot;Hello Bingo&quot;;
 
-}
+&#125;
 
-public class NotInitialization {
-    public static void main(String[] args) {
+public class NotInitialization &#123;
+    public static void main(String[] args) &#123;
         System.out.println(ConstClass.HELLO_BINGO);
-    }
-}
-</code></pre><p>编译通过之后，常量存储到 NotInitialization 类的常量池中，NotInitialization 的 Class 文件中并没有 ConstClass 类的符号引用入口，这两个类在编译成 Class 之后就没有任何联系了。</p>
+    &#125;
+&#125;</code></pre>
+<p>编译通过之后，常量存储到 NotInitialization 类的常量池中，NotInitialization 的 Class 文件中并没有 ConstClass 类的符号引用入口，这两个类在编译成 Class 之后就没有任何联系了。</p>
 <h3 id="1-2-5-接口的初始化-接口的加载过程"><a href="#1-2-5-接口的初始化-接口的加载过程" class="headerlink" title="1.2.5 接口的初始化(接口的加载过程)"></a>1.2.5 接口的初始化(接口的加载过程)</h3><p>接口和类都需要初始化，接口和类的初始化过程基本一样，不同点在于：类初始化时，如果发现父类尚未被初始化，则先要初始化父类，然后再初始化自己；但接口初始化时，并不要求父接口已经全部初始化，只有程序在运行过程中用到当父接口中的东西时才初始化父接口。</p>
 <p>当一个类在初始化时，要求其父类全部都已经初始化过了，但是一个接口在初始化时，并不要求其父接口全部都完成了初始化，当真正用到父接口的时候才会初始化。</p>
 <h1 id="2-类加载的过程"><a href="#2-类加载的过程" class="headerlink" title="2 类加载的过程"></a>2 类加载的过程</h1><p>通过之前的介绍可知，类加载过程共有5个步骤，分别是：加载、验证、准备、解析、初始化。其中，验证、准备、解析称为连接。下面详细介绍这5个过程JVM所做的工作。</p>
@@ -347,8 +353,8 @@ public class NotInitialization {
 
 (3)在内存中创建一个代表该类的java.lang.Class类型的对象，作为方法区这个类的各种数据的访问入口。
 
-接下来程序在运行过程中所有对该类的访问都通过这个类对象，也就是这个Class类型的类对象是提供给外界访问该类的接口。
-</code></pre><p>(1)获取二进制字节流</p>
+接下来程序在运行过程中所有对该类的访问都通过这个类对象，也就是这个Class类型的类对象是提供给外界访问该类的接口。</code></pre>
+<p>(1)获取二进制字节流</p>
 <p>JVM规范对于加载过程给予了较大的宽松度。一般二进制字节流都从已经编译好的本地class文件中读取，此外还可以从以下地方读取：</p>
 <p>a.从压缩包zip中读取，如：Jar、War、Ear等。</p>
 <p>b.从网络中获取，从网络中获取二进制字节流。如：Applet。</p>
@@ -373,8 +379,8 @@ public class NotInitialization {
 <p>加载、连接、初始化，但结束顺序无所谓，因此由于每个步骤处理时间的长短不一就会导致有些步骤会出现交叉。</p>
 <pre><code>虚拟机规范未规定 Class 对象的存储位置，对于 HotSpot 虚拟机而言，Class 对象比较特殊，它虽然是对象，但存放在方法区中。
 
-加载阶段与连接阶段的部分内容交叉进行，加载阶段尚未完成，连接阶段可能已经开始了。但这两个阶段的开始实践仍然保持着固定的先后顺序。
-</code></pre><h2 id="2-2-验证"><a href="#2-2-验证" class="headerlink" title="2.2 验证"></a>2.2 验证</h2><p>验证阶段比较耗时，它非常重要但不一定必要，如果所运行的代码已经被反复使用和验证过，那么可以使用-Xverify:none参数关闭，以缩短类加载时间。</p>
+加载阶段与连接阶段的部分内容交叉进行，加载阶段尚未完成，连接阶段可能已经开始了。但这两个阶段的开始实践仍然保持着固定的先后顺序。</code></pre>
+<h2 id="2-2-验证"><a href="#2-2-验证" class="headerlink" title="2.2 验证"></a>2.2 验证</h2><p>验证阶段比较耗时，它非常重要但不一定必要，如果所运行的代码已经被反复使用和验证过，那么可以使用-Xverify:none参数关闭，以缩短类加载时间。</p>
 <h3 id="2-2-1-验证的目的"><a href="#2-2-1-验证的目的" class="headerlink" title="2.2.1 验证的目的"></a>2.2.1 验证的目的</h3><p>验证是为了保证二进制字节流中的信息符合虚拟机规范，并没有安全问题。验证阶段确保 Class 文件的字节流中包含的信息符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。</p>
 <p>为什么需要验证？</p>
 <p>虽然Java语言是一门安全的语言，它能确保程序猿无法访问数组边界以外的内存、避免让一个对象转换成任意类型、避免跳转到不存在的代码行，如果出现这些情况，编译无法通过。也就是说，Java语言的安全性是通过编译器来保证的。</p>
@@ -394,8 +400,8 @@ d.指向常量的索引值是否指向了不存在的常量
 
 e.CONSTANT_Utf8_info 型的常量是否有不符合 UTF8 编码的数据
 
-f.......
-</code></pre><p>（2）元数据验证</p>
+f.......</code></pre>
+<p>（2）元数据验证</p>
 <p>本阶段对方法区中的字节码描述信息进行语义分析，确保其符合Java语法规范。</p>
 <p>（3）字节码验证</p>
 <p>本阶段是验证过程的最复杂的一个阶段。对方法体进行语义分析，保证方法在运行时不会出现危害虚拟机的事件。</p>
@@ -414,9 +420,9 @@ f.......
 <p>public static final String name = “听风行”;</p>
 <p>被final修饰的常量如果有初始值，那么在编译阶段就会将初始值存入constantValue属性中，在准备阶段就将constantValue的值赋给该字段。</p>
 <h2 id="2-4-解析"><a href="#2-4-解析" class="headerlink" title="2.4 解析"></a>2.4 解析</h2><p>解析阶段是虚拟机将常量池中的符号引用替换为直接引用的过程。</p>
-<h2 id="2-5-初始化"><a href="#2-5-初始化" class="headerlink" title="2.5 初始化"></a>2.5 初始化</h2><p>类初始化阶段是类加载过程的最后一步，是执行类构造器<clinit>() 的过程。</clinit></p>
-<p><clinit>() 方法由编译器自动产生，收集类中static{}代码块中的类变量赋值语句和类中静态成员变量的赋值语句。在准备阶段，类中静态成员变量已经完成了默认初始化，而在初始化阶段，clinit()方法对静态成员变量进行显示初始化。</clinit></p>
-<p><clinit>() 方法是由编译器自动收集类中的所有类变量的赋值动作和静态语句块（static {} 块）中的语句合并产生的，编译器收集的顺序是由语句在源文件中出现的顺序所决定的。</clinit></p>
+<h2 id="2-5-初始化"><a href="#2-5-初始化" class="headerlink" title="2.5 初始化"></a>2.5 初始化</h2><p>类初始化阶段是类加载过程的最后一步，是执行类构造器<clinit>() 的过程。</p>
+<p><clinit>() 方法由编译器自动产生，收集类中static{}代码块中的类变量赋值语句和类中静态成员变量的赋值语句。在准备阶段，类中静态成员变量已经完成了默认初始化，而在初始化阶段，clinit()方法对静态成员变量进行显示初始化。</p>
+<p><clinit>() 方法是由编译器自动收集类中的所有类变量的赋值动作和静态语句块（static {} 块）中的语句合并产生的，编译器收集的顺序是由语句在源文件中出现的顺序所决定的。</p>
 <p>初始化过程的注意点：</p>
 <pre><code>clinit()方法中静态成员变量的赋值顺序是根据Java代码中成员变量的出现的顺序决定的。
 
@@ -434,27 +440,27 @@ f.......
 
 接口在执行clinit()方法前，虚拟机不会确保其父接口的clinit()方法被执行，只有当父接口中的静态成员变量被使用到时才会执行父接口的clinit()方法。
 
-虚拟机会给clinit()方法加锁，因此当多条线程同时执行某一个类的clinit()方法时，只有一个方法会被执行，其它的方法都被阻塞。并且，只要有一个clinit()方法执行完，其它的clinit()方法就不会再被执行。因此，在同一个类加载器下，同一个类只会被初始化一次。
-</code></pre><p>静态语句块中只能访问定义在静态语句块之前的变量，定义在它之后的变量，在前面的静态语句块中可以赋值，但不能访问。如下方代码所示：<br>    public class Test {<br>        static {<br>            i = 0;  // 给变量赋值可以正常编译通过<br>            System.out.println(i);  // 这句编译器会提示“非法向前引用”<br>        }<br>        static int i = 1;<br>    }</p>
-<p><clinit>() 方法不需要显式调用父类构造器，虚拟机会保证在子类的 <clinit>() 方法执行之前，父类的 <clinit>() 方法已经执行完毕。</clinit></clinit></clinit></p>
-<p>由于父类的 <clinit>() 方法先执行，意味着父类中定义的静态语句块要优先于子类的变量赋值操作。如下方代码所示：</clinit></p>
-<pre><code>static class Parent {
+虚拟机会给clinit()方法加锁，因此当多条线程同时执行某一个类的clinit()方法时，只有一个方法会被执行，其它的方法都被阻塞。并且，只要有一个clinit()方法执行完，其它的clinit()方法就不会再被执行。因此，在同一个类加载器下，同一个类只会被初始化一次。</code></pre>
+<p>静态语句块中只能访问定义在静态语句块之前的变量，定义在它之后的变量，在前面的静态语句块中可以赋值，但不能访问。如下方代码所示：<br>    public class Test {<br>        static {<br>            i = 0;  // 给变量赋值可以正常编译通过<br>            System.out.println(i);  // 这句编译器会提示“非法向前引用”<br>        }<br>        static int i = 1;<br>    }</p>
+<p><clinit>() 方法不需要显式调用父类构造器，虚拟机会保证在子类的 <clinit>() 方法执行之前，父类的 <clinit>() 方法已经执行完毕。</p>
+<p>由于父类的 <clinit>() 方法先执行，意味着父类中定义的静态语句块要优先于子类的变量赋值操作。如下方代码所示：</p>
+<pre><code>static class Parent &#123;
     public static int A = 1;
-    static {
+    static &#123;
         A = 2;
-    }
-}
+    &#125;
+&#125;
 
-static class Sub extends Parent {
+static class Sub extends Parent &#123;
     public static int B = A;
-}
+&#125;
 
-public static void main(String[] args) {
+public static void main(String[] args) &#123;
     System.out.println(Sub.B); // 输出 2
-}
-</code></pre><p><clinit>() 方法不是必需的，如果一个类没有静态语句块，也没有对类变量的赋值操作，那么编译器可以不为这个类生成 <clinit>() 方法。</clinit></clinit></p>
-<p>接口中不能使用静态代码块，但接口也需要通过 <clinit>() 方法为接口中定义的静态成员变量显式初始化。但接口与类不同，接口的 <clinit>() 方法不需要先执行父类的 <clinit>() 方法，只有当父接口中定义的变量使用时，父接口才会初始化。</clinit></clinit></clinit></p>
-<p>虚拟机会保证一个类的 <clinit>() 方法在多线程环境中被正确加锁、同步。如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的 <clinit>() 方法。</clinit></clinit></p>
+&#125;</code></pre>
+<p><clinit>() 方法不是必需的，如果一个类没有静态语句块，也没有对类变量的赋值操作，那么编译器可以不为这个类生成 <clinit>() 方法。</p>
+<p>接口中不能使用静态代码块，但接口也需要通过 <clinit>() 方法为接口中定义的静态成员变量显式初始化。但接口与类不同，接口的 <clinit>() 方法不需要先执行父类的 <clinit>() 方法，只有当父接口中定义的变量使用时，父接口才会初始化。</p>
+<p>虚拟机会保证一个类的 <clinit>() 方法在多线程环境中被正确加锁、同步。如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的 <clinit>() 方法。</p>
 <h1 id="3-类加载器"><a href="#3-类加载器" class="headerlink" title="3 类加载器"></a>3 类加载器</h1><h2 id="3-1-类与类加载器"><a href="#3-1-类与类加载器" class="headerlink" title="3.1 类与类加载器"></a>3.1 类与类加载器</h2><p>类加载器的作用：将class文件加载进JVM的方法区，并在方法区中创建一个java.lang.Class对象作为外界访问这个类的接口。</p>
 <p>类与类加载器的关系：比较两个类是否相等，只有当这两个类由同一个加载器加载才有意义；否则，即使同一个class文件被不同的类加载器加载，那这两个类必定不同，即通过类的Class对象的equals执行的结果必为false。</p>
 <p>任意一个类，都由加载它的类加载器和这个类本身一同确立其在 Java 虚拟机中的唯一性，每一个类加载器，都有一个独立的类名称空间。</p>
@@ -471,8 +477,8 @@ public static void main(String[] args) {
 
 （3）应用程序类加载器（Application ClassLoader）: 负责加载用户classpath下的class文件。
 
-    由于这个类加载器是 ClassLoader 中的 getSystemClassLoader() 方法的返回值，所以一般也称它为“系统类加载器”。它负责加载用户类路径（classpath）上所指定的类库，开发者可以直接使用这个类加载器，如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。
-</code></pre><center><img src="https://i.loli.net/2019/11/13/ZypIbv8KAX3iz1J.png" alt="JVM_10.png"></center>
+    由于这个类加载器是 ClassLoader 中的 getSystemClassLoader() 方法的返回值，所以一般也称它为“系统类加载器”。它负责加载用户类路径（classpath）上所指定的类库，开发者可以直接使用这个类加载器，如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。</code></pre>
+<center>![JVM_10.png](https://i.loli.net/2019/11/13/ZypIbv8KAX3iz1J.png)</center>
 
 <p>当然，如果有必要，还可以加入自己定义的类加载器。</p>
 <h2 id="3-3-双亲委派模型"><a href="#3-3-双亲委派模型" class="headerlink" title="3.3 双亲委派模型"></a>3.3 双亲委派模型</h2><h3 id="3-3-1-双亲委派模型的定义"><a href="#3-3-1-双亲委派模型的定义" class="headerlink" title="3.3.1 双亲委派模型的定义"></a>3.3.1 双亲委派模型的定义</h3><p>双亲委派模型是描述类加载器之间的层次关系。它要求除了顶层的启动类加载器外，其余的类加载器都应当有自己的父类加载器。（父子关系一般不会以继承的关系实现，而是以组合关系来复用父加载器的代码）</p>
@@ -487,8 +493,7 @@ public static void main(String[] args) {
 
 若该方法抛出ClassNotFoundException异常，则表示父类加载器无法加载，则当前类加载器调用findClass加载类；
 
-若父类加载器可以加载，则直接返回Class对象；
-</code></pre>
+若父类加载器可以加载，则直接返回Class对象；</code></pre>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -496,7 +501,7 @@ public static void main(String[] args) {
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-类加载的时机"><span class="toc-text"><a href="#1-&#x7C7B;&#x52A0;&#x8F7D;&#x7684;&#x65F6;&#x673A;" class="headerlink" title="1 &#x7C7B;&#x52A0;&#x8F7D;&#x7684;&#x65F6;&#x673A;"></a>1 &#x7C7B;&#x52A0;&#x8F7D;&#x7684;&#x65F6;&#x673A;</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-类的生命周期"><span class="toc-text"><a href="#1-1-&#x7C7B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;" class="headerlink" title="1.1 &#x7C7B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;"></a>1.1 &#x7C7B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-类加载的时机"><span class="toc-text"><a href="#1-2-&#x7C7B;&#x52A0;&#x8F7D;&#x7684;&#x65F6;&#x673A;" class="headerlink" title="1.2 &#x7C7B;&#x52A0;&#x8F7D;&#x7684;&#x65F6;&#x673A;"></a>1.2 &#x7C7B;&#x52A0;&#x8F7D;&#x7684;&#x65F6;&#x673A;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-类加载过程中每个步骤的顺序"><span class="toc-text"><a href="#1-2-1-&#x7C7B;&#x52A0;&#x8F7D;&#x8FC7;&#x7A0B;&#x4E2D;&#x6BCF;&#x4E2A;&#x6B65;&#x9AA4;&#x7684;&#x987A;&#x5E8F;" class="headerlink" title="1.2.1 &#x7C7B;&#x52A0;&#x8F7D;&#x8FC7;&#x7A0B;&#x4E2D;&#x6BCF;&#x4E2A;&#x6B65;&#x9AA4;&#x7684;&#x987A;&#x5E8F;"></a>1.2.1 &#x7C7B;&#x52A0;&#x8F7D;&#x8FC7;&#x7A0B;&#x4E2D;&#x6BCF;&#x4E2A;&#x6B65;&#x9AA4;&#x7684;&#x987A;&#x5E8F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-类加载过程中“初始化”开始的时机"><span class="toc-text"><a href="#1-2-2-&#x7C7B;&#x52A0;&#x8F7D;&#x8FC7;&#x7A0B;&#x4E2D;&#x201C;&#x521D;&#x59CB;&#x5316;&#x201D;&#x5F00;&#x59CB;&#x7684;&#x65F6;&#x673A;" class="headerlink" title="1.2.2 &#x7C7B;&#x52A0;&#x8F7D;&#x8FC7;&#x7A0B;&#x4E2D;&#x201C;&#x521D;&#x59CB;&#x5316;&#x201D;&#x5F00;&#x59CB;&#x7684;&#x65F6;&#x673A;"></a>1.2.2 &#x7C7B;&#x52A0;&#x8F7D;&#x8FC7;&#x7A0B;&#x4E2D;&#x201C;&#x521D;&#x59CB;&#x5316;&#x201D;&#x5F00;&#x59CB;&#x7684;&#x65F6;&#x673A;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-主动引用-与-被动引用"><span class="toc-text"><a href="#1-2-3-&#x4E3B;&#x52A8;&#x5F15;&#x7528;-&#x4E0E;-&#x88AB;&#x52A8;&#x5F15;&#x7528;" class="headerlink" title="1.2.3 &#x4E3B;&#x52A8;&#x5F15;&#x7528; &#x4E0E; &#x88AB;&#x52A8;&#x5F15;&#x7528;"></a>1.2.3 &#x4E3B;&#x52A8;&#x5F15;&#x7528; &#x4E0E; &#x88AB;&#x52A8;&#x5F15;&#x7528;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-4-被动引用的场景示例"><span class="toc-text"><a href="#1-2-4-&#x88AB;&#x52A8;&#x5F15;&#x7528;&#x7684;&#x573A;&#x666F;&#x793A;&#x4F8B;" class="headerlink" title="1.2.4 &#x88AB;&#x52A8;&#x5F15;&#x7528;&#x7684;&#x573A;&#x666F;&#x793A;&#x4F8B;"></a>1.2.4 &#x88AB;&#x52A8;&#x5F15;&#x7528;&#x7684;&#x573A;&#x666F;&#x793A;&#x4F8B;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-5-接口的初始化-接口的加载过程"><span class="toc-text"><a href="#1-2-5-&#x63A5;&#x53E3;&#x7684;&#x521D;&#x59CB;&#x5316;-&#x63A5;&#x53E3;&#x7684;&#x52A0;&#x8F7D;&#x8FC7;&#x7A0B;" class="headerlink" title="1.2.5 &#x63A5;&#x53E3;&#x7684;&#x521D;&#x59CB;&#x5316;(&#x63A5;&#x53E3;&#x7684;&#x52A0;&#x8F7D;&#x8FC7;&#x7A0B;)"></a>1.2.5 &#x63A5;&#x53E3;&#x7684;&#x521D;&#x59CB;&#x5316;(&#x63A5;&#x53E3;&#x7684;&#x52A0;&#x8F7D;&#x8FC7;&#x7A0B;)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-类加载的过程"><span class="toc-text"><a href="#2-&#x7C7B;&#x52A0;&#x8F7D;&#x7684;&#x8FC7;&#x7A0B;" class="headerlink" title="2 &#x7C7B;&#x52A0;&#x8F7D;&#x7684;&#x8FC7;&#x7A0B;"></a>2 &#x7C7B;&#x52A0;&#x8F7D;&#x7684;&#x8FC7;&#x7A0B;</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-加载"><span class="toc-text"><a href="#2-1-&#x52A0;&#x8F7D;" class="headerlink" title="2.1 &#x52A0;&#x8F7D;"></a>2.1 &#x52A0;&#x8F7D;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-验证"><span class="toc-text"><a href="#2-2-&#x9A8C;&#x8BC1;" class="headerlink" title="2.2 &#x9A8C;&#x8BC1;"></a>2.2 &#x9A8C;&#x8BC1;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-验证的目的"><span class="toc-text"><a href="#2-2-1-&#x9A8C;&#x8BC1;&#x7684;&#x76EE;&#x7684;" class="headerlink" title="2.2.1 &#x9A8C;&#x8BC1;&#x7684;&#x76EE;&#x7684;"></a>2.2.1 &#x9A8C;&#x8BC1;&#x7684;&#x76EE;&#x7684;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-验证的过程"><span class="toc-text"><a href="#2-2-2-&#x9A8C;&#x8BC1;&#x7684;&#x8FC7;&#x7A0B;" class="headerlink" title="2.2.2 &#x9A8C;&#x8BC1;&#x7684;&#x8FC7;&#x7A0B;"></a>2.2.2 &#x9A8C;&#x8BC1;&#x7684;&#x8FC7;&#x7A0B;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-准备"><span class="toc-text"><a href="#2-3-&#x51C6;&#x5907;" class="headerlink" title="2.3 &#x51C6;&#x5907;"></a>2.3 &#x51C6;&#x5907;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-解析"><span class="toc-text"><a href="#2-4-&#x89E3;&#x6790;" class="headerlink" title="2.4 &#x89E3;&#x6790;"></a>2.4 &#x89E3;&#x6790;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-初始化"><span class="toc-text"><a href="#2-5-&#x521D;&#x59CB;&#x5316;" class="headerlink" title="2.5 &#x521D;&#x59CB;&#x5316;"></a>2.5 &#x521D;&#x59CB;&#x5316;</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-类加载器"><span class="toc-text"><a href="#3-&#x7C7B;&#x52A0;&#x8F7D;&#x5668;" class="headerlink" title="3 &#x7C7B;&#x52A0;&#x8F7D;&#x5668;"></a>3 &#x7C7B;&#x52A0;&#x8F7D;&#x5668;</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-类与类加载器"><span class="toc-text"><a href="#3-1-&#x7C7B;&#x4E0E;&#x7C7B;&#x52A0;&#x8F7D;&#x5668;" class="headerlink" title="3.1 &#x7C7B;&#x4E0E;&#x7C7B;&#x52A0;&#x8F7D;&#x5668;"></a>3.1 &#x7C7B;&#x4E0E;&#x7C7B;&#x52A0;&#x8F7D;&#x5668;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-类加载器种类"><span class="toc-text"><a href="#3-2-&#x7C7B;&#x52A0;&#x8F7D;&#x5668;&#x79CD;&#x7C7B;" class="headerlink" title="3.2 &#x7C7B;&#x52A0;&#x8F7D;&#x5668;&#x79CD;&#x7C7B;"></a>3.2 &#x7C7B;&#x52A0;&#x8F7D;&#x5668;&#x79CD;&#x7C7B;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-双亲委派模型"><span class="toc-text"><a href="#3-3-&#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x6A21;&#x578B;" class="headerlink" title="3.3 &#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x6A21;&#x578B;"></a>3.3 &#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x6A21;&#x578B;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-双亲委派模型的定义"><span class="toc-text"><a href="#3-3-1-&#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x6A21;&#x578B;&#x7684;&#x5B9A;&#x4E49;" class="headerlink" title="3.3.1 &#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x6A21;&#x578B;&#x7684;&#x5B9A;&#x4E49;"></a>3.3.1 &#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x6A21;&#x578B;&#x7684;&#x5B9A;&#x4E49;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-工作过程"><span class="toc-text"><a href="#3-3-2-&#x5DE5;&#x4F5C;&#x8FC7;&#x7A0B;" class="headerlink" title="3.3.2 &#x5DE5;&#x4F5C;&#x8FC7;&#x7A0B;"></a>3.3.2 &#x5DE5;&#x4F5C;&#x8FC7;&#x7A0B;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-作用"><span class="toc-text"><a href="#3-3-3-&#x4F5C;&#x7528;" class="headerlink" title="3.3.3 &#x4F5C;&#x7528;"></a>3.3.3 &#x4F5C;&#x7528;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-4-原理"><span class="toc-text"><a href="#3-3-4-&#x539F;&#x7406;" class="headerlink" title="3.3.4 &#x539F;&#x7406;"></a>3.3.4 &#x539F;&#x7406;</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-text">1 类加载的时机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">1.1 类的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-text">1.2 类加载的时机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E4%B8%AD%E6%AF%8F%E4%B8%AA%E6%AD%A5%E9%AA%A4%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="toc-text">1.2.1 类加载过程中每个步骤的顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E4%B8%AD%E2%80%9C%E5%88%9D%E5%A7%8B%E5%8C%96%E2%80%9D%E5%BC%80%E5%A7%8B%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-text">1.2.2 类加载过程中“初始化”开始的时机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-%E4%B8%BB%E5%8A%A8%E5%BC%95%E7%94%A8-%E4%B8%8E-%E8%A2%AB%E5%8A%A8%E5%BC%95%E7%94%A8"><span class="toc-text">1.2.3 主动引用 与 被动引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-4-%E8%A2%AB%E5%8A%A8%E5%BC%95%E7%94%A8%E7%9A%84%E5%9C%BA%E6%99%AF%E7%A4%BA%E4%BE%8B"><span class="toc-text">1.2.4 被动引用的场景示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-5-%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96-%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="toc-text">1.2.5 接口的初始化(接口的加载过程)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">2 类加载的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%8A%A0%E8%BD%BD"><span class="toc-text">2.1 加载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E9%AA%8C%E8%AF%81"><span class="toc-text">2.2 验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E9%AA%8C%E8%AF%81%E7%9A%84%E7%9B%AE%E7%9A%84"><span class="toc-text">2.2.1 验证的目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E9%AA%8C%E8%AF%81%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">2.2.2 验证的过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E5%87%86%E5%A4%87"><span class="toc-text">2.3 准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E8%A7%A3%E6%9E%90"><span class="toc-text">2.4 解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">2.5 初始化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-text">3 类加载器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E7%B1%BB%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-text">3.1 类与类加载器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E7%A7%8D%E7%B1%BB"><span class="toc-text">3.2 类加载器种类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B"><span class="toc-text">3.3 双亲委派模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">3.3.1 双亲委派模型的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-text">3.3.2 工作过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-%E4%BD%9C%E7%94%A8"><span class="toc-text">3.3.3 作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-4-%E5%8E%9F%E7%90%86"><span class="toc-text">3.3.4 原理</span></a></li></ol></li></ol></li></ol>
   </div>
 </aside>
   
@@ -505,11 +510,11 @@ public static void main(String[] args) {
       
         <div>
           原文链接: 
-          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-08-JVM-类加载/</a>
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-08-JVM-%E7%B1%BB%E5%8A%A0%E8%BD%BD/</a>
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
@@ -654,10 +659,10 @@ public static void main(String[] args) {
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="/posts/2019-03-09-JVM-锁优化策略/" data-enable="true">
+    <a href="/posts/2019-03-09-JVM-%E9%94%81%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/posts/2019-03-07-JVM-类文件结构/" data-enable="true">
+    <a href="/posts/2019-03-07-JVM-%E7%B1%BB%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>

@@ -8,6 +8,8 @@
   
   <title>树莓派安装Tensorflow | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -186,16 +192,16 @@
 <pre><code># 安装驱动
 sudo apt install libatlas-base-dev
 # 安装TensorFlow
-pip3 install tensorflow
-</code></pre><p>&emsp;&emsp;安装TensorFlow的时候会自动下载安装依赖的工具，如：numpy，tensorboard，markdown 等等。</p>
-<p>&emsp;&emsp;如果下载很慢，可以去 <a href="https://www.piwheels.org/simple" target="_blank" rel="noopener">piwheels网站</a> 上下载。</p>
+pip3 install tensorflow</code></pre>
+<p>&emsp;&emsp;安装TensorFlow的时候会自动下载安装依赖的工具，如：numpy，tensorboard，markdown 等等。</p>
+<p>&emsp;&emsp;如果下载很慢，可以去 <a target="_blank" rel="noopener" href="https://www.piwheels.org/simple">piwheels网站</a> 上下载。</p>
 <p>&emsp;&emsp;如果现实cv2导入错误，可以去之前的博客文章<a href="https://blog.iyu.pub/posts/python_opencv.html">《python3安装opencv爬坑步骤》</a>找到解决方法</p>
 <p>&emsp;&emsp;实现Hello World:</p>
 <pre><code>import tensorflow as tf
-hello = tf.constant(&apos;Hello, TensorFlow!&apos;)
+hello = tf.constant(&#39;Hello, TensorFlow!&#39;)
 sess = tf.Session()
-print(sess.run(hello))
-</code></pre><p>&emsp;&emsp;<img src="https://i.loli.net/2019/04/26/5cc2745691481.jpg" alt="raspberrypi_tensorflow_01.jpg"></p>
+print(sess.run(hello))</code></pre>
+<p>&emsp;&emsp;<img src="https://i.loli.net/2019/04/26/5cc2745691481.jpg" alt="raspberrypi_tensorflow_01.jpg"></p>
 <p>&emsp;&emsp;OK，大功告成！</p>
   </article>
   <aside class="table-content" id="site-toc">
@@ -217,14 +223,14 @@ print(sess.run(hello))
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
   
     <div class="passage-tags">
      
-      <a href="/tags/树莓派/"><i class="fa fa-tags"></i>树莓派</a>
+      <a href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/"><i class="fa fa-tags"></i>树莓派</a>
      
       <a href="/tags/raspberry-pi/"><i class="fa fa-tags"></i>raspberry pi</a>
      

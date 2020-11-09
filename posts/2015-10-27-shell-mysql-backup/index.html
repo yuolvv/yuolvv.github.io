@@ -8,6 +8,8 @@
   
   <title>shell 自动备份mysql并加入定时任务 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -186,10 +192,10 @@
 <p>新建一个shell文件</p>
 <pre class="prettyprint linenums">touch backup.sh
 </pre>
-编辑shell文件
+<p>编辑shell文件</p>
 <pre class="prettyprint linenums">vi backup.sh
 </pre>
-输入下列内容：
+<p>输入下列内容：</p>
 <pre class="prettyprint linenums">#!/bin/bash
 
 mysqldump --opt -uuser -ppassword | gzip &gt; /mysqlbackup/mysql`date +%Y-%m-%d_%H%M%S`.sql.gz
@@ -200,23 +206,20 @@ find /mysqlbackup/ -name "*[1-9].sql.gz" -type f -mtime +7 -exec rm -rf {} \; &g
 find /mysqlbackup/ -name "*.sql.gz" -type f -mtime +92 -exec rm -rf {} \; &gt; /dev/null 2&gt;&amp;1
 
 </pre>
-2.修改文件属性，使其可执行
+<p>2.修改文件属性，使其可执行</p>
 <pre class="prettyprint linenums">chmod +x /mysqlbackup/backup.sh
 </pre>
-3.加入定时任务
-
-编辑/etc/crontab
+<p>3.加入定时任务</p>
+<p>编辑/etc/crontab</p>
 <pre class="prettyprint linenums">vi /etc/crontab
 </pre>
-添加如下代码：
+<p>添加如下代码：</p>
 <pre class="prettyprint linenums"># m h dom mon dow user command
 30 01   * * 0   root    /mysqlbackup/backup.sh
 </pre>
-这样表示每个周日的上午1点30分执行shell文件
-
-4.重新启动crond使设置生效
-
-<pre class="prettyprint linenums">
+<p>这样表示每个周日的上午1点30分执行shell文件</p>
+<p>4.重新启动crond使设置生效</p>
+<pre class="prettyprint linenums" >
 service cron stop #停止
 service cron start #启动
 /etc/init.d/cron restart #重启
@@ -241,7 +244,7 @@ service cron start #启动
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
@@ -256,7 +259,7 @@ service cron start #启动
      
       <a href="/tags/shell/"><i class="fa fa-tags"></i>shell</a>
      
-      <a href="/tags/脚本/"><i class="fa fa-tags"></i>脚本</a>
+      <a href="/tags/%E8%84%9A%E6%9C%AC/"><i class="fa fa-tags"></i>脚本</a>
      
       <a href="/tags/MySQL/"><i class="fa fa-tags"></i>MySQL</a>
     

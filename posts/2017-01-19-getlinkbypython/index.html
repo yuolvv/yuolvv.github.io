@@ -8,6 +8,8 @@
   
   <title>简单Python抓取网页下载地址 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -185,10 +191,26 @@
     <p>下午，一哥们说要下载美剧《福尔摩斯：基本演绎法》，网页上几十个迅雷下载链接，嫌麻烦不愿一个一个点，我就建议了如下方法：</p>
 <p>写个程序去抓取网页上有用的迅雷下载链接，再把全部链接复制到迅雷，就OK。</p>
 <p>这里我用Python简单写了个。。。不喜勿喷。。。</p>
-<p>抓取的网页：<a href="http://www.qtfy.cc/mjxz/13553.html" target="_blank" rel="noopener">http://www.qtfy.cc/mjxz/13553.html</a></p>
-<p><pre class="prettyprint linenums"># -<em>- coding: utf8 -</em>-<br>import urllib.request as request<br>from bs4 import BeautifulSoup</pre></p>
-<p>def geturl(href):<br>    html = request.urlopen(href).read().decode(‘utf-8’)<br>    html_Soup = BeautifulSoup(html, ‘lxml’)<br>    a = html_Soup.find_all(‘a’)<br>    for link in a:<br>        if link.get(‘href’) is not None:<br>            if “thunder” in link.get(‘href’) :<br>                print(link.get(‘href’))<br>            if “ed2k” in link.get(‘href’) :<br>                print(link.get(‘href’))</p>
-<p>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    geturl(“<a href="http://www.qtfy.cc/mjxz/13553.html" target="_blank" rel="noopener">http://www.qtfy.cc/mjxz/13553.html</a>“)<br><br>简单易懂，达到想要的效果就行。</p>
+<p>抓取的网页：<a target="_blank" rel="noopener" href="http://www.qtfy.cc/mjxz/13553.html">http://www.qtfy.cc/mjxz/13553.html</a></p>
+<pre class="prettyprint linenums"># -*- coding: utf8 -*-
+import urllib.request as request
+from bs4 import BeautifulSoup
+
+def geturl(href):
+    html = request.urlopen(href).read().decode('utf-8')
+    html_Soup = BeautifulSoup(html, 'lxml')
+    a = html_Soup.find_all('a')
+    for link in a:
+        if link.get('href') is not None:
+            if "thunder" in link.get('href') :
+                print(link.get('href'))
+            if "ed2k" in link.get('href') :
+                print(link.get('href'))
+
+if __name__ == '__main__':
+    geturl("http://www.qtfy.cc/mjxz/13553.html")
+</pre>
+<p>简单易懂，达到想要的效果就行。</p>
 <p>针对其他的电影网站下载链接，稍微改下即可。</p>
 
   </article>
@@ -211,7 +233,7 @@
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   

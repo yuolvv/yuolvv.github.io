@@ -8,6 +8,8 @@
   
   <title>Tomcat的catalina.out日志的cronolog分割 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -187,19 +193,49 @@
 <p>2.修改图片的显示<br><br></p>
 <p><strong>安装过程如下：</strong></p>
 <p>1、下载</p>
-<blockquote><br>wget <a href="https://src.fedoraproject.org/repo/pkgs/cronolog/cronolog-1.6.2.tar.gz/a44564fd5a5b061a5691b9a837d04979/cronolog-1.6.2.tar.gz" target="_blank" rel="noopener">https://src.fedoraproject.org/repo/pkgs/cronolog/cronolog-1.6.2.tar.gz/a44564fd5a5b061a5691b9a837d04979/cronolog-1.6.2.tar.gz</a><br></blockquote>
+<blockquote>
+wget https://src.fedoraproject.org/repo/pkgs/cronolog/cronolog-1.6.2.tar.gz/a44564fd5a5b061a5691b9a837d04979/cronolog-1.6.2.tar.gz
+</blockquote>
 
 <p>本来想直接wget的，但是经过测试好像压缩包有问题，之后只能在本地下载再scp到服务器。</p>
-<p>贴上我的分享：<a href="http://files.hunit.cn/files/cronolog-1.6.2.tar.gz" target="_blank" rel="noopener">点我下载</a><br><br></p>
+<p>贴上我的分享：<a target="_blank" rel="noopener" href="http://files.hunit.cn/files/cronolog-1.6.2.tar.gz">点我下载</a>  <br><br></p>
 <p>2、解压缩</p>
-<blockquote># tar zxvf cronolog-1.6.2.tar.gz</blockquote><br>&nbsp;<br><br>3、进入cronolog安装文件所在目录<br><blockquote># cd cronolog-1.6.2</blockquote><br>&nbsp;<br><br>4、运行安装<br><blockquote># ./configure</blockquote>
+<blockquote># tar zxvf cronolog-1.6.2.tar.gz</blockquote>
+&nbsp;
+
+<p>3、进入cronolog安装文件所在目录</p>
+<blockquote># cd cronolog-1.6.2</blockquote>
+&nbsp;
+
+<p>4、运行安装</p>
+<blockquote># ./configure</blockquote>
 
 <blockquote># make</blockquote>
 
-<blockquote># make install</blockquote><br>&nbsp;<br><br>5、查看cronolog安装后所在目录（验证安装是否成功）<br><blockquote># which cronolog</blockquote><br>正常情况下显示：<br><blockquote>/usr/local/sbin/cronolog</blockquote><br>&nbsp;<br><br><strong>要想分割tomcat的catalina.out，需作如下工作：</strong><br><br>Tomcat7以前的版本：<br><br>（1）注释掉（#）<br><blockquote>touch “$CATALINA_BASE”/logs/catalina.out</blockquote>
+<blockquote># make install</blockquote>
+&nbsp;
+
+<p>5、查看cronolog安装后所在目录（验证安装是否成功）</p>
+<blockquote># which cronolog</blockquote>
+正常情况下显示：
+<blockquote>/usr/local/sbin/cronolog</blockquote>
+&nbsp;
+
+<p><strong>要想分割tomcat的catalina.out，需作如下工作：</strong></p>
+<p>Tomcat7以前的版本：</p>
+<p>（1）注释掉（#）</p>
+<blockquote>touch “$CATALINA_BASE”/logs/catalina.out</blockquote>
 
 <p>（2）修改tomcat bin目录下的catalina.sh文件中的两处</p>
-<blockquote><br>org.apache.catalina.startup.Bootstrap “$@” start \ <br><br>&gt;&gt; “$CATALINA_BASE” /logs/catalina.out 2&gt;&amp;1 &amp;<br></blockquote><br>为<br><blockquote><br>org.apache.catalina.startup.Bootstrap “$@” start 2&gt;&amp;1 \ <br><br>| /usr/local/sbin/cronolog “$CATALINA_BASE” /logs/catalina.%Y-%m-%d.out &gt;&gt; /dev/null &amp;<br></blockquote>
+<blockquote>
+org.apache.catalina.startup.Bootstrap "$@" start \ <br>
+>> "$CATALINA_BASE" /logs/catalina.out 2>&1 &
+</blockquote>
+为
+<blockquote>
+org.apache.catalina.startup.Bootstrap "$@" start 2>&1 \ <br>
+| /usr/local/sbin/cronolog "$CATALINA_BASE" /logs/catalina.%Y-%m-%d.out >> /dev/null &
+</blockquote>
 
 <p>如下图所示：</p>
 <p><img src="https://i.loli.net/2019/04/26/5cc27b2d62e53.jpg" alt="tomcat-catalina-out_01.jpg"></p>
@@ -207,18 +243,44 @@
 <p>隔天看logs文件中是否有catalina.2015-09-13.out样式的日志。</p>
 <p>&nbsp;</p>
 <p>Tomcat7以后的版本：</p>
-<p>1  第一步</p>
+<p>1  第一步</p>
 <p>将</p>
-<blockquote><br>if [ -z “$CATALINA_OUT” ] ; then<br><br><br>CATALINA_OUT=”$CATALINA_BASE”/logs/catalina.out<br><br><br>fi<br><br></blockquote><br>修改为<br><blockquote><br>if [ -z “$CATALINA_OUT” ] ; then<br><br><br>CATALINA_OUT=”$CATALINA_BASE”/logs/catalina.out.%Y-%m-%d<br><br><br>fi<br><br></blockquote><br>2  第二步<br><br>将<br><blockquote><br>touch “$CATALINA_OUT”<br></blockquote><br>改为<br><blockquote><br>#touch “$CATALINA_OUT”<br></blockquote>
+<blockquote>
+if [ -z "$CATALINA_OUT" ] ; then<br>
 
-<p>3  第三步</p>
-<p>将</p>
-<p><blockquote><br>org.apache.catalina.startup.Bootstrap “$@” start \<br></blockquote></p>
-<blockquote>
-<blockquote>
-<p>“$CATALINA_OUT” 2&gt;&amp;1 “&amp;”<br></p></blockquote><br>修改为<p></p>
-<p><blockquote><br>org.apache.catalina.startup.Bootstrap “$@” start 2&gt;&amp;1 \<br><br>| /usr/local/sbin/cronolog “$CATALINA_OUT” &gt;&gt; /dev/null &amp;<br></blockquote><br>完成之后重起Tomcat就可以了。</p>
+<p>CATALINA_OUT=”$CATALINA_BASE”/logs/catalina.out<br></p>
+<p>fi<br></p>
 </blockquote>
+修改为
+<blockquote>
+if [ -z "$CATALINA_OUT" ] ; then<br>
+
+<p>CATALINA_OUT=”$CATALINA_BASE”/logs/catalina.out.%Y-%m-%d<br></p>
+<p>fi<br></p>
+</blockquote>
+2  第二步
+
+<p>将</p>
+<blockquote>
+touch "$CATALINA_OUT"
+</blockquote>
+改为
+<blockquote>
+#touch "$CATALINA_OUT"
+</blockquote>
+
+<p>3  第三步</p>
+<p>将</p>
+<blockquote>
+org.apache.catalina.startup.Bootstrap "$@" start \<br>
+>> "$CATALINA_OUT" 2>&1 "&"
+</blockquote>
+修改为
+<blockquote>
+org.apache.catalina.startup.Bootstrap "$@" start 2>&1 \<br>
+| /usr/local/sbin/cronolog "$CATALINA_OUT" >> /dev/null &
+</blockquote>
+完成之后重起Tomcat就可以了。
 
 <p>隔天看logs文件中是否有catalina.out.2015-09-13样式的日志。</p>
   </article>
@@ -241,7 +303,7 @@
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   

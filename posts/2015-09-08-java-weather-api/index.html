@@ -8,6 +8,8 @@
   
   <title>java推送天气API | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -184,9 +190,9 @@
   <article class="passage-article">
     <p>因为最近在做一个项目，涉及一个小模块——推送天气。根据城市名去找天气的一些信息，比如说，高低温度，实时温度，天气状况，湿度，空气质量AQI等等。</p>
 <p>反复找了好多天气API，最后发现小米的API挺不错的，是json格式的数据，方便读取数据。</p>
-<p><a href="http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=" target="_blank" rel="noopener">http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=</a></p>
+<p><a target="_blank" rel="noopener" href="http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=">http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=</a></p>
 <p>比如说：深圳的天气代码为101280601</p>
-<p>在浏览器上访问<a href="http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=101280601" target="_blank" rel="noopener">http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=101280601</a></p>
+<p>在浏览器上访问<a target="_blank" rel="noopener" href="http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=101280601">http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=101280601</a></p>
 <p>如果出现乱码，相信你应该知道怎么解决！</p>
 <p>访问之后，我们拿到如下所示的数据：</p>
 <p><a href="http://blog.iyu.pub/wp-content/uploads/2015/09/12.png"><img src="http://blog.iyu.pub/wp-content/uploads/2015/09/12-300x114.png" alt="12"></a></p>
@@ -206,7 +212,7 @@
 <p>return bos.toByteArray();</p>
 <p>}</p>
 <p>再访问API调取数据，直接读取就行：</p>
-<p>URL url = new URL(“<a href="http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=101280601" target="_blank" rel="noopener">http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=101280601</a>“);</p>
+<p>URL url = new URL(“<a target="_blank" rel="noopener" href="http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=101280601&quot;">http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=101280601&quot;</a>);</p>
 <p>HttpURLConnection conn = (HttpURLConnection) url.openConnection();</p>
 <p>InputStream inputStream = conn.getInputStream(); // 通过输入流获得网站数据</p>
 <p>byte[] getData = readInputStream(inputStream); // 获得网站的二进制数据</p>
@@ -244,7 +250,7 @@
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   

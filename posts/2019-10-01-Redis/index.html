@@ -8,6 +8,8 @@
   
   <title>从0开始-Redis入门 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -192,8 +198,8 @@
 
 2. Redis 不仅仅支持简单的 key - value 类型的数据，同时还提供 list，set，zset，hash 等数据结构的存储。
 
-3. Redis 支持数据的备份，即 master - slave 模式的数据备份。
-</code></pre><h1 id="2-Redis-优势"><a href="#2-Redis-优势" class="headerlink" title="2.Redis 优势"></a>2.Redis 优势</h1><ol>
+3. Redis 支持数据的备份，即 master - slave 模式的数据备份。</code></pre>
+<h1 id="2-Redis-优势"><a href="#2-Redis-优势" class="headerlink" title="2.Redis 优势"></a>2.Redis 优势</h1><ol>
 <li><p>性能极高 – Redis 读的速度是 110000 次 /s, 写的速度是 81000 次 /s 。</p>
 </li>
 <li><p>丰富的数据类型 - Redis 支持二进制案例的 Strings, Lists, Hashes, Sets 及 Ordered Sets 数据类型操作。</p>
@@ -211,8 +217,8 @@
 <pre><code>localhost:0&gt; set tfx helloredis2019
 &quot;OK&quot;
 localhost:0&gt; get tfx
-&quot;helloredis2019&quot;
-</code></pre><h2 id="3-2-hash"><a href="#3-2-hash" class="headerlink" title="3.2 hash"></a>3.2 hash</h2><p>Redis hash 是一个键值对（key - value）集合。</p>
+&quot;helloredis2019&quot;</code></pre>
+<h2 id="3-2-hash"><a href="#3-2-hash" class="headerlink" title="3.2 hash"></a>3.2 hash</h2><p>Redis hash 是一个键值对（key - value）集合。</p>
 <p>Redis hash 是一个 string 类型的 key 和 value 的映射表，hash 特别适合用于存储对象。</p>
 <p>理解：可以将 hash 看成一个 key - value 的集合。也可以将其想成一个 hash 对应着多个 string。</p>
 <p>与 string 区别：string 是 一个 key - value 键值对，而 hash 是多个 key - value 键值对。</p>
@@ -222,16 +228,16 @@ localhost:0&gt; get tfx
 localhost:0&gt;hset hash-key sub-key2 value2
 &quot;1&quot;
 localhost:0&gt;hset hash-key sub-key3 value3
-&quot;1&quot;
-</code></pre><p>获取 hash-key 这个 hash 里面的所有键值对</p>
+&quot;1&quot;</code></pre>
+<p>获取 hash-key 这个 hash 里面的所有键值对</p>
 <pre><code>localhost:0&gt;hgetall hash-key
  1)  &quot;sub-key1&quot;
  2)  &quot;value1&quot;
  3)  &quot;sub-key2&quot;
  4)  &quot;value2&quot;
  5)  &quot;sub-key3&quot;
- 6)  &quot;value3&quot;
-</code></pre><p>删除 hash-key 这个 hash 里面的 sub-key2 键值对</p>
+ 6)  &quot;value3&quot;</code></pre>
+<p>删除 hash-key 这个 hash 里面的 sub-key2 键值对</p>
 <pre><code>localhost:0&gt;hdel hash-key sub-key2
 &quot;1&quot;
 localhost:0&gt;hget hash-key sub-key2
@@ -242,8 +248,8 @@ localhost:0&gt;hgetall hash-key
  1)  &quot;sub-key1&quot;
  2)  &quot;value1&quot;
  3)  &quot;sub-key3&quot;
- 4)  &quot;value3&quot;
-</code></pre><h2 id="3-3-list"><a href="#3-3-list" class="headerlink" title="3.3 list"></a>3.3 list</h2><p>Redis 列表是简单的字符串列表，按照插入顺序排序，可以往列表的左边或者右边添加元素。</p>
+ 4)  &quot;value3&quot;</code></pre>
+<h2 id="3-3-list"><a href="#3-3-list" class="headerlink" title="3.3 list"></a>3.3 list</h2><p>Redis 列表是简单的字符串列表，按照插入顺序排序，可以往列表的左边或者右边添加元素。</p>
 <pre><code>localhost:0&gt;rpush list-key value1
 &quot;1&quot;
 localhost:0&gt;rpush list-key value2
@@ -260,8 +266,8 @@ localhost:0&gt;lpop list-key
 &quot;value1&quot;
 localhost:0&gt;lrange list-key 0 -1
  1)  &quot;value2&quot;
- 2)  &quot;value1&quot;
-</code></pre><p>list 是一个简单的字符串集合，和 Java 中的 list 相差不大，区别就是这里的 list 存放的是字符串。list 内的元素是可重复的。</p>
+ 2)  &quot;value1&quot;</code></pre>
+<p>list 是一个简单的字符串集合，和 Java 中的 list 相差不大，区别就是这里的 list 存放的是字符串。list 内的元素是可重复的。</p>
 <h2 id="3-4-set"><a href="#3-4-set" class="headerlink" title="3.4 set"></a>3.4 set</h2><p>Redis 的 set 是字符串类型的无序集合。集合是通过哈希表实现的，因此添加、删除、查找的复杂度都是 O（1）。</p>
 <pre><code>localhost:0&gt;sadd key1 value1
 &quot;1&quot;
@@ -285,8 +291,8 @@ localhost:0&gt;srem key1 value2
 &quot;0&quot;
 localhost:0&gt;smembers key1
  1)  &quot;value1&quot;
- 2)  &quot;value3&quot;
-</code></pre><p>redis 的 set 与 java 中的 set 还是有点区别的。redis 的 set 是一个 key 对应着 多个字符串类型的 value，也是一个字符串类型的集合，但是和 redis 的 list 不同的是 set 中的字符串集合元素不能重复，但是 list 可以。</p>
+ 2)  &quot;value3&quot;</code></pre>
+<p>redis 的 set 与 java 中的 set 还是有点区别的。redis 的 set 是一个 key 对应着 多个字符串类型的 value，也是一个字符串类型的集合，但是和 redis 的 list 不同的是 set 中的字符串集合元素不能重复，但是 list 可以。</p>
 <h2 id="3-5-zset"><a href="#3-5-zset" class="headerlink" title="3.5 zset"></a>3.5 zset</h2><p>redis zset 和 set 一样都是 字符串类型元素的集合，并且集合内的元素不能重复。</p>
 <p>不同的是 zset 每个元素都会关联一个 double 类型的分数。redis 通过分数来为集合中的成员进行从小到大的排序。</p>
 <p>zset 的元素是唯一的，但是分数（score）却可以重复。</p>
@@ -310,8 +316,8 @@ localhost:0&gt;zrem zset-key member1
 &quot;0&quot;
 localhost:0&gt;zrange zset-key 0 -1 withscores
  1)  &quot;member2&quot;
- 2)  &quot;600&quot;
-</code></pre><p>zset 是按照 分输的大小来排序的。</p>
+ 2)  &quot;600&quot;</code></pre>
+<p>zset 是按照 分输的大小来排序的。</p>
 <h2 id="3-6-总结"><a href="#3-6-总结" class="headerlink" title="3.6 总结"></a>3.6 总结</h2><table>
 <thead>
 <tr>
@@ -319,8 +325,7 @@ localhost:0&gt;zrange zset-key 0 -1 withscores
 <th>特性场景</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>string（字符串）</td>
 <td>二进制安全可以包含任何数据，比如 jpg 图片或者序列化的对象，一个键最大能存储 521M</td>
 </tr>
@@ -340,8 +345,7 @@ localhost:0&gt;zrange zset-key 0 -1 withscores
 <td>Zset（有序集合）</td>
 <td>将 Set 中的元素增加一个权重参数 score，元素按 score 有序排列数据插入集合时，已经进行天然排序排行榜；带权重的消息队列</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h1 id="4-发布订阅"><a href="#4-发布订阅" class="headerlink" title="4 发布订阅"></a>4 发布订阅</h1><p>一般不用 Redis 做消息发布订阅。</p>
 <p>Redis 发布订阅 (pub/sub) 是一种消息通信模式：发送者 (pub) 发送消息，订阅者 (sub) 接收消息。</p>
 <p>Redis 客户端可以订阅任意数量的频道。</p>
@@ -350,13 +354,13 @@ localhost:0&gt;zrange zset-key 0 -1 withscores
 切换到推送/订阅模式，关闭标签页来停止接收信息。
  1)  &quot;subscribe&quot;
  2)  &quot;redisChat&quot;
- 3)  &quot;1&quot;
-</code></pre><p>接下来先重新开启个 redis 客户端，然后在同一个频道 redisChat 发布两次消息，订阅者就能接收到消息。</p>
+ 3)  &quot;1&quot;</code></pre>
+<p>接下来先重新开启个 redis 客户端，然后在同一个频道 redisChat 发布两次消息，订阅者就能接收到消息。</p>
 <pre><code>localhost:0&gt;publish redisChat &quot;blog.iyu.pub&quot;
 &quot;1&quot;
 localhost:0&gt;publish redisChat &quot;hello redis&quot;
-&quot;1&quot;
-</code></pre><p>在订阅者的客户端显示如下：</p>
+&quot;1&quot;</code></pre>
+<p>在订阅者的客户端显示如下：</p>
 <pre><code>localhost:0&gt;subscribe redisChat
 切换到推送/订阅模式，关闭标签页来停止接收信息。
  1)  &quot;subscribe&quot;
@@ -368,8 +372,8 @@ localhost:0&gt;publish redisChat &quot;hello redis&quot;
  3)  &quot;blog.iyu.pub&quot;
  1)  &quot;message&quot;
  2)  &quot;redisChat&quot;
- 3)  &quot;hello redis&quot;
-</code></pre><h1 id="5-事务"><a href="#5-事务" class="headerlink" title="5 事务"></a>5 事务</h1><p>redis 事务一次可以执行多条命令，服务器在执行命令期间，不会去执行其他客户端的命令请求。</p>
+ 3)  &quot;hello redis&quot;</code></pre>
+<h1 id="5-事务"><a href="#5-事务" class="headerlink" title="5 事务"></a>5 事务</h1><p>redis 事务一次可以执行多条命令，服务器在执行命令期间，不会去执行其他客户端的命令请求。</p>
 <p>事务中的多条命令被一次性发送给服务器，而不是一条一条地发送，这种方式被称为流水线，它可以减少客户端与服务器之间的网络通信次数从而提升性能。</p>
 <p>Redis 最简单的事务实现方式是使用 MULTI 和 EXEC 命令将事务操作包围起来。</p>
 <p>批量操作在发送 EXEC 命令前被放入队列缓存。</p>
@@ -380,8 +384,8 @@ localhost:0&gt;publish redisChat &quot;hello redis&quot;
 
 命令入队。
 
-执行事务。
-</code></pre><p>以下是一个事务的例子， 它先以 MULTI 开始一个事务， 然后将多个命令入队到事务中， 最后由 EXEC 命令触发事务， 一并执行事务中的所有命令：</p>
+执行事务。</code></pre>
+<p>以下是一个事务的例子， 它先以 MULTI 开始一个事务， 然后将多个命令入队到事务中， 最后由 EXEC 命令触发事务， 一并执行事务中的所有命令：</p>
 <pre><code>localhost:0&gt;multi
 &quot;OK&quot;
 localhost:0&gt;set redismulti test1
@@ -398,12 +402,12 @@ localhost:0&gt;exec
  3)  &quot;3&quot;
  4)    1)   &quot;value2&quot;
          2)   &quot;value1&quot;
-        3)   &quot;value3&quot;
-</code></pre><p>单个 Redis 命令的执行是原子性的，但 Redis 没有在事务上增加任何维持原子性的机制，所以 Redis 事务的执行并不是原子性的。</p>
+        3)   &quot;value3&quot;</code></pre>
+<p>单个 Redis 命令的执行是原子性的，但 Redis 没有在事务上增加任何维持原子性的机制，所以 Redis 事务的执行并不是原子性的。</p>
 <p>事务可以理解为一个打包的批量执行脚本，但批量指令并非原子化的操作，中间某条指令的失败不会导致前面已做指令的回滚，也不会造成后续的指令不做。</p>
 <p>这是官网上的说明 From redis docs on transactions:</p>
-<pre><code>It&apos;s important to note that even when a command fails, all the other commands in the queue are processed – Redis will not stop the processing of commands.
-</code></pre><p>例如：</p>
+<pre><code>It&#39;s important to note that even when a command fails, all the other commands in the queue are processed – Redis will not stop the processing of commands.</code></pre>
+<p>例如：</p>
 <pre><code>localhost:0&gt;multi
 &quot;OK&quot;
 localhost:0&gt;set a a
@@ -415,8 +419,8 @@ localhost:0&gt;set c c
 localhost:0&gt;exec
  1)  &quot;OK&quot;
  2)  &quot;OK&quot;
- 3)  &quot;OK&quot;
-</code></pre><p>如果在 set b b 处失败，set a 已成功不会回滚，set c 还会继续执行。</p>
+ 3)  &quot;OK&quot;</code></pre>
+<p>如果在 set b b 处失败，set a 已成功不会回滚，set c 还会继续执行。</p>
 <table>
 <thead>
 <tr>
@@ -424,8 +428,7 @@ localhost:0&gt;exec
 <th>描述</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>DISCARD</td>
 <td>取消事务，放弃执行事务块内的所有命令</td>
 </tr>
@@ -445,8 +448,7 @@ localhost:0&gt;exec
 <td>WATCH key [key …]</td>
 <td>监视一个 (或多个) key ，如果在事务执行之前这个 (或这些) key 被其他命令所改动，那么事务将被打断</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h1 id="6-持久化"><a href="#6-持久化" class="headerlink" title="6 持久化"></a>6 持久化</h1><p>Redis 是内存型数据库，为了保证数据在断电后不会丢失，需要将内存中的数据持久化到硬盘上。</p>
 <h2 id="6-1-RDB-持久化"><a href="#6-1-RDB-持久化" class="headerlink" title="6.1 RDB 持久化"></a>6.1 RDB 持久化</h2><p>将某个时间点的所有数据都存放到硬盘上。</p>
 <p>可以将快照复制到其他服务器从而创建具有相同数据的服务器副本。</p>
@@ -481,7 +483,7 @@ localhost:0&gt;exec
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Redis-简介"><span class="toc-text"><a href="#1-Redis-&#x7B80;&#x4ECB;" class="headerlink" title="1.Redis &#x7B80;&#x4ECB;"></a>1.Redis &#x7B80;&#x4ECB;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Redis-优势"><span class="toc-text"><a href="#2-Redis-&#x4F18;&#x52BF;" class="headerlink" title="2.Redis &#x4F18;&#x52BF;"></a>2.Redis &#x4F18;&#x52BF;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Redis-数据类型"><span class="toc-text"><a href="#3-Redis-&#x6570;&#x636E;&#x7C7B;&#x578B;" class="headerlink" title="3.Redis &#x6570;&#x636E;&#x7C7B;&#x578B;"></a>3.Redis &#x6570;&#x636E;&#x7C7B;&#x578B;</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-string"><span class="toc-text"><a href="#3-1-string" class="headerlink" title="3.1 string"></a>3.1 string</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-hash"><span class="toc-text"><a href="#3-2-hash" class="headerlink" title="3.2 hash"></a>3.2 hash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-list"><span class="toc-text"><a href="#3-3-list" class="headerlink" title="3.3 list"></a>3.3 list</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-set"><span class="toc-text"><a href="#3-4-set" class="headerlink" title="3.4 set"></a>3.4 set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-zset"><span class="toc-text"><a href="#3-5-zset" class="headerlink" title="3.5 zset"></a>3.5 zset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6-总结"><span class="toc-text"><a href="#3-6-&#x603B;&#x7ED3;" class="headerlink" title="3.6 &#x603B;&#x7ED3;"></a>3.6 &#x603B;&#x7ED3;</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-发布订阅"><span class="toc-text"><a href="#4-&#x53D1;&#x5E03;&#x8BA2;&#x9605;" class="headerlink" title="4 &#x53D1;&#x5E03;&#x8BA2;&#x9605;"></a>4 &#x53D1;&#x5E03;&#x8BA2;&#x9605;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-事务"><span class="toc-text"><a href="#5-&#x4E8B;&#x52A1;" class="headerlink" title="5 &#x4E8B;&#x52A1;"></a>5 &#x4E8B;&#x52A1;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-持久化"><span class="toc-text"><a href="#6-&#x6301;&#x4E45;&#x5316;" class="headerlink" title="6 &#x6301;&#x4E45;&#x5316;"></a>6 &#x6301;&#x4E45;&#x5316;</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-RDB-持久化"><span class="toc-text"><a href="#6-1-RDB-&#x6301;&#x4E45;&#x5316;" class="headerlink" title="6.1 RDB &#x6301;&#x4E45;&#x5316;"></a>6.1 RDB &#x6301;&#x4E45;&#x5316;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-AOF-持久化"><span class="toc-text"><a href="#6-2-AOF-&#x6301;&#x4E45;&#x5316;" class="headerlink" title="6.2 AOF &#x6301;&#x4E45;&#x5316;"></a>6.2 AOF &#x6301;&#x4E45;&#x5316;</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-复制"><span class="toc-text"><a href="#7-&#x590D;&#x5236;" class="headerlink" title="7 &#x590D;&#x5236;"></a>7 &#x590D;&#x5236;</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-连接过程"><span class="toc-text"><a href="#7-1-&#x8FDE;&#x63A5;&#x8FC7;&#x7A0B;" class="headerlink" title="7.1 &#x8FDE;&#x63A5;&#x8FC7;&#x7A0B;"></a>7.1 &#x8FDE;&#x63A5;&#x8FC7;&#x7A0B;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-主从链"><span class="toc-text"><a href="#7-2-&#x4E3B;&#x4ECE;&#x94FE;" class="headerlink" title="7.2 &#x4E3B;&#x4ECE;&#x94FE;"></a>7.2 &#x4E3B;&#x4ECE;&#x94FE;</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-哨兵"><span class="toc-text"><a href="#8-&#x54E8;&#x5175;" class="headerlink" title="8 &#x54E8;&#x5175;"></a>8 &#x54E8;&#x5175;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-分片"><span class="toc-text"><a href="#9-&#x5206;&#x7247;" class="headerlink" title="9 &#x5206;&#x7247;"></a>9 &#x5206;&#x7247;</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Redis-%E7%AE%80%E4%BB%8B"><span class="toc-text">1.Redis 简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Redis-%E4%BC%98%E5%8A%BF"><span class="toc-text">2.Redis 优势</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Redis-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">3.Redis 数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-string"><span class="toc-text">3.1 string</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-hash"><span class="toc-text">3.2 hash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-list"><span class="toc-text">3.3 list</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-set"><span class="toc-text">3.4 set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-zset"><span class="toc-text">3.5 zset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6-%E6%80%BB%E7%BB%93"><span class="toc-text">3.6 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85"><span class="toc-text">4 发布订阅</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E4%BA%8B%E5%8A%A1"><span class="toc-text">5 事务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">6 持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-RDB-%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">6.1 RDB 持久化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-AOF-%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">6.2 AOF 持久化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%A4%8D%E5%88%B6"><span class="toc-text">7 复制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B"><span class="toc-text">7.1 连接过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-%E4%B8%BB%E4%BB%8E%E9%93%BE"><span class="toc-text">7.2 主从链</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E5%93%A8%E5%85%B5"><span class="toc-text">8 哨兵</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E5%88%86%E7%89%87"><span class="toc-text">9 分片</span></a></li></ol>
   </div>
 </aside>
   
@@ -494,7 +496,7 @@ localhost:0&gt;exec
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   

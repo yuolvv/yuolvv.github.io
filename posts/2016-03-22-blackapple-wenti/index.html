@@ -8,6 +8,8 @@
   
   <title>黑苹果常见问题 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -184,8 +190,15 @@
   <article class="passage-article">
     <p>由于经常系统升级，反复出现一些问题，特地整理下并记录下来。</p>
 <p>1.修改显存从512MB到1GB的按顺序执行以下4行代码：</p>
-<p><pre class="prettyprint linenums">cd /S<em>/L</em>/Ext<em>/AppleIntelSNBGraphicsFB.kext/C</em>/M<em><br>sudo cp AppleIntelSNBGraphicsFB AppleIntelSNBGraphicsFB.backup<br>sudo perl -pi -e ‘s|\xC7\x45\xBC\x00\x00\x00\x20|\xc7\x45\xBC\x00\x00\x00\x40|g’ AppleIntelSNBGraphicsFB<br>sudo touch /S</em>/L*/Extensions<br></pre><br>2.修复开机正常亮度和VGA HDMI：</p>
-<p><pre class="prettyprint linenums">sudo perl -pi -e ‘s|\x01\x02\x04\x00\x10\x07\x00\x00\x10\x07\x00\x00\x05\x03\x00\x00\x02\x00\x00\x00\x30\x00\x00\x00\x02\x05\x00\x00\x00\x04\x00\x00\x07\x00\x00\x00\x03\x04\x00\x00\x00\x04\x00\x00\x09\x00\x00\x00\x04\x06\x00\x00\x00\x04\x00\x00\x09\x00\x00\x00|\x01\x02\x03\x00\x12\x13\x00\x00\x12\x13\x00\x00\x05\x03\x00\x00\x02\x00\x00\x00\x30\x00\x00\x00\x02\x05\x00\x00\x00\x08\x00\x00\x06\x00\x00\x00\x06\x02\x00\x00\x01\x00\x00\x00\x09\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00|g’ /System/Library/Extensions/AppleIntelSNBGraphicsFB.kext/Contents/MacOS/AppleIntelSNBGraphicsFB<br></pre><br>修复权限重建缓存（很重要，防止不能进系统了，可以用Kext Utility修复），然后删除系统盘Extra/Extensions中的驱动（一定要删除，防止冲突），再重启（提前重启你就进不去了）</p>
+<pre class="prettyprint linenums">cd /S*/L*/Ext*/AppleIntelSNBGraphicsFB.kext/C*/M*
+sudo cp AppleIntelSNBGraphicsFB AppleIntelSNBGraphicsFB.backup
+sudo perl -pi -e 's|\xC7\x45\xBC\x00\x00\x00\x20|\xc7\x45\xBC\x00\x00\x00\x40|g' AppleIntelSNBGraphicsFB
+sudo touch /S*/L*/Extensions          
+</pre>
+<p>2.修复开机正常亮度和VGA HDMI：</p>
+<pre class="prettyprint linenums">sudo perl -pi -e 's|\x01\x02\x04\x00\x10\x07\x00\x00\x10\x07\x00\x00\x05\x03\x00\x00\x02\x00\x00\x00\x30\x00\x00\x00\x02\x05\x00\x00\x00\x04\x00\x00\x07\x00\x00\x00\x03\x04\x00\x00\x00\x04\x00\x00\x09\x00\x00\x00\x04\x06\x00\x00\x00\x04\x00\x00\x09\x00\x00\x00|\x01\x02\x03\x00\x12\x13\x00\x00\x12\x13\x00\x00\x05\x03\x00\x00\x02\x00\x00\x00\x30\x00\x00\x00\x02\x05\x00\x00\x00\x08\x00\x00\x06\x00\x00\x00\x06\x02\x00\x00\x01\x00\x00\x00\x09\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00|g' /System/Library/Extensions/AppleIntelSNBGraphicsFB.kext/Contents/MacOS/AppleIntelSNBGraphicsFB
+</pre>
+<p>修复权限重建缓存（很重要，防止不能进系统了，可以用Kext Utility修复），然后删除系统盘Extra/Extensions中的驱动（一定要删除，防止冲突），再重启（提前重启你就进不去了）</p>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -207,7 +220,7 @@
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
@@ -216,7 +229,7 @@
      
       <a href="/tags/Apple/"><i class="fa fa-tags"></i>Apple</a>
      
-      <a href="/tags/黑苹果/"><i class="fa fa-tags"></i>黑苹果</a>
+      <a href="/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/"><i class="fa fa-tags"></i>黑苹果</a>
     
     </div>
   

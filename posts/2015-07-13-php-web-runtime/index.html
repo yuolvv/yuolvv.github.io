@@ -8,6 +8,8 @@
   
   <title>PHP实现显示网站运行时间 | 听风行</title>
 
+  <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
@@ -52,10 +54,12 @@
   };
 </script>
 
-  <script src="/vendor/sha256.min.js"></script>
+  
+<script src="/vendor/sha256.min.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/index.js"></script>
 <script src="/vendor/qrcode.min.js"></script>
+
 
   
     <link rel="icon" href="/images/favicon.ico">
@@ -64,11 +68,13 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/index.css">
+  
+<link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="/styles/components/highlight/highlight.css">
 
+
   
-</head>
+<meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <header class="site-header">
   <div class="site-header-brand">
@@ -182,57 +188,55 @@
   </h1>
   
   <article class="passage-article">
-    </p>
-<h3 id="PHP代码："><a href="#PHP代码：" class="headerlink" title="PHP代码："></a>PHP代码：</h3><pre><code>&lt;?php
+    <h3 id="PHP代码："><a href="#PHP代码：" class="headerlink" title="PHP代码："></a>PHP代码：</h3><pre><code>&lt;?php
 // 设置时区
-date_default_timezone_set(&apos;Asia/Shanghai&apos;);
+date_default_timezone_set(&#39;Asia/Shanghai&#39;);
 /**
 * 秒转时间，格式 年 月 日 时 分 秒
 * @param int $time
 * @return array|boolean
 */
-function Sec2Time($time){
-    if(is_numeric($time)){
+function Sec2Time($time)&#123;
+    if(is_numeric($time))&#123;
         $value = array(
         &quot;years&quot; =&gt; 0, &quot;days&quot; =&gt; 0, &quot;hours&quot; =&gt; 0,
         &quot;minutes&quot; =&gt; 0, &quot;seconds&quot; =&gt; 0,);
-        if($time &gt;= 31556926){
+        if($time &gt;= 31556926)&#123;
             $value[&quot;years&quot;] = floor($time/31556926);
             $time = ($time%31556926);
-        }
-        if($time &gt;= 86400){
+        &#125;
+        if($time &gt;= 86400)&#123;
             $value[&quot;days&quot;] = floor($time/86400);
             $time = ($time%86400);
-        }
-        if($time &gt;= 3600){
+        &#125;
+        if($time &gt;= 3600)&#123;
             $value[&quot;hours&quot;] = floor($time/3600);
             $time = ($time%3600);
-        }
-        if($time &gt;= 60){
+        &#125;
+        if($time &gt;= 60)&#123;
             $value[&quot;minutes&quot;] = floor($time/60);
             $time = ($time%60);
-        }
+        &#125;
         $value[&quot;seconds&quot;] = floor($time);
         return (array) $value;
-    }else{
+    &#125;else&#123;
         return (bool) FALSE;
-    }
-}
+    &#125;
+&#125;
 
 // 本站创建的时间
-$site_create_time = strtotime(&apos;2015-07-01 00:00:00&apos;);
+$site_create_time = strtotime(&#39;2015-07-01 00:00:00&#39;);
 $time = time() - $site_create_time;
 $uptime = Sec2Time($time);
-?&gt;
-</code></pre><h3 id="HTML代码："><a href="#HTML代码：" class="headerlink" title="HTML代码："></a>HTML代码：</h3><pre><code>本站已运行：
+?&gt;</code></pre>
+<h3 id="HTML代码："><a href="#HTML代码：" class="headerlink" title="HTML代码："></a>HTML代码：</h3><pre><code>本站已运行：
 &lt;span style=&quot;color:red;&quot;&gt;
-    &lt;?php echo $uptime[&apos;years&apos;]; ?&gt;年
-    &lt;?php echo $uptime[&apos;days&apos;]; ?&gt;天
-    &lt;?php echo $uptime[&apos;hours&apos;]; ?&gt;小时
-    &lt;?php echo $uptime[&apos;minutes&apos;]; ?&gt;分
-    &lt;?php echo $uptime[&apos;seconds&apos;]; ?&gt;秒
-&lt;/span&gt;
-</code></pre>
+    &lt;?php echo $uptime[&#39;years&#39;]; ?&gt;年
+    &lt;?php echo $uptime[&#39;days&#39;]; ?&gt;天
+    &lt;?php echo $uptime[&#39;hours&#39;]; ?&gt;小时
+    &lt;?php echo $uptime[&#39;minutes&#39;]; ?&gt;分
+    &lt;?php echo $uptime[&#39;seconds&#39;]; ?&gt;秒
+&lt;/span&gt;</code></pre>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -240,7 +244,7 @@ $uptime = Sec2Time($time);
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP代码："><span class="toc-text"><a href="#PHP&#x4EE3;&#x7801;&#xFF1A;" class="headerlink" title="PHP&#x4EE3;&#x7801;&#xFF1A;"></a>PHP&#x4EE3;&#x7801;&#xFF1A;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML代码："><span class="toc-text"><a href="#HTML&#x4EE3;&#x7801;&#xFF1A;" class="headerlink" title="HTML&#x4EE3;&#x7801;&#xFF1A;"></a>HTML&#x4EE3;&#x7801;&#xFF1A;</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-text">PHP代码：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-text">HTML代码：</span></a></li></ol>
   </div>
 </aside>
   
@@ -253,7 +257,7 @@ $uptime = Sec2Time($time);
         </div>
       
       <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
     </aside>
   
