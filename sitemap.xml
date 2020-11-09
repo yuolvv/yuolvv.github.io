@@ -1033,27 +1033,6 @@
   </url>
   
   <url>
-    <loc>https://blog.iyu.pub/tags/%E5%85%AC%E7%9B%8A/</loc>
-    <lastmod>2020-11-09</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.iyu.pub/tags/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2020-11-09</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.iyu.pub/tags/%E7%9B%9B%E5%85%B8/</loc>
-    <lastmod>2020-11-09</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.iyu.pub/tags/%E9%A6%99%E6%B8%AF/</loc>
     <lastmod>2020-11-09</lastmod>
     <changefreq>daily</changefreq>
@@ -1069,6 +1048,27 @@
   
   <url>
     <loc>https://blog.iyu.pub/tags/%E8%A1%A8%E6%BC%94/</loc>
+    <lastmod>2020-11-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.iyu.pub/tags/%E5%85%AC%E7%9B%8A/</loc>
+    <lastmod>2020-11-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.iyu.pub/tags/%E6%8A%80%E6%9C%AF/</loc>
+    <lastmod>2020-11-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.iyu.pub/tags/%E7%9B%9B%E5%85%B8/</loc>
     <lastmod>2020-11-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
