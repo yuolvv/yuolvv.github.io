@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>JVM-类文件结构 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Java,Java,JVM," />
+  
+
+  
+  <meta name="description" content="一直零零散散的学习JVM，看完就忘了，这里做个JVM的入门记录。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: ["383060d16dbbd03a8df851cdc6f513f7fdf4dadd8ae0dc62ae87151f537ec38c", ],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-03-07
+    </span>
+    
+      <span>
+        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    JVM-类文件结构
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://cn.bing.com/th?id=OHR.CrocusSativus_EN-CN9299800220_1920x1080.jpg);"></figure>
+    </div>
+  
+  <article class="passage-article">
+    <h1 id="1-JVM的“无关性”"><a href="#1-JVM的“无关性”" class="headerlink" title="1 JVM的“无关性”"></a>1 JVM的“无关性”</h1><p>Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，因此Java能实现“一次编写，处处运行”。</p>
+<p>而JVM不仅具有平台无关性，还具有语言无关性。</p>
+<p>平台无关性是指不同操作系统都有各自的JVM，而语言无关性是指Java虚拟机能运行除Java以外的代码！</p>
+<p>(1)平台无关性：任何操作系统都能运行 Java 代码</p>
+<p>(2)语言无关性： JVM 能运行除 Java 以外的其他代码</p>
+<p>这听起来非常惊人，但JVM对能运行的语言是有严格要求的。首先来了解下Java代码的运行过程。</p>
+<p>Java源代码首先需要使用Javac编译器编译成.class文件，然后启动JVM执行.class文件，从而程序开始运行。</p>
+<p>也就是JVM只认识.class文件，它并不管何种语言生成了.class文件，只要.class文件符合JVM的规范就能运行。</p>
+<p>因此目前已经有Scala、JRuby、Jython等语言能够在JVM上运行。它们有各自的语法规则，不过它们的编译器都能将各自的源码编译成符合JVM规范的class文件，从而能够借助JVM运行它们。</p>
+<p>Java 语言中的各种变量、关键字和运算符号的语义最终都是由多条字节码命令组合而成的， 因此字节码命令所能提供的语义描述能力肯定会比 Java 语言本身更加强大。 因此，有一些 Java 语言本身无法有效支持的语言特性，不代表字节码本身无法有效支持。</p>
+<h1 id="2-Class文件结构"><a href="#2-Class文件结构" class="headerlink" title="2 Class文件结构"></a>2 Class文件结构</h1><p>class文件是二进制文件，它的内容具有严格的规范，文件中没有任何空格，全是连续的0/1。class文件中的所有内容被分为两种类型：无符号数 和 表。</p>
+<p>(1)无符号数：它表示Class文件中的值，这些值没有任何类型，但有不同的长度。根据这些值长度的不同分为：u1、u2、u4、u8，分别代表1字节的无符号数、2字节的无符号数、4字节的无符号数、8字节的无符号数。</p>
+<p>(2)表：由多个无符号数或者其他表作为数据项构成的符合数据类型。class文件中所有数据（即无符号数）要么单独存在，要么由多个无符号数组成二维表。即class文件中的数据要么是单个值，要么是二维表。</p>
+<h2 id="2-1-class文件的组织结构"><a href="#2-1-class文件的组织结构" class="headerlink" title="2.1 class文件的组织结构"></a>2.1 class文件的组织结构</h2><pre><code>魔数
+
+本文件的版本信息
+
+常量池
+
+访问标志
+
+类索引、父类索引、接口索引集合
+
+字段表集合
+
+方法表集合
+
+属性表集合
+</code></pre><h3 id="2-1-1-Class文件的构成1：魔数"><a href="#2-1-1-Class文件的构成1：魔数" class="headerlink" title="2.1.1 Class文件的构成1：魔数"></a>2.1.1 Class文件的构成1：魔数</h3><p>class文件的头4个字节称为魔数，用来表示这个class文件的类型。</p>
+<p>魔数的作用就相当于文件后缀名，只不过后缀名容易被修改，不安全，因此在class文件中标示文件类型比较合适。</p>
+<p>class文件的魔数是用16进制表示的“CAFEBABE”，非常具有浪漫主义色彩！</p>
+<h3 id="2-1-2-Class文件的构成2：版本信息"><a href="#2-1-2-Class文件的构成2：版本信息" class="headerlink" title="2.1.2 Class文件的构成2：版本信息"></a>2.1.2 Class文件的构成2：版本信息</h3><p>紧接着魔数的4个字节是版本号。5-6 字节表示次版本号，7-8 字节表示主版本号，它表示当前class文件中使用的是哪个版本的JDK。</p>
+<p>在高版本的JVM上能够运行低版本的class文件，但在低版本的JVM上无法运行高版本的class文件，即使该class文件中没有用到任何高版本JDK的特性也无法运行，虚拟机也必需拒绝执行超过其版本号的 Class 文件。</p>
+<h3 id="2-1-3-Class文件的构成3：常量池"><a href="#2-1-3-Class文件的构成3：常量池" class="headerlink" title="2.1.3 Class文件的构成3：常量池"></a>2.1.3 Class文件的构成3：常量池</h3><h4 id="2-1-3-1-常量池的定义"><a href="#2-1-3-1-常量池的定义" class="headerlink" title="2.1.3.1 常量池的定义"></a>2.1.3.1 常量池的定义</h4><p>紧接着版本号之后的就是常量池。常量池中存放两种类型的常量：</p>
+<p>（1）字面值常量</p>
+<p>字面值常量即我们在程序中定义的字符串、被final修饰的值。</p>
+<p>（2）符号引用</p>
+<p>符号引用就是我们定义的各种名字：类和接口的全限定名、字段的名字和描述符、方法的名字和描述符</p>
+<h4 id="2-1-3-2-常量池的特点"><a href="#2-1-3-2-常量池的特点" class="headerlink" title="2.1.3.2 常量池的特点"></a>2.1.3.2 常量池的特点</h4><p>（1）常量池长度不固定</p>
+<p>常量池的大小是不固定的，因此常量池开头放置一个u2类型的无符号数，用来存储当前常量池的容量。JVM根据这个值就知道常量池的头尾来。</p>
+<p>注： 这个值是从1开始的，若为5表示池中有4个常量。</p>
+<p>（2）常量池中的常量由表来表示</p>
+<p>常量池的每一项常量都是一个表，表开始的第一位是一个 u1 类型的标志位（tag），代表当前这个常量属于哪种常量类型。</p>
+<p>常量池开头有个常量池容量计数器，接下来就全是一个个常量了，只不过常量都是由一张张二维表构成，除了记录常量的值以外，还记录当前常量的相关信息。</p>
+<pre><code>常量池是class文件的资源仓库
+
+常量池是与本class中其它部分关联最多的部分
+
+常量池是class文件中空间占用最大的部分之一
+</code></pre><h4 id="2-1-3-3-常量池中常量的类型"><a href="#2-1-3-3-常量池中常量的类型" class="headerlink" title="2.1.3.3 常量池中常量的类型"></a>2.1.3.3 常量池中常量的类型</h4><p>刚才介绍了，常量池中的常量大体上分为：字面值常量 和 符号引用。在此基础上，根据常量的数据类型不同，又可以被细分为14种常量类型。这14种常量类型都有各自的二维表示结构。每种常量类型的头1个字节都是tag，用于表示当前常量属于14种类型中的哪一个。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>tag</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CONSTANT_utf8_info</td>
+<td>1</td>
+<td>UTF-8编码的字符串</td>
+</tr>
+<tr>
+<td>CONSTANT_Integer_info</td>
+<td>3</td>
+<td>整型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Float_info</td>
+<td>4</td>
+<td>浮点型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Long_info</td>
+<td>5</td>
+<td>长整型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Double_info</td>
+<td>6</td>
+<td>双精度浮点型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Class_info</td>
+<td>7</td>
+<td>类或接口的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_String_info</td>
+<td>8</td>
+<td>字符串类型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Fieldref_info</td>
+<td>9</td>
+<td>字段的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_Methodref_info</td>
+<td>10</td>
+<td>类中方法的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_InterfaceMethodref_info</td>
+<td>11</td>
+<td>接口中方法的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_NameAndType_info</td>
+<td>12</td>
+<td>字段或方法的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_MethodHandle_info</td>
+<td>15</td>
+<td>表示方法句柄</td>
+</tr>
+<tr>
+<td>CONSTANT_MethodType_info</td>
+<td>16</td>
+<td>标识方法类型</td>
+</tr>
+<tr>
+<td>CONSTANT_InvokeDynamic_info</td>
+<td>18</td>
+<td>表示一个动态方法调用点</td>
+</tr>
+</tbody>
+</table>
+<p>以CONSTANT_Class_info常量（此类型的常量代表一个类或者接口的符号引用）为例，它的二维表示结构如下：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名称</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u1</td>
+<td>tag</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>name_index</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>tag是标志位，用于区分常量类型，表示当前常量的类型(当前常量为CONSTANT_Class_info，因此tag的值应为7，表示一个类或接口的全限定名)；</p>
+<p>name_index 是一个索引值，它指向常量池中一个 CONSTANT_Utf8_info 类型常量，此常量代表这个类（或接口）的全限定名，这里 name_index 值若为 0x0002，也即是指向了常量池中的第二项常量。表示这个类或接口全限定名的位置。它的值表示指向常量池的第几个常量。它会指向一个CONSTANT_Utf8_info类型的常量，CONSTANT_Utf8_info的二维表结构如下：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名称</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u1</td>
+<td>tag</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>length</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u1</td>
+<td>bytes</td>
+<td>length</td>
+</tr>
+</tbody>
+</table>
+<p>CONSTANT_Utf8_info表示字符串常量；</p>
+<p>tag表示当前常量的类型，这里应该是1；length表示这个字符串的长度；bytes为这个字符串的内容（采用缩略的UTF8编码）</p>
+<pre><code>问：为什么Java中定义的类、变量名字必须小于64K？
+
+类、接口、变量等名字都属于符号引用，它们都存储在常量池中。而不管哪种符号引用，它们的名字都由CONSTANT_Utf8_info类型的常量表示，这种类型的常量使用u2存储字符串的长度。由于2字节最多能表示65535个数，因此这些名字的最大长度最多只能是64K。
+
+问：什么是UTF-8编码？什么是缩略UTF-8编码？
+
+前者每个字符使用3个字节表示，而后者把128个ASKII码用1字节表示，某些字符用2字节表示，某些字符用3字节表示。
+</code></pre><h3 id="2-1-4-Class文件的构成4：访问标志"><a href="#2-1-4-Class文件的构成4：访问标志" class="headerlink" title="2.1.4 Class文件的构成4：访问标志"></a>2.1.4 Class文件的构成4：访问标志</h3><p>在常量池之后是2字节的访问标志。访问标志是用来表示这个class文件是类还是接口、是否被public修饰、是否被abstract修饰、是否被final修饰等。</p>
+<p>由于这些标志都由是/否表示，因此可以用0/1表示。</p>
+<p>访问标志为2字节，可以表示16位标志，但JVM目前只定义了8种，未定义的直接写0.</p>
+<h3 id="2-1-5-Class文件的构成5：类索引、父类索引、接口索引集合"><a href="#2-1-5-Class文件的构成5：类索引、父类索引、接口索引集合" class="headerlink" title="2.1.5 Class文件的构成5：类索引、父类索引、接口索引集合"></a>2.1.5 Class文件的构成5：类索引、父类索引、接口索引集合</h3><p>类索引、父类索引、接口索引集合是用来表示当前class文件所表示类的名字、父类名字、接口们的名字。</p>
+<p>它们按照顺序依次排列，类索引和父类索引各自使用一个u2类型的无符号常量，这个常量指向CONSTANT_Class_info类型的常量，该常量的bytes字段记录了本类、父类的全限定名。</p>
+<p>由于一个类的接口可能有好多个，因此需要用一个集合来表示接口索引，它在类索引和父类索引之后。这个集合头两个字节表示接口索引集合的长度，接下来就是接口的名字索引。</p>
+<p>类索引和父类索引都是一个 u2 类型的数据，而接口索引集合是一组 u2 类型的数据的集合，Class 文件中由这三项数据来确定类的继承关系。类索引用于确定这个类的全限定名，父类索引用于确定这个类的父类的全限定名。</p>
+<p>由于 Java 不允许多重继承，所以父类索引只有一个，除了 java.lang.Object 之外，所有的 Java 类都有父类，因此除了 java.lang.Object 外，所有 Java 类的父类索引都不为 0。一个类可能实现了多个接口，因此用接口索引集合来描述。这个集合第一项为 u2 类型的数据，表示索引表的容量，接下来就是接口的名字索引。</p>
+<p>类索引和父类索引用两个 u2 类型的索引值表示，它们各自指向一个类型为 CONSTANT_Class_info 的类描述符常量，通过该常量总的索引值可以找到定义在 CONSTANT_Utf8_info 类型的常量中的全限定名字符串。</p>
+<h3 id="2-1-6-Class文件的构成6：字段表的集合"><a href="#2-1-6-Class文件的构成6：字段表的集合" class="headerlink" title="2.1.6 Class文件的构成6：字段表的集合"></a>2.1.6 Class文件的构成6：字段表的集合</h3><h4 id="2-1-6-1-什么是字段表集合？"><a href="#2-1-6-1-什么是字段表集合？" class="headerlink" title="2.1.6.1 什么是字段表集合？"></a>2.1.6.1 什么是字段表集合？</h4><p>字段表集合用于存储本类所涉及到的成员变量，包括实例变量和类变量，但不包括方法中的局部变量。</p>
+<p>每一个字段表只表示一个成员变量，本类中所有的成员变量构成了字段表集合。</p>
+<h4 id="2-1-6-2-字段表结构的定义"><a href="#2-1-6-2-字段表结构的定义" class="headerlink" title="2.1.6.2 字段表结构的定义"></a>2.1.6.2 字段表结构的定义</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名称</th>
+<th>数量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u2</td>
+<td>access_flags</td>
+<td>1</td>
+<td>字段的访问标志，与类稍有不同</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>name_index</td>
+<td>1</td>
+<td>字段名字的索引</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>descriptor_index</td>
+<td>1</td>
+<td>描述符，用于描述字段的数据类型。 基本数据类型用大写字母表示； 对象类型用“L 对象类型的全限定名”表示。</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>attributes_count</td>
+<td>1</td>
+<td>属性表集合的长度</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>attributes</td>
+<td>attributes_count</td>
+<td>属性表集合，用于存放属性的额外信息，如属性的值。</td>
+</tr>
+</tbody>
+</table>
+<p>access_flags：字段的访问标志。在Java中，每个成员变量都有一系列的修饰符，和上述class文件的访问标志的作用一样，只不过成员变量的访问标志与类的访问标志稍有区别。</p>
+<p>name_index：本字段名字的索引。指向一个CONSTANT_Class_info类型的常量，这里面存储了本字段的名字等信息。</p>
+<p>descriptor_index：描述符。用于描述本字段在Java中的数据类型等信息（下面详细介绍）。</p>
+<p>attributes_count：属性表集合的长度。</p>
+<p>attributes：属性表集合。到descriptor_index为止是字段表的固定信息，光有上述信息可能无法完整地描述一个字段，因此用属性表集合来存放额外的信息，比如一个字段的值（下面会详细介绍）。</p>
+<h4 id="2-1-6-3-什么是描述符？"><a href="#2-1-6-3-什么是描述符？" class="headerlink" title="2.1.6.3 什么是描述符？"></a>2.1.6.3 什么是描述符？</h4><p>成员变量（包括静态成员变量和实例变量）和 方法都有各自的描述符。</p>
+<p>对于字段而言，描述符用于描述字段的数据类型；</p>
+<p>对于方法而言，描述符用于描述字段的数据类型、参数列表、返回值。</p>
+<p>在描述符中，基本数据类型用大写字母表示，对象类型用“L对象类型的全限定名”表示，数组用“[数组类型的全限定名”表示。</p>
+<p>描述方法时，将参数根据上述规则放在()中，()右侧按照上述方法放置返回值。而且，参数之间无需任何符号。</p>
+<h4 id="2-1-6-4-字段表集合的注意点"><a href="#2-1-6-4-字段表集合的注意点" class="headerlink" title="2.1.6.4 字段表集合的注意点"></a>2.1.6.4 字段表集合的注意点</h4><p>字段表集合中不会出现从父类（或接口）中继承而来的字段，但有可能出现原本 Java 代码中不存在的字段，譬如在内部类中为了保持对外部类的访问性，会自动添加指向外部类实例的字段。</p>
+<p>一个class文件的字段表集合中不能出现从父类/接口继承而来的字段；</p>
+<p>一个class文件的字段表集合中可能会出现程序没有定义的字段</p>
+<p>如编译器会自动地在内部类的class文件的字段表集合中添加外部类对象的成员变量，供内部类访问外部类。</p>
+<p>Java中只要两个字段名字相同就无法通过编译。但在JVM规范中，允许两个字段的名字相同但描述符不同的情况，并且认为它们是两个不同的字段。</p>
+<h3 id="2-1-7-Class文件的构成7：方法表的集合"><a href="#2-1-7-Class文件的构成7：方法表的集合" class="headerlink" title="2.1.7 Class文件的构成7：方法表的集合"></a>2.1.7 Class文件的构成7：方法表的集合</h3><p>在class文件中，所有的方法以二维表的形式存储，每张表来表示一个函数，一个类中的所有方法构成方法表的集合。</p>
+<p>方法表的结构和字段表的结构一致，只不过访问标志和属性表集合的可选项有所不同。</p>
+<p>volatile 关键字 和 transient 关键字不能修饰方法，所以方法表的访问标志中没有 ACC_VOLATILE 和 ACC_TRANSIENT 标志。</p>
+<p>方法表的属性表集合中有一张Code属性表，用于存储当前方法经编译器编译过后的字节码指令。</p>
+<p>方法表集合的注意点</p>
+<p>如果本class没有重写父类的方法，那么本class文件的方法表集合中是不会出现父类/父接口的方法表；</p>
+<p>本class的方法表集合可能出现程序猿没有定义的方法</p>
+<p>编译器在编译时会在class文件的方法表集合中加入类构造器和实例构造器。</p>
+<p>重载一个方法需要有相同的简单名称和不同的特征签名。JVM的特征签名和Java的特征签名有所不同：</p>
+<p>Java特征签名：方法参数在常量池中的字段符号引用的集合</p>
+<p>JVM特征签名：方法参数＋返回值</p>
+<h1 id="2-1-8-Class文件的构成8：属性表的集合"><a href="#2-1-8-Class文件的构成8：属性表的集合" class="headerlink" title="2.1.8 Class文件的构成8：属性表的集合"></a>2.1.8 Class文件的构成8：属性表的集合</h1><p>每个属性对应一张属性表，属性表的结构如下：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名称</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u2</td>
+<td>attribute_name_index</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u4</td>
+<td>attribute_length</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u1</td>
+<td>info</td>
+<td>attribute_length</td>
+</tr>
+</tbody>
+</table>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-JVM的“无关性”"><span class="toc-text"><a href="#1-JVM&#x7684;&#x201C;&#x65E0;&#x5173;&#x6027;&#x201D;" class="headerlink" title="1 JVM&#x7684;&#x201C;&#x65E0;&#x5173;&#x6027;&#x201D;"></a>1 JVM&#x7684;&#x201C;&#x65E0;&#x5173;&#x6027;&#x201D;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Class文件结构"><span class="toc-text"><a href="#2-Class&#x6587;&#x4EF6;&#x7ED3;&#x6784;" class="headerlink" title="2 Class&#x6587;&#x4EF6;&#x7ED3;&#x6784;"></a>2 Class&#x6587;&#x4EF6;&#x7ED3;&#x6784;</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-class文件的组织结构"><span class="toc-text"><a href="#2-1-class&#x6587;&#x4EF6;&#x7684;&#x7EC4;&#x7EC7;&#x7ED3;&#x6784;" class="headerlink" title="2.1 class&#x6587;&#x4EF6;&#x7684;&#x7EC4;&#x7EC7;&#x7ED3;&#x6784;"></a>2.1 class&#x6587;&#x4EF6;&#x7684;&#x7EC4;&#x7EC7;&#x7ED3;&#x6784;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-Class文件的构成1：魔数"><span class="toc-text"><a href="#2-1-1-Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;1&#xFF1A;&#x9B54;&#x6570;" class="headerlink" title="2.1.1 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;1&#xFF1A;&#x9B54;&#x6570;"></a>2.1.1 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;1&#xFF1A;&#x9B54;&#x6570;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-Class文件的构成2：版本信息"><span class="toc-text"><a href="#2-1-2-Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;2&#xFF1A;&#x7248;&#x672C;&#x4FE1;&#x606F;" class="headerlink" title="2.1.2 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;2&#xFF1A;&#x7248;&#x672C;&#x4FE1;&#x606F;"></a>2.1.2 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;2&#xFF1A;&#x7248;&#x672C;&#x4FE1;&#x606F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-Class文件的构成3：常量池"><span class="toc-text"><a href="#2-1-3-Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;3&#xFF1A;&#x5E38;&#x91CF;&#x6C60;" class="headerlink" title="2.1.3 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;3&#xFF1A;&#x5E38;&#x91CF;&#x6C60;"></a>2.1.3 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;3&#xFF1A;&#x5E38;&#x91CF;&#x6C60;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-3-1-常量池的定义"><span class="toc-text"><a href="#2-1-3-1-&#x5E38;&#x91CF;&#x6C60;&#x7684;&#x5B9A;&#x4E49;" class="headerlink" title="2.1.3.1 &#x5E38;&#x91CF;&#x6C60;&#x7684;&#x5B9A;&#x4E49;"></a>2.1.3.1 &#x5E38;&#x91CF;&#x6C60;&#x7684;&#x5B9A;&#x4E49;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-3-2-常量池的特点"><span class="toc-text"><a href="#2-1-3-2-&#x5E38;&#x91CF;&#x6C60;&#x7684;&#x7279;&#x70B9;" class="headerlink" title="2.1.3.2 &#x5E38;&#x91CF;&#x6C60;&#x7684;&#x7279;&#x70B9;"></a>2.1.3.2 &#x5E38;&#x91CF;&#x6C60;&#x7684;&#x7279;&#x70B9;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-3-3-常量池中常量的类型"><span class="toc-text"><a href="#2-1-3-3-&#x5E38;&#x91CF;&#x6C60;&#x4E2D;&#x5E38;&#x91CF;&#x7684;&#x7C7B;&#x578B;" class="headerlink" title="2.1.3.3 &#x5E38;&#x91CF;&#x6C60;&#x4E2D;&#x5E38;&#x91CF;&#x7684;&#x7C7B;&#x578B;"></a>2.1.3.3 &#x5E38;&#x91CF;&#x6C60;&#x4E2D;&#x5E38;&#x91CF;&#x7684;&#x7C7B;&#x578B;</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-4-Class文件的构成4：访问标志"><span class="toc-text"><a href="#2-1-4-Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;4&#xFF1A;&#x8BBF;&#x95EE;&#x6807;&#x5FD7;" class="headerlink" title="2.1.4 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;4&#xFF1A;&#x8BBF;&#x95EE;&#x6807;&#x5FD7;"></a>2.1.4 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;4&#xFF1A;&#x8BBF;&#x95EE;&#x6807;&#x5FD7;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-5-Class文件的构成5：类索引、父类索引、接口索引集合"><span class="toc-text"><a href="#2-1-5-Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;5&#xFF1A;&#x7C7B;&#x7D22;&#x5F15;&#x3001;&#x7236;&#x7C7B;&#x7D22;&#x5F15;&#x3001;&#x63A5;&#x53E3;&#x7D22;&#x5F15;&#x96C6;&#x5408;" class="headerlink" title="2.1.5 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;5&#xFF1A;&#x7C7B;&#x7D22;&#x5F15;&#x3001;&#x7236;&#x7C7B;&#x7D22;&#x5F15;&#x3001;&#x63A5;&#x53E3;&#x7D22;&#x5F15;&#x96C6;&#x5408;"></a>2.1.5 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;5&#xFF1A;&#x7C7B;&#x7D22;&#x5F15;&#x3001;&#x7236;&#x7C7B;&#x7D22;&#x5F15;&#x3001;&#x63A5;&#x53E3;&#x7D22;&#x5F15;&#x96C6;&#x5408;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-6-Class文件的构成6：字段表的集合"><span class="toc-text"><a href="#2-1-6-Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;6&#xFF1A;&#x5B57;&#x6BB5;&#x8868;&#x7684;&#x96C6;&#x5408;" class="headerlink" title="2.1.6 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;6&#xFF1A;&#x5B57;&#x6BB5;&#x8868;&#x7684;&#x96C6;&#x5408;"></a>2.1.6 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;6&#xFF1A;&#x5B57;&#x6BB5;&#x8868;&#x7684;&#x96C6;&#x5408;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-6-1-什么是字段表集合？"><span class="toc-text"><a href="#2-1-6-1-&#x4EC0;&#x4E48;&#x662F;&#x5B57;&#x6BB5;&#x8868;&#x96C6;&#x5408;&#xFF1F;" class="headerlink" title="2.1.6.1 &#x4EC0;&#x4E48;&#x662F;&#x5B57;&#x6BB5;&#x8868;&#x96C6;&#x5408;&#xFF1F;"></a>2.1.6.1 &#x4EC0;&#x4E48;&#x662F;&#x5B57;&#x6BB5;&#x8868;&#x96C6;&#x5408;&#xFF1F;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-6-2-字段表结构的定义"><span class="toc-text"><a href="#2-1-6-2-&#x5B57;&#x6BB5;&#x8868;&#x7ED3;&#x6784;&#x7684;&#x5B9A;&#x4E49;" class="headerlink" title="2.1.6.2 &#x5B57;&#x6BB5;&#x8868;&#x7ED3;&#x6784;&#x7684;&#x5B9A;&#x4E49;"></a>2.1.6.2 &#x5B57;&#x6BB5;&#x8868;&#x7ED3;&#x6784;&#x7684;&#x5B9A;&#x4E49;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-6-3-什么是描述符？"><span class="toc-text"><a href="#2-1-6-3-&#x4EC0;&#x4E48;&#x662F;&#x63CF;&#x8FF0;&#x7B26;&#xFF1F;" class="headerlink" title="2.1.6.3 &#x4EC0;&#x4E48;&#x662F;&#x63CF;&#x8FF0;&#x7B26;&#xFF1F;"></a>2.1.6.3 &#x4EC0;&#x4E48;&#x662F;&#x63CF;&#x8FF0;&#x7B26;&#xFF1F;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-6-4-字段表集合的注意点"><span class="toc-text"><a href="#2-1-6-4-&#x5B57;&#x6BB5;&#x8868;&#x96C6;&#x5408;&#x7684;&#x6CE8;&#x610F;&#x70B9;" class="headerlink" title="2.1.6.4 &#x5B57;&#x6BB5;&#x8868;&#x96C6;&#x5408;&#x7684;&#x6CE8;&#x610F;&#x70B9;"></a>2.1.6.4 &#x5B57;&#x6BB5;&#x8868;&#x96C6;&#x5408;&#x7684;&#x6CE8;&#x610F;&#x70B9;</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-7-Class文件的构成7：方法表的集合"><span class="toc-text"><a href="#2-1-7-Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;7&#xFF1A;&#x65B9;&#x6CD5;&#x8868;&#x7684;&#x96C6;&#x5408;" class="headerlink" title="2.1.7 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;7&#xFF1A;&#x65B9;&#x6CD5;&#x8868;&#x7684;&#x96C6;&#x5408;"></a>2.1.7 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;7&#xFF1A;&#x65B9;&#x6CD5;&#x8868;&#x7684;&#x96C6;&#x5408;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-1-8-Class文件的构成8：属性表的集合"><span class="toc-text"><a href="#2-1-8-Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;8&#xFF1A;&#x5C5E;&#x6027;&#x8868;&#x7684;&#x96C6;&#x5408;" class="headerlink" title="2.1.8 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;8&#xFF1A;&#x5C5E;&#x6027;&#x8868;&#x7684;&#x96C6;&#x5408;"></a>2.1.8 Class&#x6587;&#x4EF6;&#x7684;&#x6784;&#x6210;8&#xFF1A;&#x5C5E;&#x6027;&#x8868;&#x7684;&#x96C6;&#x5408;</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-07-JVM-类文件结构/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
+     
+      <a href="/tags/JVM/"><i class="fa fa-tags"></i>JVM</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2019 <a href="https://177.im" target="_blank">177.im</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/2019-03-08-JVM-类加载/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/2019-03-06-JVM-JVM性能调优/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+  </body>
+</html>

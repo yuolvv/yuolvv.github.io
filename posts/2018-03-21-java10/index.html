@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>你敢信?Java10发布了！！！ | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="IT,Java,JavaSE,Java10," />
+  
+
+  
+  <meta name="description" content="没有跳票的Java10，正式发布！">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: [],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2018-03-21
+    </span>
+    
+      <span>
+        | <a href="/categories/IT/"><i class="fa fa-bookmark"></i>IT</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    你敢信?Java10发布了！！！
+  </h1>
+  
+  <article class="passage-article">
+    <p>不知是不是OUT了，Java9还没在生产环境中使用过，Java10就发布了。</p>
+<p>下载地址：<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html</a></p>
+<p>为了更快地迭代更新，以及跟进社区反馈，Java 的版本发布周期变更为每六个月一次，并且承诺不会跳票。</p>
+<p>新的发布周期也会严格遵循时间点，将在每年的 3 月份和 9 月份发布，所以 Java 10 的版本号是 18.3。</p>
+<p>（貌似有点像Ubuntu的发布周期的模式）</p>
+<p>Java 10 是采用新发布周期的第一个版本，提供了 109 项新特性。</p>
+<h2 id="JDK10-包含-12-个JEP-改善提议）："><a href="#JDK10-包含-12-个JEP-改善提议）：" class="headerlink" title="JDK10 包含 12 个JEP (改善提议）："></a>JDK10 包含 12 个JEP (改善提议）：</h2><h3 id="1-【286】局部变量类型推断："><a href="#1-【286】局部变量类型推断：" class="headerlink" title="1.【286】局部变量类型推断："></a>1.【286】局部变量类型推断：</h3><p>对于开发者来说，这是JDK10唯一的<strong>真正特性</strong>。</p>
+<p>它向Java中引入在其他语言中很常见的 var ，比如JavaScript。只要编译器可以推断此种类型，你不再需要专门声明一个局部变量的类型。</p>
+<p>一个简单的例子是：</p>
+<blockquote>
+<p>var x = new ArrayList<string>();</string></p>
+</blockquote>
+<p>这就消除了之前必须执行的 ArrayList<string> 类型定义的重复。</string></p>
+<p>有趣的是，需要注意 var 不能成为一个关键字，而是一个保留字。这意味着你仍然可以使用 var 作为一个变量，方法或包名，但是现在不能再有一个类被调用。</p>
+<h3 id="2-310-应用类数据共享-CDS-："><a href="#2-310-应用类数据共享-CDS-：" class="headerlink" title="2.[310]应用类数据共享(CDS) ："></a>2.[310]应用类数据共享(CDS) ：</h3><p>CDS 在JDK5时被引进以改善 JVM 启动的表现，同时减少当多个虚拟机在同一个物理或虚拟的机器上运行时的资源占用。</p>
+<p>JDK10 将扩展 CDS 到允许内部系统的类加载器、内部平台的类加载器和自定义类加载器来加载获得的类。</p>
+<p>之前，CDS 的使用仅仅限制在了 bootstrap 的类加载器。</p>
+<h3 id="3-314-额外的-Unicode-语言标签扩展："><a href="#3-314-额外的-Unicode-语言标签扩展：" class="headerlink" title="3.[314]额外的 Unicode 语言标签扩展："></a>3.[314]额外的 Unicode 语言标签扩展：</h3><p>这将改善 java.util.Locale 类和相关的 API 以实现额外 BCP 47 语言标签的 Unicode 扩展。</p>
+<p>尤其是，货币类型，一周的第一天，区域覆盖和时区等标签现在将被支持。</p>
+<h3 id="4-322-基于时间的版本控制："><a href="#4-322-基于时间的版本控制：" class="headerlink" title="4.[322]基于时间的版本控制："></a>4.[322]基于时间的版本控制：</h3><p>JDK 版本字符串格式几乎与 JDK 版本一样多。有幸的是，这是最后需要使用到的，可以坚持用它。这种格式使用起来很像 JDK9 中介绍的提供一个更加语义的形式。</p>
+<p>有一件困扰我的事是包含了一个 INTERIM 元素，正如 JEP 提议中所说，“永远是0”。好吧，如果永远是0，那它有什么意义呢？他们说这是为未来使用做保留…</p>
+<p>这也消除了在 JDK9 中有过的相当奇怪的情形。</p>
+<p>第一次更新是 JDK 9.0.1 , 非常符合逻辑。第二次更新是 JDK 9.0.4 ，不合逻辑。原因是，在 JDK9 的版本计数模式下，需要留下空白以便应急或不在预期安排的更新使用。但既然没有更新是必须的，为什么不简单称之为 JDK 9.0.2 呢？</p>
+<h3 id="5-319-根证书："><a href="#5-319-根证书：" class="headerlink" title="5.[319]根证书："></a>5.[319]根证书：</h3><p>在 JDK 中将提供一套默认的 CA 根证书。关键的安全部件，如 TLS ，在 OpenJDK 构建中将默认有效。这是 Oracle 正在努力确保 OpenJDK 二进制和 Oracle JDK 二进制功能上一样的工作的一部分，是一项有用的补充内容。</p>
+<h3 id="6-307-并行全垃圾回收器-G1"><a href="#6-307-并行全垃圾回收器-G1" class="headerlink" title="6.[307] 并行全垃圾回收器 G1 :"></a>6.[307] 并行全垃圾回收器 G1 :</h3><p>G1 是设计来作为一种低延时的垃圾回收器（但是如果它跟不上旧的堆碎片产生的提升速率的话，将仍然采用完整压缩集合）。</p>
+<p>在 JDK9 之前，默认的收集器是并行，吞吐，收集器。为了减少在使用默认的收集器的应用性能配置文件的差异，G1 现在有一个并行完整收集机制。</p>
+<h3 id="7-313-移除-Native-Header-自动生成工具："><a href="#7-313-移除-Native-Header-自动生成工具：" class="headerlink" title="7.[313]移除 Native-Header 自动生成工具："></a>7.[313]移除 Native-Header 自动生成工具：</h3><p>Java9 开始了一些对 JDK 的家务管理，这项特性是对它的延续。当编译 JNI 代码时，已不再需要单独的工具来生成头文件，因为这可以通过 javac 完成。在未来的某一时刻，JNI 将会被 Panama 项目的结果取代，但是何时发生还不清楚。</p>
+<h3 id="8-304-垃圾回收器接口"><a href="#8-304-垃圾回收器接口" class="headerlink" title="8.[304]垃圾回收器接口:"></a>8.[304]垃圾回收器接口:</h3><p>这不是让开发者用来控制垃圾回收的接口；而是一个在 JVM 源代码中的允许另外的垃圾回收器快速方便的集成的接口。</p>
+<h3 id="9-312-线程-局部变量管控："><a href="#9-312-线程-局部变量管控：" class="headerlink" title="9.[312]线程-局部变量管控："></a>9.[312]线程-局部变量管控：</h3><p>这是在 JVM 内部相当低级别的更改，现在将允许在不运行全局虚拟机安全点的情况下实现线程回调。这将使得停止单个线程变得可能和便宜，而不是只能启用或停止所有线程。</p>
+<h3 id="10-316-在备用存储装置上的堆分配："><a href="#10-316-在备用存储装置上的堆分配：" class="headerlink" title="10.[316]在备用存储装置上的堆分配："></a>10.[316]在备用存储装置上的堆分配：</h3><p>硬件技术在持续进化，现在可以使用与传统 DRAM 具有相同接口和类似性能特点的非易失性 RAM 。这项 JEP 将使得 JVM 能够使用适用于不同类型的存储机制的堆。</p>
+<h3 id="11-317-试验性的基于-Java-的-JIT-编译器："><a href="#11-317-试验性的基于-Java-的-JIT-编译器：" class="headerlink" title="11.[317]试验性的基于 Java 的 JIT 编译器："></a>11.[317]试验性的基于 Java 的 JIT 编译器：</h3><p>最近宣布的 Metropolis 项目，提议用 Java 重写大部分 JVM 。乍一想，觉得很奇怪。如果 JVM 是用 Java 编写的，那么是否需要一个 JVM 来运行 JVM ？ 相应的，这导致了一个很好的镜像类比。 现实情况是，使用 Java 编写 JVM 并不意味着必须将其编译为字节码，你可以使用 AOT 编译，然后在运行时编译代码以提高性能。</p>
+<p>这项 JEP 将 Graal 编译器研究项目引入到 JDK 中,并给将 Metropolis 项目成为现实，使 JVM 性能与当前 C++ 所写版本匹敌（或有幸超越）提供基础。</p>
+<h3 id="12-296-合并-JDK-多个代码仓库到一个单独的储存库中："><a href="#12-296-合并-JDK-多个代码仓库到一个单独的储存库中：" class="headerlink" title="12.[296]合并 JDK 多个代码仓库到一个单独的储存库中："></a>12.[296]合并 JDK 多个代码仓库到一个单独的储存库中：</h3><p>在 JDK9 中，有 8 个仓库： root、corba、hotspot、jaxp、jaxws、jdk、langtools 和 nashorn 。</p>
+<p>在 JDK10 中这些将被合并为一个，使得跨相互依赖的变更集的存储库运行 atomic commit （原子提交）成为可能。</p>
+<h2 id="新-API"><a href="#新-API" class="headerlink" title="新 API"></a>新 API</h2><p>有 73 项新增内容添加到了标准类库中。</p>
+<p>1.java.awt.Toolkit</p>
+<p>int getMenuShortcutKeyMaskEx(): 确定哪个扩展修饰符键是菜单快捷键的适当加速键。</p>
+<p>2.java.awt.geom.Path2D: </p>
+<p>void trimToSize(): 将此 Path2D 实例的容量计算到它当前的大小。应用可使用此操作将路径的存储空间最小化。这个方法也被添加到 Path2D.Double 和 Path2D.Float 类。</p>
+<p>3.java.io.ByteArrayOutputStream:</p>
+<p>String toString(Charset): 重载 toString()，通过使用指定的字符集解码字节，将缓冲区的内容转换为字符串。</p>
+<p>4.java.io.PrintStream:  &amp;&amp;  lang.io.PrintWriter:</p>
+<p>这两个类都有三个新的构造函数，它们需要额外的 Charset 参数。</p>
+<p>5.java.io.Reader:  &amp;&amp;  long transferTo(Writer): </p>
+<p>从这个 Reader 中读取所有字符，并按照所读的顺序将字符写入给定的 Writer 。</p>
+<p>6.java.lang.Runtime.Version:</p>
+<p>有四种新方法返回新（JEP 322）版本字符串字段的整数值: feature()、interim()、patch() 和 update() 。</p>
+<p>7.java.lang.StackWalker.StackFrame:</p>
+<p>String getDescriptor(): 按照 JVM 标准返回此堆栈帧所代表的方法的描述符。</p>
+<p>String getMethodType():返回此堆栈帧所代表的方法类型，描述参数类型和返回值类型。</p>
+<p>8.java.lang.invoke.MethodType:</p>
+<p>Class&lt;?&gt; lastParameterType():返回这个方法类型的最后一个参数类型。如果这个方法类型没有参数，则返回空类型作为岗哨值（Sentinel Value）。</p>
+<p>9.java.lang.management.RuntimeMXBean:</p>
+<p>long getPid(): R 返回正在运行的 JVM 的进程 ID 。</p>
+<p>10.java.lang.management.ThreadMXBean:</p>
+<p>ThreadInfo[] dumpAllThreads(boolean, boolean, int): 返回所有活动线程的线程信息，其中有指定的最大元素数量和同步信息的堆栈跟踪。</p>
+<p>ThreadInfo[] getThreadInfo(long[], boolean, boolean, int): 返回每个线程的线程信息，这些线程的标识位于输入数组中，其中有指定的最大元素数量和同步信息的堆栈跟踪。</p>
+<p>11.java.lang.reflect.MalformedParameterizedTypeException: </p>
+<p>添加了一个新的构造函数，它以字符串的形式作为参数来获取详细信息。</p>
+<p>12.java.net.URLDecoder:</p>
+<p>java.net.URLEncoder:</p>
+<p>这两个类都有新的重载的解码和编码方法，将 charset 作为附加参数。</p>
+<p>13.java.nio.channels.Channels:</p>
+<p>两个新的静态重载方法，允许使用 Charset 的 newReader（ReadByteChannel，Charset）和newWriter（WriteByteChannel，Charset）。</p>
+<p>14.java.nio.file.FileStore:</p>
+<p>long getBlockSize(): 在这个文件存储中返回每个块的字节数。</p>
+<p>15.java.time.chrono: </p>
+<p>这个包里有三个类，HijrahEra、MiinguoEra 和 ThaiBuddhistEra ，都有同样的方法。</p>
+<p>String getDisplayName(TextStyle, Locale): 这将返回用于识别 era 的文本名称，适合于向用户展示。</p>
+<p>16.java.time.format.DateTimeFormatter:</p>
+<p>localizedBy(Locale): 返回指定格式器的一个副本，其中包含地区、日历、区域、小数和/或时区的本地化值，这将取代该格式器中的值。</p>
+<p>17.java.util: </p>
+<p>DoubleSummaryStatistics、IntSummaryStatistics 和 LongSummaryStatistics 都有一个新的构造函数，它包含 4 个数值。</p>
+<p>它使用指定的计数、最小值、最大值和总和构造一个非空实例。</p>
+<p>18.java.util.List:  &amp;&amp;  java.util.Map:  &amp;&amp;  java.util.Set: </p>
+<p>这些接口中的每一个都增加了一个新的静态方法，copyOf(Collection）。这些函数按照其迭代顺序返回一个不可修改的列表、映射或包含给定集合的元素的集合。</p>
+<p>19.java.util.Optional: &amp;&amp; java.util.OptionalDouble: &amp;&amp; java.util.OptionalInt: &amp;&amp; java.util.OptionalLong: </p>
+<p>每一个类都有一个新的方法，orElseThrow() ，它本质上和 get() 一样，也就是说，如果 Optional 有值则返回。否则，将抛出 NoSuchElementException 。</p>
+<p>20.java.util.Formatter:  &amp;&amp;  java.util.Scanner:</p>
+<p>这两个类都有三个新的构造函数，除了其他参数之外，它们都带有一个 charset 参数。</p>
+<p>21.java.util.Properties: </p>
+<p>这有一个新的构造函数，它接受一个 int 参数。这将创建一个没有默认值的空属性列表，并且指定初始大小以容纳指定的元素数量，而无需动态调整大小。</p>
+<p>还有一个新的重载的 replace 方法，接受三个 Object 参数并返回一个布尔值。只有在当前映射到指定值时，才会替换指定键的条目。</p>
+<p>22.java.SplittableRandom: </p>
+<p>void nextBytes(byte[]): 用生成的伪随机字节填充一个用户提供的字节数组。</p>
+<p>23.java.util.concurrent.FutureTask: </p>
+<p>添加了 toString() 方法，该方法返回一个标识 FutureTask 的字符串，以及它的完成状态。</p>
+<p>在括号中，状态包含如下字符串中的一个，“Completed Normally” 、“Completed Exceptionally”、 “Cancelled” 或者 “Not completed”。</p>
+<p>24.java.util.concurrent.locks.StampedLock:</p>
+<p>boolean isLockStamp(long): 返回一个标记戳表示是否持有一个锁。</p>
+<p>boolean isOptimisticReadStamp(long): 返回一个标记戳代表是否成功的进行了乐观读（optimistic read）。</p>
+<p>boolean isReadLockStamp(long): 返回一个标记戳表示是否持有一个非独占锁（即 read lock ）。</p>
+<p>boolean isWriteLockStamp(long): 返回一个标记戳表示是否持有一个独占锁（即 write lock ）。</p>
+<p>25.java.jar.JarEntry:</p>
+<p>String getRealName(): 返回这个 JarEntry 的真实名称。如果这个 JarEntry 是一个多版本 jar 文件的入口，它被配置为这样处理，这个方法返回的名字是 JarEntry 所代表的版本条目的入口，而不是 ZipEntry.getName（） 返回的基本条目的路径名。</p>
+<p>如果 JarEntry 不代表一个多版本 jar 文件的版本化条目或者 jar 文件没有被配置为作为一个多版本 jar 文件进行处理，这个方法将返回与 ZipEntry.getName（） 返回的相同名称。</p>
+<p>26.java.util.jar.JarFile:</p>
+<p>Stream<jarentry> versionedStream(): 返回 jar 文件中指定版本的入口对应 Stream 。与 JarEntry 的 getRealName 方法类似，这与多版本 jar 文件有关。</jarentry></p>
+<p>27.java.util.spi.LocaleNameProvider:</p>
+<p>getDisplayUnicodeExtensionKey(String, Locale): 为给定的 Unicode 扩展键返回一个本地化名称。</p>
+<p>getDisplayUnicodeExtensionType(String, String, Locale): 为给定的 Unicode 扩展键返回一个本地化名称。</p>
+<p>28.java.util.stream.Collectors:</p>
+<p>toUnmodifiableList():</p>
+<p>toUnmodifiableSet():</p>
+<p>toUnmodifiableMap(Function, Function): </p>
+<p>toUnmodifiableMap(Function, Function, BinaryOperator): </p>
+<p>这四个新方法都返回 Collectors ，将输入元素聚集到适当的不可修改的集合中。</p>
+<p>29.java.lang.model.SourceVersion: </p>
+<p>现在有了一个字段，它代表了 JDK 10 的版本。</p>
+<p>30.java.lang.model.util.TypeKindVisitor6:</p>
+<p>javax.lang.model.util.TypeKindVisitor9:</p>
+<p>R visitNoTypeAsModule(NoType, P): </p>
+<p>访问一个 MODULE 的 pseudo-type 。不确定为什么只有这两个类得到这个方法，因为还有 Visitor7 和 Visitor8 变量。</p>
+<p>31.javax.remote.management.rmi.RMIConnectorServer:</p>
+<p>这个类已经添加了两个字段： CREDENTIALS_FILTER_PATTERN 和 SERIAL_FILTER_PATTERN 。</p>
+<p>32.javax.ButtonModel：</p>
+<p>Swing 还在更新！</p>
+<p>ButtonGroup getGroup(): 返回按钮所属的组。通常用于单选按钮，它们在组中是互斥的。</p>
+<p>33.javax.plaf.basic.BasicMenuUI:</p>
+<p>Dimension getMinimumSize(JComponent): 返回指定组件适合观感的最小大小。</p>
+<h2 id="JVM-规范改动"><a href="#JVM-规范改动" class="headerlink" title="JVM 规范改动"></a>JVM 规范改动</h2><p>这些改动相当小：</p>
+<p>4.6节：</p>
+<p>类文件格式（第99页）。在方法访问标志方面有小的改动。</p>
+<p>4.7节：</p>
+<p>模块属性（第169页）。如果模块不是 java.base ，则 JDK 10 不再允许设置 ACC_TRANSITIVE 或 ACC_STATIC_PHASE 。</p>
+<p>4.10节：</p>
+<p>类文件的校验（第252页）。dup2 指令已改变了 typesafe form 1 的定义，颠倒了 canSafleyPushList 一节中类型的顺序（你需要仔细查看才能发现它）。</p>
+<p>5.2节：</p>
+<p>Java 虚拟机启动（第350页）。该描述添加了在创建初始类或接口时可使用用户定义的类加载器（ bootstrap 类加载器除外）。</p>
+<h2 id="对-Java-语言规范的更改"><a href="#对-Java-语言规范的更改" class="headerlink" title="对 Java 语言规范的更改"></a>对 Java 语言规范的更改</h2><p>这里还有一些更改，但主要是为了支持局部变量类型推断。</p>
+<p>第3.8节：</p>
+<p>标识符（第23页）。在忽略了可忽略的字符之后，标识符的等价性现在被考虑了。这似乎是合乎逻辑的。</p>
+<p>（第24页）一个新的 Token，TypeIdentifier，它支持对局部变量类型推断的新用法，而 var 的使用不是关键字，而是一个具有特殊含义的标识符，作为局部变量声明的类型。</p>
+<p>第4.10.5节：</p>
+<p>类型预测（第76页）。这是一个相当复杂的部分，它涉及到捕获变量、嵌套类以及如何使用局部变量类型推断。建议阅读规范中的这一部分，而不是试图解释它。</p>
+<p>第6.1节：</p>
+<p>声明（第134页）。一个反映使用 TypeIdentifier 来支持局部变量类型的推断的小改动。</p>
+<p>第6.5节：</p>
+<p>确定名字的含义（第153页，第158页和第159页）。根据类型标识符的使用而更改类类型。</p>
+<p>第6.5.4.1:</p>
+<p>简单的 PackageOrTypeNames（第160页）</p>
+<p>第6.5.4.2节：</p>
+<p>合规的 PackageOrTypeNames（第160页）。这两种方式都与使用 TypeIdentifier 有细微的变化。</p>
+<p>第7.5.3:</p>
+<p>单静态导入声明（第191页）。这改变了导入具有相同名称的静态类型的规则。除非类型是相同的，否则这将成为一个错误，在这种情况下，重复被忽略。</p>
+<p>第7.7.1:</p>
+<p>依赖（第198页）。如果你明确声明一个模块需要 java.base ，那在必要的关键字之后，你就不能再使用修饰符（例如静态）了。</p>
+<p>第8部分：</p>
+<p>正式参数（第244页）。接收者参数可能只出现在一个实例方法的 formalparameters 列表，或者是一个内部类的构造函数中，其中内部类没有在静态上下文中声明。</p>
+<p>第9.7.4节：</p>
+<p>注释可能出现的地方（第335页）。有一个与局部变量类型推断相关的变更。</p>
+<p>第14.4部分：</p>
+<p>局部变量声明语句（第433页）。实现局部变量类型推断所需的大量更改。</p>
+<p>第14节：</p>
+<p>增强的 for 语句（第455页）。这个结构已经更新，包括对局部变量类型推断的支持。</p>
+<p>第14.20.3节:</p>
+<p>try-with-resources（474页）。这个结构已经更新，包括对局部变量类型推断的支持。</p>
+<p>最后，第 19 章有多处语法更新，反映了应更多使用 TypeIdentifier 类型标识符，而不仅仅是 Identifier 标识符，以支持局部变量类型推断。 </p>
+<h3 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h3><p>如果 Kerberos 的配置文件 krb5.conf 包含一个 INCLUDEDIR 选项，那么在 INCLUDEDIR 这个目录下所有以 .conf 结尾的文件都会被默认加载进来。</p>
+<p>以前版本中已经过期的 Java 的启动选项 -d32 和 –d64 在当前版本已经被移除。如果在新的版本里仍然使用了这两个选项，JVM 将无法正常启动。</p>
+<p>JDK10 支持 JDK9 中的新版本 Doclet，JDK6、JDK7、JDK8 中的 Doclet 版本都不再支持。</p>
+<p>JDK10 重新启用了在 JDK9 中被不当过时的 newFactory() 方法。</p>
+<p>JDK10 引入了一个新的 Javadoc 标签： {@summary…}，解决了以前版本无法生成 API 摘要的问题。</p>
+<p>JDK10 去掉了 BiasedLockingStartupDelay 的 4 秒启动延时。</p>
+<p>以下在 com.sun.security.auth 包中的过时的类在新版本中都已经被移除：</p>
+<pre><code>PolicyFile
+
+SolarisNumericGroupPrincipal
+
+SolarisNumericUserPrincipal
+
+X500Principal
+
+SolarisLoginModule
+
+SolarisSystem
+</code></pre><p>在 java.lang.SecurityManager 类中的以下属性和方法（从 JDK 1.2 就已经过时）终于被移除了：</p>
+<pre><code>inCheck (属性)
+
+getInCheck
+
+classDepth
+
+classLoaderDepth
+
+currentClassLoader
+
+currentLoadedClass
+
+inClass
+
+inClassLoader
+</code></pre><p>以下 java.lang.Runtime 类中已经被废弃的国际化方法在新版本被移除：</p>
+<pre><code>getLocalizedInputStream
+
+getLocalizedOutputStream
+</code></pre><p>以下废弃的 Hotspot –X 选项在新版本中被移除：-Xoss, -Xsqnopause, -Xoptimize, -Xboundthreads and –Xusealtsigs.policytool 在新版本中被移除。</p>
+<p>javadoc 工具在新版本中可以通过 –add-stylesheets 命令选项支持多个 stylesheets 。</p>
+<p>新版本的 JVM 能够根据系统分配给当前 Docker 容器的 CPU 数和内存来配置线程池和 GC 机制，而不再是直接使用系统的 CPU 和内存。并且增加了三个更强大的命令选项：-XX:InitialRAMPercentage、-XX:MaxRAMPercentage 和 -XX:MinRAMPercentage 。</p>
+<p>新版本增加了一个新的系统属性：jdk.disableLastUsageTracking。</p>
+<p>这个新增的属性就像它的名字一样，会禁用 JRE 的上一次使用跟踪。</p>
+<p>如上所述，尽管距离 JDK 9 发布仅有六个月的时间，但 JDK 10 实际上有相当多的变化。</p>
+<p>当然，它们中的一些是非常小的变更，但这表明目前每 6 个月发布一次的节奏，将在 Java 平台快速迭代改进方面起到作用。</p>
+<p>也许以后的以后，每当Java新版本发布：</p>
+<p>我们都会感慨一句：我X，JavaX又发布了！！！</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JDK10-包含-12-个JEP-改善提议）："><span class="toc-text"><a href="#JDK10-&#x5305;&#x542B;-12-&#x4E2A;JEP-&#x6539;&#x5584;&#x63D0;&#x8BAE;&#xFF09;&#xFF1A;" class="headerlink" title="JDK10 &#x5305;&#x542B; 12 &#x4E2A;JEP (&#x6539;&#x5584;&#x63D0;&#x8BAE;&#xFF09;&#xFF1A;"></a>JDK10 &#x5305;&#x542B; 12 &#x4E2A;JEP (&#x6539;&#x5584;&#x63D0;&#x8BAE;&#xFF09;&#xFF1A;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-【286】局部变量类型推断："><span class="toc-text"><a href="#1-&#x3010;286&#x3011;&#x5C40;&#x90E8;&#x53D8;&#x91CF;&#x7C7B;&#x578B;&#x63A8;&#x65AD;&#xFF1A;" class="headerlink" title="1.&#x3010;286&#x3011;&#x5C40;&#x90E8;&#x53D8;&#x91CF;&#x7C7B;&#x578B;&#x63A8;&#x65AD;&#xFF1A;"></a>1.&#x3010;286&#x3011;&#x5C40;&#x90E8;&#x53D8;&#x91CF;&#x7C7B;&#x578B;&#x63A8;&#x65AD;&#xFF1A;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-310-应用类数据共享-CDS-："><span class="toc-text"><a href="#2-310-&#x5E94;&#x7528;&#x7C7B;&#x6570;&#x636E;&#x5171;&#x4EAB;-CDS-&#xFF1A;" class="headerlink" title="2.[310]&#x5E94;&#x7528;&#x7C7B;&#x6570;&#x636E;&#x5171;&#x4EAB;(CDS) &#xFF1A;"></a>2.[310]&#x5E94;&#x7528;&#x7C7B;&#x6570;&#x636E;&#x5171;&#x4EAB;(CDS) &#xFF1A;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-314-额外的-Unicode-语言标签扩展："><span class="toc-text"><a href="#3-314-&#x989D;&#x5916;&#x7684;-Unicode-&#x8BED;&#x8A00;&#x6807;&#x7B7E;&#x6269;&#x5C55;&#xFF1A;" class="headerlink" title="3.[314]&#x989D;&#x5916;&#x7684; Unicode &#x8BED;&#x8A00;&#x6807;&#x7B7E;&#x6269;&#x5C55;&#xFF1A;"></a>3.[314]&#x989D;&#x5916;&#x7684; Unicode &#x8BED;&#x8A00;&#x6807;&#x7B7E;&#x6269;&#x5C55;&#xFF1A;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-322-基于时间的版本控制："><span class="toc-text"><a href="#4-322-&#x57FA;&#x4E8E;&#x65F6;&#x95F4;&#x7684;&#x7248;&#x672C;&#x63A7;&#x5236;&#xFF1A;" class="headerlink" title="4.[322]&#x57FA;&#x4E8E;&#x65F6;&#x95F4;&#x7684;&#x7248;&#x672C;&#x63A7;&#x5236;&#xFF1A;"></a>4.[322]&#x57FA;&#x4E8E;&#x65F6;&#x95F4;&#x7684;&#x7248;&#x672C;&#x63A7;&#x5236;&#xFF1A;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-319-根证书："><span class="toc-text"><a href="#5-319-&#x6839;&#x8BC1;&#x4E66;&#xFF1A;" class="headerlink" title="5.[319]&#x6839;&#x8BC1;&#x4E66;&#xFF1A;"></a>5.[319]&#x6839;&#x8BC1;&#x4E66;&#xFF1A;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-307-并行全垃圾回收器-G1"><span class="toc-text"><a href="#6-307-&#x5E76;&#x884C;&#x5168;&#x5783;&#x573E;&#x56DE;&#x6536;&#x5668;-G1" class="headerlink" title="6.[307] &#x5E76;&#x884C;&#x5168;&#x5783;&#x573E;&#x56DE;&#x6536;&#x5668; G1 :"></a>6.[307] &#x5E76;&#x884C;&#x5168;&#x5783;&#x573E;&#x56DE;&#x6536;&#x5668; G1 :</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-313-移除-Native-Header-自动生成工具："><span class="toc-text"><a href="#7-313-&#x79FB;&#x9664;-Native-Header-&#x81EA;&#x52A8;&#x751F;&#x6210;&#x5DE5;&#x5177;&#xFF1A;" class="headerlink" title="7.[313]&#x79FB;&#x9664; Native-Header &#x81EA;&#x52A8;&#x751F;&#x6210;&#x5DE5;&#x5177;&#xFF1A;"></a>7.[313]&#x79FB;&#x9664; Native-Header &#x81EA;&#x52A8;&#x751F;&#x6210;&#x5DE5;&#x5177;&#xFF1A;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-304-垃圾回收器接口"><span class="toc-text"><a href="#8-304-&#x5783;&#x573E;&#x56DE;&#x6536;&#x5668;&#x63A5;&#x53E3;" class="headerlink" title="8.[304]&#x5783;&#x573E;&#x56DE;&#x6536;&#x5668;&#x63A5;&#x53E3;:"></a>8.[304]&#x5783;&#x573E;&#x56DE;&#x6536;&#x5668;&#x63A5;&#x53E3;:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-312-线程-局部变量管控："><span class="toc-text"><a href="#9-312-&#x7EBF;&#x7A0B;-&#x5C40;&#x90E8;&#x53D8;&#x91CF;&#x7BA1;&#x63A7;&#xFF1A;" class="headerlink" title="9.[312]&#x7EBF;&#x7A0B;-&#x5C40;&#x90E8;&#x53D8;&#x91CF;&#x7BA1;&#x63A7;&#xFF1A;"></a>9.[312]&#x7EBF;&#x7A0B;-&#x5C40;&#x90E8;&#x53D8;&#x91CF;&#x7BA1;&#x63A7;&#xFF1A;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-316-在备用存储装置上的堆分配："><span class="toc-text"><a href="#10-316-&#x5728;&#x5907;&#x7528;&#x5B58;&#x50A8;&#x88C5;&#x7F6E;&#x4E0A;&#x7684;&#x5806;&#x5206;&#x914D;&#xFF1A;" class="headerlink" title="10.[316]&#x5728;&#x5907;&#x7528;&#x5B58;&#x50A8;&#x88C5;&#x7F6E;&#x4E0A;&#x7684;&#x5806;&#x5206;&#x914D;&#xFF1A;"></a>10.[316]&#x5728;&#x5907;&#x7528;&#x5B58;&#x50A8;&#x88C5;&#x7F6E;&#x4E0A;&#x7684;&#x5806;&#x5206;&#x914D;&#xFF1A;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-317-试验性的基于-Java-的-JIT-编译器："><span class="toc-text"><a href="#11-317-&#x8BD5;&#x9A8C;&#x6027;&#x7684;&#x57FA;&#x4E8E;-Java-&#x7684;-JIT-&#x7F16;&#x8BD1;&#x5668;&#xFF1A;" class="headerlink" title="11.[317]&#x8BD5;&#x9A8C;&#x6027;&#x7684;&#x57FA;&#x4E8E; Java &#x7684; JIT &#x7F16;&#x8BD1;&#x5668;&#xFF1A;"></a>11.[317]&#x8BD5;&#x9A8C;&#x6027;&#x7684;&#x57FA;&#x4E8E; Java &#x7684; JIT &#x7F16;&#x8BD1;&#x5668;&#xFF1A;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-296-合并-JDK-多个代码仓库到一个单独的储存库中："><span class="toc-text"><a href="#12-296-&#x5408;&#x5E76;-JDK-&#x591A;&#x4E2A;&#x4EE3;&#x7801;&#x4ED3;&#x5E93;&#x5230;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x7684;&#x50A8;&#x5B58;&#x5E93;&#x4E2D;&#xFF1A;" class="headerlink" title="12.[296]&#x5408;&#x5E76; JDK &#x591A;&#x4E2A;&#x4EE3;&#x7801;&#x4ED3;&#x5E93;&#x5230;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x7684;&#x50A8;&#x5B58;&#x5E93;&#x4E2D;&#xFF1A;"></a>12.[296]&#x5408;&#x5E76; JDK &#x591A;&#x4E2A;&#x4EE3;&#x7801;&#x4ED3;&#x5E93;&#x5230;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x7684;&#x50A8;&#x5B58;&#x5E93;&#x4E2D;&#xFF1A;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新-API"><span class="toc-text"><a href="#&#x65B0;-API" class="headerlink" title="&#x65B0; API"></a>&#x65B0; API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM-规范改动"><span class="toc-text"><a href="#JVM-&#x89C4;&#x8303;&#x6539;&#x52A8;" class="headerlink" title="JVM &#x89C4;&#x8303;&#x6539;&#x52A8;"></a>JVM &#x89C4;&#x8303;&#x6539;&#x52A8;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对-Java-语言规范的更改"><span class="toc-text"><a href="#&#x5BF9;-Java-&#x8BED;&#x8A00;&#x89C4;&#x8303;&#x7684;&#x66F4;&#x6539;" class="headerlink" title="&#x5BF9; Java &#x8BED;&#x8A00;&#x89C4;&#x8303;&#x7684;&#x66F4;&#x6539;"></a>&#x5BF9; Java &#x8BED;&#x8A00;&#x89C4;&#x8303;&#x7684;&#x66F4;&#x6539;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#杂项"><span class="toc-text"><a href="#&#x6742;&#x9879;" class="headerlink" title="&#x6742;&#x9879;"></a>&#x6742;&#x9879;</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2018-03-21-java10/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
+     
+      <a href="/tags/JavaSE/"><i class="fa fa-tags"></i>JavaSE</a>
+     
+      <a href="/tags/Java10/"><i class="fa fa-tags"></i>Java10</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2019 <a href="https://177.im" target="_blank">177.im</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/2018-04-10-ximalaya/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/2018-03-20-changeAppleLocation/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+  </body>
+</html>

@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>ArrayList 源码分析 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Java,Java,List,ArrayList,Collection,源码分析," />
+  
+
+  
+  <meta name="description" content="ArrayList是一种以数组实现的List，与数组相比，它具有动态扩展的能力，因此也可称之为动态数组。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: ["383060d16dbbd03a8df851cdc6f513f7fdf4dadd8ae0dc62ae87151f537ec38c", ],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-01-01
+    </span>
+    
+      <span>
+        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    ArrayList 源码分析
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://cn.bing.com/th?id=OHR.AlbertaOwl_ZH-CN1184867720_1920x1080.jpg);"></figure>
+    </div>
+  
+  <article class="passage-article">
+    <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>ArrayList是一种以数组实现的List，与数组相比，它具有动态扩展的能力，因此也可称之为动态数组。</p>
+<h1 id="继承体系"><a href="#继承体系" class="headerlink" title="继承体系"></a>继承体系</h1><center><img src="https://i.loli.net/2019/11/02/IBrCjLM16gmVGpW.png" alt="ArrayList.png"></center>
+
+<p>ArrayList实现了List, RandomAccess, Cloneable, java.io.Serializable等接口。</p>
+<p>ArrayList实现了List，提供了基础的添加、删除、遍历等操作。</p>
+<p>ArrayList实现了RandomAccess，提供了随机访问的能力。</p>
+<p>ArrayList实现了Cloneable，可以被克隆。</p>
+<p>ArrayList实现了Serializable，可以被序列化。</p>
+<h1 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h1><h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><pre><code>/**
+ * Default initial capacity. 
+ * 默认容量
+ */
+private static final int DEFAULT_CAPACITY = 10;
+
+/**
+ * Shared empty array instance used for empty instances.
+ * 空数组，如果传入的容量是0时使用
+ */
+private static final Object[] EMPTY_ELEMENTDATA = {};
+
+/**
+ * Shared empty array instance used for default sized empty instances. We
+ * distinguish this from EMPTY_ELEMENTDATA to know how much to inflate when
+ * first element is added.
+ * 空数组，传入容量时使用，添加第一个元素的时候会重新初始化为默认容量大小
+ */
+private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
+
+/**
+ * The array buffer into which the elements of the ArrayList are stored.
+ * The capacity of the ArrayList is the length of this array buffer. Any
+ * empty ArrayList with elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA
+ * will be expanded to DEFAULT_CAPACITY when the first element is added.
+ * 存储元素的数值
+ */
+transient Object[] elementData; // non-private to simplify nested class access
+
+/**
+ * The size of the ArrayList (the number of elements it contains).
+ * 集合中元素的个数
+ * @serial
+ */
+private int size;
+</code></pre><ol>
+<li><p>DEFAULT_CAPACITY</p>
+<p> 默认容量为10，也就是通过new ArrayList()创建时的默认容量。</p>
+</li>
+<li><p>EMPTY_ELEMENTDATA</p>
+<p> 空的数组，这种是通过new ArrayList(0)创建时用的是这个空数组。</p>
+</li>
+<li><p>DEFAULTCAPACITY_EMPTY_ELEMENTDATA</p>
+<p> 也是空数组，这种是通过new ArrayList()创建时用的是这个空数组，与EMPTY_ELEMENTDATA的区别是在添加第一个元素时使用这个空数组的会初始化为DEFAULT_CAPACITY（10）个元素。</p>
+</li>
+<li><p>elementData</p>
+<p> 真正存放元素的地方，使用transient是为了不序列化这个字段。</p>
+<p> 至于没有使用private修饰，后面注释是写的“为了简化嵌套类的访问”，但是实测加了private嵌套类一样可以访问（?）。</p>
+<p> private表示是类私有的属性，只要是在这个类内部都可以访问，嵌套类或者内部类也是在类的内部，所以也可以访问类的私有成员。</p>
+</li>
+<li><p>size</p>
+<p> 真正存储元素的个数，而不是elementData数组的长度。</p>
+</li>
+</ol>
+<h2 id="ArrayList-int-initialCapacity-构造方法"><a href="#ArrayList-int-initialCapacity-构造方法" class="headerlink" title="ArrayList(int initialCapacity)构造方法"></a>ArrayList(int initialCapacity)构造方法</h2><p>传入初始容量，如果大于0就初始化elementData为对应大小，如果等于0就使用EMPTY_ELEMENTDATA空数组，如果小于0抛出异常。</p>
+<pre><code>/**
+ * Constructs an empty list with the specified initial capacity.
+ *
+ * @param  initialCapacity  the initial capacity of the list
+ * @throws IllegalArgumentException if the specified initial capacity
+ *         is negative
+ */
+public ArrayList(int initialCapacity) {
+    if (initialCapacity &gt; 0) {
+        // 如果传入的初始容量大于0，就新建一个数组存储元素
+        this.elementData = new Object[initialCapacity];
+    } else if (initialCapacity == 0) {
+        // 如果传入的初始容量等于0，使用空数组EMPTY_ELEMENTDATA
+        this.elementData = EMPTY_ELEMENTDATA;
+    } else {
+        // 如果传入的初始容量小于0，抛出异常
+        throw new IllegalArgumentException(&quot;Illegal Capacity: &quot;+initialCapacity);
+    }
+}
+</code></pre><h2 id="ArrayList-构造方法"><a href="#ArrayList-构造方法" class="headerlink" title="ArrayList()构造方法"></a>ArrayList()构造方法</h2><p>不传初始容量，初始化为DEFAULTCAPACITY_EMPTY_ELEMENTDATA空数组，会在添加第一个元素的时候扩容为默认的大小，即10。</p>
+<pre><code>/**
+ * Constructs an empty list with an initial capacity of ten.
+ */
+public ArrayList() {
+    // 如果没有传入初始容量，则使用空数组DEFAULTCAPACITY_EMPTY_ELEMENTDATA
+    // 使用这个数组是在添加第一个元素的时候会扩容到默认大小10
+    this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+}
+</code></pre><h2 id="ArrayList-构造方法-1"><a href="#ArrayList-构造方法-1" class="headerlink" title="ArrayList 构造方法"></a>ArrayList 构造方法</h2><p>传入集合并初始化elementData，这里会使用拷贝把传入集合的元素拷贝到elementData数组中，如果元素个数为0，则初始化为EMPTY_ELEMENTDATA空数组。</p>
+<pre><code>/**
+ * Constructs a list containing the elements of the specified
+ * collection, in the order they are returned by the collection&apos;s
+ * iterator.
+ * 
+ * 把传入集合的元素初始化到ArrayList中
+ * 
+ * @param c the collection whose elements are to be placed into this list
+ * @throws NullPointerException if the specified collection is null
+ */
+public ArrayList(Collection&lt;? extends E&gt; c) {
+    // 集合转数组
+    elementData = c.toArray();
+    if ((size = elementData.length) != 0) {
+        // c.toArray might (incorrectly) not return Object[] (see 6260652)
+        // 检查c.toArray()返回的是不是Object[]类型，如果不是，重新拷贝成Object[].class类型
+        if (elementData.getClass() != Object[].class)
+            elementData = Arrays.copyOf(elementData, size, Object[].class);
+    } else {
+        // replace with empty array.
+        // 如果c的空集合，则初始化为空数组EMPTY_ELEMENTDATA
+        this.elementData = EMPTY_ELEMENTDATA;
+    }
+}
+</code></pre><p>为什么c.toArray();返回的有可能不是Object[]类型呢？</p>
+<h2 id="add-E-e-方法"><a href="#add-E-e-方法" class="headerlink" title="add(E e)方法"></a>add(E e)方法</h2><p>添加元素到末尾，平均时间复杂度为O(1)。</p>
+<pre><code>/**
+ * Appends the specified element to the end of this list.
+ *
+ * @param e element to be appended to this list
+ * @return &lt;tt&gt;true&lt;/tt&gt; (as specified by {@link Collection#add})
+ */
+public boolean add(E e) {
+    // 检查是否需要扩容
+    ensureCapacityInternal(size + 1);  // Increments modCount!!
+    // 把元素插入到最后一位
+    elementData[size++] = e;
+    return true;
+}
+
+private void ensureCapacityInternal(int minCapacity) {
+    ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
+}
+
+private static int calculateCapacity(Object[] elementData, int minCapacity) {
+    // 如果是空数组DEFAULTCAPACITY_EMPTY_ELEMENTDATA，就初始化为默认大小10
+    if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+        return Math.max(DEFAULT_CAPACITY, minCapacity);
+    }
+    return minCapacity;
+}
+
+private void ensureExplicitCapacity(int minCapacity) {
+    modCount++;
+
+    // overflow-conscious code
+    // 扩容
+    if (minCapacity - elementData.length &gt; 0)
+        grow(minCapacity);
+}
+
+/**
+ * Increases the capacity to ensure that it can hold at least the
+ * number of elements specified by the minimum capacity argument.
+ *
+ * @param minCapacity the desired minimum capacity
+ */
+private void grow(int minCapacity) {
+    // overflow-conscious code
+    int oldCapacity = elementData.length;
+    // 新容量为旧容量的1.5倍   【右移运算  除以2的n次方】
+    int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);
+    // 如果新容量发现比需要的容量还小，则以需要的容量为准
+    if (newCapacity - minCapacity &lt; 0)
+        newCapacity = minCapacity;
+    // 如果新容量已经超过最大容量了，则使用最大容量
+    if (newCapacity - MAX_ARRAY_SIZE &gt; 0)
+        newCapacity = hugeCapacity(minCapacity);
+    // minCapacity is usually close to size, so this is a win:
+    // 以新容量拷贝出来一个新数组
+    elementData = Arrays.copyOf(elementData, newCapacity);
+}
+</code></pre><p>（1）检查是否需要扩容；</p>
+<p>（2）如果elementData等于DEFAULTCAPACITY_EMPTY_ELEMENTDATA则初始化容量大小为DEFAULT_CAPACITY；</p>
+<p>（3）新容量是老容量的1.5倍（oldCapacity + (oldCapacity &gt;&gt; 1)），如果加了这么多容量发现比需要的容量还小，则以需要的容量为准；</p>
+<p>（4）创建新容量的数组并把老数组拷贝到新数组；</p>
+<h2 id="add-int-index-E-element-方法"><a href="#add-int-index-E-element-方法" class="headerlink" title="add(int index, E element)方法"></a>add(int index, E element)方法</h2><p>添加元素到指定位置，平均时间复杂度为O(n)。</p>
+<pre><code>/**
+ * Inserts the specified element at the specified position in this
+ * list. Shifts the element currently at that position (if any) and
+ * any subsequent elements to the right (adds one to their indices).
+ *
+ * @param index index at which the specified element is to be inserted
+ * @param element element to be inserted
+ * @throws IndexOutOfBoundsException {@inheritDoc}
+ */
+public void add(int index, E element) {
+    // 检查是否越界
+    rangeCheckForAdd(index);
+    // 检查是否需要扩容
+    ensureCapacityInternal(size + 1);  // Increments modCount!!
+    // 将inex及其之后的元素往后挪一位，则index位置处就空出来了
+    System.arraycopy(elementData, index, elementData, index + 1, size - index);
+    // 将元素插入到index的位置
+    elementData[index] = element;
+    // 大小增1
+    size++;
+}
+/**
+ * A version of rangeCheck used by add and addAll.
+ */
+private void rangeCheckForAdd(int index) {
+    if (index &gt; size || index &lt; 0)
+        throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+}
+</code></pre><p>（1）检查索引是否越界；</p>
+<p>（2）检查是否需要扩容；</p>
+<p>（3）把插入索引位置后的元素都往后挪一位；</p>
+<p>（4）在插入索引位置放置插入的元素；</p>
+<p>（5）大小加1；</p>
+<h2 id="addAll-方法"><a href="#addAll-方法" class="headerlink" title="addAll 方法"></a>addAll 方法</h2><p>求两个集合的并集。</p>
+<pre><code>/**
+ * Appends all of the elements in the specified collection to the end of
+ * this list, in the order that they are returned by the
+ * specified collection&apos;s Iterator.  The behavior of this operation is
+ * undefined if the specified collection is modified while the operation
+ * is in progress.  (This implies that the behavior of this call is
+ * undefined if the specified collection is this list, and this
+ * list is nonempty.)
+ * 
+ * 将集合c中所有元素添加到当前ArrayList中
+ * 
+ * @param c collection containing elements to be added to this list
+ * @return &lt;tt&gt;true&lt;/tt&gt; if this list changed as a result of the call
+ * @throws NullPointerException if the specified collection is null
+ */
+public boolean addAll(Collection&lt;? extends E&gt; c) {
+    // 将集合c转为数组
+    Object[] a = c.toArray();
+    int numNew = a.length;
+    // 检查是否需要扩容
+    ensureCapacityInternal(size + numNew);  // Increments modCount
+    // 将c中元素全部拷贝到数组的最后
+    System.arraycopy(a, 0, elementData, size, numNew);
+    // 大小增加c的大小
+    size += numNew;
+    // 如果c不为空就返回true，否则返回false
+    return numNew != 0;
+}
+</code></pre><p>（1）拷贝c中的元素到数组a中；</p>
+<p>（2）检查是否需要扩容；</p>
+<p>（3）把数组a中的元素拷贝到elementData的尾部；</p>
+<h2 id="get-int-index-方法"><a href="#get-int-index-方法" class="headerlink" title="get(int index)方法"></a>get(int index)方法</h2><p>获取指定索引位置的元素，时间复杂度为O(1)。</p>
+<pre><code>/**
+ * Returns the element at the specified position in this list.
+ *
+ * @param  index index of the element to return
+ * @return the element at the specified position in this list
+ * @throws IndexOutOfBoundsException {@inheritDoc}
+ */
+public E get(int index) {
+    // 检查是否越界
+    rangeCheck(index);
+    // 返回数组index位置的元素
+    return elementData(index);
+}
+
+/**
+ * Checks if the given index is in range.  If not, throws an appropriate
+ * runtime exception.  This method does *not* check if the index is
+ * negative: It is always used immediately prior to an array access,
+ * which throws an ArrayIndexOutOfBoundsException if index is negative.
+ */
+private void rangeCheck(int index) {
+    if (index &gt;= size)
+        throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+}
+
+@SuppressWarnings(&quot;unchecked&quot;)
+E elementData(int index) {
+    return (E) elementData[index];
+}
+</code></pre><p>（1）检查索引是否越界，这里只检查是否越上界，如果越上界抛出IndexOutOfBoundsException异常，如果越下界抛出的是ArrayIndexOutOfBoundsException异常。</p>
+<p>（2）返回索引位置处的元素；</p>
+<h2 id="remove-int-index-方法"><a href="#remove-int-index-方法" class="headerlink" title="remove(int index)方法"></a>remove(int index)方法</h2><p>删除指定索引位置的元素，时间复杂度为O(n)。</p>
+<pre><code>/**
+ * Removes the element at the specified position in this list.
+ * Shifts any subsequent elements to the left (subtracts one from their
+ * indices).
+ *
+ * @param index the index of the element to be removed
+ * @return the element that was removed from the list
+ * @throws IndexOutOfBoundsException {@inheritDoc}
+ */
+public E remove(int index) {
+    // 检查是否越界
+    rangeCheck(index);
+
+    modCount++;
+    // 获取index位置的元素
+    E oldValue = elementData(index);
+
+    // 如果index不是最后一位，则将index之后的元素往前挪一位
+    int numMoved = size - index - 1;
+    if (numMoved &gt; 0)
+        System.arraycopy(elementData, index+1, elementData, index, numMoved);
+
+    // 将最后一个元素删除，帮助GC
+    elementData[--size] = null; // clear to let GC do its work
+
+    // 返回旧值
+    return oldValue;
+}
+</code></pre><p>（1）检查索引是否越界；</p>
+<p>（2）获取指定索引位置的元素；</p>
+<p>（3）如果删除的不是最后一位，则其它元素往前移一位；</p>
+<p>（4）将最后一位置为null，方便GC回收；</p>
+<p>（5）返回删除的元素。</p>
+<p>可以看到，ArrayList删除元素的时候并没有缩容。</p>
+<h2 id="remove-Object-o-方法"><a href="#remove-Object-o-方法" class="headerlink" title="remove(Object o)方法"></a>remove(Object o)方法</h2><p>删除指定元素值的元素，时间复杂度为O(n)。</p>
+<pre><code>/**
+ * Removes the first occurrence of the specified element from this list,
+ * if it is present.  If the list does not contain the element, it is
+ * unchanged.  More formally, removes the element with the lowest index
+ * &lt;tt&gt;i&lt;/tt&gt; such that
+ * &lt;tt&gt;(o==null&amp;nbsp;?&amp;nbsp;get(i)==null&amp;nbsp;:&amp;nbsp;o.equals(get(i)))&lt;/tt&gt;
+ * (if such an element exists).  Returns &lt;tt&gt;true&lt;/tt&gt; if this list
+ * contained the specified element (or equivalently, if this list
+ * changed as a result of the call).
+ *
+ * @param o element to be removed from this list, if present
+ * @return &lt;tt&gt;true&lt;/tt&gt; if this list contained the specified element
+ */
+public boolean remove(Object o) {
+    if (o == null) {
+        // 遍历整个数组，找到元素第一次出现的位置，并将其快速删除
+        for (int index = 0; index &lt; size; index++)
+            // 如果要删除的元素为null，则以null进行比较，使用==
+            if (elementData[index] == null) {
+                fastRemove(index);
+                return true;
+            }
+    } else {
+        // 遍历整个数组，找到元素第一次出现的位置，并将其快速删除
+        for (int index = 0; index &lt; size; index++)
+            // 如果要删除的元素不为null，则进行比较，使用equals()方法
+            if (o.equals(elementData[index])) {
+                fastRemove(index);
+                return true;
+            }
+    }
+    return false;
+}
+
+/*
+ * Private remove method that skips bounds checking and does not
+ * return the value removed.
+ */
+private void fastRemove(int index) {
+    // 这里没有越界的检查，是不是少了？？？
+    modCount++;
+    // 如果index不是最后一位，则将index之后的元素往前挪一位
+    int numMoved = size - index - 1;
+    if (numMoved &gt; 0)
+        System.arraycopy(elementData, index+1, elementData, index, numMoved);
+
+    // 将最后一个元素删除，帮助GC
+    elementData[--size] = null; // clear to let GC do its work
+}
+</code></pre><p>（1）找到第一个等于指定元素值的元素；</p>
+<p>（2）快速删除；</p>
+<p>fastRemove(int index)相对于remove(int index)少了检查索引越界的操作，可见jdk将性能优化到极致。</p>
+<h2 id="retainAll方法"><a href="#retainAll方法" class="headerlink" title="retainAll方法"></a>retainAll方法</h2><p>求两个集合的交集。</p>
+<pre><code>/**
+ * Retains only the elements in this list that are contained in the
+ * specified collection.  In other words, removes from this list all
+ * of its elements that are not contained in the specified collection.
+ *
+ * @param c collection containing elements to be retained in this list
+ * @return {@code true} if this list changed as a result of the call
+ * @throws ClassCastException if the class of an element of this list
+ *         is incompatible with the specified collection
+ * (&lt;a href=&quot;Collection.html#optional-restrictions&quot;&gt;optional&lt;/a&gt;)
+ * @throws NullPointerException if this list contains a null element and the
+ *         specified collection does not permit null elements
+ * (&lt;a href=&quot;Collection.html#optional-restrictions&quot;&gt;optional&lt;/a&gt;),
+ *         or if the specified collection is null
+ * @see Collection#contains(Object)
+ */
+public boolean retainAll(Collection&lt;?&gt; c) {
+    // 集合c不能为null
+    Objects.requireNonNull(c);
+    // 调用批量删除方法，这时complement传入true，表示删除不包含在c中的元素
+    return batchRemove(c, true);
+}
+
+/**
+  * 批量删除元素
+  * complement为true表示删除c中不包含的元素
+  * complement为false表示删除c中包含的元素
+  */
+private boolean batchRemove(Collection&lt;?&gt; c, boolean complement) {
+    final Object[] elementData = this.elementData;
+    // 使用读写两个指针同时遍历数组
+    // 读指针每次自增1，写指针放入元素的时候才加1
+    // 这样不需要额外的空间，只需要在原有的数组上操作就可以了
+    int r = 0, w = 0;
+    boolean modified = false;
+    try {
+        // 遍历整个数组，如果c中包含该元素，则把该元素放到写指针的位置（以complement为准）
+        for (; r &lt; size; r++)
+            if (c.contains(elementData[r]) == complement)
+                elementData[w++] = elementData[r];
+    } finally {
+        // Preserve behavioral compatibility with AbstractCollection,
+        // even if c.contains() throws.
+        // 正常来说r最后是等于size的，除非c.contains()抛出了异常
+        if (r != size) {
+            // 如果c.contains()抛出了异常，则把未读的元素都拷贝到写指针之后
+            System.arraycopy(elementData, r, elementData, w, size - r);
+            w += size - r;
+        }
+        if (w != size) {
+            // clear to let GC do its work
+            // 将写指针之后的元素置为空，帮助GC
+            for (int i = w; i &lt; size; i++)
+                elementData[i] = null;
+            modCount += size - w;
+            // 新大小等于写指针的位置（因为每写一次写指针就加1，所以新大小正好等于写指针的位置）
+            size = w;
+            modified = true;
+        }
+    }
+    // 有修改返回true
+    return modified;
+}
+</code></pre><p>（1）遍历elementData数组；</p>
+<p>（2）如果元素在c中，则把这个元素添加到elementData数组的w位置并将w位置往后移一位；</p>
+<p>（3）遍历完之后，w之前的元素都是两者共有的，w之后（包含）的元素不是两者共有的；</p>
+<p>（4）将w之后（包含）的元素置为null，方便GC回收；</p>
+<h2 id="removeAll"><a href="#removeAll" class="headerlink" title="removeAll"></a>removeAll</h2><p>求两个集合的单方向差集，只保留当前集合中不在c中的元素，不保留在c中不在当前集体中的元素。</p>
+<pre><code>/**
+ * Removes from this list all of its elements that are contained in the
+ * specified collection.
+ *
+ * @param c collection containing elements to be removed from this list
+ * @return {@code true} if this list changed as a result of the call
+ * @throws ClassCastException if the class of an element of this list
+ *         is incompatible with the specified collection
+ * (&lt;a href=&quot;Collection.html#optional-restrictions&quot;&gt;optional&lt;/a&gt;)
+ * @throws NullPointerException if this list contains a null element and the
+ *         specified collection does not permit null elements
+ * (&lt;a href=&quot;Collection.html#optional-restrictions&quot;&gt;optional&lt;/a&gt;),
+ *         or if the specified collection is null
+ * @see Collection#contains(Object)
+ */
+public boolean removeAll(Collection&lt;?&gt; c) {
+    // 集合c不能为空
+    Objects.requireNonNull(c);
+    // 同样调用批量删除方法，这时complement传入false，表示删除包含在c中的元素
+    return batchRemove(c, false);
+}
+</code></pre><p>与retainAll(Collection&lt;?&gt; c)方法类似，只是这里保留的是不在c中的元素。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>（1）ArrayList内部使用数组存储元素，当数组长度不够时进行扩容，每次加一半的空间，ArrayList不会进行缩容；</p>
+<p>（2）ArrayList支持随机访问，通过索引访问元素极快，时间复杂度为O(1)；</p>
+<p>（3）ArrayList添加元素到尾部极快，平均时间复杂度为O(1)；</p>
+<p>（4）ArrayList添加元素到中间比较慢，因为要搬移元素，平均时间复杂度为O(n)；</p>
+<p>（5）ArrayList从尾部删除元素极快，时间复杂度为O(1)；</p>
+<p>（6）ArrayList从中间删除元素比较慢，因为要搬移元素，平均时间复杂度为O(n)；</p>
+<p>（7）ArrayList支持求并集，调用addAll(Collection&lt;? extends E&gt; c)方法即可；</p>
+<p>（8）ArrayList支持求交集，调用retainAll(Collection&lt;? extends E&gt; c)方法即可；</p>
+<p>（9）ArrayList支持求单向差集，调用removeAll(Collection&lt;? extends E&gt; c)方法即可；</p>
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>elementData设置成了transient，那ArrayList是怎么把元素序列化的呢？</p>
+<pre><code>/**
+ * Save the state of the &lt;tt&gt;ArrayList&lt;/tt&gt; instance to a stream (that
+ * is, serialize it).
+ *
+ * @serialData The length of the array backing the &lt;tt&gt;ArrayList&lt;/tt&gt;
+ *             instance is emitted (int), followed by all of its elements
+ *             (each an &lt;tt&gt;Object&lt;/tt&gt;) in the proper order.
+ */
+private void writeObject(java.io.ObjectOutputStream s)
+    throws java.io.IOException{
+    // Write out element count, and any hidden stuff
+    // 防止序列化期间有修改
+    int expectedModCount = modCount;
+    // 写出非transient非static属性（会写出size属性）
+    s.defaultWriteObject();
+
+    // Write out size as capacity for behavioural compatibility with clone()
+    // 写出元素个数
+    s.writeInt(size);
+
+    // Write out all elements in the proper order.
+    // 依次写出元素
+    for (int i=0; i&lt;size; i++) {
+        s.writeObject(elementData[i]);
+    }
+
+    // 如果有修改，抛出异常
+    if (modCount != expectedModCount) {
+        throw new ConcurrentModificationException();
+    }
+}
+
+/**
+ * Reconstitute the &lt;tt&gt;ArrayList&lt;/tt&gt; instance from a stream (that is,
+ * deserialize it).
+ */
+private void readObject(java.io.ObjectInputStream s)
+    throws java.io.IOException, ClassNotFoundException {
+    // 声明为空数组
+    elementData = EMPTY_ELEMENTDATA;
+
+    // Read in size, and any hidden stuff
+    // 读入非transient非static属性（会读取size属性）
+    s.defaultReadObject();
+
+    // Read in capacity
+    // 读入元素个数，没什么用，只是因为写出的时候写了size属性，读的时候也要按顺序来读
+    s.readInt(); // ignored
+
+    if (size &gt; 0) {
+        // be like clone(), allocate array based upon size not capacity
+        // 计算容量
+        int capacity = calculateCapacity(elementData, size);
+        SharedSecrets.getJavaOISAccess().checkArray(s, Object[].class, capacity);
+        // 检查是否需要扩容
+        ensureCapacityInternal(size);
+
+        Object[] a = elementData;
+        // Read in all elements in the proper order.
+        // 依次读取元素到数组中
+        for (int i=0; i&lt;size; i++) {
+            a[i] = s.readObject();
+        }
+    }
+}
+</code></pre><p>查看writeObject()方法可知，先调用s.defaultWriteObject()方法，再把size写入到流中，再把元素一个一个的写入到流中。</p>
+<p>一般地，只要实现了Serializable接口即可自动序列化，writeObject()和readObject()是为了自己控制序列化的方式，这两个方法必须声明为private，在java.io.ObjectStreamClass#getPrivateMethod()方法中通过反射获取到writeObject()这个方法。</p>
+<p>在ArrayList的writeObject()方法中先调用了s.defaultWriteObject()方法，这个方法是写入非static非transient的属性，在ArrayList中也就是size属性。同样地，在readObject()方法中先调用了s.defaultReadObject()方法解析出了size属性。</p>
+<p>elementData定义为transient的优势，自己根据size序列化真实的元素，而不是根据数组的长度序列化元素，减少了空间占用。</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简介"><span class="toc-text"><a href="#&#x7B80;&#x4ECB;" class="headerlink" title="&#x7B80;&#x4ECB;"></a>&#x7B80;&#x4ECB;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#继承体系"><span class="toc-text"><a href="#&#x7EE7;&#x627F;&#x4F53;&#x7CFB;" class="headerlink" title="&#x7EE7;&#x627F;&#x4F53;&#x7CFB;"></a>&#x7EE7;&#x627F;&#x4F53;&#x7CFB;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#源码解析"><span class="toc-text"><a href="#&#x6E90;&#x7801;&#x89E3;&#x6790;" class="headerlink" title="&#x6E90;&#x7801;&#x89E3;&#x6790;"></a>&#x6E90;&#x7801;&#x89E3;&#x6790;</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#属性"><span class="toc-text"><a href="#&#x5C5E;&#x6027;" class="headerlink" title="&#x5C5E;&#x6027;"></a>&#x5C5E;&#x6027;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList-int-initialCapacity-构造方法"><span class="toc-text"><a href="#ArrayList-int-initialCapacity-&#x6784;&#x9020;&#x65B9;&#x6CD5;" class="headerlink" title="ArrayList(int initialCapacity)&#x6784;&#x9020;&#x65B9;&#x6CD5;"></a>ArrayList(int initialCapacity)&#x6784;&#x9020;&#x65B9;&#x6CD5;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList-构造方法"><span class="toc-text"><a href="#ArrayList-&#x6784;&#x9020;&#x65B9;&#x6CD5;" class="headerlink" title="ArrayList()&#x6784;&#x9020;&#x65B9;&#x6CD5;"></a>ArrayList()&#x6784;&#x9020;&#x65B9;&#x6CD5;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList-构造方法-1"><span class="toc-text"><a href="#ArrayList-&#x6784;&#x9020;&#x65B9;&#x6CD5;-1" class="headerlink" title="ArrayList &#x6784;&#x9020;&#x65B9;&#x6CD5;"></a>ArrayList &#x6784;&#x9020;&#x65B9;&#x6CD5;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#add-E-e-方法"><span class="toc-text"><a href="#add-E-e-&#x65B9;&#x6CD5;" class="headerlink" title="add(E e)&#x65B9;&#x6CD5;"></a>add(E e)&#x65B9;&#x6CD5;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#add-int-index-E-element-方法"><span class="toc-text"><a href="#add-int-index-E-element-&#x65B9;&#x6CD5;" class="headerlink" title="add(int index, E element)&#x65B9;&#x6CD5;"></a>add(int index, E element)&#x65B9;&#x6CD5;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#addAll-方法"><span class="toc-text"><a href="#addAll-&#x65B9;&#x6CD5;" class="headerlink" title="addAll &#x65B9;&#x6CD5;"></a>addAll &#x65B9;&#x6CD5;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#get-int-index-方法"><span class="toc-text"><a href="#get-int-index-&#x65B9;&#x6CD5;" class="headerlink" title="get(int index)&#x65B9;&#x6CD5;"></a>get(int index)&#x65B9;&#x6CD5;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remove-int-index-方法"><span class="toc-text"><a href="#remove-int-index-&#x65B9;&#x6CD5;" class="headerlink" title="remove(int index)&#x65B9;&#x6CD5;"></a>remove(int index)&#x65B9;&#x6CD5;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remove-Object-o-方法"><span class="toc-text"><a href="#remove-Object-o-&#x65B9;&#x6CD5;" class="headerlink" title="remove(Object o)&#x65B9;&#x6CD5;"></a>remove(Object o)&#x65B9;&#x6CD5;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#retainAll方法"><span class="toc-text"><a href="#retainAll&#x65B9;&#x6CD5;" class="headerlink" title="retainAll&#x65B9;&#x6CD5;"></a>retainAll&#x65B9;&#x6CD5;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#removeAll"><span class="toc-text"><a href="#removeAll" class="headerlink" title="removeAll"></a>removeAll</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-text"><a href="#&#x603B;&#x7ED3;" class="headerlink" title="&#x603B;&#x7ED3;"></a>&#x603B;&#x7ED3;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#思考"><span class="toc-text"><a href="#&#x601D;&#x8003;" class="headerlink" title="&#x601D;&#x8003;"></a>&#x601D;&#x8003;</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-01-01-ArrayList/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
+     
+      <a href="/tags/List/"><i class="fa fa-tags"></i>List</a>
+     
+      <a href="/tags/ArrayList/"><i class="fa fa-tags"></i>ArrayList</a>
+     
+      <a href="/tags/Collection/"><i class="fa fa-tags"></i>Collection</a>
+     
+      <a href="/tags/源码分析/"><i class="fa fa-tags"></i>源码分析</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2019 <a href="https://177.im" target="_blank">177.im</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/2018-12-04-python_opencv/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/2018-11-02-vipjiexi/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+  </body>
+</html>
