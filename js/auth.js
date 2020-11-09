@@ -14,7 +14,7 @@
       return; 
     }
 
-    password = prompt('输入您的名称小写全拼 (例如: 李三 => lisan)');
+    password = prompt('请联系管理员获取文章密码！');
     password = sha256(password || '');
 
     if(passwords.includes(password)) {
