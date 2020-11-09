@@ -223,9 +223,9 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>源码分析</tag>
         <tag>Map</tag>
         <tag>HashMap</tag>
+        <tag>源码分析</tag>
       </tags>
   </entry>
   <entry>
@@ -252,9 +252,9 @@
       </categories>
       <tags>
         <tag>Java</tag>
+        <tag>源码分析</tag>
         <tag>List</tag>
         <tag>Collection</tag>
-        <tag>源码分析</tag>
         <tag>CopyOnWriteArrayList</tag>
       </tags>
   </entry>
@@ -267,10 +267,10 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>List</tag>
-        <tag>Collection</tag>
         <tag>源码分析</tag>
+        <tag>List</tag>
         <tag>LinkedList</tag>
+        <tag>Collection</tag>
       </tags>
   </entry>
   <entry>
@@ -294,10 +294,10 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>List</tag>
-        <tag>ArrayList</tag>
-        <tag>Collection</tag>
         <tag>源码分析</tag>
+        <tag>List</tag>
+        <tag>Collection</tag>
+        <tag>ArrayList</tag>
       </tags>
   </entry>
   <entry>
