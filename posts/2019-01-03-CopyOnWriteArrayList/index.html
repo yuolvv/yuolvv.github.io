@@ -193,8 +193,7 @@
   
   <article class="passage-article">
     <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>CopyOnWriteArrayList是ArrayList的线程安全版本，内部也是通过数组实现，每次对数组的修改都完全拷贝一份新的数组来修改，修改完了再替换掉老数组，这样保证了只阻塞写操作，不阻塞读操作，实现读写分离。</p>
-<h1 id="继承体系"><a href="#继承体系" class="headerlink" title="继承体系"></a>继承体系</h1><center>![CopyOnWriteArrayList.png](https://i.loli.net/2019/11/25/B19QlWcv6z3jaMt.png)</center>
-
+<h1 id="继承体系"><a href="#继承体系" class="headerlink" title="继承体系"></a>继承体系</h1><p><img src="https://i.loli.net/2019/11/25/B19QlWcv6z3jaMt.png" alt="CopyOnWriteArrayList.png"></p>
 <p>CopyOnWriteArrayList实现了List, RandomAccess, Cloneable, java.io.Serializable等接口。</p>
 <pre><code>CopyOnWriteArrayList实现了List，提供了基础的添加、删除、遍历等操作。
 

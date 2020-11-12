@@ -193,13 +193,11 @@
   
   <article class="passage-article">
     <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>HashMap采用key/value存储结构，每个key对应唯一的value，查询和修改的速度都很快，能达到O(1)的平均时间复杂度。它是非线程安全的，且不保证元素存储的顺序；</p>
-<h1 id="继承体系"><a href="#继承体系" class="headerlink" title="继承体系"></a>继承体系</h1><center>![HashMap.png](https://i.loli.net/2019/11/26/LAWRwQFy5zKNVqm.png)</center>
-
+<h1 id="继承体系"><a href="#继承体系" class="headerlink" title="继承体系"></a>继承体系</h1><p><img src="https://i.loli.net/2019/11/26/LAWRwQFy5zKNVqm.png" alt="HashMap.png"></p>
 <p>HashMap实现了Cloneable，可以被克隆。</p>
 <p>HashMap实现了Serializable，可以被序列化。</p>
 <p>HashMap继承自AbstractMap，实现了Map接口，具有Map的所有功能。</p>
-<h1 id="存储结构"><a href="#存储结构" class="headerlink" title="存储结构"></a>存储结构</h1><center>![HashMap1.png](https://i.loli.net/2019/11/26/I9BtwgVexrCvz1E.png)</center>
-
+<h1 id="存储结构"><a href="#存储结构" class="headerlink" title="存储结构"></a>存储结构</h1><p><img src="https://i.loli.net/2019/11/26/I9BtwgVexrCvz1E.png" alt="HashMap1.png"></p>
 <p>在Java中，HashMap的实现采用了（数组 + 链表 + 红黑树）的复杂结构，数组的一个元素又称作桶。</p>
 <p>在添加元素时，会根据hash值算出元素在数组中的位置，如果该位置没有元素，则直接把元素放置在此处，如果该位置有元素了，则把元素以链表的形式放置在链表的尾部。</p>
 <p>当一个链表的元素个数达到一定的数量（且数组的长度达到一定的长度）后，则把链表转化为红黑树，从而提高效率。</p>

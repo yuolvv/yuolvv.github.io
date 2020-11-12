@@ -193,8 +193,7 @@
   
   <article class="passage-article">
     <h2 id="1-对象的内存模型"><a href="#1-对象的内存模型" class="headerlink" title="1 对象的内存模型"></a>1 对象的内存模型</h2><p>一个对象从逻辑角度看，它由成员变量和成员函数构成，从物理角度来看，对象是存储在堆中的一串二进制数，这串二进制数的组织结构如下:</p>
-<center>![JVM_03.png](https://i.loli.net/2019/11/13/wDfBAyYvSRLKuqd.png)</center>
-
+<p><img src="https://i.loli.net/2019/11/13/wDfBAyYvSRLKuqd.png" alt="JVM_03.png"></p>
 <p>在 HotSpot 虚拟机中，对象的内存布局分为以下 3 块区域：</p>
 <p>（1）对象头（Header）</p>
 <p>（2）实例数据（Instance Data）</p>
@@ -242,13 +241,11 @@ b)空闲列表
 <p>(1)句柄访问方式</p>
 <p>堆中需要有一块叫做“句柄池”的内存空间，用于存放所有对象的地址和所有对象所属类的类信息，句柄中包含了对象实例数据与类型数据各自的具体地址信息。</p>
 <p>引用类型的变量存放的是该对象在句柄池中的地址（reference）。访问对象时，首先需要通过引用类型的变量找到该对象的句柄，然后根据句柄中对象的地址再访问对象。</p>
-<center>![JVM_04.png](https://i.loli.net/2019/11/13/7E8Dyb196cL2deq.png)</center>
-
+<p><img src="https://i.loli.net/2019/11/13/7E8Dyb196cL2deq.png" alt="JVM_04.png"></p>
 <p>(2)直接指针访问方式</p>
 <p>引用类型的变量直接存放对象的地址，从而不需要句柄池，通过引用能够直接访问对象。</p>
 <p>但对象所在的内存空间中需要额外的策略存储对象所属的类信息的地址。</p>
-<center>![JVM_05.png](https://i.loli.net/2019/11/13/cr3JeXhTQ6mvPy7.png)</center>
-
+<p><img src="https://i.loli.net/2019/11/13/cr3JeXhTQ6mvPy7.png" alt="JVM_05.png"></p>
 <p>比较:</p>
 <p>HotSpot采用直接指针方式访问对象，因为它只需一次寻址操作，从而在性能上比句柄访问方式快一倍。但它需要额外的策略来存储对象在方法区中类信息的地址。</p>
   </article>
