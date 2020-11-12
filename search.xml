@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[JVM-day00]]></title>
+    <url>%2Fposts%2F2020-11-01-JVM-day00%2F</url>
+    <content type="text"><![CDATA[&emsp;&emsp; 记录JVM的学习过程 什么是JVM？定义：JVM（Java Virtual Machine）即Java程序的运行环境（Java二进制字节码的运行环境） 优点： 一次编写，到处运行 自动内存管理，垃圾回收功能 数组下标越界检查 多态 比较 JVM/JRE/JDK![JVM-day00-01.jpg](https://i.loli.net/2020/11/12/dRCXoAZQa4iLhvu.png) 学习JVM有什么用？ 面试 理解底层的实现原理 中高级程序员的必备技能 常见的JVM![JVM-day00-02.png](https://i.loli.net/2020/11/12/HOVuq6kg9LcIEwW.png) 维基百科 Version information 学习路线![JVM-day00-03.png](https://i.loli.net/2020/11/12/2rTXyMvLfoNeubc.png) 参考资料]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[卸载Android微信的X5内核，如丝般顺滑]]></title>
     <url>%2Fposts%2F2019-11-15-cleanx5%2F</url>
     <content type="text"><![CDATA[&emsp;&emsp;微信Android版本，每次点击链接，都要卡半天，难顶啊，怎么办呢？安排！ 微信用的是腾讯自研的X5内核，也被称为TBS的腾讯浏览服务。 腾讯说X5内核相比于系统自带的Webview： 打开网页的速度更快，更省流量而且更安全…….等等一系列的优点。 X5内核取代的就是这个安卓手机都自带的WebView组件。这个组件是基于谷歌的Chromium内核开发。 步骤只需要几个步骤，就可以用自带的Webview，抛弃腾讯的X5内核。 第一步，从微信里面进入TBS的调试模式随便打开个聊天窗口，输入以下代码： debugtbs.qq.com 文字发出去后，再点击打开，就会进入TBS调试界面 接下来先点击【内核未被禁用】，微信会自动重启一次。 重启后，显示【内核已被禁用】。 第二步，清除TBS内核点击【清除TBS内核】，页面就会提示X5内核删除成功！ 现在，就能使用系统自带的Android Webview组件来浏览网页了，而且打开网页的速度真不是X5能比的。 注意：重新使用TBS内核如果想要恢复自带的X5内核，只要回到TBS的调试界面，点击【安装线上内核】就行。 经过对比，微信打开网页慢的锅，X5内核是背定了。]]></content>
