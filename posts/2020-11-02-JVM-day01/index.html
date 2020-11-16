@@ -6,9 +6,7 @@
   <meta name="author" content="听风行" />
   
   
-  <title>JVM-day01 | 听风行 2020</title>
-
-  <!-- <script data-ad-client="ca-pub-2795125801721613" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+  <title>JVM-day01 | 听风行</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -336,7 +334,23 @@
 
 <h3 id="5-5-String-Table"><a href="#5-5-String-Table" class="headerlink" title="5.5 String Table"></a>5.5 String Table</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">String</span> s<span class="number">1</span> = <span class="string">&quot;a&quot;</span>;</span><br><span class="line"><span class="attribute">String</span> s<span class="number">2</span> = <span class="string">&quot;b&quot;</span>;</span><br><span class="line"><span class="attribute">String</span> s<span class="number">3</span> = <span class="string">&quot;a&quot;</span> + <span class="string">&quot;b&quot;</span>;</span><br><span class="line"><span class="attribute">String</span> s<span class="number">4</span> = s<span class="number">1</span> + s<span class="number">2</span>;</span><br><span class="line"><span class="attribute">String</span> s<span class="number">5</span> = <span class="string">&quot;ab&quot;</span>;</span><br><span class="line"><span class="attribute">String</span> s<span class="number">6</span> = s<span class="number">4</span>.intern();</span><br><span class="line"></span><br><span class="line"><span class="attribute">System</span>.out.println(s<span class="number">3</span> == s<span class="number">4</span>);</span><br><span class="line"><span class="attribute">System</span>.out.println(s<span class="number">3</span> == s<span class="number">5</span>);</span><br><span class="line"><span class="attribute">System</span>.out.println(s<span class="number">3</span> == s<span class="number">6</span>);</span><br><span class="line"></span><br><span class="line"><span class="attribute">String</span> x<span class="number">2</span> = new String(<span class="string">&quot;c&quot;</span>) + new String(<span class="string">&quot;d&quot;</span>);</span><br><span class="line"><span class="attribute">String</span> x<span class="number">1</span> = <span class="string">&quot;cd&quot;</span>;</span><br><span class="line"><span class="attribute">x2</span>.intern();</span><br><span class="line"></span><br><span class="line"><span class="attribute">System</span>.out.println(x<span class="number">1</span> == x<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
 
-<h4 id="1-String-Table-特性"><a href="#1-String-Table-特性" class="headerlink" title="1 String Table 特性"></a>1 String Table 特性</h4><h4 id="2-String-Table-位置"><a href="#2-String-Table-位置" class="headerlink" title="2 String Table 位置"></a>2 String Table 位置</h4><h4 id="3-String-Table-垃圾回收"><a href="#3-String-Table-垃圾回收" class="headerlink" title="3 String Table 垃圾回收"></a>3 String Table 垃圾回收</h4><h4 id="4-String-Table-性能调优"><a href="#4-String-Table-性能调优" class="headerlink" title="4 String Table 性能调优"></a>4 String Table 性能调优</h4><h2 id="6-直接内存"><a href="#6-直接内存" class="headerlink" title="6.直接内存"></a>6.直接内存</h2>
+<h4 id="1-String-Table-特性"><a href="#1-String-Table-特性" class="headerlink" title="1 String Table 特性"></a>1 String Table 特性</h4><ol>
+<li><p>常量池中的字符串仅是符号，第一次用到时才变为对象</p>
+</li>
+<li><p>利用串池的机制，来避免重复创建字符串对象</p>
+</li>
+<li><p>字符串变量拼接的原理是StringBuilder(1.8)</p>
+</li>
+<li><p>字符串常量拼接的原理是编译期优化</p>
+</li>
+<li><p>可以使用intern方法，主动将串池中还没有的字符串对象放入串池</p>
+<ol>
+<li>java8将这个字符串对象尝试放入串池，如果有则并不会放入，如果没有则放入串池，会把串池中的对象返回</li>
+<li>java6将这个字符串对象尝试放入串池，如果有则并不会放入，如果没有会把此对象复制一份放入串池，会把串池中的对象返回</li>
+</ol>
+</li>
+</ol>
+<h4 id="2-String-Table-位置"><a href="#2-String-Table-位置" class="headerlink" title="2 String Table 位置"></a>2 String Table 位置</h4><h4 id="3-String-Table-垃圾回收"><a href="#3-String-Table-垃圾回收" class="headerlink" title="3 String Table 垃圾回收"></a>3 String Table 垃圾回收</h4><h4 id="4-String-Table-性能调优"><a href="#4-String-Table-性能调优" class="headerlink" title="4 String Table 性能调优"></a>4 String Table 性能调优</h4><h2 id="6-直接内存"><a href="#6-直接内存" class="headerlink" title="6.直接内存"></a>6.直接内存</h2>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
