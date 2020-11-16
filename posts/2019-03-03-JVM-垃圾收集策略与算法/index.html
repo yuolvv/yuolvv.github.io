@@ -193,6 +193,17 @@
   
 
   <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
     <p>Java虚拟机的内存模型分为五个部分，分别是：程序计数器、Java虚拟机栈、本地方法栈、堆、方法区。</p>
 <p>这五个区域既然是存储空间，那么为了避免Java虚拟机在运行期间内存存满的情况，就必须得有一个垃圾收集者的角色，不定期地回收一些无效内存，以保障Java虚拟机能够健康地持续运行。</p>
 <p>这个垃圾收集者就是平常我们所说的“垃圾收集器”，那么垃圾收集器在何时清扫内存？清扫哪些数据？这就是接下来我们要解决的问题。</p>
@@ -302,17 +313,6 @@
 <h3 id="4-4-分代收集算法"><a href="#4-4-分代收集算法" class="headerlink" title="4.4 分代收集算法"></a>4.4 分代收集算法</h3><p>将内存划分为老年代和新生代。老年代中存放寿命较长的对象，新生代中存放“朝生夕死”的对象。然后在不同的区域使用不同的垃圾收集算法。</p>
 <p>根据对象存活周期的不同，将内存划分为几块。一般是把 Java 堆分为新生代和老年代，针对各个年代的特点采用最适当的收集算法。</p>
 <p>新生代：复制算法<br>老年代：标记-清除算法、标记-整理算法</p>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle"
-        style="display:block; text-align:center;"
-        data-ad-layout="in-article"
-        data-ad-format="fluid"
-        data-ad-client="ca-pub-2795125801721613"
-        data-ad-slot="7468094198"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">

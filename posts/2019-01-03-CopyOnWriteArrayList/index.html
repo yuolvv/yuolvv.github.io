@@ -193,6 +193,17 @@
   
 
   <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
     <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>CopyOnWriteArrayList是ArrayList的线程安全版本，内部也是通过数组实现，每次对数组的修改都完全拷贝一份新的数组来修改，修改完了再替换掉老数组，这样保证了只阻塞写操作，不阻塞读操作，实现读写分离。</p>
 <h1 id="继承体系"><a href="#继承体系" class="headerlink" title="继承体系"></a>继承体系</h1><p><img src="https://i.loli.net/2019/11/25/B19QlWcv6z3jaMt.png" alt="CopyOnWriteArrayList.png"></p>
 <p>CopyOnWriteArrayList实现了List, RandomAccess, Cloneable, java.io.Serializable等接口。</p>
@@ -502,17 +513,6 @@ public int size() &#123;
 <p>（5）CopyOnWriteArrayList只保证最终一致性，不保证实时一致性；</p>
 <h1 id="问题-为什么CopyOnWriteArrayList没有size属性？"><a href="#问题-为什么CopyOnWriteArrayList没有size属性？" class="headerlink" title="问题:为什么CopyOnWriteArrayList没有size属性？"></a>问题:为什么CopyOnWriteArrayList没有size属性？</h1><p>因为每次修改都是拷贝一份正好可以存储目标个数元素的数组，所以不需要size属性了，数组的长度就是集合的大小，而不像ArrayList数组的长度实际是要大于集合的大小的。</p>
 <p>比如，add(E e)操作，先拷贝一份n+1个元素的数组，再把新元素放到新数组的最后一位，这时新数组的长度为len+1了，也就是集合的size了。</p>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle"
-        style="display:block; text-align:center;"
-        data-ad-layout="in-article"
-        data-ad-format="fluid"
-        data-ad-client="ca-pub-2795125801721613"
-        data-ad-slot="7468094198"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">

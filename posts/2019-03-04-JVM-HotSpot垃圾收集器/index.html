@@ -193,6 +193,17 @@
   
 
   <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
     <p>HotSpot 虚拟机提供了多种垃圾收集器，每种收集器都有各自的特点，虽然我们要对各个收集器进行比较，但并非为了挑选出一个最好的收集器。我们选择的只是对具体应用最合适的收集器。</p>
 <h3 id="1-新生代垃圾收集器"><a href="#1-新生代垃圾收集器" class="headerlink" title="1 新生代垃圾收集器"></a>1 新生代垃圾收集器</h3><p>(1)Serial 垃圾收集器（单线程）</p>
 <p>只开启一条 GC 线程进行垃圾回收，并且在垃圾收集过程中停止一切用户线程(Stop The World)。<br>一般客户端应用所需内存较小，不会创建太多对象，而且堆内存不大，因此垃圾收集器回收时间短，即使在这段时间停止一切用户线程，也不会感觉明显卡顿。因此 Serial 垃圾收集器适合客户端使用。<br>由于 Serial 收集器只使用一条 GC 线程，避免了线程切换的开销，从而简单高效。</p>
@@ -238,17 +249,6 @@
 最终标记：Stop The World，使用多条标记线程并发执行。
 
 筛选回收：回收废弃对象，此时也要 Stop The World，并使用多条筛选回收线程并发执行。</code></pre>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle"
-        style="display:block; text-align:center;"
-        data-ad-layout="in-article"
-        data-ad-format="fluid"
-        data-ad-client="ca-pub-2795125801721613"
-        data-ad-slot="7468094198"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
