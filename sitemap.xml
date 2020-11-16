@@ -928,6 +928,20 @@
   </url>
   
   <url>
+    <loc>https://blog.iyu.pub/tags/Fast/</loc>
+    <lastmod>2020-11-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.iyu.pub/tags/%E6%9C%9B%E8%BF%9C%E9%95%9C/</loc>
+    <lastmod>2020-11-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.iyu.pub/tags/Windows/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
@@ -1006,20 +1020,6 @@
   
   <url>
     <loc>https://blog.iyu.pub/tags/Https/</loc>
-    <lastmod>2020-11-16</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.iyu.pub/tags/Fast/</loc>
-    <lastmod>2020-11-16</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.iyu.pub/tags/%E6%9C%9B%E8%BF%9C%E9%95%9C/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1117,7 +1117,21 @@
   </url>
   
   <url>
+    <loc>https://blog.iyu.pub/tags/Python/</loc>
+    <lastmod>2020-11-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.iyu.pub/tags/Django/</loc>
+    <lastmod>2020-11-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.iyu.pub/tags/BeautifulSoup/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1132,13 +1146,6 @@
   
   <url>
     <loc>https://blog.iyu.pub/tags/%E5%BE%AE%E4%BF%A1/</loc>
-    <lastmod>2020-11-16</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.iyu.pub/tags/Python/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1181,13 +1188,6 @@
   
   <url>
     <loc>https://blog.iyu.pub/tags/%E5%8D%8F%E8%AE%AE/</loc>
-    <lastmod>2020-11-16</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.iyu.pub/tags/BeautifulSoup/</loc>
     <lastmod>2020-11-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
