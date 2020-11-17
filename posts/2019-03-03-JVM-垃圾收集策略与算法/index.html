@@ -165,188 +165,281 @@
 <div id="site-process"></div>
     <main>
       
-  <div class="passage">
-  <div class="passage-meta">
-    <span>
-      <i class="fa fa-calendar"></i>2019-03-03
-    </span>
-    
-      <span>
-        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
-      </span>
-    
-    
-      <span>
-        | <i class="fa fa-unlock-alt"></i>UNLOCK
-      </span>
-    
-  </div>
-  <h1 class="passage-title">
-    JVM-垃圾收集策略与算法
-  </h1>
+  .passage {
+  max-width: $main-width;
+  margin: 20px auto;
+
+  &-article {
+    font-size: 16px;
+    font-family: $content-font;
+    line-height: 2;
+    letter-spacing: 0.2px;
+    word-break: break-word;
+
+    h1, h2, h3, h4, h5, h6 {
+      position: relative;
+      font-weight: 600;
+      margin: 15px 0;
+
+      a {
+        padding-left: 5px;
+        transition: all .15s linear;
+      }
+
+      &::before {
+        font-size: 0.8em;
+        content: "\f0c1";
+        color: $color-deep-orange-6;
+        font-family: FontAwesome;
+      }
+
+      &:hover {
+        a {
+          padding-left: 10px;
+        }
+
+        &::before {
+          color: $color-blue-5;
+        }
+      }
+    }
+
+    h1 {
+      font-size: 2em;
+      margin: 16px 0;
+    }
+
+    h2 {
+      font-size: 1.75em;
+    }
+
+    h3 {
+      font-size: 1.5em;
+    }
+
+    h4 {
+      font-size: 1.25em;
+    }
+
+    h5 {
+      font-size: 1.125em;
+    }
+
+    h6 {
+      font-size: 1em;
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    blockquote {
+      margin: 15px 0;
+      padding: 1px 12px;
+      border-left: 3px solid $color-grey-6;
+      color: $color-grey-8;
+      background: $color-grey-1;
+    }
+
+    a {
+      display: inline-block;
+      position: relative;
+      color: $color-deep-orange-6;
+      font-weight: bolder;
+
+      &::before {
+        content: "";
+        position: absolute;
+        width: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: $color-blue-5;
+        transition: all 0.3s ease;
+      }
+
+      &:hover {
+        color: $color-blue-5;
+
+        &::before {
+          width: 100%;
+          left: 0;
+          right: auto;
+        }
+      }
+    }
+
+    code {
+      font-family: $code-font;
+      background: $color-grey-2;
+      color: $color-deep-orange-8;
+      word-wrap: break-word;
+      margin: 0 3px;
+    }
+
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 90%;
+      border-radius: 5px;
+      cursor: zoom-in;
+      transition: all .3s linear;
+
+      &:hover {
+        box-shadow: 0 0 3px $color-grey-5;
+      }
+    }
   
-    <div class="passage-cover">
-      <figure style="background-image:url(https://cn.bing.com/th?id=OHR.SilverBirch_EN-CN1125322484_1920x1080.jpg);"></figure>
-    </div>
-  
+    ol, ul {
+      margin: 0 0 16px;
+      padding-left: 1.2em;
 
-  
+      ol {
+        list-style-type: lower-roman;
+      }
+    }
 
-  <article class="passage-article">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle"
-        style="display:block; text-align:center;"
-        data-ad-layout="in-article"
-        data-ad-format="fluid"
-        data-ad-client="ca-pub-2795125801721613"
-        data-ad-slot="7468094198"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    & > table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      border-left: 1px solid $color-grey-2;
+      border-right: 1px solid $color-grey-2;
+      border-radius: 4px 4px 0 0;
+      margin: 16px 0;
 
-    <p>Java虚拟机的内存模型分为五个部分，分别是：程序计数器、Java虚拟机栈、本地方法栈、堆、方法区。</p>
-<p>这五个区域既然是存储空间，那么为了避免Java虚拟机在运行期间内存存满的情况，就必须得有一个垃圾收集者的角色，不定期地回收一些无效内存，以保障Java虚拟机能够健康地持续运行。</p>
-<p>这个垃圾收集者就是平常我们所说的“垃圾收集器”，那么垃圾收集器在何时清扫内存？清扫哪些数据？这就是接下来我们要解决的问题。</p>
-<p>程序计数器、Java虚拟机栈、本地方法栈都是线程私有的，也就是每条线程都拥有这三块区域，而且会随着线程的创建而创建，随着线程的结束而销毁。那么，垃圾收集器在何时清扫这三块区域的问题就解决了。</p>
-<p>此外，Java虚拟机栈、本地方法栈中的栈帧会随着方法的开始而入栈，方法的结束而出栈，并且每个栈帧中的本地变量表都是在类被加载的时候就确定的。因此以上三个区域的垃圾收集工作具有确定性，在这几个区域内不需要过多考虑回收的问题，因为方法结束或者线程结束时，内存自然就跟随着回收了。垃圾收集器能够清楚地知道何时清扫这三块区域中的哪些数据。</p>
-<p>然而，堆和方法区中的内存清理工作就没那么容易了。只有在程序运行期间才能知道会创建哪些对象，这部分内存的分配和回收都是动态的，垃圾收集器所关注的正是这部分内存。</p>
-<p>堆和方法区所有线程共享，并且都在JVM启动时创建，一直得运行到JVM停止时。因此它们没办法根据线程的创建而创建、线程的结束而释放。</p>
-<p>堆中存放JVM运行期间的所有对象，虽然每个对象的内存大小在加载该对象所属类的时候就确定了，但究竟创建多少个对象只有在程序运行期间才能确定。</p>
-<p>方法区中存放类信息、静态成员变量、常量。类的加载是在程序运行过程中，当需要创建这个类的对象时才会加载这个类。因此，JVM究竟要加载多少个类也需要在程序运行期间确定。</p>
-<p>因此，堆和方法区的内存回收具有不确定性，因此垃圾收集器在回收堆和方法区内存的时候花了一些心思。</p>
-<h2 id="1-堆内存的回收"><a href="#1-堆内存的回收" class="headerlink" title="1 堆内存的回收"></a>1 堆内存的回收</h2><h3 id="1-1-如何判定哪些对象需要回收？"><a href="#1-1-如何判定哪些对象需要回收？" class="headerlink" title="1.1 如何判定哪些对象需要回收？"></a>1.1 如何判定哪些对象需要回收？</h3><p>在对堆进行对象回收之前，首先要判断哪些是无效对象。我们知道，一个对象不被任何对象或变量引用，那么就是无效对象，需要被回收。一般有两种判别方式：</p>
-<pre><code>(1)引用计数法
+      thead {
+        background: $color-grey-1;
 
-每个对象都有一个计数器，当这个对象被一个变量或另一个对象引用一次，该计数器加一；若该引用失效则计数器减一。当计数器为0时，就认为该对象是无效对象。
+        th {
+          padding: 16px;
+          border-bottom: 1px solid $color-grey-2;
+        }
+      }
 
-在对象头维护着一个 counter 计数器，对象被引用一次则计数器 +1；若引用失效则计数器 -1。当计数器为 0 时，就认为该对象无效了。
+      tbody {
+        tr {
+          transition: all .3s ease;
 
-引用计数算法的实现简单，判定效率也很高，在大部分情况下它都是一个不错的算法。但是主流的 Java 虚拟机里没有选用引用计数算法来管理内存，主要是因为它很难解决对象之间循环引用的问题。
+          &:hover {
+            background: $color-light-blue-0;
+          }
 
-例如：对象 objA 和 objB 都有字段 instance，令 objA.instance = objB 并且 objB.instance = objA，由于它们互相引用着对方，导致它们的引用计数都不为 0，于是引用计数算法无法通知 GC 收集器回收它们。
+          td {
+            padding: 16px;
+            border-bottom: 1px solid $color-grey-2;
+          }
+        }
+      }
+    }
+  }
 
-(2)可达性分析法
+  &-title {
+    font-size: 36px;
+    line-height: 42px;
+    margin: 25px 0 40px;
 
-所有和GC Roots直接或间接关联的对象都是有效对象，和GC Roots没有关联的对象就是无效对象。</code></pre>
-<p>GC Roots是指：</p>
-<p>Java虚拟机栈所引用的对象(栈帧中局部变量表中引用类型的变量所引用的对象)</p>
-<pre><code>方法区中静态属性引用的对象
+    @media screen and (max-width: $mobile-width) {
+      font-size: 30px;
+      margin-bottom: 25px;
+    }
+  }
 
-方法区中常量所引用的对象
+  &-cover {
+    display: block;
+    width: 100%;
+    position: relative;
+    padding-bottom: 50%;
+    margin-bottom: 40px;
 
-本地方法栈所引用的对象</code></pre>
-<p>GC Roots 并不包括堆中对象所引用的对象，这样就不会有循环引用的问题。</p>
-<p>两者对比：</p>
-<p>引用计数法虽然简单，但存在一个严重的问题，它无法解决循环引用的问题。</p>
-<p>因此，目前主流语言均使用可达性分析方法来判断对象是否有效。</p>
-<h3 id="1-2-回收无效对象的过程"><a href="#1-2-回收无效对象的过程" class="headerlink" title="1.2 回收无效对象的过程"></a>1.2 回收无效对象的过程</h3><p>对于可达性分析中不可达的对象，也并不是没有存活的可能。</p>
-<p>当JVM筛选出失效的对象之后，并不是立即清除，而是再给对象一次重生的机会，具体过程如下：</p>
-<p>（1）判断该对象是否覆盖了finalize()方法</p>
-<p>JVM 会判断此对象是否有必要执行 finalize() 方法，如果对象没有覆盖 finalize() 方法，或者 finalize() 方法已经被虚拟机调用过，那么视为“没有必要执行”。那么对象基本上就真的被回收了。</p>
-<p>如果对象被判定为有必要执行 finalize() 方法，那么对象会被放入一个 F-Queue 队列中，虚拟机会以较低的优先级执行这些 finalize()方法，但不会确保所有的 finalize() 方法都会执行结束。如果 finalize() 方法出现耗时操作，虚拟机就直接停止指向该方法，将对象清除。</p>
-<p>若已覆盖该方法，并该对象的finalize()方法还没有被执行过，那么就会将finalize()扔到F-Queue队列中；</p>
-<p>若未覆盖该方法，则直接释放对象内存。</p>
-<p>（2）执行F-Queue队列中的finalize()方法</p>
-<p>虚拟机会以较低的优先级执行这些finalize()方法们，也不会确保所有的finalize()方法都会执行结束。如果finalize()方法中出现耗时操作，虚拟机就直接停止执行，将该对象清除。</p>
-<p>（3）对象重生或死亡</p>
-<p>如果在执行finalize()方法时，将this赋给了某一个引用，那么该对象就重生了。如果没有，那么就会被垃圾收集器清除。</p>
-<p>注意： 强烈不建议使用finalize()函数进行任何操作！如果需要释放资源，请使用try-finally。因为finalize()不确定性大，开销大，无法保证顺利执行。</p>
-<p>任何一个对象的 finalize() 方法只会被系统自动调用一次，如果对象面临下一次回收，它的 finalize() 方法不会被再次执行，想继续在 finalize() 中自救就失效了。</p>
-<h2 id="2-Java中引用的种类"><a href="#2-Java中引用的种类" class="headerlink" title="2 Java中引用的种类"></a>2 Java中引用的种类</h2><p>判定对象是否存活与“引用”有关。在 JDK 1.2 以前，Java 中的引用定义很传统，一个对象只有被引用或者没有被引用两种状态，我们希望能描述这一类对象：当内存空间还足够时，则保留在内存中；如果内存空间在进行垃圾手收集后还是非常紧张，则可以抛弃这些对象。很多系统的缓存功能都符合这样的应用场景。</p>
-<p>在 JDK 1.2 之后，Java 对引用的概念进行了扩充，将引用分为了以下四种。不同的引用类型，主要体现的是对象不同的可达性状态reachable和垃圾收集的影响。</p>
-<p>Java中根据生命周期的长短，将引用分为4类。</p>
-<h3 id="2-1-强引用（Strong-Reference）"><a href="#2-1-强引用（Strong-Reference）" class="headerlink" title="2.1 强引用（Strong Reference）"></a>2.1 强引用（Strong Reference）</h3><p>类似 “Object obj = new Object()” 这类的引用，就是强引用，只要强引用存在，垃圾收集器永远不会回收被引用的对象。但是，如果我们错误地保持了强引用，比如：赋值给了 static 变量，那么对象在很长一段时间内不会被回收，会产生内存泄漏。</p>
-<p>我们平时所使用的引用就是强引用。</p>
-<p>A a = new A();</p>
-<p>也就是通过关键字new创建的对象所关联的引用就是强引用。</p>
-<p>只要强引用存在，该对象永远也不会被回收。</p>
-<h3 id="2-2-软引用（Soft-Reference）"><a href="#2-2-软引用（Soft-Reference）" class="headerlink" title="2.2 软引用（Soft Reference）"></a>2.2 软引用（Soft Reference）</h3><p>软引用是一种相对强引用弱化一些的引用，可以让对象豁免一些垃圾收集，只有当 JVM 认为内存不足时，才会去试图回收软引用指向的对象。JVM 会确保在抛出 OutOfMemoryError 之前，清理软引用指向的对象。软引用通常用来实现内存敏感的缓存，如果还有空闲内存，就可以暂时保留缓存，当内存不足时清理掉，这样就保证了使用缓存的同时，不会耗尽内存。</p>
-<p>只有当堆即将发生OOM异常时，JVM才会回收软引用所指向的对象。</p>
-<p>软引用通过SoftReference类实现。</p>
-<p>软引用的生命周期比强引用短一些。</p>
-<h3 id="2-3-弱引用（Weak-Reference）"><a href="#2-3-弱引用（Weak-Reference）" class="headerlink" title="2.3 弱引用（Weak Reference）"></a>2.3 弱引用（Weak Reference）</h3><p>弱引用的强度比软引用更弱一些。当 JVM 进行垃圾回收时，无论内存是否充足，都会回收只被弱引用关联的对象。</p>
-<p>只要垃圾收集器运行，软引用所指向的对象就会被回收。</p>
-<p>弱引用通过WeakReference类实现。</p>
-<p>弱引用的生命周期比软引用短。</p>
-<h3 id="2-4-虚引用（Phantom-Reference）"><a href="#2-4-虚引用（Phantom-Reference）" class="headerlink" title="2.4 虚引用（Phantom Reference）"></a>2.4 虚引用（Phantom Reference）</h3><p>虚引用也叫幽灵引用或者幻影引用，它和没有引用没有区别，无法通过虚引用访问对象的任何属性或函数。</p>
-<p>一个对象关联虚引用唯一的作用就是在该对象被垃圾收集器回收之前会受到一条系统通知。</p>
-<p>虚引用通过PhantomReference类来实现。</p>
-<p>它是最弱的一种引用关系。一个对象是否有虚引用的存在，完全不会对其生存时间构成影响。它仅仅是提供了一种确保对象被 finalize 以后，做某些事情的机制，比如，通常用来做所谓的 Post-Mortem 清理机制。</p>
-<h2 id="3-方法区的内存回收"><a href="#3-方法区的内存回收" class="headerlink" title="3 方法区的内存回收"></a>3 方法区的内存回收</h2><p>如果使用复制算法实现堆的内存回收，堆就会被分为新生代和老年代，新生代中的对象“朝生夕死”，每次垃圾回收都会清除掉大量的对象；而老年代中的对象生命较长，每次垃圾回收只有少量的对象被清除掉。</p>
-<p>由于方法区中存放生命周期较长的类信息、常量、静态变量，因此方法区就像是堆的老年代，每次垃圾收集的只有少量的垃圾被清除掉。</p>
-<p>方法区中主要清除两种垃圾：</p>
-<pre><code>废弃常量
+    @media screen and (max-width: $mobile-width) {
+      display: none;
+    }
 
-废弃的类</code></pre>
-<h3 id="3-1-如何判定废弃常量？"><a href="#3-1-如何判定废弃常量？" class="headerlink" title="3.1 如何判定废弃常量？"></a>3.1 如何判定废弃常量？</h3><p>清除废弃的常量和清除对象类似，只要常量池中的常量不被任何变量或对象引用，那么这些常量就会被清除掉。比如，一个字符串 “blog” 进入了常量池，但是当前系统没有任何一个 String 对象引用常量池中的 “blog” 常量，也没有其它地方引用这个字面量，必要的话，”blog”常量会被清理出常量池。</p>
-<h3 id="3-2-如何废弃废弃的类？"><a href="#3-2-如何废弃废弃的类？" class="headerlink" title="3.2 如何废弃废弃的类？"></a>3.2 如何废弃废弃的类？</h3><p>清除废弃类的条件较为苛刻：</p>
-<p>(1)该类的所有对象都已被清除</p>
-<p>(2)该类的java.lang.Class对象没有被任何对象或变量引用,无法在任何地方通过反射访问该类的方法</p>
-<p>只要一个类被虚拟机加载进方法区，那么在堆中就会有一个代表该类的对象：java.lang.Class。这个对象在类被加载进方法区的时候创建，在方法区中该类被删除时清除。</p>
-<p>(3)加载该类的ClassLoader已经被回收</p>
-<h2 id="4-垃圾收集算法"><a href="#4-垃圾收集算法" class="headerlink" title="4 垃圾收集算法"></a>4 垃圾收集算法</h2><p>知道了判定一个对象是无效对象、判定一个类是废弃类、判定一个常量是废弃常量的方法，也就是知道了垃圾收集器会清除哪些数据，那么接下来介绍如何清除这些数据。</p>
-<h3 id="4-1-标记-清除算法"><a href="#4-1-标记-清除算法" class="headerlink" title="4.1 标记-清除算法"></a>4.1 标记-清除算法</h3><p>首先利用刚才介绍的方法判断需要清除哪些数据，并给它们做上标记；然后清除被标记的数据。</p>
-<p>标记的过程：遍历所有的 GC Roots，然后将所有 GC Roots 可达的对象标记为存活的对象。</p>
-<p>清除的过程：将遍历堆中所有的对象，将没有标记的对象全部清除掉。与此同时，清除那些被标记过的对象的标记，以便下次的垃圾回收。</p>
-<p>分析不足：</p>
-<p>这种算法标记和清除过程效率都很低，而且清除完后存在大量碎片空间，导致无法存储大对象，降低了空间利用率。</p>
-<p>（1）效率问题：标记和清除两个过程的效率都不高。</p>
-<p>（2）空间问题：标记清除之后会产生大量不连续的内存碎片，碎片太多可能导致以后需要分配较大对象时，无法找到足够的连续内存而不得不提前触发另一次垃圾收集动作。</p>
-<h3 id="4-2-复制算法（新生代）"><a href="#4-2-复制算法（新生代）" class="headerlink" title="4.2 复制算法（新生代）"></a>4.2 复制算法（新生代）</h3><p>为了解决效率问题，“复制”收集算法出现了。它将可用内存按容量划分为大小相等的两块，每次只使用其中的一块。当这一块内存用完，需要进行垃圾收集时，就将存活者的对象复制到另一块上面，然后将第一块内存全部清除。</p>
-<p>将内存分成两份，只将数据存储在其中一块上。当需要回收垃圾时，也是首先标记出废弃的数据，然后将有用的数据复制到另一块内存上，最后将第一块内存全部清除。</p>
-<p>分析：</p>
-<p>这种算法避免了碎片空间，但内存被缩小了一半。而且每次都需要将有用的数据全部复制到另一片内存上去，效率不高。</p>
-<p>优点：不会有内存碎片的问题。</p>
-<p>缺点：内存缩小为原来的一半，浪费空间。</p>
-<p>解决空间利用率问题：</p>
-<p>在新生代中，由于大量的对象都是“朝生夕死”，也就是一次垃圾收集后只有少量对象存活，因此我们可以将内存划分成三块：Eden、From Survivor（Survior1）、To Survivor（Survior2），内存大小分别是8:1:1。分配内存时，只使用Eden和一块Survior1。当发现Eden+Survior1的内存即将满时，JVM会发起一次MinorGC，清除掉废弃的对象，并将所有存活下来的对象复制到另一块Survior2中。那么，接下来就使用Survior2+Eden进行内存分配。</p>
-<p>回收时，将 Eden 和 Survivor 中还存活的对象一次性复制到另外一块 Survivor 空间上，最后清理掉 Eden 和刚才使用的 Survivor 空间。这样只有 10% 的内存被浪费。</p>
-<p>通过这种方式，只需要浪费10%的内存空间即可实现带有压缩功能的垃圾收集方法，避免了内存碎片的问题。</p>
-<p>但是，当一个对象要申请内存空间时，发现Eden+Survior中剩下的空间无法放置该对象，此时需要进行Minor GC，如果MinorGC过后空闲出来的内存空间仍然无法放置该对象，那么此时就需要将对象转移到老年代中，这种方式叫做“分配担保”。无法保证每次回收都只有不多于 10% 的对象存活，当 Survivor 空间不够，需要依赖其他内存（指老年代）进行分配担保。</p>
-<p>什么是分配担保？</p>
-<p>当JVM准备为一个对象分配内存空间时，发现此时Eden+Survior中空闲的区域无法装下该对象，那么就会触发MinorGC，对该区域的废弃对象进行回收。但如果MinorGC过后只有少量对象被回收（依然有超过 10% 的对象存活），仍然无法装下新对象，那么此时需要将Eden+Survior中的所有对象都转移到老年代中，然后再将新对象存入Eden区。这个过程就是“分配担保”。</p>
-<h3 id="4-3-标记-整理算法（老年代）"><a href="#4-3-标记-整理算法（老年代）" class="headerlink" title="4.3 标记-整理算法（老年代）"></a>4.3 标记-整理算法（老年代）</h3><p>在回收垃圾前，首先将所有废弃的对象做上标记，然后将所有未被标记的对象移到一边，最后清空另一边区域即可。</p>
-<p>标记：它的第一个阶段与标记/清除算法是一模一样的，均是遍历 GC Roots，然后将存活的对象标记。</p>
-<p>整理：移动所有存活的对象，且按照内存地址次序依次排列，然后将末端内存地址以后的内存全部回收。因此，第二阶段才称为整理阶段。</p>
-<p>分析：</p>
-<p>它是一种老年代的垃圾收集算法。老年代中的对象一般寿命比较长，因此每次垃圾回收会有大量对象存活，因此如果选用“复制”算法，每次需要复制大量存活的对象，会导致效率很低。而且，在新生代中使用“复制”算法，当Eden+Survior中都装不下某个对象时，可以使用老年代的内存进行“分配担保”，而如果在老年代使用该算法，那么在老年代中如果出现Eden+Survior装不下某个对象时，没有其他区域给他作分配担保。因此，老年代中一般使用“标记-整理”算法。</p>
-<h3 id="4-4-分代收集算法"><a href="#4-4-分代收集算法" class="headerlink" title="4.4 分代收集算法"></a>4.4 分代收集算法</h3><p>将内存划分为老年代和新生代。老年代中存放寿命较长的对象，新生代中存放“朝生夕死”的对象。然后在不同的区域使用不同的垃圾收集算法。</p>
-<p>根据对象存活周期的不同，将内存划分为几块。一般是把 Java 堆分为新生代和老年代，针对各个年代的特点采用最适当的收集算法。</p>
-<p>新生代：复制算法<br>老年代：标记-清除算法、标记-整理算法</p>
-  </article>
-  <aside class="table-content" id="site-toc">
-  <div class="table-content-title">
-    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
-    <span>目录</span>
-  </div>
-  <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%A0%86%E5%86%85%E5%AD%98%E7%9A%84%E5%9B%9E%E6%94%B6"><span class="toc-text">1 堆内存的回收</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%A6%82%E4%BD%95%E5%88%A4%E5%AE%9A%E5%93%AA%E4%BA%9B%E5%AF%B9%E8%B1%A1%E9%9C%80%E8%A6%81%E5%9B%9E%E6%94%B6%EF%BC%9F"><span class="toc-text">1.1 如何判定哪些对象需要回收？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%9B%9E%E6%94%B6%E6%97%A0%E6%95%88%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">1.2 回收无效对象的过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Java%E4%B8%AD%E5%BC%95%E7%94%A8%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="toc-text">2 Java中引用的种类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%BC%BA%E5%BC%95%E7%94%A8%EF%BC%88Strong-Reference%EF%BC%89"><span class="toc-text">2.1 强引用（Strong Reference）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E8%BD%AF%E5%BC%95%E7%94%A8%EF%BC%88Soft-Reference%EF%BC%89"><span class="toc-text">2.2 软引用（Soft Reference）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%BC%B1%E5%BC%95%E7%94%A8%EF%BC%88Weak-Reference%EF%BC%89"><span class="toc-text">2.3 弱引用（Weak Reference）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E8%99%9A%E5%BC%95%E7%94%A8%EF%BC%88Phantom-Reference%EF%BC%89"><span class="toc-text">2.4 虚引用（Phantom Reference）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%96%B9%E6%B3%95%E5%8C%BA%E7%9A%84%E5%86%85%E5%AD%98%E5%9B%9E%E6%94%B6"><span class="toc-text">3 方法区的内存回收</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%A6%82%E4%BD%95%E5%88%A4%E5%AE%9A%E5%BA%9F%E5%BC%83%E5%B8%B8%E9%87%8F%EF%BC%9F"><span class="toc-text">3.1 如何判定废弃常量？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%A6%82%E4%BD%95%E5%BA%9F%E5%BC%83%E5%BA%9F%E5%BC%83%E7%9A%84%E7%B1%BB%EF%BC%9F"><span class="toc-text">3.2 如何废弃废弃的类？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-text">4 垃圾收集算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95"><span class="toc-text">4.1 标记-清除算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95%EF%BC%88%E6%96%B0%E7%94%9F%E4%BB%A3%EF%BC%89"><span class="toc-text">4.2 复制算法（新生代）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E6%A0%87%E8%AE%B0-%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95%EF%BC%88%E8%80%81%E5%B9%B4%E4%BB%A3%EF%BC%89"><span class="toc-text">4.3 标记-整理算法（老年代）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-text">4.4 分代收集算法</span></a></li></ol></li></ol>
-  </div>
-</aside>
-  
-    <aside class="passage-copyright">
-      <div>本文作者: 听风行</div>
-      
-        <div>
-          原文链接: 
-          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-03-JVM-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AD%96%E7%95%A5%E4%B8%8E%E7%AE%97%E6%B3%95/</a>
-        </div>
-      
-      <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
-      </div>
-    </aside>
-  
-  
-    <div class="passage-tags">
-     
-      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
-     
-      <a href="/tags/JVM/"><i class="fa fa-tags"></i>JVM</a>
-    
-    </div>
-  
-</div>
+    figure {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      overflow: hidden;
+      border-radius: 10px;
+      background-position: 50% 50%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+  }
+
+  &-copyright {
+    border-left: 3px solid $color-deep-orange-5;
+    background: $color-grey-2;
+    padding: 15px 20px;
+    margin-top: 30px;
+
+    div {
+      line-height: 2;
+    }
+
+    a {
+      transition: all .1s linear;
+      &:hover {
+        color: $color-deep-orange-6;
+      }
+    }
+  }
+
+  &-meta {
+    font-size: 16px;
+    color: $color-grey-7;
+
+    a {
+      color: $color-grey-7;
+      transition: all .2s;
+
+      &:hover {
+        color: $color-grey-9;
+      }
+    }
+
+    i {
+      display: inline-block;
+      margin-right: 5px;
+    }
+  }
+
+  &-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    font-size: 15px;
+    border-top: 1px solid $color-grey-2;
+
+    a {
+      display: inline-flex;
+      margin: 0 15px 15px 0;
+      align-items: center;
+      height: 30px;
+      padding: 5px 10px;
+      background: $color-grey-2;
+      border: 1px solid $color-grey-2;
+      border-radius: 3px;
+      transition: all .15s linear;
+
+      i {
+        display: inline-block;
+        margin-right: 5px;
+      }
+
+      &:hover {
+        color: $color-blue-5;
+        border-color: $color-blue-5;
+      }
+    }
+  }
+}
 
     </main>
     

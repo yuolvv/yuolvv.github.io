@@ -165,99 +165,281 @@
 <div id="site-process"></div>
     <main>
       
-  <div class="passage">
-  <div class="passage-meta">
-    <span>
-      <i class="fa fa-calendar"></i>2019-03-06
-    </span>
-    
-      <span>
-        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
-      </span>
-    
-    
-      <span>
-        | <i class="fa fa-unlock-alt"></i>UNLOCK
-      </span>
-    
-  </div>
-  <h1 class="passage-title">
-    JVM-JVM性能调优
-  </h1>
-  
-    <div class="passage-cover">
-      <figure style="background-image:url(https://cn.bing.com/th?id=OHR.LouvreAutumn_EN-CN9762931035_1920x1080.jpg);"></figure>
-    </div>
-  
+  .passage {
+  max-width: $main-width;
+  margin: 20px auto;
 
-  
+  &-article {
+    font-size: 16px;
+    font-family: $content-font;
+    line-height: 2;
+    letter-spacing: 0.2px;
+    word-break: break-word;
 
-  <article class="passage-article">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle"
-        style="display:block; text-align:center;"
-        data-ad-layout="in-article"
-        data-ad-format="fluid"
-        data-ad-client="ca-pub-2795125801721613"
-        data-ad-slot="7468094198"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    h1, h2, h3, h4, h5, h6 {
+      position: relative;
+      font-weight: 600;
+      margin: 15px 0;
 
-    <p>在高性能硬件上部署程序，目前主要有两种方式：</p>
-<p>(1)通过 64 位 JDK 来使用大内存；<br>(2)使用若干个 32 位虚拟机建立逻辑集群来利用硬件资源。</p>
-<h2 id="1-使用-64-位-JDK-管理大内存"><a href="#1-使用-64-位-JDK-管理大内存" class="headerlink" title="1 使用 64 位 JDK 管理大内存"></a>1 使用 64 位 JDK 管理大内存</h2><p>堆内存变大后，虽然垃圾收集的频率减少了，但每次垃圾回收的时间变长。 如果堆内存为14 G，那么每次 Full GC 将长达数十秒。如果 Full GC 频繁发生，那么对于一个网站来说是无法忍受的。</p>
-<p>对于用户交互性强、对停顿时间敏感的系统，可以给 Java 虚拟机分配超大堆的前提是有把握把应用程序的 Full GC 频率控制得足够低，至少要低到不会影响用户使用。</p>
-<p>可能面临的问题：</p>
-<p>(1)内存回收导致的长时间停顿；</p>
-<p>(2)现阶段，64位 JDK 的性能普遍比 32 位 JDK 低；</p>
-<p>(3)需要保证程序足够稳定，因为这种应用要是产生堆溢出几乎就无法产生堆转储快照（因为要产生超过 10GB 的 Dump 文件），哪怕产生了快照也几乎无法进行分析；</p>
-<p>(4)相同程序在 64 位 JDK 消耗的内存一般比 32 位 JDK 大，这是由于指针膨胀，以及数据类型对齐补白等因素导致的。</p>
-<h2 id="2-使用-32-位-JVM-建立逻辑集群"><a href="#2-使用-32-位-JVM-建立逻辑集群" class="headerlink" title="2 使用 32 位 JVM 建立逻辑集群"></a>2 使用 32 位 JVM 建立逻辑集群</h2><p>在一台物理机器上启动多个应用服务器进程，每个服务器进程分配不同端口， 然后在前端搭建一个负载均衡器，以反向代理的方式来分配访问请求。</p>
-<p>考虑到在一台物理机器上建立逻辑集群的目的仅仅是为了尽可能利用硬件资源，并不需要关心状态保留、热转移之类的高可用性能需求， 也不需要保证每个虚拟机进程有绝对的均衡负载，因此使用无 Session 复制的亲合式集群是一个不错的选择。 我们仅仅需要保障集群具备亲合性，也就是均衡器按一定的规则算法（一般根据 SessionID 分配） 将一个固定的用户请求永远分配到固定的一个集群节点进行处理即可。</p>
-<p>可能遇到的问题：</p>
-<p>(1)尽量避免节点竞争全局资源，如磁盘竞争，各个节点如果同时访问某个磁盘文件的话，很可能导致 IO 异常；</p>
-<p>(2)很难高效利用资源池，如连接池，一般都是在节点建立自己独立的连接池，这样有可能导致一些节点池满了而另外一些节点仍有较多空余；</p>
-<p>(3)各个节点受到 32 位的内存限制；</p>
-<p>(4)大量使用本地缓存的应用，在逻辑集群中会造成较大的内存浪费，因为每个逻辑节点都有一份缓存，这时候可以考虑把本地缓存改成集中式缓存。</p>
-<h2 id="3-调优案例分析与实战"><a href="#3-调优案例分析与实战" class="headerlink" title="3 调优案例分析与实战"></a>3 调优案例分析与实战</h2><h3 id="3-1-场景描述"><a href="#3-1-场景描述" class="headerlink" title="3.1 场景描述"></a>3.1 场景描述</h3><p>一个小型系统，使用 32 位 JDK，4G 内存，测试期间发现服务端不定时抛出内存溢出异常。 加入 -XX:+HeapDumpOnOutOfMemoryError（添加这个参数后，堆内存溢出时就会输出异常日志）， 但再次发生内存溢出时，没有生成相关异常日志。</p>
-<h3 id="3-2-分析"><a href="#3-2-分析" class="headerlink" title="3.2 分析"></a>3.2 分析</h3><p>在 32 位 JDK 上，1.6G 分配给堆，还有一部分分配给 JVM 的其他内存，直接内存最大也只能在剩余的 0.4G 空间中分出一部分， 如果使用了 NIO，JVM 会在 JVM 内存之外分配内存空间，那么就要小心“直接内存”不足时发生内存溢出异常了。</p>
-<h3 id="3-3-直接内存的回收过程"><a href="#3-3-直接内存的回收过程" class="headerlink" title="3.3 直接内存的回收过程"></a>3.3 直接内存的回收过程</h3><p>直接内存虽然不是 JVM 内存空间，但它的垃圾回收也由 JVM 负责。</p>
-<p>垃圾收集进行时，虚拟机虽然会对直接内存进行回收， 但是直接内存却不能像新生代、老年代那样，发现空间不足了就通知收集器进行垃圾回收， 它只能等老年代满了后 Full GC，然后“顺便”帮它清理掉内存的废弃对象。 否则只能一直等到抛出内存溢出异常时，先 catch 掉，再在 catch 块里大喊 “System.gc()”。 要是虚拟机还是不听，那就只能眼睁睁看着堆中还有许多空闲内存，自己却不得不抛出内存溢出异常了。</p>
-  </article>
-  <aside class="table-content" id="site-toc">
-  <div class="table-content-title">
-    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
-    <span>目录</span>
-  </div>
-  <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BD%BF%E7%94%A8-64-%E4%BD%8D-JDK-%E7%AE%A1%E7%90%86%E5%A4%A7%E5%86%85%E5%AD%98"><span class="toc-text">1 使用 64 位 JDK 管理大内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8-32-%E4%BD%8D-JVM-%E5%BB%BA%E7%AB%8B%E9%80%BB%E8%BE%91%E9%9B%86%E7%BE%A4"><span class="toc-text">2 使用 32 位 JVM 建立逻辑集群</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%B0%83%E4%BC%98%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E4%B8%8E%E5%AE%9E%E6%88%98"><span class="toc-text">3 调优案例分析与实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%9C%BA%E6%99%AF%E6%8F%8F%E8%BF%B0"><span class="toc-text">3.1 场景描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%88%86%E6%9E%90"><span class="toc-text">3.2 分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98%E7%9A%84%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B"><span class="toc-text">3.3 直接内存的回收过程</span></a></li></ol></li></ol>
-  </div>
-</aside>
+      a {
+        padding-left: 5px;
+        transition: all .15s linear;
+      }
+
+      &::before {
+        font-size: 0.8em;
+        content: "\f0c1";
+        color: $color-deep-orange-6;
+        font-family: FontAwesome;
+      }
+
+      &:hover {
+        a {
+          padding-left: 10px;
+        }
+
+        &::before {
+          color: $color-blue-5;
+        }
+      }
+    }
+
+    h1 {
+      font-size: 2em;
+      margin: 16px 0;
+    }
+
+    h2 {
+      font-size: 1.75em;
+    }
+
+    h3 {
+      font-size: 1.5em;
+    }
+
+    h4 {
+      font-size: 1.25em;
+    }
+
+    h5 {
+      font-size: 1.125em;
+    }
+
+    h6 {
+      font-size: 1em;
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    blockquote {
+      margin: 15px 0;
+      padding: 1px 12px;
+      border-left: 3px solid $color-grey-6;
+      color: $color-grey-8;
+      background: $color-grey-1;
+    }
+
+    a {
+      display: inline-block;
+      position: relative;
+      color: $color-deep-orange-6;
+      font-weight: bolder;
+
+      &::before {
+        content: "";
+        position: absolute;
+        width: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: $color-blue-5;
+        transition: all 0.3s ease;
+      }
+
+      &:hover {
+        color: $color-blue-5;
+
+        &::before {
+          width: 100%;
+          left: 0;
+          right: auto;
+        }
+      }
+    }
+
+    code {
+      font-family: $code-font;
+      background: $color-grey-2;
+      color: $color-deep-orange-8;
+      word-wrap: break-word;
+      margin: 0 3px;
+    }
+
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 90%;
+      border-radius: 5px;
+      cursor: zoom-in;
+      transition: all .3s linear;
+
+      &:hover {
+        box-shadow: 0 0 3px $color-grey-5;
+      }
+    }
   
-    <aside class="passage-copyright">
-      <div>本文作者: 听风行</div>
-      
-        <div>
-          原文链接: 
-          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-06-JVM-JVM%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</a>
-        </div>
-      
-      <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
-      </div>
-    </aside>
-  
-  
-    <div class="passage-tags">
-     
-      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
-     
-      <a href="/tags/JVM/"><i class="fa fa-tags"></i>JVM</a>
-    
-    </div>
-  
-</div>
+    ol, ul {
+      margin: 0 0 16px;
+      padding-left: 1.2em;
+
+      ol {
+        list-style-type: lower-roman;
+      }
+    }
+
+    & > table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      border-left: 1px solid $color-grey-2;
+      border-right: 1px solid $color-grey-2;
+      border-radius: 4px 4px 0 0;
+      margin: 16px 0;
+
+      thead {
+        background: $color-grey-1;
+
+        th {
+          padding: 16px;
+          border-bottom: 1px solid $color-grey-2;
+        }
+      }
+
+      tbody {
+        tr {
+          transition: all .3s ease;
+
+          &:hover {
+            background: $color-light-blue-0;
+          }
+
+          td {
+            padding: 16px;
+            border-bottom: 1px solid $color-grey-2;
+          }
+        }
+      }
+    }
+  }
+
+  &-title {
+    font-size: 36px;
+    line-height: 42px;
+    margin: 25px 0 40px;
+
+    @media screen and (max-width: $mobile-width) {
+      font-size: 30px;
+      margin-bottom: 25px;
+    }
+  }
+
+  &-cover {
+    display: block;
+    width: 100%;
+    position: relative;
+    padding-bottom: 50%;
+    margin-bottom: 40px;
+
+    @media screen and (max-width: $mobile-width) {
+      display: none;
+    }
+
+    figure {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      overflow: hidden;
+      border-radius: 10px;
+      background-position: 50% 50%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+  }
+
+  &-copyright {
+    border-left: 3px solid $color-deep-orange-5;
+    background: $color-grey-2;
+    padding: 15px 20px;
+    margin-top: 30px;
+
+    div {
+      line-height: 2;
+    }
+
+    a {
+      transition: all .1s linear;
+      &:hover {
+        color: $color-deep-orange-6;
+      }
+    }
+  }
+
+  &-meta {
+    font-size: 16px;
+    color: $color-grey-7;
+
+    a {
+      color: $color-grey-7;
+      transition: all .2s;
+
+      &:hover {
+        color: $color-grey-9;
+      }
+    }
+
+    i {
+      display: inline-block;
+      margin-right: 5px;
+    }
+  }
+
+  &-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    font-size: 15px;
+    border-top: 1px solid $color-grey-2;
+
+    a {
+      display: inline-flex;
+      margin: 0 15px 15px 0;
+      align-items: center;
+      height: 30px;
+      padding: 5px 10px;
+      background: $color-grey-2;
+      border: 1px solid $color-grey-2;
+      border-radius: 3px;
+      transition: all .15s linear;
+
+      i {
+        display: inline-block;
+        margin-right: 5px;
+      }
+
+      &:hover {
+        color: $color-blue-5;
+        border-color: $color-blue-5;
+      }
+    }
+  }
+}
 
     </main>
     

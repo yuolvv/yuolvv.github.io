@@ -165,282 +165,281 @@
 <div id="site-process"></div>
     <main>
       
-  <div class="passage">
-  <div class="passage-meta">
-    <span>
-      <i class="fa fa-calendar"></i>2019-03-10
-    </span>
-    
-      <span>
-        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
-      </span>
-    
-    
-      <span>
-        | <i class="fa fa-unlock-alt"></i>UNLOCK
-      </span>
-    
-  </div>
-  <h1 class="passage-title">
-    JVM参数
-  </h1>
+  .passage {
+  max-width: $main-width;
+  margin: 20px auto;
+
+  &-article {
+    font-size: 16px;
+    font-family: $content-font;
+    line-height: 2;
+    letter-spacing: 0.2px;
+    word-break: break-word;
+
+    h1, h2, h3, h4, h5, h6 {
+      position: relative;
+      font-weight: 600;
+      margin: 15px 0;
+
+      a {
+        padding-left: 5px;
+        transition: all .15s linear;
+      }
+
+      &::before {
+        font-size: 0.8em;
+        content: "\f0c1";
+        color: $color-deep-orange-6;
+        font-family: FontAwesome;
+      }
+
+      &:hover {
+        a {
+          padding-left: 10px;
+        }
+
+        &::before {
+          color: $color-blue-5;
+        }
+      }
+    }
+
+    h1 {
+      font-size: 2em;
+      margin: 16px 0;
+    }
+
+    h2 {
+      font-size: 1.75em;
+    }
+
+    h3 {
+      font-size: 1.5em;
+    }
+
+    h4 {
+      font-size: 1.25em;
+    }
+
+    h5 {
+      font-size: 1.125em;
+    }
+
+    h6 {
+      font-size: 1em;
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    blockquote {
+      margin: 15px 0;
+      padding: 1px 12px;
+      border-left: 3px solid $color-grey-6;
+      color: $color-grey-8;
+      background: $color-grey-1;
+    }
+
+    a {
+      display: inline-block;
+      position: relative;
+      color: $color-deep-orange-6;
+      font-weight: bolder;
+
+      &::before {
+        content: "";
+        position: absolute;
+        width: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: $color-blue-5;
+        transition: all 0.3s ease;
+      }
+
+      &:hover {
+        color: $color-blue-5;
+
+        &::before {
+          width: 100%;
+          left: 0;
+          right: auto;
+        }
+      }
+    }
+
+    code {
+      font-family: $code-font;
+      background: $color-grey-2;
+      color: $color-deep-orange-8;
+      word-wrap: break-word;
+      margin: 0 3px;
+    }
+
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 90%;
+      border-radius: 5px;
+      cursor: zoom-in;
+      transition: all .3s linear;
+
+      &:hover {
+        box-shadow: 0 0 3px $color-grey-5;
+      }
+    }
   
-    <div class="passage-cover">
-      <figure style="background-image:url(https://cn.bing.com/th?id=OHR.MauiEucalyptus_ZH-CN5616197787_1920x1080.jpg);"></figure>
-    </div>
-  
+    ol, ul {
+      margin: 0 0 16px;
+      padding-left: 1.2em;
 
-  
+      ol {
+        list-style-type: lower-roman;
+      }
+    }
 
-  <article class="passage-article">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle"
-        style="display:block; text-align:center;"
-        data-ad-layout="in-article"
-        data-ad-format="fluid"
-        data-ad-client="ca-pub-2795125801721613"
-        data-ad-slot="7468094198"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    & > table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      border-left: 1px solid $color-grey-2;
+      border-right: 1px solid $color-grey-2;
+      border-radius: 4px 4px 0 0;
+      margin: 16px 0;
 
-    <h1 id="内存分配相关"><a href="#内存分配相关" class="headerlink" title="内存分配相关"></a>内存分配相关</h1><pre><code>Xms
-英文释义：Initial heap size(in bytes)
-中文释义：堆区初始值
-使用方法：-Xms2g 或 -XX:InitialHeapSize=2048m
+      thead {
+        background: $color-grey-1;
 
-Xmx
-英文释义：Maximum heap size(in bytes)
-中文释义：堆区最大值
-使用方法：-Xmx2g 或 -XX:MaxHeapSize=2048m
+        th {
+          padding: 16px;
+          border-bottom: 1px solid $color-grey-2;
+        }
+      }
 
-Xmn
-英文释义：Maximum new generation size(in bytes)
-中文释义：新生代最大值
-使用方法：-Xmn512m 或 -XX:MaxNewSize=512m
+      tbody {
+        tr {
+          transition: all .3s ease;
 
-PermSize、MetaspaceSize
-英文释义：Initial size of permanent generation(in bytes)
-中文释义：永久代（元空间）初始值
-使用方法：-XX:PermSize=128m（1.7 之前版本）、-XX:MetaspaceSize=128m（1.7 之后版本）
+          &:hover {
+            background: $color-light-blue-0;
+          }
 
-MaxPermSize、MetaspaceSize
-英文释义：Maximum size of permanent generation(in bytes)
-中文释义：永久代（元空间）最大值
-使用方法：-XX:MaxPermSize=256m（1.7之前版本）、-XX：MaxMetaspaceSize=256m（1.7之后版本）
+          td {
+            padding: 16px;
+            border-bottom: 1px solid $color-grey-2;
+          }
+        }
+      }
+    }
+  }
 
-Xss
-英文释义：Thread Stack Size(in Kbytes)
-中文释义：线程栈最大值
-使用方法：-Xss256k 或 -XX:ThreadStackSize=256k</code></pre>
-<h1 id="GC-策略相关"><a href="#GC-策略相关" class="headerlink" title="GC 策略相关"></a>GC 策略相关</h1><pre><code>SurvivorRatio
-英文释义：Rato of eden/survivor space size
-中文释义：Eden 区和 Survivor 的比值
-使用方法：-XX:SurvivorRatio=6
-使用经验：默认值为 8，假如设为 6，则表示每个 Survivor 区跟 Eden 区的比值为1:6，每个 Survivor 区占新生代的八分之一
+  &-title {
+    font-size: 36px;
+    line-height: 42px;
+    margin: 25px 0 40px;
 
-PretenureSizeThreshold
-英文释义：Maximum size in bytes of objects allocated in DefNew generation;zero means no maximum
-中文释义：可以在新生代直接分配的对象最大值，0表示没有最大值
-使用方法：-XX:PretenureSizeThreshold=1000000
-使用经验：设置该参数，可以使大于这个值的对象直接在老年代分配，避免在 Eden 区和 Survivor 区发生大量的内存复制，该参数只对 Serial 和 ParNew 收集器有效，Parallel Scavenge并不认识该参数
+    @media screen and (max-width: $mobile-width) {
+      font-size: 30px;
+      margin-bottom: 25px;
+    }
+  }
 
-MaxTenuringThreshold
-英文释义：Maximum value fo tenuring threshold
-中文释义：新生代最大年龄
-使用方法：-XX:MaxTenuringThreshold=10
-使用经验：每个对象在坚持过一次Minor GC之后，年龄就增加1，当超过这个参数值时就进入老年代，最大支持15
+  &-cover {
+    display: block;
+    width: 100%;
+    position: relative;
+    padding-bottom: 50%;
+    margin-bottom: 40px;
 
-ParallelGCThreads
-英文释义：Number of parallel threads parallel gc will use
-中文释义：并行执行gc的线程数
-使用方法：-XX:ParallelGCThreads=16
+    @media screen and (max-width: $mobile-width) {
+      display: none;
+    }
 
-UseSerialGC
-英文释义：Use the Serial garbage collector
-中文释义：新生代使用 Serial 垃圾收集器
-使用方法：开启 -XX:+UseSerialGC、关闭 -XX:-UseSerialGC
-使用经验：虚拟机在运行在 Client 模式下的默认值，老年代将会使用 SerialOld 垃圾收集器
+    figure {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      overflow: hidden;
+      border-radius: 10px;
+      background-position: 50% 50%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+  }
 
-UseParNewGC
-英文释义：Use parallel threads in the new generation
-中文释义：新生代使用 ParNew 垃圾收集器
-使用方法：开启 -XX:+UseParNewGC、关闭 -XX:-UseParNewGC
-使用经验：老年代将使用 Serial Old 收集器
+  &-copyright {
+    border-left: 3px solid $color-deep-orange-5;
+    background: $color-grey-2;
+    padding: 15px 20px;
+    margin-top: 30px;
 
-CMSParallelRemarkEnabled
-英文释义：Whether parallel remark enabled (only if ParNewGC)
-中文释义：是否启用并行标记（仅限于ParNewGC）
-使用方法：开启 -XX:+CMSParallelRemarkEnabled、关闭 -XX:-CMSParallelRemarkEnabled
+    div {
+      line-height: 2;
+    }
 
-UseParallelGC
-英文释义：Use the Parallel Scavenge garbage collector
-中文释义：新生代使用 Parallel Scavenge 垃圾收集器
-使用方法：开启 -XX:+UseParallelGC、关闭 -XX:-UseParallelGC
-使用经验：Linux下1.6,1.7,1.8 默认开启（1.9 后默认启用 G1 收集器），老年代将会使用 Serial Old 垃圾收集器
+    a {
+      transition: all .1s linear;
+      &:hover {
+        color: $color-deep-orange-6;
+      }
+    }
+  }
 
-UseAdaptiveSizePolicy
-英文释义：Use adaptive generation sizing policies
-中文释义：自适应调节策略，动态调整 Java 堆中各个区域的大小以及进入老年代的年龄
-使用方法：开启 -XX:+UseAdaptiveSizePolicy、关闭 -XX:-UseAdaptiveSizePolicy
+  &-meta {
+    font-size: 16px;
+    color: $color-grey-7;
 
-MaxTimeRatio
-英文释义：
-中文释义：GC 时间占总时间的比率，默认值为 99，即允许 1% 的 GC 时间。仅在 Parallel Scavenge 收集器时生效。
-使用方法：-XX:MaxTimeRatio=99
+    a {
+      color: $color-grey-7;
+      transition: all .2s;
 
-MaxGCPauseMillis
-英文释义：Adaptive size policy maximum GC pause time goal in millisecond, or (G1 Only) the maximum GC time per MMU time slice
-中文释义：自适应策略的最大GC暂停时间目标（以毫秒为单位），或（仅G1）每个MMU时间片的最大GC时间
-使用方法：-XX:MaxGCPauseMillis=200
+      &:hover {
+        color: $color-grey-9;
+      }
+    }
 
-UseParallelOldGC
-英文释义：Use the Parallel Old garbage collector
-中文释义：老年代使用 Parallel Old 收集器
-使用方法：开启 -XX:+UseParallelOldGC、关闭 -XX:-UseParallelOldGC
-使用经验：新生代将使用 Parallel Scavenge 收集器
+    i {
+      display: inline-block;
+      margin-right: 5px;
+    }
+  }
 
-UseConcMarkSweepGC
-英文释义：Use Concurrent Mark-Sweep GC in the old generation
-中文释义：老年代使用 CMS 收集器
-使用方法：开启 -XX:+UseConcMarkSweepGC、关闭 -XX:-UseConcMarkSweepGC
-使用经验：年轻代将会使用 ParNew 收集器，如果出现&quot;Concurrent Mode Failure&quot;，会使用 Serial Old 收集器
+  &-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    font-size: 15px;
+    border-top: 1px solid $color-grey-2;
 
-CMSInitiatingOccupancyFraction
-英文释义：Percentage CMS generation occupancy to start a CMS collection cycle. A negative value means that CMSTriggerRatio is used
-中文释义：触发执行 CMS 回收的老年代内存空间占用的百分比，负值表示使用 CMSTriggerRatio 设置的值
-使用方法：-XX:+CMSInitiatingOccupancyFraction=75
+    a {
+      display: inline-flex;
+      margin: 0 15px 15px 0;
+      align-items: center;
+      height: 30px;
+      padding: 5px 10px;
+      background: $color-grey-2;
+      border: 1px solid $color-grey-2;
+      border-radius: 3px;
+      transition: all .15s linear;
 
-UseCMSInitiatingOccupancyOnly
-英文释义：Only use occupancy as a criterion for staring a CMS collection
-中文释义：只根据占用情况作为开始执行CMS收集的标准
-使用方法：开启 -XX:+UseCMSInitiatingOccupancyOnly、关闭 -XX:-UseCMSInitiatingOccupancyOnly
+      i {
+        display: inline-block;
+        margin-right: 5px;
+      }
 
-UseCMSCompactAtFullCollection
-英文释义：Use Mark-Sweep-Compact algorithm at full collections
-中文释义：设置 CMS 收集器在完成垃圾收集后是否要进行一次碎片整理
-使用方法：开启 -XX:+UseCMSCompactAtFullCollection、关闭 -XX:-UseCMSCompactAtFullCollection
-
-CMSFullGCsBeforeCompaction
-英文释义：Number of CMS full collection done before compaction if &gt; 0
-中文释义：设置 CMS 收集器在进行若干次垃圾收集后再启动一次内存碎片整理。
-使用方法：-XX:CMSFullGCsBeforeCompaction=1
-
-CMSClassUnloadingEnabled
-英文释义：Whether class unloading enabled when using CMS GC
-中文释义：当使用CMS GC时是否启用类卸载功能
-使用方法：开启 -XX:+CMSClassUnloadingEnabled、关闭 -XX:-CMSClassUnloadingEnabled
-
-UseG1GC
-英文释义：Use the Garbage-First garbage collector
-中文释义：使用G1垃圾收集器
-使用方法：开启 -XX:+UseG1GC、关闭 -XX:-UseG1GC
-使用经验：JDK 1.9 后默认选择的垃圾收集器
-
-DisableExplicitGC
-英文释义：Ignore calls to System.gc()
-中文释义：禁用 System.gc() 触发FullGC
-使用方法：开启 -XX:+DisableExplicitGC、关闭 -XX:-DisableExplicitGC
-使用经验：不建议开启，如果开启了这个参数可能会导致对外内存无法及时回收造成对外内存溢出</code></pre>
-<h1 id="GC日志相关"><a href="#GC日志相关" class="headerlink" title="GC日志相关"></a>GC日志相关</h1><pre><code>Xloggc
-英文释义：GC log file
-中文释义：GC日志文件路径
-使用方法：-Xloggc:/data/gclog/gc.log
-
-UseGCLogFileRotation
-英文释义：Rotate gclog files(for long running applications). It requires -Xloggc:
-中文释义：滚动GC日志文件，须配置Xloggc
-使用方法：开启 -XX:+UseGCLogFileRotation、关闭 -XX:-UseGCLogFileRotation
-
-NumberOfGCLogFiles
-英文释义：Number of gclog files in rotation(default:0,no rotation)
-中文释义：滚动 GC日志文件数，默认0，不滚动
-使用方法：-XX:NumberOfGCLogFiles=4
-
-GCLogFileSize
-英文释义：GC log file size,requires UseGCLogFileRotation. Set to 0 to only trigger rotation via jcmd
-中文释义：GC文件滚动大小，需配置UseGCLogFileRotation，设置为0表示仅通过jcmd命令触发
-使用方法：-XX:GCLogFileSize=100k
-
-PrintGCDetails
-英文释义：Print more details at garbage collection
-中文释义：GC时打印更多详细信息
-使用方法：开启 -XX:+PrintGCDetails、关闭 -XX:-PrintGCDetails
-使用经验：可以通过jinfo -flag [+|-]PrintGCDetails 或 jinfo -flag PrintGCDetails= 来动态开启或设置值
-
-PrintGCDateStamps
-英文释义：Print date stamps at garbage collection
-中文释义：GC时打印时间戳信息
-使用方法：开启 -XX:+PrintGCDateStamps、关闭 -XX:-PrintGCDateStamps
-使用经验：可以通过jinfo -flag [+|-] PrintGCDateStamps 或 jinfo -flag PrintGCDateStamps=来动态开启或设置值
-
-PrintTenuringDistribution
-英文释义：Print tenuring age information
-中文释义：打印存活实例年龄信息
-使用方法：开启 -XX:+PrintTenuringDistribution、关闭 -XX:-PrintTenuringDistribution
-
-PrintGCApplicationStoppedTime
-英文释义：Print the time of application has been stopped
-中文释义：打印应用暂停时间
-使用方法：开启 -XX:+PrintGCApplicationStoppedTime、关闭 -XX:-PrintGCApplicationStoppedTime
-
-PrintHeapAtGC
-英文释义：Print heap layout before and after each GC
-中文释义：GC前后打印堆区使用信息
-使用方法：开启 -XX:+PrintHeapAtGC、关闭 -XX:-PrintHeapAtGC</code></pre>
-<h1 id="异常相关"><a href="#异常相关" class="headerlink" title="异常相关"></a>异常相关</h1><pre><code>HeapDumpOnOutOfMemoryError
-英文释义：Dump heap to file when java.lang.OutOfMemoryError is thrown
-中文释义：抛出内存溢出错误时导出堆信息到指定文件
-使用方法：开启 -XX:+HeapDumpOnOutOfMemoryError、关闭 -XX:-HeapDumpOnOutOfMemoryError
-使用经验：可以通过 jinfo -flag [+|-]HeapDumpOnOutOfMemoryError 或 jinfo -flag HeapDumpOnOutOfMemoryError= 来动态开启或设置值
-
-HeapDumpPath
-英文释义：When HeapDumpOnOutOfMemoryError is on, the path(filename or directory) of the dump file(defaults to java_pid.hprof in the working directory)
-中文释义：当 HeapDumpOnOutOfMemoryError 开启的时候，dump 文件的保存路径，默认为工作目录下的 java_pid.hprof 文件
-使用方法：-XX:HeapDumpPath=/data/dump/jvm.dump</code></pre>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><pre><code>server
-英文释义：server mode
-中文释义：服务端模式
-使用方法：-server
-
-TieredCompilation
-英文释义：Enable tiered compilation
-中文释义：启用多层编译
-使用方法：开启 -XX:+TieredCompilation、关闭 -XX:-TieredCompilation</code></pre>
-  </article>
-  <aside class="table-content" id="site-toc">
-  <div class="table-content-title">
-    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
-    <span>目录</span>
-  </div>
-  <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9B%B8%E5%85%B3"><span class="toc-text">内存分配相关</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GC-%E7%AD%96%E7%95%A5%E7%9B%B8%E5%85%B3"><span class="toc-text">GC 策略相关</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GC%E6%97%A5%E5%BF%97%E7%9B%B8%E5%85%B3"><span class="toc-text">GC日志相关</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E7%9B%B8%E5%85%B3"><span class="toc-text">异常相关</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a></li></ol>
-  </div>
-</aside>
-  
-    <aside class="passage-copyright">
-      <div>本文作者: 听风行</div>
-      
-        <div>
-          原文链接: 
-          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-10-JVM-JVM%E5%8F%82%E6%95%B0/</a>
-        </div>
-      
-      <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
-      </div>
-    </aside>
-  
-  
-    <div class="passage-tags">
-     
-      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
-     
-      <a href="/tags/JVM/"><i class="fa fa-tags"></i>JVM</a>
-    
-    </div>
-  
-</div>
+      &:hover {
+        color: $color-blue-5;
+        border-color: $color-blue-5;
+      }
+    }
+  }
+}
 
     </main>
     

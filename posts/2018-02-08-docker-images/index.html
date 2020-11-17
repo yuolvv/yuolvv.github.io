@@ -165,169 +165,281 @@
 <div id="site-process"></div>
     <main>
       
-  <div class="passage">
-  <div class="passage-meta">
-    <span>
-      <i class="fa fa-calendar"></i>2018-02-08
-    </span>
-    
-      <span>
-        | <a href="/categories/Linux/"><i class="fa fa-bookmark"></i>Linux</a>
-      </span>
-    
-    
-      <span>
-        | <i class="fa fa-unlock-alt"></i>UNLOCK
-      </span>
-    
-  </div>
-  <h1 class="passage-title">
-    有趣的 Docker 镜像
-  </h1>
-  
+  .passage {
+  max-width: $main-width;
+  margin: 20px auto;
 
-  
+  &-article {
+    font-size: 16px;
+    font-family: $content-font;
+    line-height: 2;
+    letter-spacing: 0.2px;
+    word-break: break-word;
 
-  <article class="passage-article">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle"
-        style="display:block; text-align:center;"
-        data-ad-layout="in-article"
-        data-ad-format="fluid"
-        data-ad-client="ca-pub-2795125801721613"
-        data-ad-slot="7468094198"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    h1, h2, h3, h4, h5, h6 {
+      position: relative;
+      font-weight: 600;
+      margin: 15px 0;
 
-    <p>Docker 一键安装脚本</p>
-<blockquote>
-<p>wget -qO- get.docker.com | sh</p>
-</blockquote>
-<h3 id="常用基础镜像"><a href="#常用基础镜像" class="headerlink" title="常用基础镜像"></a>常用基础镜像</h3><p>Centos/Debian/Ubuntu</p>
-<p>CentOS：kinogmt/centos-ssh （默认用户名root，密码password，CentOS6.7）</p>
-<p>Debian：itscaro/debian-ssh（默认用户名root，密码root，Debian Jessie）</p>
-<p>Ubuntu：rastasheep/ubuntu-sshd（默认用户名root，密码root）</p>
-<h3 id="镜像1：rastasheep-ubuntu-sshd-（带ssh的ubuntu）"><a href="#镜像1：rastasheep-ubuntu-sshd-（带ssh的ubuntu）" class="headerlink" title="镜像1：rastasheep/ubuntu-sshd （带ssh的ubuntu）"></a>镜像1：rastasheep/ubuntu-sshd （带ssh的ubuntu）</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/rastasheep/ubuntu-sshd/">https://hub.docker.com/r/rastasheep/ubuntu-sshd/</a></p>
-<blockquote>
-<p>sudo docker run -d -p 22:22 rastasheep/ubuntu-sshd:16.04</p>
-</blockquote>
-<p>用户名、密码为root </p>
-<h3 id="镜像2：itscaro-debian-ssh-（带ssh的ubuntu）"><a href="#镜像2：itscaro-debian-ssh-（带ssh的ubuntu）" class="headerlink" title="镜像2：itscaro/debian-ssh （带ssh的ubuntu）"></a>镜像2：itscaro/debian-ssh （带ssh的ubuntu）</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/itscaro/debian-ssh/">https://hub.docker.com/r/itscaro/debian-ssh/</a></p>
-<blockquote>
-<p>sudo docker run -d -p 22:22  itscaro/debian-ssh</p>
-</blockquote>
-<p>用户名、密码为root </p>
-<h3 id="镜像3：tutum-centos-（带ssh的centos）"><a href="#镜像3：tutum-centos-（带ssh的centos）" class="headerlink" title="镜像3：tutum/centos （带ssh的centos）"></a>镜像3：tutum/centos （带ssh的centos）</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/tutum/centos/">https://hub.docker.com/r/tutum/centos/</a></p>
-<blockquote>
-<p>sudo docker run -d -p 22:22  tutum/centos（centos7：tutum/centos:centos7 ）</p>
-</blockquote>
-<p>用户名root，密码随机，请执行 docker logs <CONTAINER_ID> 查看</p>
-<h3 id="镜像4：alexwhen-docker-2048（游戏2048）"><a href="#镜像4：alexwhen-docker-2048（游戏2048）" class="headerlink" title="镜像4：alexwhen/docker-2048（游戏2048）"></a>镜像4：alexwhen/docker-2048（游戏2048）</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/alexwhen/docker-2048/">https://hub.docker.com/r/alexwhen/docker-2048/</a></p>
-<blockquote>
-<p>sudo docker run -d -p 80:80 alexwhen/docker-2048</p>
-</blockquote>
-<h3 id="镜像5：dorowu-ubuntu-desktop-lxde-vnc（noVNC、Firefox51）"><a href="#镜像5：dorowu-ubuntu-desktop-lxde-vnc（noVNC、Firefox51）" class="headerlink" title="镜像5：dorowu/ubuntu-desktop-lxde-vnc（noVNC、Firefox51）"></a>镜像5：dorowu/ubuntu-desktop-lxde-vnc（noVNC、Firefox51）</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc/">https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc/</a></p>
-<blockquote>
-<p>docker run -it  -p 80:80 dorowu/ubuntu-desktop-lxde-vnc</p>
-</blockquote>
-<p>Browse <a target="_blank" rel="noopener" href="http://ip/">http://ip/</a> </p>
-<h3 id="镜像6：consol-centos-xfce-vnc-（VNC、noVNC、密码、chrome、Firefox45）"><a href="#镜像6：consol-centos-xfce-vnc-（VNC、noVNC、密码、chrome、Firefox45）" class="headerlink" title="镜像6：consol/centos-xfce-vnc （VNC、noVNC、密码、chrome、Firefox45）"></a>镜像6：consol/centos-xfce-vnc （VNC、noVNC、密码、chrome、Firefox45）</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/consol/ubuntu-xfce-vnc/">https://hub.docker.com/r/consol/ubuntu-xfce-vnc/</a></p>
-<blockquote>
-<p>run -it -p 5901:5901 -p 6901:6901 -e “VNC_PW=my-new-password” -e VNC_RESOLUTION=800x600 consol/centos-xfce-vnc</p>
-</blockquote>
-<p>默认VNC密码：vncpassword</p>
-<p>VNC-Server (default VNC port 5901)</p>
-<p>noVNC - HTML5 VNC client (default http port 6901)</p>
-<p>其他相关</p>
-<p>onsol/centos-xfce-vnc: Centos7 with Xfce4 UI session</p>
-<p>consol/ubuntu-xfce-vnc: Ubuntu with Xfce4 UI session</p>
-<p>consol/centos-icewm-vnc: dev   Centos7 with IceWM UI session</p>
-<p>consol/ubuntu-icewm-vnc: dev  Ubuntu with IceWM UI session</p>
-<h3 id="镜像7：fish-peerflix-server-（支持磁力，种子）"><a href="#镜像7：fish-peerflix-server-（支持磁力，种子）" class="headerlink" title="镜像7：fish/peerflix-server （支持磁力，种子）"></a>镜像7：fish/peerflix-server （支持磁力，种子）</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc/">https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc/</a></p>
-<blockquote>
-<p>docker run -it  -p 9000:9000 fish/peerflix-server</p>
-</blockquote>
-<p>Browse <a target="_blank" rel="noopener" href="http://ip:9000/">http://ip:9000/</a></p>
-<h3 id="镜像8：jpillora-cloud-torrent（种子下载，搜索）"><a href="#镜像8：jpillora-cloud-torrent（种子下载，搜索）" class="headerlink" title="镜像8：jpillora/cloud-torrent（种子下载，搜索）"></a>镜像8：jpillora/cloud-torrent（种子下载，搜索）</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/jpillora/cloud-torrent/">https://hub.docker.com/r/jpillora/cloud-torrent/</a></p>
-<blockquote>
-<p>docker run -d -p 3000:3000 -v /path/to/my/downloads:/downloads jpillora/cloud-torrent</p>
-</blockquote>
-<p>Browse <a target="_blank" rel="noopener" href="http://ip:3000/">http://ip:3000/</a> </p>
-<h3 id="镜像9：jim3ma-google-mirror（google镜像，如需ssl要手动添加）"><a href="#镜像9：jim3ma-google-mirror（google镜像，如需ssl要手动添加）" class="headerlink" title="镜像9：jim3ma/google-mirror（google镜像，如需ssl要手动添加）"></a>镜像9：jim3ma/google-mirror（google镜像，如需ssl要手动添加）</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/jim3ma/google-mirror/">https://hub.docker.com/r/jim3ma/google-mirror/</a></p>
-<blockquote>
-<p>docker run -d -p 80:80 jim3ma/google-mirror</p>
-</blockquote>
-<p>Browse <a target="_blank" rel="noopener" href="http://ip/">http://ip/</a> </p>
-<h3 id="镜像10：google-reverse-proxy（google镜像，有ssl）"><a href="#镜像10：google-reverse-proxy（google镜像，有ssl）" class="headerlink" title="镜像10：google-reverse-proxy（google镜像，有ssl）"></a>镜像10：google-reverse-proxy（google镜像，有ssl）</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/jokester/google-reverse-proxy/">https://hub.docker.com/r/jokester/google-reverse-proxy/</a></p>
-<blockquote>
-<p>docker run -d –publish 54321:20081 –restart=always jokester/google-reverse-proxy</p>
-</blockquote>
-<p>Browse <a target="_blank" rel="noopener" href="http://ip:54321/">http://ip:54321/</a></p>
-<h3 id="镜像11：forsaken-mail（临时邮箱）"><a href="#镜像11：forsaken-mail（临时邮箱）" class="headerlink" title="镜像11：forsaken-mail（临时邮箱）"></a>镜像11：forsaken-mail（临时邮箱）</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/rockmaity/forsaken-mail/">https://hub.docker.com/r/rockmaity/forsaken-mail/</a></p>
-<blockquote>
-<p>docker run –name forsaken-mail -itd -p 25:25 -p 3000:3000 rockmaity/forsaken-mail</p>
-</blockquote>
-<p>Browse <a target="_blank" rel="noopener" href="http://ip:3000/">http://ip:3000/</a></p>
-<h3 id="镜像12：imdjh-owncloud-with-ocdownloader"><a href="#镜像12：imdjh-owncloud-with-ocdownloader" class="headerlink" title="镜像12：imdjh/owncloud-with-ocdownloader"></a>镜像12：imdjh/owncloud-with-ocdownloader</h3><p>支持 owncloud, torrent, aria2, youtube-dl</p>
-<p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/imdjh/owncloud-with-ocdownloader/">https://hub.docker.com/r/imdjh/owncloud-with-ocdownloader/</a></p>
-<blockquote>
-<p>docker run -d -p 80:80 -e OWNCLOUD_VERSION=9.1.4 -v /var/www/html/data:/var/www/html/data imdjh/owncloud-with-ocdownloader</p>
-</blockquote>
-<p>Browse <a target="_blank" rel="noopener" href="http://ip/">http://ip/</a></p>
-<h3 id="镜像13：v2ray-official（v2ray）"><a href="#镜像13：v2ray-official（v2ray）" class="headerlink" title="镜像13：v2ray/official（v2ray）"></a>镜像13：v2ray/official（v2ray）</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/v2ray/official/">https://hub.docker.com/r/v2ray/official/</a></p>
-<blockquote>
-<p>docker run -d -p 8001:8001 v2ray/official</p>
-</blockquote>
-<h3 id="镜像14：timonier-aria2"><a href="#镜像14：timonier-aria2" class="headerlink" title="镜像14：timonier/aria2"></a>镜像14：timonier/aria2</h3><p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/timonier/aria2/">https://hub.docker.com/r/timonier/aria2/</a></p>
-<blockquote>
-<p>docker run -i  -t -v /data:/data –net host timonier/aria2 –dir=/data –enable-rpc –rpc-listen-all=true</p>
-</blockquote>
-<p>配合使用：timonier/webui-aria2（aria2web管理）</p>
-<p>地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/timonier/webui-aria2/">https://hub.docker.com/r/timonier/webui-aria2/</a></p>
-<blockquote>
-<p>docker run  -i -t -p 80:80 timonier/webui-aria2</p>
-</blockquote>
-  </article>
-  <aside class="table-content" id="site-toc">
-  <div class="table-content-title">
-    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
-    <span>目录</span>
-  </div>
-  <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F"><span class="toc-text">常用基础镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F1%EF%BC%9Arastasheep-ubuntu-sshd-%EF%BC%88%E5%B8%A6ssh%E7%9A%84ubuntu%EF%BC%89"><span class="toc-text">镜像1：rastasheep&#x2F;ubuntu-sshd （带ssh的ubuntu）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F2%EF%BC%9Aitscaro-debian-ssh-%EF%BC%88%E5%B8%A6ssh%E7%9A%84ubuntu%EF%BC%89"><span class="toc-text">镜像2：itscaro&#x2F;debian-ssh （带ssh的ubuntu）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F3%EF%BC%9Atutum-centos-%EF%BC%88%E5%B8%A6ssh%E7%9A%84centos%EF%BC%89"><span class="toc-text">镜像3：tutum&#x2F;centos （带ssh的centos）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F4%EF%BC%9Aalexwhen-docker-2048%EF%BC%88%E6%B8%B8%E6%88%8F2048%EF%BC%89"><span class="toc-text">镜像4：alexwhen&#x2F;docker-2048（游戏2048）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F5%EF%BC%9Adorowu-ubuntu-desktop-lxde-vnc%EF%BC%88noVNC%E3%80%81Firefox51%EF%BC%89"><span class="toc-text">镜像5：dorowu&#x2F;ubuntu-desktop-lxde-vnc（noVNC、Firefox51）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F6%EF%BC%9Aconsol-centos-xfce-vnc-%EF%BC%88VNC%E3%80%81noVNC%E3%80%81%E5%AF%86%E7%A0%81%E3%80%81chrome%E3%80%81Firefox45%EF%BC%89"><span class="toc-text">镜像6：consol&#x2F;centos-xfce-vnc （VNC、noVNC、密码、chrome、Firefox45）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F7%EF%BC%9Afish-peerflix-server-%EF%BC%88%E6%94%AF%E6%8C%81%E7%A3%81%E5%8A%9B%EF%BC%8C%E7%A7%8D%E5%AD%90%EF%BC%89"><span class="toc-text">镜像7：fish&#x2F;peerflix-server （支持磁力，种子）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F8%EF%BC%9Ajpillora-cloud-torrent%EF%BC%88%E7%A7%8D%E5%AD%90%E4%B8%8B%E8%BD%BD%EF%BC%8C%E6%90%9C%E7%B4%A2%EF%BC%89"><span class="toc-text">镜像8：jpillora&#x2F;cloud-torrent（种子下载，搜索）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F9%EF%BC%9Ajim3ma-google-mirror%EF%BC%88google%E9%95%9C%E5%83%8F%EF%BC%8C%E5%A6%82%E9%9C%80ssl%E8%A6%81%E6%89%8B%E5%8A%A8%E6%B7%BB%E5%8A%A0%EF%BC%89"><span class="toc-text">镜像9：jim3ma&#x2F;google-mirror（google镜像，如需ssl要手动添加）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F10%EF%BC%9Agoogle-reverse-proxy%EF%BC%88google%E9%95%9C%E5%83%8F%EF%BC%8C%E6%9C%89ssl%EF%BC%89"><span class="toc-text">镜像10：google-reverse-proxy（google镜像，有ssl）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F11%EF%BC%9Aforsaken-mail%EF%BC%88%E4%B8%B4%E6%97%B6%E9%82%AE%E7%AE%B1%EF%BC%89"><span class="toc-text">镜像11：forsaken-mail（临时邮箱）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F12%EF%BC%9Aimdjh-owncloud-with-ocdownloader"><span class="toc-text">镜像12：imdjh&#x2F;owncloud-with-ocdownloader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F13%EF%BC%9Av2ray-official%EF%BC%88v2ray%EF%BC%89"><span class="toc-text">镜像13：v2ray&#x2F;official（v2ray）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F14%EF%BC%9Atimonier-aria2"><span class="toc-text">镜像14：timonier&#x2F;aria2</span></a></li></ol>
-  </div>
-</aside>
+      a {
+        padding-left: 5px;
+        transition: all .15s linear;
+      }
+
+      &::before {
+        font-size: 0.8em;
+        content: "\f0c1";
+        color: $color-deep-orange-6;
+        font-family: FontAwesome;
+      }
+
+      &:hover {
+        a {
+          padding-left: 10px;
+        }
+
+        &::before {
+          color: $color-blue-5;
+        }
+      }
+    }
+
+    h1 {
+      font-size: 2em;
+      margin: 16px 0;
+    }
+
+    h2 {
+      font-size: 1.75em;
+    }
+
+    h3 {
+      font-size: 1.5em;
+    }
+
+    h4 {
+      font-size: 1.25em;
+    }
+
+    h5 {
+      font-size: 1.125em;
+    }
+
+    h6 {
+      font-size: 1em;
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    blockquote {
+      margin: 15px 0;
+      padding: 1px 12px;
+      border-left: 3px solid $color-grey-6;
+      color: $color-grey-8;
+      background: $color-grey-1;
+    }
+
+    a {
+      display: inline-block;
+      position: relative;
+      color: $color-deep-orange-6;
+      font-weight: bolder;
+
+      &::before {
+        content: "";
+        position: absolute;
+        width: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: $color-blue-5;
+        transition: all 0.3s ease;
+      }
+
+      &:hover {
+        color: $color-blue-5;
+
+        &::before {
+          width: 100%;
+          left: 0;
+          right: auto;
+        }
+      }
+    }
+
+    code {
+      font-family: $code-font;
+      background: $color-grey-2;
+      color: $color-deep-orange-8;
+      word-wrap: break-word;
+      margin: 0 3px;
+    }
+
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 90%;
+      border-radius: 5px;
+      cursor: zoom-in;
+      transition: all .3s linear;
+
+      &:hover {
+        box-shadow: 0 0 3px $color-grey-5;
+      }
+    }
   
-    <aside class="passage-copyright">
-      <div>本文作者: 听风行</div>
-      
-        <div>
-          原文链接: 
-          <a href="" target="_blank">https://blog.iyu.pub/posts/2018-02-08-docker-images/</a>
-        </div>
-      
-      <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
-      </div>
-    </aside>
-  
-  
-    <div class="passage-tags">
-     
-      <a href="/tags/Ubuntu/"><i class="fa fa-tags"></i>Ubuntu</a>
-     
-      <a href="/tags/CentOS/"><i class="fa fa-tags"></i>CentOS</a>
-     
-      <a href="/tags/Linux/"><i class="fa fa-tags"></i>Linux</a>
-     
-      <a href="/tags/Docker/"><i class="fa fa-tags"></i>Docker</a>
-     
-      <a href="/tags/Docker%E9%95%9C%E5%83%8F/"><i class="fa fa-tags"></i>Docker镜像</a>
-    
-    </div>
-  
-</div>
+    ol, ul {
+      margin: 0 0 16px;
+      padding-left: 1.2em;
+
+      ol {
+        list-style-type: lower-roman;
+      }
+    }
+
+    & > table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      border-left: 1px solid $color-grey-2;
+      border-right: 1px solid $color-grey-2;
+      border-radius: 4px 4px 0 0;
+      margin: 16px 0;
+
+      thead {
+        background: $color-grey-1;
+
+        th {
+          padding: 16px;
+          border-bottom: 1px solid $color-grey-2;
+        }
+      }
+
+      tbody {
+        tr {
+          transition: all .3s ease;
+
+          &:hover {
+            background: $color-light-blue-0;
+          }
+
+          td {
+            padding: 16px;
+            border-bottom: 1px solid $color-grey-2;
+          }
+        }
+      }
+    }
+  }
+
+  &-title {
+    font-size: 36px;
+    line-height: 42px;
+    margin: 25px 0 40px;
+
+    @media screen and (max-width: $mobile-width) {
+      font-size: 30px;
+      margin-bottom: 25px;
+    }
+  }
+
+  &-cover {
+    display: block;
+    width: 100%;
+    position: relative;
+    padding-bottom: 50%;
+    margin-bottom: 40px;
+
+    @media screen and (max-width: $mobile-width) {
+      display: none;
+    }
+
+    figure {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      overflow: hidden;
+      border-radius: 10px;
+      background-position: 50% 50%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+  }
+
+  &-copyright {
+    border-left: 3px solid $color-deep-orange-5;
+    background: $color-grey-2;
+    padding: 15px 20px;
+    margin-top: 30px;
+
+    div {
+      line-height: 2;
+    }
+
+    a {
+      transition: all .1s linear;
+      &:hover {
+        color: $color-deep-orange-6;
+      }
+    }
+  }
+
+  &-meta {
+    font-size: 16px;
+    color: $color-grey-7;
+
+    a {
+      color: $color-grey-7;
+      transition: all .2s;
+
+      &:hover {
+        color: $color-grey-9;
+      }
+    }
+
+    i {
+      display: inline-block;
+      margin-right: 5px;
+    }
+  }
+
+  &-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    font-size: 15px;
+    border-top: 1px solid $color-grey-2;
+
+    a {
+      display: inline-flex;
+      margin: 0 15px 15px 0;
+      align-items: center;
+      height: 30px;
+      padding: 5px 10px;
+      background: $color-grey-2;
+      border: 1px solid $color-grey-2;
+      border-radius: 3px;
+      transition: all .15s linear;
+
+      i {
+        display: inline-block;
+        margin-right: 5px;
+      }
+
+      &:hover {
+        color: $color-blue-5;
+        border-color: $color-blue-5;
+      }
+    }
+  }
+}
 
     </main>
     

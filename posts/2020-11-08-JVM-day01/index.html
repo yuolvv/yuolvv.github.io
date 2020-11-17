@@ -165,250 +165,281 @@
 <div id="site-process"></div>
     <main>
       
-  <div class="passage">
-  <div class="passage-meta">
-    <span>
-      <i class="fa fa-calendar"></i>2020-11-08
-    </span>
-    
-      <span>
-        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
-      </span>
-    
-    
-      <span>
-        | <i class="fa fa-unlock-alt"></i>UNLOCK
-      </span>
-    
-  </div>
-  <h1 class="passage-title">
-    JVM-day01
-  </h1>
+  .passage {
+  max-width: $main-width;
+  margin: 20px auto;
+
+  &-article {
+    font-size: 16px;
+    font-family: $content-font;
+    line-height: 2;
+    letter-spacing: 0.2px;
+    word-break: break-word;
+
+    h1, h2, h3, h4, h5, h6 {
+      position: relative;
+      font-weight: 600;
+      margin: 15px 0;
+
+      a {
+        padding-left: 5px;
+        transition: all .15s linear;
+      }
+
+      &::before {
+        font-size: 0.8em;
+        content: "\f0c1";
+        color: $color-deep-orange-6;
+        font-family: FontAwesome;
+      }
+
+      &:hover {
+        a {
+          padding-left: 10px;
+        }
+
+        &::before {
+          color: $color-blue-5;
+        }
+      }
+    }
+
+    h1 {
+      font-size: 2em;
+      margin: 16px 0;
+    }
+
+    h2 {
+      font-size: 1.75em;
+    }
+
+    h3 {
+      font-size: 1.5em;
+    }
+
+    h4 {
+      font-size: 1.25em;
+    }
+
+    h5 {
+      font-size: 1.125em;
+    }
+
+    h6 {
+      font-size: 1em;
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    blockquote {
+      margin: 15px 0;
+      padding: 1px 12px;
+      border-left: 3px solid $color-grey-6;
+      color: $color-grey-8;
+      background: $color-grey-1;
+    }
+
+    a {
+      display: inline-block;
+      position: relative;
+      color: $color-deep-orange-6;
+      font-weight: bolder;
+
+      &::before {
+        content: "";
+        position: absolute;
+        width: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: $color-blue-5;
+        transition: all 0.3s ease;
+      }
+
+      &:hover {
+        color: $color-blue-5;
+
+        &::before {
+          width: 100%;
+          left: 0;
+          right: auto;
+        }
+      }
+    }
+
+    code {
+      font-family: $code-font;
+      background: $color-grey-2;
+      color: $color-deep-orange-8;
+      word-wrap: break-word;
+      margin: 0 3px;
+    }
+
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 90%;
+      border-radius: 5px;
+      cursor: zoom-in;
+      transition: all .3s linear;
+
+      &:hover {
+        box-shadow: 0 0 3px $color-grey-5;
+      }
+    }
   
-    <div class="passage-cover">
-      <figure style="background-image:url(https://cn.bing.com/th?id=OHR.LakotaBadlands_ZH-CN0151830089_1920x1080.jpg);"></figure>
-    </div>
-  
+    ol, ul {
+      margin: 0 0 16px;
+      padding-left: 1.2em;
 
-  
+      ol {
+        list-style-type: lower-roman;
+      }
+    }
 
-  <article class="passage-article">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle"
-        style="display:block; text-align:center;"
-        data-ad-layout="in-article"
-        data-ad-format="fluid"
-        data-ad-client="ca-pub-2795125801721613"
-        data-ad-slot="7468094198"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    & > table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      border-left: 1px solid $color-grey-2;
+      border-right: 1px solid $color-grey-2;
+      border-radius: 4px 4px 0 0;
+      margin: 16px 0;
 
-    <h1 id="内存结构"><a href="#内存结构" class="headerlink" title="内存结构"></a>内存结构</h1><h2 id="1-程序计数器："><a href="#1-程序计数器：" class="headerlink" title="1.程序计数器："></a>1.程序计数器：</h2><p><img src="https://i.loli.net/2020/11/12/Tn5jWtIKXCrocAl.png" alt="JVM-day01-01.png"></p>
-<h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h3><p>Program Counter Register 程序计数器（寄存器）</p>
-<ol>
-<li>作用是记住下一条jvm指令的执行地址</li>
-<li>特点:</li>
-<li>1 线程私有</li>
-<li>2 不会存在内存溢出</li>
-</ol>
-<h3 id="1-2-作用"><a href="#1-2-作用" class="headerlink" title="1.2 作用"></a>1.2 作用</h3><p><img src="https://i.loli.net/2020/11/12/1BceuFjYlf5na9t.png" alt="JVM-day01-02.png"></p>
-<h2 id="2-虚拟机栈："><a href="#2-虚拟机栈：" class="headerlink" title="2.虚拟机栈："></a>2.虚拟机栈：</h2><p><img src="https://i.loli.net/2020/11/12/zTtefhbFCBI1Y7E.png" alt="JVM-day01-03.png"></p>
-<h3 id="2-1-定义"><a href="#2-1-定义" class="headerlink" title="2.1 定义"></a>2.1 定义</h3><p>Java Virtual Machine Stacks (Java虚拟机栈)</p>
-<ol>
-<li>每个线程运行时所需要的内存，称为虚拟机栈</li>
-<li>每个栈由多个栈帧（Frame）组成，对应着每次方法调用时所占用的内存</li>
-<li>每个线程只能有一个活动栈帧，对应着当前正在执行的那个方法</li>
-</ol>
-<h4 id="问题思考："><a href="#问题思考：" class="headerlink" title="问题思考："></a>问题思考：</h4><ol>
-<li><p>垃圾回收是否涉及栈内存？</p>
-<p> 不需要，每次方法调用产生栈帧内存，方法执行完成后，都会被弹出栈，被自动回收掉。</p>
-</li>
-<li><p>栈内存分配越大越好吗？</p>
-<p> -Xss size: 默认1024KB。栈内存越大，线程数越少。</p>
-</li>
-<li><p>方法内的局部变量是否线程安全？</p>
-<p>3.1 如果方法内局部变量没有逃离方法的作用访问，它是线程安全的</p>
-<p>3.2 如果是局部变量引用了对象，并逃离方法的作用范围，需要考虑线程安全</p>
-</li>
-</ol>
-<h3 id="2-2-栈内存溢出-StackOverflowError"><a href="#2-2-栈内存溢出-StackOverflowError" class="headerlink" title="2.2 栈内存溢出 StackOverflowError"></a>2.2 栈内存溢出 StackOverflowError</h3><ol>
-<li>栈帧过多导致栈内存溢出</li>
-<li>栈帧过大导致栈内存溢出</li>
-</ol>
-<h3 id="2-3-线程运行诊断"><a href="#2-3-线程运行诊断" class="headerlink" title="2.3 线程运行诊断"></a>2.3 线程运行诊断</h3><ol>
-<li>CPU占用过多</li>
-<li>程序运行很长时间没有结果</li>
-</ol>
-<p>定位：</p>
-<ol>
-<li>用top定位哪个进程对CPU的占用过高</li>
-<li>ps H -eo pid,tid,%cpu | grep 进程id (用ps命令进一步定位是哪个线程引起的CPU占用过高)</li>
-<li>jstack 进程id (可以根据线程id找到有问题的线程，10进制的进程id转成16进制，进一步定位到问题代码的源码行号)</li>
-</ol>
-<h2 id="3-本地方法栈"><a href="#3-本地方法栈" class="headerlink" title="3.本地方法栈"></a>3.本地方法栈</h2><p><img src="https://i.loli.net/2020/11/13/3wzWv9Uluhd6DMe.png" alt="JVM-day01-04.png"></p>
-<h2 id="4-堆"><a href="#4-堆" class="headerlink" title="4.堆"></a>4.堆</h2><p><img src="https://i.loli.net/2020/11/13/TgLnCPd7h54IZ1K.png" alt="JVM-day01-05.png"></p>
-<h3 id="4-1-定义"><a href="#4-1-定义" class="headerlink" title="4.1 定义"></a>4.1 定义</h3><p>Heap 堆 ： 通过new关键字，创建对象都会使用堆内存</p>
-<p>特点：</p>
-<ol>
-<li>线程共享，堆中对象都需要考虑线程安全的问题</li>
-<li>有垃圾回收机制</li>
-</ol>
-<h3 id="4-2-堆内存溢出-OutofMemoryError"><a href="#4-2-堆内存溢出-OutofMemoryError" class="headerlink" title="4.2 堆内存溢出 OutofMemoryError"></a>4.2 堆内存溢出 OutofMemoryError</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) &#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">List</span>&lt;<span class="keyword">String</span>&gt; <span class="keyword">list</span> = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">String</span> a = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>)&#123;</span><br><span class="line">            <span class="keyword">list</span>.add(a);</span><br><span class="line">            a = a + a;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">catch</span> (<span class="built_in">Throwable</span> <span class="built_in">throwable</span>)&#123;</span><br><span class="line">        <span class="built_in">throwable</span>.printStackTrace();</span><br><span class="line">        System.out.println(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      thead {
+        background: $color-grey-1;
 
-<p>运行结果：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.OutOfMemoryError</span>: <span class="selector-tag">Java</span> <span class="selector-tag">heap</span> <span class="selector-tag">space</span></span><br><span class="line">	<span class="selector-tag">at</span> <span class="selector-tag">java</span><span class="selector-class">.util</span><span class="selector-class">.Arrays</span><span class="selector-class">.copyOf</span>(<span class="selector-tag">Arrays</span><span class="selector-class">.java</span><span class="selector-pseudo">:3332)</span></span><br><span class="line">	<span class="selector-tag">at</span> <span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.AbstractStringBuilder</span><span class="selector-class">.ensureCapacityInternal</span>(<span class="selector-tag">AbstractStringBuilder</span><span class="selector-class">.java</span><span class="selector-pseudo">:124)</span></span><br><span class="line">	<span class="selector-tag">at</span> <span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.AbstractStringBuilder</span><span class="selector-class">.append</span>(<span class="selector-tag">AbstractStringBuilder</span><span class="selector-class">.java</span><span class="selector-pseudo">:448)</span></span><br><span class="line">	<span class="selector-tag">at</span> <span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.StringBuilder</span><span class="selector-class">.append</span>(<span class="selector-tag">StringBuilder</span><span class="selector-class">.java</span><span class="selector-pseudo">:136)</span></span><br><span class="line">	<span class="selector-tag">at</span> <span class="selector-tag">pub</span><span class="selector-class">.iyu</span><span class="selector-class">.se</span><span class="selector-class">.jvmday</span><span class="selector-class">.day01</span><span class="selector-class">.TestDemo01</span><span class="selector-class">.main</span>(<span class="selector-tag">TestDemo01</span><span class="selector-class">.java</span><span class="selector-pseudo">:20)</span></span><br><span class="line">26</span><br></pre></td></tr></table></figure>
+        th {
+          padding: 16px;
+          border-bottom: 1px solid $color-grey-2;
+        }
+      }
 
+      tbody {
+        tr {
+          transition: all .3s ease;
 
-<h3 id="4-3-堆内存诊断"><a href="#4-3-堆内存诊断" class="headerlink" title="4.3 堆内存诊断"></a>4.3 堆内存诊断</h3><ol>
-<li>jps工具：查看当前系统中有哪些java进程</li>
-<li>jmap工具：查看堆内存占用情况  jmap -heap 进程id</li>
-<li>jconsole工具：图形界面，多功能的监测工具，可以连续监测</li>
-<li>jvisualvm工具：更强大的图形界面</li>
-</ol>
-<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public<span class="keyword"> static</span> void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;1...&quot;</span>);</span><br><span class="line">        Thread.sleep(30000);</span><br><span class="line">        byte[]<span class="built_in"> array </span>=<span class="built_in"> new </span>byte[1024*1024*10];</span><br><span class="line">        System.out.println(<span class="string">&quot;2...&quot;</span>);</span><br><span class="line">        Thread.sleep(30000);</span><br><span class="line">       <span class="built_in"> array </span>= null;</span><br><span class="line">        System.gc();</span><br><span class="line">        System.out.println(<span class="string">&quot;3...&quot;</span>);</span><br><span class="line">        Thread.sleep(1000000<span class="class">L);</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+          &:hover {
+            background: $color-light-blue-0;
+          }
 
-<p>运行方法后，在控制台输入</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">jps</span></span><br></pre></td></tr></table></figure>
-<p>显示如下结果：</p>
-<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">12140 </span>Jps</span><br><span class="line"><span class="symbol">14380 </span>Launcher</span><br><span class="line"><span class="symbol">7644 </span>TestDemo02</span><br></pre></td></tr></table></figure>
-<p>之后当输出如下内容时：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>..</span><br></pre></td></tr></table></figure>
-<p>在控制台输入</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap -heap <span class="number">7644</span></span><br></pre></td></tr></table></figure>
-<p>这时候可以看到显示的结果：</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Heap</span> Usage:</span><br><span class="line"><span class="attribute">PS</span> Young Generation</span><br><span class="line"><span class="attribute">Eden</span> Space:</span><br><span class="line">   <span class="attribute">capacity</span> = <span class="number">67108864</span> (<span class="number">64</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">used</span>     = <span class="number">6718152</span> (<span class="number">6</span>.<span class="number">406929016113281</span>MB)</span><br><span class="line">   <span class="attribute">free</span>     = <span class="number">60390712</span> (<span class="number">57</span>.<span class="number">59307098388672</span>MB)</span><br><span class="line">   <span class="attribute">10</span>.<span class="number">010826587677002</span>% used</span><br><span class="line"><span class="attribute">From</span> Space:</span><br><span class="line">   <span class="attribute">capacity</span> = <span class="number">11010048</span> (<span class="number">10</span>.<span class="number">5</span>MB)</span><br><span class="line">   <span class="attribute">used</span>     = <span class="number">0</span> (<span class="number">0</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">free</span>     = <span class="number">11010048</span> (<span class="number">10</span>.<span class="number">5</span>MB)</span><br><span class="line">   <span class="attribute">0</span>.<span class="number">0</span>% used</span><br><span class="line"><span class="attribute">To</span> Space:</span><br><span class="line">   <span class="attribute">capacity</span> = <span class="number">11010048</span> (<span class="number">10</span>.<span class="number">5</span>MB)</span><br><span class="line">   <span class="attribute">used</span>     = <span class="number">0</span> (<span class="number">0</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">free</span>     = <span class="number">11010048</span> (<span class="number">10</span>.<span class="number">5</span>MB)</span><br><span class="line">   <span class="attribute">0</span>.<span class="number">0</span>% used</span><br><span class="line"><span class="attribute">PS</span> Old Generation</span><br><span class="line">   <span class="attribute">capacity</span> = <span class="number">179306496</span> (<span class="number">171</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">used</span>     = <span class="number">0</span> (<span class="number">0</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">free</span>     = <span class="number">179306496</span> (<span class="number">171</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">0</span>.<span class="number">0</span>% used</span><br></pre></td></tr></table></figure>
-<p>当输出如下内容时：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2.</span>..</span><br></pre></td></tr></table></figure>
-<p>在控制台输入</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap -heap <span class="number">7644</span></span><br></pre></td></tr></table></figure>
-<p>这时候可以看到显示的结果：</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Heap</span> Usage:</span><br><span class="line"><span class="attribute">PS</span> Young Generation</span><br><span class="line"><span class="attribute">Eden</span> Space:</span><br><span class="line">   <span class="attribute">capacity</span> = <span class="number">67108864</span> (<span class="number">64</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">used</span>     = <span class="number">17203928</span> (<span class="number">16</span>.<span class="number">406944274902344</span>MB)</span><br><span class="line">   <span class="attribute">free</span>     = <span class="number">49904936</span> (<span class="number">47</span>.<span class="number">593055725097656</span>MB)</span><br><span class="line">   <span class="attribute">25</span>.<span class="number">635850429534912</span>% used</span><br><span class="line"><span class="attribute">From</span> Space:</span><br><span class="line">   <span class="attribute">capacity</span> = <span class="number">11010048</span> (<span class="number">10</span>.<span class="number">5</span>MB)</span><br><span class="line">   <span class="attribute">used</span>     = <span class="number">0</span> (<span class="number">0</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">free</span>     = <span class="number">11010048</span> (<span class="number">10</span>.<span class="number">5</span>MB)</span><br><span class="line">   <span class="attribute">0</span>.<span class="number">0</span>% used</span><br><span class="line"><span class="attribute">To</span> Space:</span><br><span class="line">   <span class="attribute">capacity</span> = <span class="number">11010048</span> (<span class="number">10</span>.<span class="number">5</span>MB)</span><br><span class="line">   <span class="attribute">used</span>     = <span class="number">0</span> (<span class="number">0</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">free</span>     = <span class="number">11010048</span> (<span class="number">10</span>.<span class="number">5</span>MB)</span><br><span class="line">   <span class="attribute">0</span>.<span class="number">0</span>% used</span><br><span class="line"><span class="attribute">PS</span> Old Generation</span><br><span class="line">   <span class="attribute">capacity</span> = <span class="number">179306496</span> (<span class="number">171</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">used</span>     = <span class="number">0</span> (<span class="number">0</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">free</span>     = <span class="number">179306496</span> (<span class="number">171</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">0</span>.<span class="number">0</span>% used</span><br></pre></td></tr></table></figure>
-<p>当输出如下内容时：</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3.</span>..</span><br></pre></td></tr></table></figure>
-<p>在控制台输入</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap -heap <span class="number">7644</span></span><br></pre></td></tr></table></figure>
-<p>这时候可以看到显示的结果：</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Heap</span> Usage:</span><br><span class="line"><span class="attribute">PS</span> Young Generation</span><br><span class="line"><span class="attribute">Eden</span> Space:</span><br><span class="line">   <span class="attribute">capacity</span> = <span class="number">67108864</span> (<span class="number">64</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">used</span>     = <span class="number">1342200</span> (<span class="number">1</span>.<span class="number">2800216674804688</span>MB)</span><br><span class="line">   <span class="attribute">free</span>     = <span class="number">65766664</span> (<span class="number">62</span>.<span class="number">71997833251953</span>MB)</span><br><span class="line">   <span class="attribute">2</span>.<span class="number">0000338554382324</span>% used</span><br><span class="line"><span class="attribute">From</span> Space:</span><br><span class="line">   <span class="attribute">capacity</span> = <span class="number">11010048</span> (<span class="number">10</span>.<span class="number">5</span>MB)</span><br><span class="line">   <span class="attribute">used</span>     = <span class="number">0</span> (<span class="number">0</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">free</span>     = <span class="number">11010048</span> (<span class="number">10</span>.<span class="number">5</span>MB)</span><br><span class="line">   <span class="attribute">0</span>.<span class="number">0</span>% used</span><br><span class="line"><span class="attribute">To</span> Space:</span><br><span class="line">   <span class="attribute">capacity</span> = <span class="number">11010048</span> (<span class="number">10</span>.<span class="number">5</span>MB)</span><br><span class="line">   <span class="attribute">used</span>     = <span class="number">0</span> (<span class="number">0</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">free</span>     = <span class="number">11010048</span> (<span class="number">10</span>.<span class="number">5</span>MB)</span><br><span class="line">   <span class="attribute">0</span>.<span class="number">0</span>% used</span><br><span class="line"><span class="attribute">PS</span> Old Generation</span><br><span class="line">   <span class="attribute">capacity</span> = <span class="number">179306496</span> (<span class="number">171</span>.<span class="number">0</span>MB)</span><br><span class="line">   <span class="attribute">used</span>     = <span class="number">1345272</span> (<span class="number">1</span>.<span class="number">2829513549804688</span>MB)</span><br><span class="line">   <span class="attribute">free</span>     = <span class="number">177961224</span> (<span class="number">169</span>.<span class="number">71704864501953</span>MB)</span><br><span class="line">   <span class="attribute">0</span>.<span class="number">7502639502809759</span>% used</span><br></pre></td></tr></table></figure>
+          td {
+            padding: 16px;
+            border-bottom: 1px solid $color-grey-2;
+          }
+        }
+      }
+    }
+  }
 
-<p>对照上面的代码，可以看到堆中内存的占用和回收情况。</p>
-<p>重新运行代码，并在终端上输入</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">jconsole</span></span><br></pre></td></tr></table></figure>
-<p>这时候，会打开jconsole的图形界面，观察一段时间，可以看到如下的结果：</p>
-<p><img src="https://i.loli.net/2020/11/13/sBHuUd8IcNtSpEK.png" alt="JVM-day01-06.png"></p>
-<p>问题：垃圾回收后，内存占用仍然很高</p>
-<h2 id="5-方法区"><a href="#5-方法区" class="headerlink" title="5.方法区"></a>5.方法区</h2><p><img src="https://i.loli.net/2020/11/16/eGQonFvJcRwqdbN.png" alt="JVM-day01-07.png"></p>
-<h3 id="5-1-定义"><a href="#5-1-定义" class="headerlink" title="5.1 定义"></a>5.1 定义</h3><p><img src="https://i.loli.net/2020/11/16/cUO5hRK1SgVe6LW.png" alt="JVM-day01-08.png"></p>
-<p>参考资料：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html">JVM规范-方法区定义</a></p>
-<h3 id="5-2-组成"><a href="#5-2-组成" class="headerlink" title="5.2 组成"></a>5.2 组成</h3><p><img src="https://i.loli.net/2020/11/16/7PicNbEfkgCMLQO.png" alt="JVM-day01-09.png"></p>
-<h3 id="5-3-方法区内存溢出"><a href="#5-3-方法区内存溢出" class="headerlink" title="5.3 方法区内存溢出"></a>5.3 方法区内存溢出</h3><p>代码如下：</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//继承ClassLoader 可以用来加载类的二进制字节码</span></span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">TestDemo03</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span></span>&#123;</span><br><span class="line">    public static void main(<span class="type">String</span>[] args) &#123;</span><br><span class="line">        int j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">TestDemo03</span> testDemo03 = <span class="keyword">new</span> <span class="type">TestDemo03</span>();</span><br><span class="line">            <span class="keyword">for</span> (int i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++,j++) &#123;</span><br><span class="line">                <span class="comment">//ClassWriter 作用是生成类的二进制字节码</span></span><br><span class="line">                <span class="type">ClassWriter</span> classWriter = <span class="keyword">new</span> <span class="type">ClassWriter</span>(<span class="number">0</span>);</span><br><span class="line">                <span class="comment">// visit方法  （版本号，方法修饰符public，类名，包名，类的父类，实现的接口名称）</span></span><br><span class="line">                classWriter.visit(<span class="type">Opcodes</span>.<span class="type">V1_8</span>,<span class="type">Opcodes</span>.<span class="type">ACC_PUBLIC</span>,<span class="string">&quot;Class&quot;</span>+i,<span class="literal">null</span>,<span class="string">&quot;java/lang/Object&quot;</span>,<span class="literal">null</span>);</span><br><span class="line">                byte[] code = classWriter.toByteArray();</span><br><span class="line">                testDemo03.defineClass(<span class="string">&quot;Class&quot;</span>+i,code,<span class="number">0</span>,code.length);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">catch</span> (<span class="type">Exception</span> e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="type">System</span>.out.println(j);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  &-title {
+    font-size: 36px;
+    line-height: 42px;
+    margin: 25px 0 40px;
 
-<ol>
-<li>java8以前会导致永久代内存溢出</li>
-</ol>
-<p>演示永久代内存溢出java.lang.OutofMemoryError: PermGen space</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:<span class="attribute">MaxPermSize</span>=10m</span><br></pre></td></tr></table></figure>
+    @media screen and (max-width: $mobile-width) {
+      font-size: 30px;
+      margin-bottom: 25px;
+    }
+  }
 
-<ol start="2">
-<li>java8以后会导致元空间内存溢出</li>
-</ol>
-<p>由于java8后元空间在物理内存中，这里演示元空间内存溢出java.lang.OutofMemoryError: Metaspace </p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:<span class="attribute">MaxMetaspaceSize</span>=10m</span><br></pre></td></tr></table></figure>
-<p>结果如下：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">3331</span><br><span class="line"><span class="selector-tag">Exception</span> <span class="selector-tag">in</span> <span class="selector-tag">thread</span> &quot;<span class="selector-tag">main</span>&quot; <span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.OutOfMemoryError</span>: <span class="selector-tag">Compressed</span> <span class="selector-tag">class</span> <span class="selector-tag">space</span></span><br><span class="line">	<span class="selector-tag">at</span> <span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.ClassLoader</span><span class="selector-class">.defineClass1</span>(<span class="selector-tag">Native</span> <span class="selector-tag">Method</span>)</span><br><span class="line">	<span class="selector-tag">at</span> <span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.ClassLoader</span><span class="selector-class">.defineClass</span>(<span class="selector-tag">ClassLoader</span><span class="selector-class">.java</span><span class="selector-pseudo">:756)</span></span><br><span class="line">	<span class="selector-tag">at</span> <span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.ClassLoader</span><span class="selector-class">.defineClass</span>(<span class="selector-tag">ClassLoader</span><span class="selector-class">.java</span><span class="selector-pseudo">:635)</span></span><br><span class="line">	<span class="selector-tag">at</span> <span class="selector-tag">pub</span><span class="selector-class">.iyu</span><span class="selector-class">.se</span><span class="selector-class">.jvmday</span><span class="selector-class">.day01</span><span class="selector-class">.TestDemo03</span><span class="selector-class">.main</span>(<span class="selector-tag">TestDemo03</span><span class="selector-class">.java</span><span class="selector-pseudo">:25)</span></span><br></pre></td></tr></table></figure>
+  &-cover {
+    display: block;
+    width: 100%;
+    position: relative;
+    padding-bottom: 50%;
+    margin-bottom: 40px;
 
-<h4 id="实际场景"><a href="#实际场景" class="headerlink" title="实际场景"></a>实际场景</h4><p>动态产生class并加载的场景很多：spring，mybatis…</p>
-<p>cglib</p>
-<h3 id="5-4-运行时常量池"><a href="#5-4-运行时常量池" class="headerlink" title="5.4 运行时常量池"></a>5.4 运行时常量池</h3><ol>
-<li><p>常量池，就是一张表，虚拟机指令根据这张常量表找到要执行的类名，方法名，参数类型，字面量等信息</p>
-</li>
-<li><p>运行时常量池，常量池是*.class文件中的，当该类被加载，它的常量池信息就会放入运行时常量池，并把里面的符号地址变为真实地址</p>
-</li>
-</ol>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//二进制字节码（类基本信息，常量池，类方法定义，包含了虚拟机指令）</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestDemo04</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>)</span> &#123;</span><br><span class="line">        System.<span class="keyword">out</span>.println(<span class="string">&quot;hello niko&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    @media screen and (max-width: $mobile-width) {
+      display: none;
+    }
 
-<p>使用javap指令（javap能对给定的class文件提供的字节代码进行反编译）</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javap -v <span class="module-access"><span class="module"><span class="identifier">TestDemo04</span>.</span></span><span class="keyword">class</span></span><br></pre></td></tr></table></figure>
+    figure {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      overflow: hidden;
+      border-radius: 10px;
+      background-position: 50% 50%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+  }
 
-<p>输出结果如下：</p>
-<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">Classfile /E:/TestJava/target/classes/pub/iyu/se/jvmday/day01/TestDemo04.class</span><br><span class="line">  Last modified <span class="number">2020</span><span class="number">-11</span><span class="number">-02</span>; size <span class="number">610</span> <span class="built_in">bytes</span></span><br><span class="line">  MD5 checksum <span class="number">98</span>f958bafd4c5329e4a8734cac14cf8a</span><br><span class="line">  Compiled from <span class="string">&quot;TestDemo04.java&quot;</span></span><br><span class="line"><span class="keyword">public</span> class pub.iyu.se.jvmday.day01.TestDemo04</span><br><span class="line">  minor version: <span class="number">0</span></span><br><span class="line">  major version: <span class="number">52</span></span><br><span class="line">  flags: ACC_PUBLIC, ACC_SUPER</span><br><span class="line">Constant pool:</span><br><span class="line">   #1 = Methodref          #6.#21         <span class="comment">// java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">   #2 = Fieldref           #22.#23        <span class="comment">// java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">   #3 = <span class="built_in">String</span>             #24            <span class="comment">// hello niko</span></span><br><span class="line">   #4 = Methodref          #25.#26        <span class="comment">// java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line">   #5 = Class              #27            <span class="comment">// pub/iyu/se/jvmday/day01/TestDemo04</span></span><br><span class="line">   #6 = Class              #28            <span class="comment">// java/lang/Object</span></span><br><span class="line">   #7 = Utf8               &lt;init&gt;</span><br><span class="line">   #8 = Utf8               ()V</span><br><span class="line">   #9 = Utf8               Code</span><br><span class="line">  #10 = Utf8               LineNumberTable</span><br><span class="line">  #11 = Utf8               LocalVariableTable</span><br><span class="line">  #12 = Utf8               this</span><br><span class="line">  #13 = Utf8               Lpub/iyu/se/jvmday/day01/TestDemo04;</span><br><span class="line">  #14 = Utf8               main</span><br><span class="line">  #15 = Utf8               (<span class="meta">[</span>Ljava/lang/<span class="built_in">String</span>;)V</span><br><span class="line">  #16 = Utf8               args</span><br><span class="line">  #17 = Utf8               <span class="meta">[</span>Ljava/lang/<span class="built_in">String</span>;</span><br><span class="line">  #18 = Utf8               MethodParameters</span><br><span class="line">  #19 = Utf8               SourceFile</span><br><span class="line">  #20 = Utf8               TestDemo04.java</span><br><span class="line">  #21 = NameAndType        #7:#8          <span class="comment">// &quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">  #22 = Class              #29            <span class="comment">// java/lang/System</span></span><br><span class="line">  #23 = NameAndType        #30:#31        <span class="comment">// out:Ljava/io/PrintStream;</span></span><br><span class="line">  #24 = Utf8               hello niko</span><br><span class="line">  #25 = Class              #32            <span class="comment">// java/io/PrintStream</span></span><br><span class="line">  #26 = NameAndType        #33:#34        <span class="comment">// println:(Ljava/lang/String;)V</span></span><br><span class="line">  #27 = Utf8               pub/iyu/se/jvmday/day01/TestDemo04</span><br><span class="line">  #28 = Utf8               java/lang/Object</span><br><span class="line">  #29 = Utf8               java/lang/System</span><br><span class="line">  #30 = Utf8               out</span><br><span class="line">  #31 = Utf8               Ljava/io/PrintStream;</span><br><span class="line">  #32 = Utf8               java/io/PrintStream</span><br><span class="line">  #33 = Utf8               println</span><br><span class="line">  #34 = Utf8               (Ljava/lang/<span class="built_in">String</span>;)V</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> pub.iyu.se.jvmday.day01.TestDemo04();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      <span class="built_in">stack</span>=<span class="number">1</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: aload_0</span><br><span class="line">         <span class="number">1</span>: invokespecial #1                  <span class="comment">// Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">         <span class="number">4</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">11</span>: <span class="number">0</span></span><br><span class="line">      LocalVariableTable:</span><br><span class="line">        Start  Length  Slot  Name   Signature</span><br><span class="line">            <span class="number">0</span>       <span class="number">5</span>     <span class="number">0</span>  this   Lpub/iyu/se/jvmday/day01/TestDemo04;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> static <span class="literal">void</span> main(java.lang.<span class="built_in">String</span><span class="meta">[</span><span class="meta">]</span>);</span><br><span class="line">    descriptor: (<span class="meta">[</span>Ljava/lang/<span class="built_in">String</span>;)V</span><br><span class="line">    flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">    Code:</span><br><span class="line">      <span class="built_in">stack</span>=<span class="number">2</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: getstatic     #2                  <span class="comment">// Field java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">         <span class="number">3</span>: ldc           #3                  <span class="comment">// String hello niko</span></span><br><span class="line">         <span class="number">5</span>: invokevirtual #4                  <span class="comment">// Method java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line">         <span class="number">8</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">13</span>: <span class="number">0</span></span><br><span class="line">        line <span class="number">14</span>: <span class="number">8</span></span><br><span class="line">      LocalVariableTable:</span><br><span class="line">        Start  Length  Slot  Name   Signature</span><br><span class="line">            <span class="number">0</span>       <span class="number">9</span>     <span class="number">0</span>  args   <span class="meta">[</span>Ljava/lang/<span class="built_in">String</span>;</span><br><span class="line">    MethodParameters:</span><br><span class="line">      Name                           Flags</span><br><span class="line">      args</span><br><span class="line">&#125;</span><br><span class="line">SourceFile: <span class="string">&quot;TestDemo04.java&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+  &-copyright {
+    border-left: 3px solid $color-deep-orange-5;
+    background: $color-grey-2;
+    padding: 15px 20px;
+    margin-top: 30px;
 
-<h3 id="5-5-String-Table"><a href="#5-5-String-Table" class="headerlink" title="5.5 String Table"></a>5.5 String Table</h3><p>思考如下代码的打印结果：</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">String</span> s<span class="number">1</span> = <span class="string">&quot;a&quot;</span>;</span><br><span class="line"><span class="attribute">String</span> s<span class="number">2</span> = <span class="string">&quot;b&quot;</span>;</span><br><span class="line"><span class="attribute">String</span> s<span class="number">3</span> = <span class="string">&quot;a&quot;</span> + <span class="string">&quot;b&quot;</span>;</span><br><span class="line"><span class="attribute">String</span> s<span class="number">4</span> = s<span class="number">1</span> + s<span class="number">2</span>;</span><br><span class="line"><span class="attribute">String</span> s<span class="number">5</span> = <span class="string">&quot;ab&quot;</span>;</span><br><span class="line"><span class="attribute">String</span> s<span class="number">6</span> = s<span class="number">4</span>.intern();</span><br><span class="line"></span><br><span class="line"><span class="attribute">System</span>.out.println(s<span class="number">3</span> == s<span class="number">4</span>);</span><br><span class="line"><span class="attribute">System</span>.out.println(s<span class="number">3</span> == s<span class="number">5</span>);</span><br><span class="line"><span class="attribute">System</span>.out.println(s<span class="number">3</span> == s<span class="number">6</span>);</span><br><span class="line"></span><br><span class="line"><span class="attribute">String</span> x<span class="number">2</span> = new String(<span class="string">&quot;c&quot;</span>) + new String(<span class="string">&quot;d&quot;</span>);</span><br><span class="line"><span class="attribute">String</span> x<span class="number">1</span> = <span class="string">&quot;cd&quot;</span>;</span><br><span class="line"><span class="attribute">x2</span>.intern();</span><br><span class="line"></span><br><span class="line"><span class="attribute">System</span>.out.println(x<span class="number">1</span> == x<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+    div {
+      line-height: 2;
+    }
 
-<p>运行结果如下：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">false</span></span><br></pre></td></tr></table></figure>
+    a {
+      transition: all .1s linear;
+      &:hover {
+        color: $color-deep-orange-6;
+      }
+    }
+  }
 
-<h4 id="1-String-Table-特性"><a href="#1-String-Table-特性" class="headerlink" title="1 String Table 特性"></a>1 String Table 特性</h4><ol>
-<li><p>常量池中的字符串仅是符号，第一次用到时才变为对象</p>
-</li>
-<li><p>利用串池的机制，来避免重复创建字符串对象</p>
-</li>
-<li><p>字符串变量拼接的原理是StringBuilder(1.8)</p>
-</li>
-<li><p>字符串常量拼接的原理是编译期优化</p>
-</li>
-<li><p>可以使用intern方法，主动将串池中还没有的字符串对象放入串池</p>
-<ol>
-<li>java8将这个字符串对象尝试放入串池，如果有则并不会放入，如果没有则放入串池，会把串池中的对象返回</li>
-<li>java6将这个字符串对象尝试放入串池，如果有则并不会放入，如果没有会把此对象复制一份放入串池，会把串池中的对象返回</li>
-</ol>
-</li>
-</ol>
-<h4 id="2-String-Table-位置"><a href="#2-String-Table-位置" class="headerlink" title="2 String Table 位置"></a>2 String Table 位置</h4><ol>
-<li>java6 String Table在永久代PermGen中</li>
-<li>java8 String Table在堆Heap中</li>
-</ol>
-<h4 id="3-String-Table-垃圾回收"><a href="#3-String-Table-垃圾回收" class="headerlink" title="3 String Table 垃圾回收"></a>3 String Table 垃圾回收</h4><h4 id="4-String-Table-性能调优"><a href="#4-String-Table-性能调优" class="headerlink" title="4 String Table 性能调优"></a>4 String Table 性能调优</h4><ol>
-<li>调整 -XX:StringTableSize=桶个数</li>
-<li>考虑将字符串对象是否入池（串池）</li>
-</ol>
-<h2 id="6-直接内存"><a href="#6-直接内存" class="headerlink" title="6.直接内存"></a>6.直接内存</h2><h3 id="6-1-定义"><a href="#6-1-定义" class="headerlink" title="6.1 定义"></a>6.1 定义</h3><p>Direct Memory 属于操作系统内存</p>
-<ol>
-<li>常见于NIO操作时，用于数据缓冲区</li>
-<li>分配回收成本较高，但读写性能高</li>
-<li>不受JVM内存回收管理</li>
-</ol>
-<p><img src="https://i.loli.net/2020/11/17/qi2vh8xyzcJfRNu.png" alt="JVM-day01-10.png"></p>
-<h3 id="6-2-分配和回收原理"><a href="#6-2-分配和回收原理" class="headerlink" title="6.2 分配和回收原理"></a>6.2 分配和回收原理</h3><ol>
-<li>使用了Unsafe对象完成直接内存的分配回收，并且回收需要主动调用freeMemory方法</li>
-<li>ByteBuffer的实现类内部，使用了Cleaner（虚引用）来监测ByteBuffer对象，一旦ByteBuffer对象被垃圾回收，那么就会由ReferenceHandler线程通过Cleaner的clean方法调用freeMemory来释放直接内存</li>
-</ol>
-  </article>
-  <aside class="table-content" id="site-toc">
-  <div class="table-content-title">
-    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
-    <span>目录</span>
-  </div>
-  <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84"><span class="toc-text">内存结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8%EF%BC%9A"><span class="toc-text">1.程序计数器：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%AE%9A%E4%B9%89"><span class="toc-text">1.1 定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E4%BD%9C%E7%94%A8"><span class="toc-text">1.2 作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%EF%BC%9A"><span class="toc-text">2.虚拟机栈：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%AE%9A%E4%B9%89"><span class="toc-text">2.1 定义</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%80%9D%E8%80%83%EF%BC%9A"><span class="toc-text">问题思考：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%A0%88%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA-StackOverflowError"><span class="toc-text">2.2 栈内存溢出 StackOverflowError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%BA%BF%E7%A8%8B%E8%BF%90%E8%A1%8C%E8%AF%8A%E6%96%AD"><span class="toc-text">2.3 线程运行诊断</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-text">3.本地方法栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A0%86"><span class="toc-text">4.堆</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%AE%9A%E4%B9%89"><span class="toc-text">4.1 定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA-OutofMemoryError"><span class="toc-text">4.2 堆内存溢出 OutofMemoryError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%A0%86%E5%86%85%E5%AD%98%E8%AF%8A%E6%96%AD"><span class="toc-text">4.3 堆内存诊断</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="toc-text">5.方法区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%AE%9A%E4%B9%89"><span class="toc-text">5.1 定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E7%BB%84%E6%88%90"><span class="toc-text">5.2 组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%96%B9%E6%B3%95%E5%8C%BA%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="toc-text">5.3 方法区内存溢出</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E5%9C%BA%E6%99%AF"><span class="toc-text">实际场景</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="toc-text">5.4 运行时常量池</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-String-Table"><span class="toc-text">5.5 String Table</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-String-Table-%E7%89%B9%E6%80%A7"><span class="toc-text">1 String Table 特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-String-Table-%E4%BD%8D%E7%BD%AE"><span class="toc-text">2 String Table 位置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-String-Table-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-text">3 String Table 垃圾回收</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-String-Table-%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98"><span class="toc-text">4 String Table 性能调优</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98"><span class="toc-text">6.直接内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%AE%9A%E4%B9%89"><span class="toc-text">6.1 定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E5%88%86%E9%85%8D%E5%92%8C%E5%9B%9E%E6%94%B6%E5%8E%9F%E7%90%86"><span class="toc-text">6.2 分配和回收原理</span></a></li></ol></li></ol></li></ol>
-  </div>
-</aside>
-  
-    <aside class="passage-copyright">
-      <div>本文作者: 听风行</div>
-      
-        <div>
-          原文链接: 
-          <a href="" target="_blank">https://blog.iyu.pub/posts/2020-11-08-JVM-day01/</a>
-        </div>
-      
-      <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
-      </div>
-    </aside>
-  
-  
-    <div class="passage-tags">
-     
-      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
-     
-      <a href="/tags/JVM/"><i class="fa fa-tags"></i>JVM</a>
-    
-    </div>
-  
-</div>
+  &-meta {
+    font-size: 16px;
+    color: $color-grey-7;
+
+    a {
+      color: $color-grey-7;
+      transition: all .2s;
+
+      &:hover {
+        color: $color-grey-9;
+      }
+    }
+
+    i {
+      display: inline-block;
+      margin-right: 5px;
+    }
+  }
+
+  &-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    font-size: 15px;
+    border-top: 1px solid $color-grey-2;
+
+    a {
+      display: inline-flex;
+      margin: 0 15px 15px 0;
+      align-items: center;
+      height: 30px;
+      padding: 5px 10px;
+      background: $color-grey-2;
+      border: 1px solid $color-grey-2;
+      border-radius: 3px;
+      transition: all .15s linear;
+
+      i {
+        display: inline-block;
+        margin-right: 5px;
+      }
+
+      &:hover {
+        color: $color-blue-5;
+        border-color: $color-blue-5;
+      }
+    }
+  }
+}
 
     </main>
     

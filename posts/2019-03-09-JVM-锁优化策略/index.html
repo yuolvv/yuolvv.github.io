@@ -165,104 +165,281 @@
 <div id="site-process"></div>
     <main>
       
-  <div class="passage">
-  <div class="passage-meta">
-    <span>
-      <i class="fa fa-calendar"></i>2019-03-09
-    </span>
-    
-      <span>
-        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
-      </span>
-    
-    
-      <span>
-        | <i class="fa fa-unlock-alt"></i>UNLOCK
-      </span>
-    
-  </div>
-  <h1 class="passage-title">
-    JVM-锁优化策略
-  </h1>
-  
-    <div class="passage-cover">
-      <figure style="background-image:url(https://cn.bing.com/th?id=OHR.BabyHedgehog_EN-CN1511573288_1920x1080.jpg);"></figure>
-    </div>
-  
+  .passage {
+  max-width: $main-width;
+  margin: 20px auto;
 
-  
+  &-article {
+    font-size: 16px;
+    font-family: $content-font;
+    line-height: 2;
+    letter-spacing: 0.2px;
+    word-break: break-word;
 
-  <article class="passage-article">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle"
-        style="display:block; text-align:center;"
-        data-ad-layout="in-article"
-        data-ad-format="fluid"
-        data-ad-client="ca-pub-2795125801721613"
-        data-ad-slot="7468094198"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    h1, h2, h3, h4, h5, h6 {
+      position: relative;
+      font-weight: 600;
+      margin: 15px 0;
 
-    <h1 id="1-自旋锁"><a href="#1-自旋锁" class="headerlink" title="1 自旋锁"></a>1 自旋锁</h1><p>背景：互斥同步对性能最大的影响是阻塞，挂起和恢复线程都需要转入内核态中完成；并且通常情况下，共享数据的锁定状态只持续很短的一段时间，为了这很短的一段时间进行上下文切换并不值得。</p>
-<p>原理：当一条线程需要请求一把已经被占用的锁时，并不会进入阻塞状态，而是继续持有CPU执行权等待一段时间，该过程称为『自旋』。</p>
-<p>优点：由于自旋等待锁的过程线程并不会引起上下文切换，因此比较高效；</p>
-<p>缺点：自旋等待过程线程一直占用CPU执行权但不处理任何任务，因此若该过程过长，那就会造成CPU资源的浪费。</p>
-<p>自适应自旋：自适应自旋可以根据以往自旋等待时间的经验，计算出一个较为合理的本次自旋等待时间。</p>
-<h1 id="2-锁清除"><a href="#2-锁清除" class="headerlink" title="2 锁清除"></a>2 锁清除</h1><p>编译器会清除一些使用了同步，但同步块中没有涉及共享数据的锁，从而减少多余的同步。</p>
-<h1 id="3-锁粗化"><a href="#3-锁粗化" class="headerlink" title="3 锁粗化"></a>3 锁粗化</h1><p>若有一系列操作，反复地对同一把锁进行上锁和解锁操作，编译器会扩大这部分代码的同步块的边界，从而只使用一次上锁和解锁操作。</p>
-<h1 id="4-轻量级锁"><a href="#4-轻量级锁" class="headerlink" title="4 轻量级锁"></a>4 轻量级锁</h1><p>本质：使用CAS取代互斥同步。</p>
-<p>背景：『轻量级锁』是相对于『重量级锁』而言的，而重量级锁就是传统的锁。</p>
-<p>轻量级锁与重量级锁的比较：</p>
-<p>重量级锁是一种悲观锁，它认为总是有多条线程要竞争锁，所以它每次处理共享数据时，不管当前系统中是否真的有线程在竞争锁，它都会使用互斥同步来保证线程的安全；</p>
-<p>而轻量级锁是一种乐观锁，它认为锁存在竞争的概率比较小，所以它不使用互斥同步，而是使用CAS操作来获得锁，这样能减少互斥同步所使用的『互斥量』带来的性能开销。</p>
-<p>实现原理：</p>
-<p>对象头称为『Mark Word』，虚拟机为了节约对象的存储空间，对象处于不同的状态下，Mark Word中存储的信息也所有不同。</p>
-<p>Mark Word中有个标志位用来表示当前对象所处的状态。</p>
-<p>当线程请求锁时，若该锁对象的Mark Word中标志位为01（未锁定状态），则在该线程的栈帧中创建一块名为『锁记录』的空间，然后将锁对象的Mark Word拷贝至该空间；最后通过CAS操作将锁对象的Mark Word指向该锁记录；</p>
-<p>若CAS操作成功，则轻量级锁的上锁过程成功；</p>
-<p>若CAS操作失败，再判断当前线程是否已经持有了该轻量级锁；若已经持有，则直接进入同步块；若尚未持有，则表示该锁已经被其他线程占用，此时轻量级锁就要膨胀成重量级锁。</p>
-<p>前提：轻量级锁比重量级锁性能更高的前提是，在轻量级锁被占用的整个同步周期内，不存在其他线程的竞争。若在该过程中一旦有其他线程竞争，那么就会膨胀成重量级锁，从而除了使用互斥量以外，还额外发生了CAS操作，因此更慢！</p>
-<h1 id="5-偏向锁"><a href="#5-偏向锁" class="headerlink" title="5 偏向锁"></a>5 偏向锁</h1><p>作用：偏向锁是为了消除无竞争情况下的同步原语，进一步提升程序性能。</p>
-<p>与轻量级锁的区别：轻量级锁是在无竞争的情况下使用CAS操作来代替互斥量的使用，从而实现同步；而偏向锁是在无竞争的情况下完全取消同步。</p>
-<p>与轻量级锁的相同点：它们都是乐观锁，都认为同步期间不会有其他线程竞争锁。</p>
-<p>原理：当线程请求到锁对象后，将锁对象的状态标志位改为01，即偏向模式。然后使用CAS操作将线程的ID记录在锁对象的Mark Word中。以后该线程可以直接进入同步块，连CAS操作都不需要。但是，一旦有第二条线程需要竞争锁，那么偏向模式立即结束，进入轻量级锁的状态。</p>
-<p>优点：偏向锁可以提高有同步但没有竞争的程序性能。但是如果锁对象时常被多条线程竞争，那偏向锁就是多余的。</p>
-<p>偏向锁可以通过虚拟机的参数来控制它是否开启。</p>
-  </article>
-  <aside class="table-content" id="site-toc">
-  <div class="table-content-title">
-    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
-    <span>目录</span>
-  </div>
-  <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%87%AA%E6%97%8B%E9%94%81"><span class="toc-text">1 自旋锁</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E9%94%81%E6%B8%85%E9%99%A4"><span class="toc-text">2 锁清除</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E9%94%81%E7%B2%97%E5%8C%96"><span class="toc-text">3 锁粗化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81"><span class="toc-text">4 轻量级锁</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%81%8F%E5%90%91%E9%94%81"><span class="toc-text">5 偏向锁</span></a></li></ol>
-  </div>
-</aside>
+      a {
+        padding-left: 5px;
+        transition: all .15s linear;
+      }
+
+      &::before {
+        font-size: 0.8em;
+        content: "\f0c1";
+        color: $color-deep-orange-6;
+        font-family: FontAwesome;
+      }
+
+      &:hover {
+        a {
+          padding-left: 10px;
+        }
+
+        &::before {
+          color: $color-blue-5;
+        }
+      }
+    }
+
+    h1 {
+      font-size: 2em;
+      margin: 16px 0;
+    }
+
+    h2 {
+      font-size: 1.75em;
+    }
+
+    h3 {
+      font-size: 1.5em;
+    }
+
+    h4 {
+      font-size: 1.25em;
+    }
+
+    h5 {
+      font-size: 1.125em;
+    }
+
+    h6 {
+      font-size: 1em;
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    blockquote {
+      margin: 15px 0;
+      padding: 1px 12px;
+      border-left: 3px solid $color-grey-6;
+      color: $color-grey-8;
+      background: $color-grey-1;
+    }
+
+    a {
+      display: inline-block;
+      position: relative;
+      color: $color-deep-orange-6;
+      font-weight: bolder;
+
+      &::before {
+        content: "";
+        position: absolute;
+        width: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: $color-blue-5;
+        transition: all 0.3s ease;
+      }
+
+      &:hover {
+        color: $color-blue-5;
+
+        &::before {
+          width: 100%;
+          left: 0;
+          right: auto;
+        }
+      }
+    }
+
+    code {
+      font-family: $code-font;
+      background: $color-grey-2;
+      color: $color-deep-orange-8;
+      word-wrap: break-word;
+      margin: 0 3px;
+    }
+
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 90%;
+      border-radius: 5px;
+      cursor: zoom-in;
+      transition: all .3s linear;
+
+      &:hover {
+        box-shadow: 0 0 3px $color-grey-5;
+      }
+    }
   
-    <aside class="passage-copyright">
-      <div>本文作者: 听风行</div>
-      
-        <div>
-          原文链接: 
-          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-09-JVM-%E9%94%81%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5/</a>
-        </div>
-      
-      <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
-      </div>
-    </aside>
-  
-  
-    <div class="passage-tags">
-     
-      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
-     
-      <a href="/tags/JVM/"><i class="fa fa-tags"></i>JVM</a>
-    
-    </div>
-  
-</div>
+    ol, ul {
+      margin: 0 0 16px;
+      padding-left: 1.2em;
+
+      ol {
+        list-style-type: lower-roman;
+      }
+    }
+
+    & > table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      border-left: 1px solid $color-grey-2;
+      border-right: 1px solid $color-grey-2;
+      border-radius: 4px 4px 0 0;
+      margin: 16px 0;
+
+      thead {
+        background: $color-grey-1;
+
+        th {
+          padding: 16px;
+          border-bottom: 1px solid $color-grey-2;
+        }
+      }
+
+      tbody {
+        tr {
+          transition: all .3s ease;
+
+          &:hover {
+            background: $color-light-blue-0;
+          }
+
+          td {
+            padding: 16px;
+            border-bottom: 1px solid $color-grey-2;
+          }
+        }
+      }
+    }
+  }
+
+  &-title {
+    font-size: 36px;
+    line-height: 42px;
+    margin: 25px 0 40px;
+
+    @media screen and (max-width: $mobile-width) {
+      font-size: 30px;
+      margin-bottom: 25px;
+    }
+  }
+
+  &-cover {
+    display: block;
+    width: 100%;
+    position: relative;
+    padding-bottom: 50%;
+    margin-bottom: 40px;
+
+    @media screen and (max-width: $mobile-width) {
+      display: none;
+    }
+
+    figure {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      overflow: hidden;
+      border-radius: 10px;
+      background-position: 50% 50%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+  }
+
+  &-copyright {
+    border-left: 3px solid $color-deep-orange-5;
+    background: $color-grey-2;
+    padding: 15px 20px;
+    margin-top: 30px;
+
+    div {
+      line-height: 2;
+    }
+
+    a {
+      transition: all .1s linear;
+      &:hover {
+        color: $color-deep-orange-6;
+      }
+    }
+  }
+
+  &-meta {
+    font-size: 16px;
+    color: $color-grey-7;
+
+    a {
+      color: $color-grey-7;
+      transition: all .2s;
+
+      &:hover {
+        color: $color-grey-9;
+      }
+    }
+
+    i {
+      display: inline-block;
+      margin-right: 5px;
+    }
+  }
+
+  &-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    font-size: 15px;
+    border-top: 1px solid $color-grey-2;
+
+    a {
+      display: inline-flex;
+      margin: 0 15px 15px 0;
+      align-items: center;
+      height: 30px;
+      padding: 5px 10px;
+      background: $color-grey-2;
+      border: 1px solid $color-grey-2;
+      border-radius: 3px;
+      transition: all .15s linear;
+
+      i {
+        display: inline-block;
+        margin-right: 5px;
+      }
+
+      &:hover {
+        color: $color-blue-5;
+        border-color: $color-blue-5;
+      }
+    }
+  }
+}
 
     </main>
     
