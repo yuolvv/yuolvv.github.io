@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Linux,CentOS,Linux,SVN," />
+    <meta name="keywords" content="Linux,Linux,CentOS,SVN," />
   
 
   
@@ -165,281 +165,170 @@
 <div id="site-process"></div>
     <main>
       
-  .passage {
-  max-width: $main-width;
-  margin: 20px auto;
-
-  &-article {
-    font-size: 16px;
-    font-family: $content-font;
-    line-height: 2;
-    letter-spacing: 0.2px;
-    word-break: break-word;
-
-    h1, h2, h3, h4, h5, h6 {
-      position: relative;
-      font-weight: 600;
-      margin: 15px 0;
-
-      a {
-        padding-left: 5px;
-        transition: all .15s linear;
-      }
-
-      &::before {
-        font-size: 0.8em;
-        content: "\f0c1";
-        color: $color-deep-orange-6;
-        font-family: FontAwesome;
-      }
-
-      &:hover {
-        a {
-          padding-left: 10px;
-        }
-
-        &::before {
-          color: $color-blue-5;
-        }
-      }
-    }
-
-    h1 {
-      font-size: 2em;
-      margin: 16px 0;
-    }
-
-    h2 {
-      font-size: 1.75em;
-    }
-
-    h3 {
-      font-size: 1.5em;
-    }
-
-    h4 {
-      font-size: 1.25em;
-    }
-
-    h5 {
-      font-size: 1.125em;
-    }
-
-    h6 {
-      font-size: 1em;
-    }
-
-    p {
-      margin: 12px 0;
-    }
-
-    blockquote {
-      margin: 15px 0;
-      padding: 1px 12px;
-      border-left: 3px solid $color-grey-6;
-      color: $color-grey-8;
-      background: $color-grey-1;
-    }
-
-    a {
-      display: inline-block;
-      position: relative;
-      color: $color-deep-orange-6;
-      font-weight: bolder;
-
-      &::before {
-        content: "";
-        position: absolute;
-        width: 0;
-        right: 0;
-        bottom: 0;
-        height: 2px;
-        background: $color-blue-5;
-        transition: all 0.3s ease;
-      }
-
-      &:hover {
-        color: $color-blue-5;
-
-        &::before {
-          width: 100%;
-          left: 0;
-          right: auto;
-        }
-      }
-    }
-
-    code {
-      font-family: $code-font;
-      background: $color-grey-2;
-      color: $color-deep-orange-8;
-      word-wrap: break-word;
-      margin: 0 3px;
-    }
-
-    img {
-      display: block;
-      margin: 0 auto;
-      max-width: 90%;
-      border-radius: 5px;
-      cursor: zoom-in;
-      transition: all .3s linear;
-
-      &:hover {
-        box-shadow: 0 0 3px $color-grey-5;
-      }
-    }
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2018-02-06
+    </span>
+    
+      <span>
+        | <a href="/categories/Linux/"><i class="fa fa-bookmark"></i>Linux</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    搭建 SVN 服务器
+  </h1>
   
-    ol, ul {
-      margin: 0 0 16px;
-      padding-left: 1.2em;
 
-      ol {
-        list-style-type: lower-roman;
-      }
-    }
+  
 
-    & > table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      border-left: 1px solid $color-grey-2;
-      border-right: 1px solid $color-grey-2;
-      border-radius: 4px 4px 0 0;
-      margin: 16px 0;
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 
-      thead {
-        background: $color-grey-1;
+    <h3 id="安装SVN服务端"><a href="#安装SVN服务端" class="headerlink" title="安装SVN服务端"></a>安装SVN服务端</h3><p>Subversion 是一个版本控制系统，相对于的 RCS 、 CVS ，采用了分支管理系统，它的设计目标就是取代 CVS 。</p>
+<blockquote>
+<p>yum install -y subversion</p>
+</blockquote>
+<h3 id="创建SVN版本库"><a href="#创建SVN版本库" class="headerlink" title="创建SVN版本库"></a>创建SVN版本库</h3><p>创建项目版本库</p>
+<pre>
+mkdir -p /data/svn/myproject
+svnadmin create /data/svn/myproject
+</pre>
 
-        th {
-          padding: 16px;
-          border-bottom: 1px solid $color-grey-2;
-        }
-      }
+<h3 id="配置SVN信息"><a href="#配置SVN信息" class="headerlink" title="配置SVN信息"></a>配置SVN信息</h3><p>1.配置文件简介</p>
+<p>版本库中的配置目录 conf 有三个文件:</p>
+<p>authz 是权限控制文件</p>
+<p>passwd 是帐号密码文件</p>
+<p>svnserve.conf 是SVN服务综合配置文件</p>
+<p>2.配置权限配置文件 authz</p>
+<p>编辑 authz ，内容参考如下：</p>
+<pre>
+[groups]            
+#用户组
+admin = admin,root,test  
+#用户组所对应的用户
+[/]                 
+#库目录权限
+@admin = rw         
+#用户组权限
+*=r               
+#非用户组权限
+</pre>
 
-      tbody {
-        tr {
-          transition: all .3s ease;
+<p>3.配置账号密码文件 passwd</p>
+<p>编辑 passwd ，内容参考如下：</p>
+<pre>
+[users]
+# harry = harryssecret
+# sally = sallyssecret
+admin = 123456
+root = 123456
+test = 123456
+</pre>
 
-          &:hover {
-            background: $color-light-blue-0;
-          }
+<p>4.配置 SVN 服务综合配置文件 svnserve.conf</p>
+<p>编辑 svnserve.conf ，内容参考如下：</p>
+<pre>
+[general]
+# force-username-case = none
+# 匿名访问的权限 可以是read、write，none，默认为read
+anon-access = none
+#使授权用户有写权限
+auth-access = write
+#密码数据库的路径
+password-db = passwd
+#访问控制文件
+authz-db = authz
+#认证命名空间，SVN会在认证提示里显示，并且作为凭证缓存的关键字
+realm = /data/svn/myproject
 
-          td {
-            padding: 16px;
-            border-bottom: 1px solid $color-grey-2;
-          }
-        }
-      }
-    }
-  }
+[sasl]
+</pre>
 
-  &-title {
-    font-size: 36px;
-    line-height: 42px;
-    margin: 25px 0 40px;
 
-    @media screen and (max-width: $mobile-width) {
-      font-size: 30px;
-      margin-bottom: 25px;
-    }
-  }
+<h3 id="启动SVN服务"><a href="#启动SVN服务" class="headerlink" title="启动SVN服务"></a>启动SVN服务</h3><p>1.启动SVN</p>
+<blockquote>
+<p>svnserve -d -r /data/svn</p>
+</blockquote>
+<p>2.checkout SVN 项目</p>
+<pre>
+mkdir -p /data/workspace/myproject
+svn co svn://127.0.0.1/myproject /data/workspace/myproject --username root --password 123456 --force --no-auth-cache
+</pre>
 
-  &-cover {
-    display: block;
-    width: 100%;
-    position: relative;
-    padding-bottom: 50%;
-    margin-bottom: 40px;
+<p>3.提交文件到SVN服务器</p>
+<p>从本地提交文件到 SVN 服务器，其中 root 密码为 /data/svn/myproject/conf/passwd 文件存储的密码</p>
+<pre>
+cd /data/workspace/myproject
+echo test >> test.txt
+svn add test.txt
+svn commit test.txt -m 'test'
+</pre>
 
-    @media screen and (max-width: $mobile-width) {
-      display: none;
-    }
+<p>提交成功后可以通过如下命令从本地项目删除文件:</p>
+<pre>
+cd /data/workspace/myproject
+rm -rf test.txt
+</pre>
 
-    figure {
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      right: 0px;
-      bottom: 0px;
-      overflow: hidden;
-      border-radius: 10px;
-      background-position: 50% 50%;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-    }
-  }
+<p>删除后可以通过 SVN 服务器恢复:</p>
+<pre>
+cd /data/workspace/myproject
+svn update
+</pre>
 
-  &-copyright {
-    border-left: 3px solid $color-deep-orange-5;
-    background: $color-grey-2;
-    padding: 15px 20px;
-    margin-top: 30px;
-
-    div {
-      line-height: 2;
-    }
-
-    a {
-      transition: all .1s linear;
-      &:hover {
-        color: $color-deep-orange-6;
-      }
-    }
-  }
-
-  &-meta {
-    font-size: 16px;
-    color: $color-grey-7;
-
-    a {
-      color: $color-grey-7;
-      transition: all .2s;
-
-      &:hover {
-        color: $color-grey-9;
-      }
-    }
-
-    i {
-      display: inline-block;
-      margin-right: 5px;
-    }
-  }
-
-  &-tags {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-top: 20px;
-    padding-top: 20px;
-    font-size: 15px;
-    border-top: 1px solid $color-grey-2;
-
-    a {
-      display: inline-flex;
-      margin: 0 15px 15px 0;
-      align-items: center;
-      height: 30px;
-      padding: 5px 10px;
-      background: $color-grey-2;
-      border: 1px solid $color-grey-2;
-      border-radius: 3px;
-      transition: all .15s linear;
-
-      i {
-        display: inline-block;
-        margin-right: 5px;
-      }
-
-      &:hover {
-        color: $color-blue-5;
-        border-color: $color-blue-5;
-      }
-    }
-  }
-}
+<h3 id="部署完成"><a href="#部署完成" class="headerlink" title="部署完成"></a>部署完成</h3><p>大功告成！</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85SVN%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="toc-text">安装SVN服务端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BASVN%E7%89%88%E6%9C%AC%E5%BA%93"><span class="toc-text">创建SVN版本库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AESVN%E4%BF%A1%E6%81%AF"><span class="toc-text">配置SVN信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8SVN%E6%9C%8D%E5%8A%A1"><span class="toc-text">启动SVN服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E5%AE%8C%E6%88%90"><span class="toc-text">部署完成</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2018-02-06-linux-svn/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Linux/"><i class="fa fa-tags"></i>Linux</a>
+     
+      <a href="/tags/CentOS/"><i class="fa fa-tags"></i>CentOS</a>
+     
+      <a href="/tags/SVN/"><i class="fa fa-tags"></i>SVN</a>
+    
+    </div>
+  
+</div>
 
     </main>
     

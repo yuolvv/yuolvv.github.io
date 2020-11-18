@@ -165,281 +165,176 @@
 <div id="site-process"></div>
     <main>
       
-  .passage {
-  max-width: $main-width;
-  margin: 20px auto;
-
-  &-article {
-    font-size: 16px;
-    font-family: $content-font;
-    line-height: 2;
-    letter-spacing: 0.2px;
-    word-break: break-word;
-
-    h1, h2, h3, h4, h5, h6 {
-      position: relative;
-      font-weight: 600;
-      margin: 15px 0;
-
-      a {
-        padding-left: 5px;
-        transition: all .15s linear;
-      }
-
-      &::before {
-        font-size: 0.8em;
-        content: "\f0c1";
-        color: $color-deep-orange-6;
-        font-family: FontAwesome;
-      }
-
-      &:hover {
-        a {
-          padding-left: 10px;
-        }
-
-        &::before {
-          color: $color-blue-5;
-        }
-      }
-    }
-
-    h1 {
-      font-size: 2em;
-      margin: 16px 0;
-    }
-
-    h2 {
-      font-size: 1.75em;
-    }
-
-    h3 {
-      font-size: 1.5em;
-    }
-
-    h4 {
-      font-size: 1.25em;
-    }
-
-    h5 {
-      font-size: 1.125em;
-    }
-
-    h6 {
-      font-size: 1em;
-    }
-
-    p {
-      margin: 12px 0;
-    }
-
-    blockquote {
-      margin: 15px 0;
-      padding: 1px 12px;
-      border-left: 3px solid $color-grey-6;
-      color: $color-grey-8;
-      background: $color-grey-1;
-    }
-
-    a {
-      display: inline-block;
-      position: relative;
-      color: $color-deep-orange-6;
-      font-weight: bolder;
-
-      &::before {
-        content: "";
-        position: absolute;
-        width: 0;
-        right: 0;
-        bottom: 0;
-        height: 2px;
-        background: $color-blue-5;
-        transition: all 0.3s ease;
-      }
-
-      &:hover {
-        color: $color-blue-5;
-
-        &::before {
-          width: 100%;
-          left: 0;
-          right: auto;
-        }
-      }
-    }
-
-    code {
-      font-family: $code-font;
-      background: $color-grey-2;
-      color: $color-deep-orange-8;
-      word-wrap: break-word;
-      margin: 0 3px;
-    }
-
-    img {
-      display: block;
-      margin: 0 auto;
-      max-width: 90%;
-      border-radius: 5px;
-      cursor: zoom-in;
-      transition: all .3s linear;
-
-      &:hover {
-        box-shadow: 0 0 3px $color-grey-5;
-      }
-    }
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2015-09-28
+    </span>
+    
+      <span>
+        | <a href="/categories/Code/"><i class="fa fa-bookmark"></i>Code</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Tomcat的catalina.out日志的cronolog分割
+  </h1>
   
-    ol, ul {
-      margin: 0 0 16px;
-      padding-left: 1.2em;
 
-      ol {
-        list-style-type: lower-roman;
-      }
-    }
+  
 
-    & > table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      border-left: 1px solid $color-grey-2;
-      border-right: 1px solid $color-grey-2;
-      border-radius: 4px 4px 0 0;
-      margin: 16px 0;
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 
-      thead {
-        background: $color-grey-1;
+    <p>2018.01.19修改：</p>
+<p>1.重新上传文件</p>
+<p>2.修改图片的显示<br><br></p>
+<p><strong>安装过程如下：</strong></p>
+<p>1、下载</p>
+<blockquote>
+wget https://src.fedoraproject.org/repo/pkgs/cronolog/cronolog-1.6.2.tar.gz/a44564fd5a5b061a5691b9a837d04979/cronolog-1.6.2.tar.gz
+</blockquote>
 
-        th {
-          padding: 16px;
-          border-bottom: 1px solid $color-grey-2;
-        }
-      }
+<p>本来想直接wget的，但是经过测试好像压缩包有问题，之后只能在本地下载再scp到服务器。</p>
+<p>贴上我的分享：<a target="_blank" rel="noopener" href="http://files.hunit.cn/files/cronolog-1.6.2.tar.gz">点我下载</a>  <br><br></p>
+<p>2、解压缩</p>
+<blockquote># tar zxvf cronolog-1.6.2.tar.gz</blockquote>
+&nbsp;
 
-      tbody {
-        tr {
-          transition: all .3s ease;
+<p>3、进入cronolog安装文件所在目录</p>
+<blockquote># cd cronolog-1.6.2</blockquote>
+&nbsp;
 
-          &:hover {
-            background: $color-light-blue-0;
-          }
+<p>4、运行安装</p>
+<blockquote># ./configure</blockquote>
 
-          td {
-            padding: 16px;
-            border-bottom: 1px solid $color-grey-2;
-          }
-        }
-      }
-    }
-  }
+<blockquote># make</blockquote>
 
-  &-title {
-    font-size: 36px;
-    line-height: 42px;
-    margin: 25px 0 40px;
+<blockquote># make install</blockquote>
+&nbsp;
 
-    @media screen and (max-width: $mobile-width) {
-      font-size: 30px;
-      margin-bottom: 25px;
-    }
-  }
+<p>5、查看cronolog安装后所在目录（验证安装是否成功）</p>
+<blockquote># which cronolog</blockquote>
+正常情况下显示：
+<blockquote>/usr/local/sbin/cronolog</blockquote>
+&nbsp;
 
-  &-cover {
-    display: block;
-    width: 100%;
-    position: relative;
-    padding-bottom: 50%;
-    margin-bottom: 40px;
+<p><strong>要想分割tomcat的catalina.out，需作如下工作：</strong></p>
+<p>Tomcat7以前的版本：</p>
+<p>（1）注释掉（#）</p>
+<blockquote>touch “$CATALINA_BASE”/logs/catalina.out</blockquote>
 
-    @media screen and (max-width: $mobile-width) {
-      display: none;
-    }
+<p>（2）修改tomcat bin目录下的catalina.sh文件中的两处</p>
+<blockquote>
+org.apache.catalina.startup.Bootstrap "$@" start \ <br>
+>> "$CATALINA_BASE" /logs/catalina.out 2>&1 &
+</blockquote>
+为
+<blockquote>
+org.apache.catalina.startup.Bootstrap "$@" start 2>&1 \ <br>
+| /usr/local/sbin/cronolog "$CATALINA_BASE" /logs/catalina.%Y-%m-%d.out >> /dev/null &
+</blockquote>
 
-    figure {
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      right: 0px;
-      bottom: 0px;
-      overflow: hidden;
-      border-radius: 10px;
-      background-position: 50% 50%;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-    }
-  }
+<p>如下图所示：</p>
+<p><img src="https://i.loli.net/2019/04/26/5cc27b2d62e53.jpg" alt="tomcat-catalina-out_01.jpg"></p>
+<p>完成之后重起Tomcat就可以了。</p>
+<p>隔天看logs文件中是否有catalina.2015-09-13.out样式的日志。</p>
+<p>&nbsp;</p>
+<p>Tomcat7以后的版本：</p>
+<p>1  第一步</p>
+<p>将</p>
+<blockquote>
+if [ -z "$CATALINA_OUT" ] ; then<br>
 
-  &-copyright {
-    border-left: 3px solid $color-deep-orange-5;
-    background: $color-grey-2;
-    padding: 15px 20px;
-    margin-top: 30px;
+<p>CATALINA_OUT=”$CATALINA_BASE”/logs/catalina.out<br></p>
+<p>fi<br></p>
+</blockquote>
+修改为
+<blockquote>
+if [ -z "$CATALINA_OUT" ] ; then<br>
 
-    div {
-      line-height: 2;
-    }
+<p>CATALINA_OUT=”$CATALINA_BASE”/logs/catalina.out.%Y-%m-%d<br></p>
+<p>fi<br></p>
+</blockquote>
+2  第二步
 
-    a {
-      transition: all .1s linear;
-      &:hover {
-        color: $color-deep-orange-6;
-      }
-    }
-  }
+<p>将</p>
+<blockquote>
+touch "$CATALINA_OUT"
+</blockquote>
+改为
+<blockquote>
+#touch "$CATALINA_OUT"
+</blockquote>
 
-  &-meta {
-    font-size: 16px;
-    color: $color-grey-7;
+<p>3  第三步</p>
+<p>将</p>
+<blockquote>
+org.apache.catalina.startup.Bootstrap "$@" start \<br>
+>> "$CATALINA_OUT" 2>&1 "&"
+</blockquote>
+修改为
+<blockquote>
+org.apache.catalina.startup.Bootstrap "$@" start 2>&1 \<br>
+| /usr/local/sbin/cronolog "$CATALINA_OUT" >> /dev/null &
+</blockquote>
+完成之后重起Tomcat就可以了。
 
-    a {
-      color: $color-grey-7;
-      transition: all .2s;
-
-      &:hover {
-        color: $color-grey-9;
-      }
-    }
-
-    i {
-      display: inline-block;
-      margin-right: 5px;
-    }
-  }
-
-  &-tags {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-top: 20px;
-    padding-top: 20px;
-    font-size: 15px;
-    border-top: 1px solid $color-grey-2;
-
-    a {
-      display: inline-flex;
-      margin: 0 15px 15px 0;
-      align-items: center;
-      height: 30px;
-      padding: 5px 10px;
-      background: $color-grey-2;
-      border: 1px solid $color-grey-2;
-      border-radius: 3px;
-      transition: all .15s linear;
-
-      i {
-        display: inline-block;
-        margin-right: 5px;
-      }
-
-      &:hover {
-        color: $color-blue-5;
-        border-color: $color-blue-5;
-      }
-    }
-  }
-}
+<p>隔天看logs文件中是否有catalina.out.2015-09-13样式的日志。</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2015-09-28-tomcat-catalina-out/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
+     
+      <a href="/tags/JavaEE/"><i class="fa fa-tags"></i>JavaEE</a>
+     
+      <a href="/tags/Ubuntu/"><i class="fa fa-tags"></i>Ubuntu</a>
+     
+      <a href="/tags/Tomcat/"><i class="fa fa-tags"></i>Tomcat</a>
+     
+      <a href="/tags/Linux/"><i class="fa fa-tags"></i>Linux</a>
+    
+    </div>
+  
+</div>
 
     </main>
     

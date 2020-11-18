@@ -165,281 +165,185 @@
 <div id="site-process"></div>
     <main>
       
-  .passage {
-  max-width: $main-width;
-  margin: 20px auto;
-
-  &-article {
-    font-size: 16px;
-    font-family: $content-font;
-    line-height: 2;
-    letter-spacing: 0.2px;
-    word-break: break-word;
-
-    h1, h2, h3, h4, h5, h6 {
-      position: relative;
-      font-weight: 600;
-      margin: 15px 0;
-
-      a {
-        padding-left: 5px;
-        transition: all .15s linear;
-      }
-
-      &::before {
-        font-size: 0.8em;
-        content: "\f0c1";
-        color: $color-deep-orange-6;
-        font-family: FontAwesome;
-      }
-
-      &:hover {
-        a {
-          padding-left: 10px;
-        }
-
-        &::before {
-          color: $color-blue-5;
-        }
-      }
-    }
-
-    h1 {
-      font-size: 2em;
-      margin: 16px 0;
-    }
-
-    h2 {
-      font-size: 1.75em;
-    }
-
-    h3 {
-      font-size: 1.5em;
-    }
-
-    h4 {
-      font-size: 1.25em;
-    }
-
-    h5 {
-      font-size: 1.125em;
-    }
-
-    h6 {
-      font-size: 1em;
-    }
-
-    p {
-      margin: 12px 0;
-    }
-
-    blockquote {
-      margin: 15px 0;
-      padding: 1px 12px;
-      border-left: 3px solid $color-grey-6;
-      color: $color-grey-8;
-      background: $color-grey-1;
-    }
-
-    a {
-      display: inline-block;
-      position: relative;
-      color: $color-deep-orange-6;
-      font-weight: bolder;
-
-      &::before {
-        content: "";
-        position: absolute;
-        width: 0;
-        right: 0;
-        bottom: 0;
-        height: 2px;
-        background: $color-blue-5;
-        transition: all 0.3s ease;
-      }
-
-      &:hover {
-        color: $color-blue-5;
-
-        &::before {
-          width: 100%;
-          left: 0;
-          right: auto;
-        }
-      }
-    }
-
-    code {
-      font-family: $code-font;
-      background: $color-grey-2;
-      color: $color-deep-orange-8;
-      word-wrap: break-word;
-      margin: 0 3px;
-    }
-
-    img {
-      display: block;
-      margin: 0 auto;
-      max-width: 90%;
-      border-radius: 5px;
-      cursor: zoom-in;
-      transition: all .3s linear;
-
-      &:hover {
-        box-shadow: 0 0 3px $color-grey-5;
-      }
-    }
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2017-01-11
+    </span>
+    
+      <span>
+        | <a href="/categories/Linux/"><i class="fa fa-bookmark"></i>Linux</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    CentOS获取系统信息的Shell脚本
+  </h1>
   
-    ol, ul {
-      margin: 0 0 16px;
-      padding-left: 1.2em;
 
-      ol {
-        list-style-type: lower-roman;
-      }
-    }
+  
 
-    & > table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      border-left: 1px solid $color-grey-2;
-      border-right: 1px solid $color-grey-2;
-      border-radius: 4px 4px 0 0;
-      margin: 16px 0;
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 
-      thead {
-        background: $color-grey-1;
+    <p>&nbsp;</p>
+<pre class="prettyprint linenums">##########################################################################
+#File Name:systemmonitor.sh
+#Author:Yuolvv
+#Blog:http://blog.iyu.pub
+##########################################################################
 
-        th {
-          padding: 16px;
-          border-bottom: 1px solid $color-grey-2;
-        }
-      }
+#!/bin/bash
+#把屏幕上的内容清空
+clear
+if [[ $# -eq 0 ]]
+then
 
-      tbody {
-        tr {
-          transition: all .3s ease;
+echo -e '\E[33m'"#########################系统分析#########################"
 
-          &:hover {
-            background: $color-light-blue-0;
-          }
+#定义一个高亮输出的变量
+output=$(tput sgr0)
 
-          td {
-            padding: 16px;
-            border-bottom: 1px solid $color-grey-2;
-          }
-        }
-      }
-    }
-  }
+#检查系统类型，使用uname -o命令
+os=$(uname -o)
+echo -e '\E[32m'"系统类型:"$output $os
 
-  &-title {
-    font-size: 36px;
-    line-height: 42px;
-    margin: 25px 0 40px;
+#获取操作系统版本类型
+#os_name=$(cat /etc/issue | grep -e "Server")
+#os_name=$(lsb_release -a | grep -e "Description")
+os_name=$(cat /etc/redhat-release)
+echo -e '\E[33m'"系统版本:"$output $os_name
 
-    @media screen and (max-width: $mobile-width) {
-      font-size: 30px;
-      margin-bottom: 25px;
-    }
-  }
+#获取CPU的指令集
+os_bit=$(uname -m)
+echo -e '\E[34m'"系统位数:"$output $os_bit
 
-  &-cover {
-    display: block;
-    width: 100%;
-    position: relative;
-    padding-bottom: 50%;
-    margin-bottom: 40px;
+#获取内核版本
+os_kernel=$(uname -r)
+echo -e '\E[35m'"内核版本:"$output $os_kernel
 
-    @media screen and (max-width: $mobile-width) {
-      display: none;
-    }
+#获取主机名￥hostname或者uname -n
+hostname=$(hostname)
+#获取内网IP
+inner=$(hostname -I)
+echo -e '\E[36m'"内网IP:"$output $inner
 
-    figure {
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      right: 0px;
-      bottom: 0px;
-      overflow: hidden;
-      border-radius: 10px;
-      background-position: 50% 50%;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-    }
-  }
+#获取外网IP
+outer=$(curl -s http://ipecho.net/plain)
+echo -e '\E[29m'"外网IP:"$output $outer
 
-  &-copyright {
-    border-left: 3px solid $color-deep-orange-5;
-    background: $color-grey-2;
-    padding: 15px 20px;
-    margin-top: 30px;
+#获取DNS，从/etc/resolv.conf文件提取匹配
+nameservers=$(cat /etc/resolv.conf | grep -E "\&lt;nameserver[ ]"+|awk '{print $NF}') 
+echo -e '\E[31m'"系统DNS:"$output $nameservers 
 
-    div {
-      line-height: 2;
-    }
+#判断当前网络的连通性，直接使用ping命令测试 
+ping -c 2 www.ifeng.com &amp;&gt;/dev/null &amp;&amp; echo "网络连通:yes"||echo "网络连通:no"
 
-    a {
-      transition: all .1s linear;
-      &:hover {
-        color: $color-deep-orange-6;
-      }
-    }
-  }
+#检查当前登录的用户，使用who命令输出到一个临时文件中
+who &gt;/tmp/who
+echo -e '\E[32m'"当前登录用户:"$output &amp;&amp; cat /tmp/who
 
-  &-meta {
-    font-size: 16px;
-    color: $color-grey-7;
+#命令输出后删除临时文件
+rm -rf /tmp/who
 
-    a {
-      color: $color-grey-7;
-      transition: all .2s;
+echo -e '\E[33m'"##########################################################"
 
-      &:hover {
-        color: $color-grey-9;
-      }
-    }
+echo -e '\E[33m'"#########################运行状态#########################"
 
-    i {
-      display: inline-block;
-      margin-right: 5px;
-    }
-  }
+#获取系统已经使用的内存，通过awk命令文本进行提取，然后计算出结果转换成MB
+system_men=$(awk '/MemTotal/{total=$2}/MemFree/{free=$2}END{print (total-free)/1024}' /proc/meminfo)
+echo -e '\E[36m'"系统使用内存:"$output $system_men"M"
 
-  &-tags {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-top: 20px;
-    padding-top: 20px;
-    font-size: 15px;
-    border-top: 1px solid $color-grey-2;
+#获取应用使用内存，通过awk命令文本进行提取，然后计算出结果换算成MB
+app_men=$(awk '/MemTotal/{total=$2}/MemFree/{free=$2}/Cached/{cached=$2}/Buffers/{buffers=$2}END{print (total-free-cached-buffers)/1024}' /proc/meminfo)
+echo -e '\E[36m'"应用程序使用内存:"$output $app_men"M"
 
-    a {
-      display: inline-flex;
-      margin: 0 15px 15px 0;
-      align-items: center;
-      height: 30px;
-      padding: 5px 10px;
-      background: $color-grey-2;
-      border: 1px solid $color-grey-2;
-      border-radius: 3px;
-      transition: all .15s linear;
+#获取系统CPU负载
+load_average=$(top -n 1 -b | grep "load average:" | awk '{print $12 $13 $14}')
+echo -e '\E[33m'"CPU负载:"$output $load_average
 
-      i {
-        display: inline-block;
-        margin-right: 5px;
-      }
+#获取磁盘状况
+disk=$(df -hP | grep -vE 'Filesystem|tmpfs'|awk '{print $1 "总量:"$2 "已使用:"$3 "使用率:"$5}')
+echo -e '\E[33m'"磁盘状况:"$output $disk
 
-      &:hover {
-        color: $color-blue-5;
-        border-color: $color-blue-5;
-      }
-    }
-  }
-}
+echo -e '\E[33m'"##########################################################"
+
+else
+
+echo "shell脚本不能运行请联系我Email:1@iyu.pub"
+
+fi
+
+</pre>
+<p>代码浅显易懂，也加上了注释，这里就不逐行解释了。</p>
+<p>代码的运行方法：</p>
+<p>1.新建个sh文件systemmonitor.sh,把上面的代码复制进去。</p>
+<p>或者使用wget命令：</p>
+<pre class="prettyprint linenums">wget http://www.iyu.pub/fun/systemmonitor.sh
+</pre>
+<p>2.给文件执行的权限：</p>
+<pre class="prettyprint linenums">chmod +x systemmonitor.sh
+</pre>
+<p>3.运行脚本：</p>
+<pre class="prettyprint linenums">sh systemmonitor.sh
+</pre>
+<p>或者</p>
+<pre class="prettyprint linenums">./systemmonitor.sh
+</pre>
+<p>&nbsp;</p>
+<p>好了，简单的分享就到这了。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2017-01-11-getsysteminfobyshell/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/CentOS/"><i class="fa fa-tags"></i>CentOS</a>
+     
+      <a href="/tags/%E8%84%9A%E6%9C%AC/"><i class="fa fa-tags"></i>脚本</a>
+     
+      <a href="/tags/Shell/"><i class="fa fa-tags"></i>Shell</a>
+    
+    </div>
+  
+</div>
 
     </main>
     

@@ -165,281 +165,252 @@
 <div id="site-process"></div>
     <main>
       
-  .passage {
-  max-width: $main-width;
-  margin: 20px auto;
-
-  &-article {
-    font-size: 16px;
-    font-family: $content-font;
-    line-height: 2;
-    letter-spacing: 0.2px;
-    word-break: break-word;
-
-    h1, h2, h3, h4, h5, h6 {
-      position: relative;
-      font-weight: 600;
-      margin: 15px 0;
-
-      a {
-        padding-left: 5px;
-        transition: all .15s linear;
-      }
-
-      &::before {
-        font-size: 0.8em;
-        content: "\f0c1";
-        color: $color-deep-orange-6;
-        font-family: FontAwesome;
-      }
-
-      &:hover {
-        a {
-          padding-left: 10px;
-        }
-
-        &::before {
-          color: $color-blue-5;
-        }
-      }
-    }
-
-    h1 {
-      font-size: 2em;
-      margin: 16px 0;
-    }
-
-    h2 {
-      font-size: 1.75em;
-    }
-
-    h3 {
-      font-size: 1.5em;
-    }
-
-    h4 {
-      font-size: 1.25em;
-    }
-
-    h5 {
-      font-size: 1.125em;
-    }
-
-    h6 {
-      font-size: 1em;
-    }
-
-    p {
-      margin: 12px 0;
-    }
-
-    blockquote {
-      margin: 15px 0;
-      padding: 1px 12px;
-      border-left: 3px solid $color-grey-6;
-      color: $color-grey-8;
-      background: $color-grey-1;
-    }
-
-    a {
-      display: inline-block;
-      position: relative;
-      color: $color-deep-orange-6;
-      font-weight: bolder;
-
-      &::before {
-        content: "";
-        position: absolute;
-        width: 0;
-        right: 0;
-        bottom: 0;
-        height: 2px;
-        background: $color-blue-5;
-        transition: all 0.3s ease;
-      }
-
-      &:hover {
-        color: $color-blue-5;
-
-        &::before {
-          width: 100%;
-          left: 0;
-          right: auto;
-        }
-      }
-    }
-
-    code {
-      font-family: $code-font;
-      background: $color-grey-2;
-      color: $color-deep-orange-8;
-      word-wrap: break-word;
-      margin: 0 3px;
-    }
-
-    img {
-      display: block;
-      margin: 0 auto;
-      max-width: 90%;
-      border-radius: 5px;
-      cursor: zoom-in;
-      transition: all .3s linear;
-
-      &:hover {
-        box-shadow: 0 0 3px $color-grey-5;
-      }
-    }
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2018-11-02
+    </span>
+    
+      <span>
+        | <a href="/categories/IT/"><i class="fa fa-bookmark"></i>IT</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    国内主流视频网站VIP视频解析接口
+  </h1>
   
-    ol, ul {
-      margin: 0 0 16px;
-      padding-left: 1.2em;
 
-      ol {
-        list-style-type: lower-roman;
-      }
-    }
+  
 
-    & > table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      border-left: 1px solid $color-grey-2;
-      border-right: 1px solid $color-grey-2;
-      border-radius: 4px 4px 0 0;
-      margin: 16px 0;
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 
-      thead {
-        background: $color-grey-1;
-
-        th {
-          padding: 16px;
-          border-bottom: 1px solid $color-grey-2;
-        }
-      }
-
-      tbody {
-        tr {
-          transition: all .3s ease;
-
-          &:hover {
-            background: $color-light-blue-0;
-          }
-
-          td {
-            padding: 16px;
-            border-bottom: 1px solid $color-grey-2;
-          }
-        }
-      }
-    }
-  }
-
-  &-title {
-    font-size: 36px;
-    line-height: 42px;
-    margin: 25px 0 40px;
-
-    @media screen and (max-width: $mobile-width) {
-      font-size: 30px;
-      margin-bottom: 25px;
-    }
-  }
-
-  &-cover {
-    display: block;
-    width: 100%;
-    position: relative;
-    padding-bottom: 50%;
-    margin-bottom: 40px;
-
-    @media screen and (max-width: $mobile-width) {
-      display: none;
-    }
-
-    figure {
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      right: 0px;
-      bottom: 0px;
-      overflow: hidden;
-      border-radius: 10px;
-      background-position: 50% 50%;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-    }
-  }
-
-  &-copyright {
-    border-left: 3px solid $color-deep-orange-5;
-    background: $color-grey-2;
-    padding: 15px 20px;
-    margin-top: 30px;
-
-    div {
-      line-height: 2;
-    }
-
-    a {
-      transition: all .1s linear;
-      &:hover {
-        color: $color-deep-orange-6;
-      }
-    }
-  }
-
-  &-meta {
-    font-size: 16px;
-    color: $color-grey-7;
-
-    a {
-      color: $color-grey-7;
-      transition: all .2s;
-
-      &:hover {
-        color: $color-grey-9;
-      }
-    }
-
-    i {
-      display: inline-block;
-      margin-right: 5px;
-    }
-  }
-
-  &-tags {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-top: 20px;
-    padding-top: 20px;
-    font-size: 15px;
-    border-top: 1px solid $color-grey-2;
-
-    a {
-      display: inline-flex;
-      margin: 0 15px 15px 0;
-      align-items: center;
-      height: 30px;
-      padding: 5px 10px;
-      background: $color-grey-2;
-      border: 1px solid $color-grey-2;
-      border-radius: 3px;
-      transition: all .15s linear;
-
-      i {
-        display: inline-block;
-        margin-right: 5px;
-      }
-
-      &:hover {
-        color: $color-blue-5;
-        border-color: $color-blue-5;
-      }
-    }
-  }
-}
+    <hr>
+<p>使用方法：</p>
+<p>将需要播放VIP视频的网址复制到上述任一接口后面，在浏览器打开即可。</p>
+<p>注意：如果接口失效，请联系我或者留言，我会及时更新！</p>
+<hr>
+<h3 id="2019年01月02日更新："><a href="#2019年01月02日更新：" class="headerlink" title="2019年01月02日更新："></a>2019年01月02日更新：</h3><p><a target="_blank" rel="noopener" href="http://api.smq1.com/?url=">http://api.smq1.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://api.smq1.com/?url=">https://api.smq1.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://jx.hezeshi.net/ce/jlexi.php?url=">https://jx.hezeshi.net/ce/jlexi.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.hellosex.cc/jlexi.php?url=">http://api.hellosex.cc/jlexi.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://api.pangujiexi.com/player.php?url=">https://api.pangujiexi.com/player.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://at520.cn/jx/?url=http://www.cmys.tv/?url=">http://at520.cn/jx/?url=http://www.cmys.tv/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://jx.km58.top/jx/?url=">https://jx.km58.top/jx/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.fantee.net/fantee/?url=">http://www.fantee.net/fantee/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.51ckm.com/Box.php?url=">http://api.51ckm.com/Box.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.3aym.cn/?url=">https://www.3aym.cn/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://beaacc.com/api.php?url=">http://beaacc.com/api.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.zuilingxian.com/jiexi.php?url=">http://api.zuilingxian.com/jiexi.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.2tv.org/?url=">http://jx.2tv.org/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.bbbbbb.me/ipsign/player.php?v=">http://api.bbbbbb.me/ipsign/player.php?v=</a></p>
+<p><a target="_blank" rel="noopener" href="http://17kyun.com/api.php?url=">http://17kyun.com/api.php?url=</a></p>
+<h3 id="2018年12月06日更新："><a href="#2018年12月06日更新：" class="headerlink" title="2018年12月06日更新："></a>2018年12月06日更新：</h3><p><a target="_blank" rel="noopener" href="https://jx.hezeshi.net/ce/jlexi.php?url=">https://jx.hezeshi.net/ce/jlexi.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.hellosex.cc/jlexi.php?url=">http://api.hellosex.cc/jlexi.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://api.pangujiexi.com/player.php?url=">https://api.pangujiexi.com/player.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://at520.cn/jx/?url=">http://at520.cn/jx/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://player.jidiaose.com/supapi/iframe.php?v=">http://player.jidiaose.com/supapi/iframe.php?v=</a></p>
+<p><a target="_blank" rel="noopener" href="https://jx.okokjx.com/okok/?url=">https://jx.okokjx.com/okok/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.jykkk.com/?url=">http://api.jykkk.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://jx.km58.top/jx/?url=">https://jx.km58.top/jx/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.fantee.net/fantee/?url=">http://jx.fantee.net/fantee/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.51ckm.com/Box.php?url=">http://api.51ckm.com/Box.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.1717yun.com/jx/ty.php?url=">http://www.1717yun.com/jx/ty.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.3aym.cn/?url=">https://www.3aym.cn/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://beaacc.com/api.php?url=">http://beaacc.com/api.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.zuilingxian.com/jiexi.php?url=">http://api.zuilingxian.com/jiexi.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.2tv.org/?url=">http://jx.2tv.org/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://cdn.yangju.vip/k/?url=">http://cdn.yangju.vip/k/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.bbbbbb.me/ipsign/player.php?v=">http://api.bbbbbb.me/ipsign/player.php?v=</a></p>
+<p><a target="_blank" rel="noopener" href="http://17kyun.com/api.php?url=">http://17kyun.com/api.php?url=</a></p>
+<h3 id="2018年08月10日更新："><a href="#2018年08月10日更新：" class="headerlink" title="2018年08月10日更新："></a>2018年08月10日更新：</h3><p><a target="_blank" rel="noopener" href="http://www.iwkan.cn/jx2/?url=">http://www.iwkan.cn/jx2/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.ledboke.com/?url=">http://api.ledboke.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://ckparse.kaizhoukm.com/play/vippcq.php?url=">http://ckparse.kaizhoukm.com/play/vippcq.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jqaaa.com/jx.php?url=">http://jqaaa.com/jx.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.47ks.com/webcloud/?v=">http://api.47ks.com/webcloud/?v=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.xfsub.com/index.php?url=">http://api.xfsub.com/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.du2.cc/jx6.php?url=">http://jx.du2.cc/jx6.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.du2.cc/?url=">http://jx.du2.cc/?url=</a></p>
+<h3 id="2018年07月08日更新："><a href="#2018年07月08日更新：" class="headerlink" title="2018年07月08日更新："></a>2018年07月08日更新：</h3><p><a target="_blank" rel="noopener" href="http://lykezhan.com/vip/">http://lykezhan.com/vip/</a></p>
+<p><a target="_blank" rel="noopener" href="http://yy.zhiliaotang.com/vip/">http://yy.zhiliaotang.com/vip/</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.5ifxw.com/vip/">http://www.5ifxw.com/vip/</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.qmaile.com/">http://www.qmaile.com</a></p>
+<p><a target="_blank" rel="noopener" href="http://tv.myhack58.com/">http://tv.myhack58.com</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.51onb.com/filmvip/">http://www.51onb.com/filmvip/</a></p>
+<h3 id="2018年06月27日更新："><a href="#2018年06月27日更新：" class="headerlink" title="2018年06月27日更新："></a>2018年06月27日更新：</h3><p><a target="_blank" rel="noopener" href="https://api.pangujiexi.com/player.php?url=">https://api.pangujiexi.com/player.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.ledboke.com/vip/?url=">http://api.ledboke.com/vip/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://vip.qike.ink/?url=">http://vip.qike.ink/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.598110.com/index.php?url=">http://jx.598110.com/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://player.jidiaose.com/supapi/iframe.php?v=">http://player.jidiaose.com/supapi/iframe.php?v=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.91exp.com/svip/?url=">http://api.91exp.com/svip/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://v.72du.com/api/?url=">http://v.72du.com/api/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.bbbbbb.me/ipsign/player.php?v=">http://api.bbbbbb.me/ipsign/player.php?v=</a></p>
+<p><a target="_blank" rel="noopener" href="http://17kyun.com/api.php?url=">http://17kyun.com/api.php?url=</a></p>
+<h3 id="2018年05月02日更新："><a href="#2018年05月02日更新：" class="headerlink" title="2018年05月02日更新："></a>2018年05月02日更新：</h3><p><a target="_blank" rel="noopener" href="http://www.662820.com/xnflv/index.php?url=">http://www.662820.com/xnflv/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.lldyy.net/svip/?url=">http://api.lldyy.net/svip/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.82190555.com/index/qqvod.php?url=">http://www.82190555.com/index/qqvod.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jiexi.92fz.cn/player/vip.php?url=">http://jiexi.92fz.cn/player/vip.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jiexi.071811.cc/jx2.php?url=">http://jiexi.071811.cc/jx2.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.wlzhan.com/sudu/?url=">http://api.wlzhan.com/sudu/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://beaacc.com/api.php?url=">http://beaacc.com/api.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://qxkkk.bid/jx/jx.php?url=">http://qxkkk.bid/jx/jx.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.27v9.cn/index.php?url=">http://www.27v9.cn/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.ckplayer.tv/kuku/?url=">http://www.ckplayer.tv/kuku/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://o8ve.cn/1/?url=">http://o8ve.cn/1/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.xyingyu.com/?url=">http://api.xyingyu.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://jx.kt111.top/jx/mf/?url=">https://jx.kt111.top/jx/mf/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://api.pangujiexi.com/player.php?url=">https://api.pangujiexi.com/player.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.lvcha2017.cn/?url=">http://api.lvcha2017.cn/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://kkk.2016ve.cn/kkjx/index.php?url=">http://kkk.2016ve.cn/kkjx/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://mlxztz.com/vip/?url=">http://mlxztz.com/vip/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.aktv.men/?url=">http://www.aktv.men/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jy777.cn/XSD/XSD/?url=">http://jy777.cn/XSD/XSD/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.visaok.net/?url=">http://api.visaok.net/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.xyingyu.com/?url=">http://api.xyingyu.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.greatchina56.com/?url=">http://api.greatchina56.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.618g.com/?url=">http://jx.618g.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.baiyug.vip/index.php?url=">http://api.baiyug.vip/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.jfysz.cn/jx.php/?url=">http://jx.jfysz.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.ektao.cn/jx.php/?url=">http://jx.ektao.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.reclose.cn/jx.php/?url=">http://jx.reclose.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.eayn.org.cn/jx.php/?url=">http://jx.eayn.org.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.xyingyu.com/?url=">http://api.xyingyu.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.iaeec.cn/jx.php/?url=">http://jx.iaeec.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.83y4n7a.cn/jx.php/?url=">http://jx.83y4n7a.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.cmbzzs.cn/jx.php/?url=">http://jx.cmbzzs.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.greatchina56.com/?url=">http://api.greatchina56.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.as19811.cn/jx.php/?url=">http://jx.as19811.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.sdjnd09.cn/jx.php/?url=">http://jx.sdjnd09.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.baiyug.vip/index.php?url=">http://api.baiyug.vip/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.09876as.cn/jx.php/?url=">http://jx.09876as.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.17ktv.com.cn/jx.php/?url=">http://jx.17ktv.com.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.ab78a.cn/jx.php/?url=">http://jx.ab78a.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.09877as.cn/jx.php/?url=">http://jx.09877as.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.yipolo111.cn/jx.php/?url=">http://jx.yipolo111.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.908astbb.cn/jx.php/?url=">http://jx.908astbb.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.dlzyrk001.cn/jx.php/?url=">http://jx.dlzyrk001.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.dccmy.org.cn/jx.php/?url=">http://jx.dccmy.org.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.boctx.cn/jx.php/?url=">http://jx.boctx.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.hxbte.cn/jx.php/?url=">http://jx.hxbte.cn/jx.php/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.visaok.net/?url=">http://api.visaok.net/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.618g.com/?url=">http://jx.618g.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://yun.baiyug.cn/vip/?url=">http://yun.baiyug.cn/vip/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.baiyug.cn/vip/?url=">http://api.baiyug.cn/vip/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://api.flvsp.com/?url=">https://api.flvsp.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.xfsub.com/index.php?url=">http://api.xfsub.com/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.xfsub.com/index.php?url=">http://api.xfsub.com/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jiexi.071811.cc/jx2.php?url=">http://jiexi.071811.cc/jx2.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://player.jidiaose.com/supapi/iframe.php?v=">http://player.jidiaose.com/supapi/iframe.php?v=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.82190555.com/index/qqvod.php?url=">http://www.82190555.com/index/qqvod.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.pucms.com/?url=">http://api.pucms.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.baiyug.cn/vip/index.php?url=">http://api.baiyug.cn/vip/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://api.flvsp.com/?url=">https://api.flvsp.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.82190555.com/index/qqvod.php?url=">http://www.82190555.com/index/qqvod.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://2gty.com/apiurl/yun.php?url=">http://2gty.com/apiurl/yun.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://v.2gty.com/apiurl/yun.php?url=">http://v.2gty.com/apiurl/yun.php?url=</a></p>
+<h3 id="2018年04月17日更新："><a href="#2018年04月17日更新：" class="headerlink" title="2018年04月17日更新："></a>2018年04月17日更新：</h3><p><a target="_blank" rel="noopener" href="http://api.visaok.net/?url=">http://api.visaok.net/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.xyingyu.com/?url=">http://api.xyingyu.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.greatchina56.com/?url=">http://api.greatchina56.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.618g.com/?url=">http://jx.618g.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.xyingyu.com/?url=">http://api.xyingyu.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.greatchina56.com/?url=">http://api.greatchina56.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.visaok.net/?url=">http://api.visaok.net/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.618g.com/?url=">http://jx.618g.com/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://zuiai.ml/dh/jx/ajx.php?url=">http://zuiai.ml/dh/jx/ajx.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://zuiai.ml/dh/jx/jx.php?url=">http://zuiai.ml/dh/jx/jx.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://zuiai.ml/dh/jx/jiexi.php?url=">http://zuiai.ml/dh/jx/jiexi.php?url=</a></p>
+<h3 id="2018年03月22日更新："><a href="#2018年03月22日更新：" class="headerlink" title="2018年03月22日更新："></a>2018年03月22日更新：</h3><p>无广告 <a target="_blank" rel="noopener" href="http://player.jidiaose.com/supapi/iframe.php?v=">http://player.jidiaose.com/supapi/iframe.php?v=</a></p>
+<p>爱奇艺推荐(无广告) <a target="_blank" rel="noopener" href="http://api.xfsub.com/index.php?url=">http://api.xfsub.com/index.php?url=</a></p>
+<p>爱奇艺、优酷推荐 <a target="_blank" rel="noopener" href="https://jx.okokjx.com/okokjx/?url=">https://jx.okokjx.com/okokjx/?url=</a></p>
+<p>万能接口1 <a target="_blank" rel="noopener" href="http://api.47ks.com/webcloud/?v=">http://api.47ks.com/webcloud/?v=</a></p>
+<p>万能接口2 <a target="_blank" rel="noopener" href="http://wwwhe1.177kdy.cn/4.php?pass=2&amp;url=">http://wwwhe1.177kdy.cn/4.php?pass=2&amp;url=</a></p>
+<p>万能接口3 <a target="_blank" rel="noopener" href="https://api.daidaitv.com/index/?url=">https://api.daidaitv.com/index/?url=</a></p>
+<p>万能接口4 <a target="_blank" rel="noopener" href="http://jx.aeidu.cn/index.php?url=">http://jx.aeidu.cn/index.php?url=</a></p>
+<p>爱奇艺接口1 <a target="_blank" rel="noopener" href="http://api.baiyug.cn/vip/?url=">http://api.baiyug.cn/vip/?url=</a></p>
+<p>爱奇艺接口2 <a target="_blank" rel="noopener" href="http://api.baiyug.cn/vip/index.php?url=">http://api.baiyug.cn/vip/index.php?url=</a></p>
+<p>腾讯视频接口1 <a target="_blank" rel="noopener" href="http://www.82190555.com/index/qqvod.php?url=">http://www.82190555.com/index/qqvod.php?url=</a></p>
+<h3 id="2018年01月22日更新："><a href="#2018年01月22日更新：" class="headerlink" title="2018年01月22日更新："></a>2018年01月22日更新：</h3><p><a target="_blank" rel="noopener" href="http://17kyun.com/api.php?url=">http://17kyun.com/api.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.biaoge.tv/index.php?url=">http://jx.biaoge.tv/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.85105052.com/admin.php?url=">http://www.85105052.com/admin.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.iy11.cn/apiget.php?url=">http://api.iy11.cn/apiget.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://api.baiyug.cn/vip/index.php?url=">http://api.baiyug.cn/vip/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.hanximeng.com/m3u8.php?url=">http://jx.hanximeng.com/m3u8.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://jx.39book.com/Client/apiget.php?url=">http://jx.39book.com/Client/apiget.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://014670.cn/jx/ty.php?url=">http://014670.cn/jx/ty.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.ibb6.com/x1/?url=">http://www.ibb6.com/x1/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://tv.x-99.cn/api/wnapi.php?id=">http://tv.x-99.cn/api/wnapi.php?id=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.52rjb.cn/vip1/?url=">http://www.52rjb.cn/vip1/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.52rjb.cn/vip2/?url=">http://www.52rjb.cn/vip2/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.52rjb.cn/vip3/?url=">http://www.52rjb.cn/vip3/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://49.4.144.33/xfjx/1.php?url=">http://49.4.144.33/xfjx/1.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://7cyd.com/vip/?url=">http://7cyd.com/vip/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="https://47ksvip.duapp.com/vip/2mm/?vid=">https://47ksvip.duapp.com/vip/2mm/?vid=</a></p>
+<hr>
+<h3 id="2016年12月06日更新："><a href="#2016年12月06日更新：" class="headerlink" title="2016年12月06日更新："></a>2016年12月06日更新：</h3><p><a target="_blank" rel="noopener" href="http://www.vipjiexi.com/yun.php?url=">http://www.vipjiexi.com/yun.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.wmxz.wang/video.php?url=">http://www.wmxz.wang/video.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.yydy8.com/common/?url=">http://www.yydy8.com/common/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.wmxz.wang/video.php?url=">http://www.wmxz.wang/video.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://5qiyi.sdyhy.cn/5qiyi/5qiyi1.php?url=">http://5qiyi.sdyhy.cn/5qiyi/5qiyi1.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://5qiyi.sdyhy.cn/5qiyi/5qiyi2.php?url=">http://5qiyi.sdyhy.cn/5qiyi/5qiyi2.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://vip.sdyhy.cn/ckflv/?url=">http://vip.sdyhy.cn/ckflv/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://player.gakui.top/?url=">http://player.gakui.top/?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://mt2t.com/yun?url=">http://mt2t.com/yun?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://qtzr.net/s/?qt=">http://qtzr.net/s/?qt=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.xiguaso.com/api/index.php?url=">http://www.xiguaso.com/api/index.php?url=</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.vipjiexi.com/yun.php?url=">http://www.vipjiexi.com/yun.php?url=</a></p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#2019%E5%B9%B401%E6%9C%8802%E6%97%A5%E6%9B%B4%E6%96%B0%EF%BC%9A"><span class="toc-text">2019年01月02日更新：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2018%E5%B9%B412%E6%9C%8806%E6%97%A5%E6%9B%B4%E6%96%B0%EF%BC%9A"><span class="toc-text">2018年12月06日更新：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2018%E5%B9%B408%E6%9C%8810%E6%97%A5%E6%9B%B4%E6%96%B0%EF%BC%9A"><span class="toc-text">2018年08月10日更新：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2018%E5%B9%B407%E6%9C%8808%E6%97%A5%E6%9B%B4%E6%96%B0%EF%BC%9A"><span class="toc-text">2018年07月08日更新：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2018%E5%B9%B406%E6%9C%8827%E6%97%A5%E6%9B%B4%E6%96%B0%EF%BC%9A"><span class="toc-text">2018年06月27日更新：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2018%E5%B9%B405%E6%9C%8802%E6%97%A5%E6%9B%B4%E6%96%B0%EF%BC%9A"><span class="toc-text">2018年05月02日更新：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2018%E5%B9%B404%E6%9C%8817%E6%97%A5%E6%9B%B4%E6%96%B0%EF%BC%9A"><span class="toc-text">2018年04月17日更新：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2018%E5%B9%B403%E6%9C%8822%E6%97%A5%E6%9B%B4%E6%96%B0%EF%BC%9A"><span class="toc-text">2018年03月22日更新：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2018%E5%B9%B401%E6%9C%8822%E6%97%A5%E6%9B%B4%E6%96%B0%EF%BC%9A"><span class="toc-text">2018年01月22日更新：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2016%E5%B9%B412%E6%9C%8806%E6%97%A5%E6%9B%B4%E6%96%B0%EF%BC%9A"><span class="toc-text">2016年12月06日更新：</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2018-11-02-vipjiexi/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/vip/"><i class="fa fa-tags"></i>vip</a>
+     
+      <a href="/tags/video/"><i class="fa fa-tags"></i>video</a>
+     
+      <a href="/tags/%E8%A7%86%E9%A2%91%E8%A7%A3%E6%9E%90/"><i class="fa fa-tags"></i>视频解析</a>
+     
+      <a href="/tags/%E6%8E%A5%E5%8F%A3/"><i class="fa fa-tags"></i>接口</a>
+    
+    </div>
+  
+</div>
 
     </main>
     
