@@ -231,64 +231,64 @@
 <table>
 <thead>
 <tr>
-<th align="center">Constant Type</th>
+<th align="left">Constant Type</th>
 <th align="center">Value</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="center">CONSTANT_Class</td>
+<td align="left">CONSTANT_Class</td>
 <td align="center">7</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_Fieldref</td>
+<td align="left">CONSTANT_Fieldref</td>
 <td align="center">9</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_Methodref</td>
+<td align="left">CONSTANT_Methodref</td>
 <td align="center">10</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_InterfaceMethodref</td>
+<td align="left">CONSTANT_InterfaceMethodref</td>
 <td align="center">11</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_String</td>
+<td align="left">CONSTANT_String</td>
 <td align="center">8</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_Integer</td>
+<td align="left">CONSTANT_Integer</td>
 <td align="center">3</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_Float</td>
+<td align="left">CONSTANT_Float</td>
 <td align="center">4</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_Long</td>
+<td align="left">CONSTANT_Long</td>
 <td align="center">5</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_Double</td>
+<td align="left">CONSTANT_Double</td>
 <td align="center">6</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_NameAndType</td>
+<td align="left">CONSTANT_NameAndType</td>
 <td align="center">12</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_Utf8</td>
+<td align="left">CONSTANT_Utf8</td>
 <td align="center">1</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_MethodHandle</td>
+<td align="left">CONSTANT_MethodHandle</td>
 <td align="center">15</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_MethodType</td>
+<td align="left">CONSTANT_MethodType</td>
 <td align="center">16</td>
 </tr>
 <tr>
-<td align="center">CONSTANT_InvokeDynamic</td>
+<td align="left">CONSTANT_InvokeDynamic</td>
 <td align="center">18</td>
 </tr>
 </tbody></table>
@@ -297,76 +297,344 @@
 <p>8-9字节，表示常量池长度，00 23（十进制35）表示常量池有#1-#34项，注意#0项不计入，也没有值</p>
 <p>cp_info: #1-#34</p>
 <p>第#1项 0A 00 06 00 15</p>
-<p>0A表示一个Method信息，00 06（十进制6） 和 00 15（十进制21）表示它引用了常量池中#6和#21项来获得这个方法的[所属类]和[方法名]</p>
+<p>0A表示一个Method信息CONSTANT_Methodref，00 06（十进制6） 和 00 15（十进制21）表示它引用了常量池中#6和#21项来获得这个方法的[所属类]和[方法名]</p>
 <p>第#2项 09 00 16 00 17</p>
-<p>09表示一个Field信息，00 16（十进制22） 和 00 17（十进制23）表示它引用了常量池中#22和#23项来获得这个方法的[所属类]和[成员变量名]</p>
+<p>09表示一个Field信息CONSTANT_Fieldref，00 16（十进制22） 和 00 17（十进制23）表示它引用了常量池中#22和#23项来获得这个方法的[所属类]和[成员变量名]</p>
 <p>第#3项 08 00 18</p>
-<p>08表示一个字符串常量名称，00 18（十进制24）表示它引用了常量池中#24项</p>
+<p>08表示一个字符串常量名称CONSTANT_String，00 18（十进制24）表示它引用了常量池中#24项</p>
 <p>第#4项 0A 00 19 00 1A</p>
-<p>0A表示一个Method信息，00 19（十进制25） 和 00 1A（十进制26）表示它引用了常量池中#25和#26项来获得这个方法的[所属类]和[方法名]</p>
+<p>0A表示一个Method信息CONSTANT_Methodref，00 19（十进制25） 和 00 1A（十进制26）表示它引用了常量池中#25和#26项来获得这个方法的[所属类]和[方法名]</p>
 <p>第#5项 07 00 1B</p>
-<p>07表示一个Class信息，00 1B（十进制27）表示它引用了常量池中#27项</p>
+<p>07表示一个Class信息CONSTANT_Class，00 1B（十进制27）表示它引用了常量池中#27项</p>
 <p>第#6项 07 00 1C</p>
-<p>07表示一个Class信息，00 1C（十进制28）表示它引用了常量池中#28项</p>
+<p>07表示一个Class信息CONSTANT_Class，00 1C（十进制28）表示它引用了常量池中#28项</p>
 <p>第#7项 01 00 06 3C 69 6E 69 74 3E</p>
-<p>01表示一个Utf8串，00 06（十进制6） 表示长度，3C 69 6E 69 74 3E 是【<int>】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 06（十进制6） 表示长度，3C 69 6E 69 74 3E 是【<init>】(构造方法)</p>
 <p>第#8项 01 00 03 28 29 56</p>
-<p>01表示一个Utf8串，00 03（十进制3）表示长度，28 29 56是【()V】其实就是表示无参，无返回值</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 03（十进制3）表示长度，28 29 56是【()V】其实就是表示无参，无返回值</p>
 <p>第#9项 01 00 04 43 6F 64 65</p>
-<p>01表示一个Utf8串，00 04（十进制4）表示长度， 43 6F 64 65是【Code】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 04（十进制4）表示长度， 43 6F 64 65是【Code】</p>
 <p>第#10项 01 00 0F 4C 69 6E 65 4E 75 6D 62 65 72 54 61 62 6C 65</p>
-<p>01表示一个Utf8串，00 0F（十进制15）表示长度， 4C 69 6E 65 4E 75 6D 62 65 72 54 61 62 6C 65 是【LineNumberTable】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 0F（十进制15）表示长度， 4C 69 6E 65 4E 75 6D 62 65 72 54 61 62 6C 65 是【LineNumberTable】</p>
 <p>第#11项 01 00 12 4C 6F 63 61 6C 56 61 72 69 61 62 6C 65 54 61 62 6C 65</p>
-<p>01表示一个Utf8串，00 12（十进制18） 表示长度， 4C 6F 63 61 6C 56 61 72 69 61 62 6C 65 54 61 62 6C 65是【LocalVariableTable】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 12（十进制18） 表示长度， 4C 6F 63 61 6C 56 61 72 69 61 62 6C 65 54 61 62 6C 65是【LocalVariableTable】</p>
 <p>第#12项 01 00 04 74 68 69 73</p>
-<p>01表示一个Utf8串，00 04（十进制4）表示长度，74 68 69 73 是【this】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 04（十进制4）表示长度，74 68 69 73 是【this】</p>
 <p>第#13项 01 00 24 4C 70 75 62 2F 69 79 75 2F 73 65 2F 6A 76 6D 64 61 79 2F 64 61 79 30 33 2F 48 65 6C 6C 6F 57 6F 72 6C 64 3B</p>
-<p>01表示一个Utf8串，00 24（十进制36）表示长度，4C 70 75 62 2F 69 79 75 2F 73 65 2F 6A 76 6D 64 61 79 2F 64 61 79 30 33 2F 48 65 6C 6C 6F 57 6F 72 6C 64 3B是【Lpub/iyu/se/jvmday/day03/HelloWorld;】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 24（十进制36）表示长度，4C 70 75 62 2F 69 79 75 2F 73 65 2F 6A 76 6D 64 61 79 2F 64 61 79 30 33 2F 48 65 6C 6C 6F 57 6F 72 6C 64 3B是【Lpub/iyu/se/jvmday/day03/HelloWorld;】</p>
 <p>第#14项 01 00 04 6D 61 69 6E</p>
-<p>01表示一个Utf8串，00 04（十进制4）表示长度，6D 61 69 6E是【main】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 04（十进制4）表示长度，6D 61 69 6E是【main】</p>
 <p>第#15项 01 00 16 28 5B 4C 6A 61 76 61 2F 6C 61 6E 67 2F 53 74 72 69 6E 67 3B 29 56</p>
-<p>01表示一个Utf8串，00 16（十进制22）表示长度，5B 4C 6A 61 76 61 2F 6C 61 6E 67 2F 53 74 72 69 6E 67 3B 29 56 是【([Ljava/lang/String;)V】其实就是参数为字符串数组，无返回值</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 16（十进制22）表示长度，5B 4C 6A 61 76 61 2F 6C 61 6E 67 2F 53 74 72 69 6E 67 3B 29 56 是【([Ljava/lang/String;)V】其实就是参数为字符串数组，无返回值</p>
 <p>第#16项 01 00 04 61 72 67 73</p>
-<p>01表示一个Utf8串，00 04（十进制4）表示长度，61 72 67 73是【args】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 04（十进制4）表示长度，61 72 67 73是【args】</p>
 <p>第#17项 01 00 13 5B 4C 6A 61 76 61 2F 6C 61 6E 67 2F 53 74 72 69 6E 67 3B</p>
-<p>01表示一个Utf8串，00 13（十进制19）表示长度，5B 4C 6A 61 76 61 2F 6C 61 6E 67 2F 53 74 72 69 6E 67 3B是【Ljava/lang/String;】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 13（十进制19）表示长度，5B 4C 6A 61 76 61 2F 6C 61 6E 67 2F 53 74 72 69 6E 67 3B是【Ljava/lang/String;】</p>
 <p>第#18项 01 00 10 4D 65 74 68 6F 64 50 61 72 61 6D 65 74 65 72 73</p>
-<p>01表示一个Utf8串，00 10（十进制16）表示长度，4D 65 74 68 6F 64 50 61 72 61 6D 65 74 65 72 73是【MethodParameters】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 10（十进制16）表示长度，4D 65 74 68 6F 64 50 61 72 61 6D 65 74 65 72 73是【MethodParameters】</p>
 <p>第#19项 01 00 0A 53 6F 75 72 63 65 46 69 6C 65</p>
-<p>01表示一个Utf8串，00 0A（十进制10）表示长度，53 6F 75 72 63 65 46 69 6C 65是【SourceFile】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 0A（十进制10）表示长度，53 6F 75 72 63 65 46 69 6C 65是【SourceFile】</p>
 <p>第#20项 01 00 0F 48 65 6C 6C 6F 57 6F 72 6C 64 2E 6A 61 76 61</p>
-<p>01表示一个Utf8串，00 0F（十进制15）表示长度，48 65 6C 6C 6F 57 6F 72 6C 64 2E 6A 61 76 61是【HelloWorld.java】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 0F（十进制15）表示长度，48 65 6C 6C 6F 57 6F 72 6C 64 2E 6A 61 76 61是【HelloWorld.java】</p>
 <p>第#21项 0C 00 07 00 08</p>
-<p>0C表示一个【名+类型】，00 07 00 08 引用了常量池中#7和#8两项</p>
+<p>0C表示一个【名+类型】CONSTANT_NameAndType，00 07 00 08 引用了常量池中#7和#8两项</p>
 <p>第#22项 07 00 1D</p>
-<p>07表示一个Class信息，00 1D（十进制29）表示它引用了常量池中#29项</p>
+<p>07表示一个Class信息CONSTANT_Class，00 1D（十进制29）表示它引用了常量池中#29项</p>
 <p>第#23项 0C 00 1E 00 1F</p>
-<p>0C表示一个【名+类型】，00 1E （十进制30）和 00 1F（十进制31）表示它引用了常量池中#30和#31两项</p>
+<p>0C表示一个【名+类型】CONSTANT_NameAndType，00 1E （十进制30）和 00 1F（十进制31）表示它引用了常量池中#30和#31两项</p>
 <p>第#24项 01 00 0B 48 65 6C 6C 6F 20 77 6F 72 6C 64</p>
-<p>01表示一个Utf8串，00 0B（十进制11）表示长度，48 65 6C 6C 6F 20 77 6F 72 6C 64是【Hello world】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 0B（十进制11）表示长度，48 65 6C 6C 6F 20 77 6F 72 6C 64是【Hello world】</p>
 <p>第#25项 07 00 20</p>
-<p>07表示一个Class信息，00 20（十进制32） 表示它引用了常量池中#32项</p>
+<p>07表示一个Class信息CONSTANT_Class，00 20（十进制32） 表示它引用了常量池中#32项</p>
 <p>第#26项 0C 00 21 00 22</p>
-<p>0C表示一个【名+类型】，00 21（十进制33） 和 00 22（十进制34）表示它引用了常量池中#33和#34两项</p>
+<p>0C表示一个【名+类型】CONSTANT_NameAndType，00 21（十进制33） 和 00 22（十进制34）表示它引用了常量池中#33和#34两项</p>
 <p>第#27项 01 00 22 70 75 62 2F 69 79 75 2F 73 65 2F 6A 76 6D 64 61 79 2F 64 61 79 30 33 2F 48 65 6C 6C 6F 57 6F 72 6C 64</p>
-<p>01表示一个Utf8串，00 22（十进制34）表示长度，70 75 62 2F 69 79 75 2F 73 65 2F 6A 76 6D 64 61 79 2F 64 61 79 30 33 2F 48 65 6C 6C 6F 57 6F 72 6C 64是【pub/iyu/se/jvmday/day03/HelloWorld】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 22（十进制34）表示长度，70 75 62 2F 69 79 75 2F 73 65 2F 6A 76 6D 64 61 79 2F 64 61 79 30 33 2F 48 65 6C 6C 6F 57 6F 72 6C 64是【pub/iyu/se/jvmday/day03/HelloWorld】</p>
 <p>第#28项 01 00 10 6A 61 76 61 2F 6C 61 6E 67 2F 4F 62 6A 65 63 74</p>
-<p>01表示一个Utf8串，00 10（十进制16）表示长度，6A 61 76 61 2F 6C 61 6E 67 2F 4F 62 6A 65 63 74是【java/lang/Object】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 10（十进制16）表示长度，6A 61 76 61 2F 6C 61 6E 67 2F 4F 62 6A 65 63 74是【java/lang/Object】</p>
 <p>第#29项 01 00 10 6A 61 76 61 2F 6C 61 6E 67 2F 53 79 73 74 65 6D</p>
-<p>01表示一个Utf8串，00 10（十进制16）表示长度，6A 61 76 61 2F 6C 61 6E 67 2F 53 79 73 74 65 6D是【java/lang/System】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 10（十进制16）表示长度，6A 61 76 61 2F 6C 61 6E 67 2F 53 79 73 74 65 6D是【java/lang/System】</p>
 <p>第#30项 01 00 03 6F 75 74</p>
-<p>01表示一个Utf8串，00 03（十进制3）表示长度，6F 75 74是【out】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 03（十进制3）表示长度，6F 75 74是【out】</p>
 <p>第#31项 01 00 15 4C 6A 61 76 61 2F 69 6F 2F 50 72 69 6E 74 53 74 72 65 61 6D 3B</p>
-<p>01表示一个Utf8串，00 15（十进制21）表示长度，4C 6A 61 76 61 2F 69 6F 2F 50 72 69 6E 74 53 74 72 65 61 6D 3B是【Ljava/io/PrintStream;】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 15（十进制21）表示长度，4C 6A 61 76 61 2F 69 6F 2F 50 72 69 6E 74 53 74 72 65 61 6D 3B是【Ljava/io/PrintStream;】</p>
 <p>第#32项 01 00 13 6A 61 76 61 2F 69 6F 2F 50 72 69 6E 74 53 74 72 65 61 6D</p>
-<p>01表示一个Utf8串，00 13（十进制19）表示长度，6A 61 76 61 2F 69 6F 2F 50 72 69 6E 74 53 74 72 65 61 6D是【java/io/PrintStream】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 13（十进制19）表示长度，6A 61 76 61 2F 69 6F 2F 50 72 69 6E 74 53 74 72 65 61 6D是【java/io/PrintStream】</p>
 <p>第#33项 01 00 07 70 72 69 6E 74 6C 6E</p>
-<p>01表示一个Utf8串，00 07（十进制7）表示长度，70 72 69 6E 74 6C 6E是【println】</p>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 07（十进制7）表示长度，70 72 69 6E 74 6C 6E是【println】</p>
 <p>第#34项 01 00 15 28 4C 6A 61 76 61 2F 6C 61 6E 67 2F 53 74 72 69 6E 67 3B 29 56 </p>
-<p>01表示一个Utf8串，00 15（十进制21）表示长度，28 4C 6A 61 76 61 2F 6C 61 6E 67 2F 53 74 72 69 6E 67 3B 29 56 是【(Ljava/lang/String;)V】</p>
-<h2 id="1-4-访问标识与继承信息"><a href="#1-4-访问标识与继承信息" class="headerlink" title="1.4 访问标识与继承信息"></a>1.4 访问标识与继承信息</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">000001</span>c0h: <span class="number">00</span> <span class="number">21</span> <span class="number">00</span> <span class="number">05</span> <span class="number">00</span> <span class="number">06</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">02</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">07</span></span><br><span class="line"><span class="number">000001</span>d0h: <span class="number">00</span> <span class="number">08</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">09</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">2</span>F <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span></span><br><span class="line"><span class="number">000001e0</span>h: <span class="number">00</span> <span class="number">05</span> <span class="number">2</span>A B7 <span class="number">00</span> <span class="number">01</span> B1 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">02</span> <span class="number">00</span> <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span> <span class="number">00</span></span><br><span class="line"><span class="number">000001f</span>0h: <span class="number">06</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">09</span> <span class="number">00</span> <span class="number">0</span>B <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">0</span>C <span class="number">00</span> <span class="number">01</span> <span class="number">00</span></span><br><span class="line"><span class="number">00000200</span>h: <span class="number">00</span> <span class="number">00</span> <span class="number">05</span> <span class="number">00</span> <span class="number">0</span>C <span class="number">00</span> <span class="number">0</span>D <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">09</span> <span class="number">00</span> <span class="number">0</span>E <span class="number">00</span> <span class="number">0</span>F <span class="number">00</span></span><br><span class="line"><span class="number">00000210</span>h: <span class="number">02</span> <span class="number">00</span> <span class="number">09</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">37</span> <span class="number">00</span> <span class="number">02</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">09</span> B2</span><br><span class="line"><span class="number">00000220</span>h: <span class="number">00</span> <span class="number">02</span> <span class="number">12</span> <span class="number">03</span> B6 <span class="number">00</span> <span class="number">04</span> B1 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">02</span> <span class="number">00</span> <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span></span><br><span class="line"><span class="number">00000230</span>h: <span class="number">00</span> <span class="number">0</span>A <span class="number">00</span> <span class="number">02</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">0</span>B <span class="number">00</span> <span class="number">08</span> <span class="number">00</span> <span class="number">0</span>C <span class="number">00</span> <span class="number">0</span>B <span class="number">00</span> <span class="number">00</span></span><br><span class="line"><span class="number">00000240</span>h: <span class="number">00</span> <span class="number">0</span>C <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">09</span> <span class="number">00</span> <span class="number">10</span> <span class="number">00</span> <span class="number">11</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">12</span></span><br><span class="line"><span class="number">00000250</span>h: <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">05</span> <span class="number">01</span> <span class="number">00</span> <span class="number">10</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">13</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span></span><br><span class="line"><span class="number">00000260</span>h: <span class="number">02</span> <span class="number">00</span> <span class="number">14</span></span><br></pre></td></tr></table></figure>
+<p>01表示一个Utf8串CONSTANT_Utf8，00 15（十进制21）表示长度，28 4C 6A 61 76 61 2F 6C 61 6E 67 2F 53 74 72 69 6E 67 3B 29 56 是【(Ljava/lang/String;)V】</p>
+<h2 id="1-4-访问标识与继承信息"><a href="#1-4-访问标识与继承信息" class="headerlink" title="1.4 访问标识与继承信息"></a>1.4 访问标识与继承信息</h2><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">u2 access_flags<span class="comment">;</span></span><br><span class="line">u2 this_class<span class="comment">;</span></span><br><span class="line">u2 super_class<span class="comment">;</span></span><br><span class="line">u2 interfaces_count<span class="comment">;</span></span><br><span class="line">u2 interfaces[interfaces_count]<span class="comment">;</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="1-5-Field信息"><a href="#1-5-Field信息" class="headerlink" title="1.5 Field信息"></a>1.5 Field信息</h2><h2 id="1-6-Method信息"><a href="#1-6-Method信息" class="headerlink" title="1.6 Method信息"></a>1.6 Method信息</h2><h2 id="1-7-附加属性"><a href="#1-7-附加属性" class="headerlink" title="1.7 附加属性"></a>1.7 附加属性</h2><h1 id="2-字节码指令"><a href="#2-字节码指令" class="headerlink" title="2.字节码指令"></a>2.字节码指令</h1><h1 id="3-编译期处理"><a href="#3-编译期处理" class="headerlink" title="3.编译期处理"></a>3.编译期处理</h1><h1 id="4-类加载阶段"><a href="#4-类加载阶段" class="headerlink" title="4.类加载阶段"></a>4.类加载阶段</h1><h1 id="5-类加载器"><a href="#5-类加载器" class="headerlink" title="5.类加载器"></a>5.类加载器</h1><h1 id="6-运行期优化"><a href="#6-运行期优化" class="headerlink" title="6.运行期优化"></a>6.运行期优化</h1>
+<p>Field access and property flags：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Flag Name</th>
+<th align="center">Value</th>
+<th align="left">Interpretation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ACC_PUBLIC</td>
+<td align="center">0x0001</td>
+<td align="left">Declared public; may be accessed from outside its package.</td>
+</tr>
+<tr>
+<td align="left">ACC_PRIVATE</td>
+<td align="center">0x0002</td>
+<td align="left">Declared private; usable only within the defining class.</td>
+</tr>
+<tr>
+<td align="left">ACC_PROTECTED</td>
+<td align="center">0x0004</td>
+<td align="left">Declared protected; may be accessed within subclasses.</td>
+</tr>
+<tr>
+<td align="left">ACC_STATIC</td>
+<td align="center">0x0008</td>
+<td align="left">Declared static.</td>
+</tr>
+<tr>
+<td align="left">ACC_FINAL</td>
+<td align="center">0x0010</td>
+<td align="left">Declared final; never directly assigned to after object construction (JLS §17.5).</td>
+</tr>
+<tr>
+<td align="left">ACC_VOLATILE</td>
+<td align="center">0x0040</td>
+<td align="left">Declared volatile; cannot be cached.</td>
+</tr>
+<tr>
+<td align="left">ACC_TRANSIENT</td>
+<td align="center">0x0080</td>
+<td align="left">Declared transient; not written or read by a persistent object manager.</td>
+</tr>
+<tr>
+<td align="left">ACC_SYNTHETIC</td>
+<td align="center">0x1000</td>
+<td align="left">Declared synthetic; not present in the source code.</td>
+</tr>
+<tr>
+<td align="left">ACC_ENUM</td>
+<td align="center">0x4000</td>
+<td align="left">Declared as an element of an enum.</td>
+</tr>
+</tbody></table>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">000001</span>c0h: <span class="number">00</span> <span class="number">21</span> <span class="number">00</span> <span class="number">05</span> <span class="number">00</span> <span class="number">06</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">02</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">07</span></span><br></pre></td></tr></table></figure>
+
+<p>00 21 表示该class是一个类，公共的</p>
+<p>00 05 表示根据常量池中#5找到本类全限定名</p>
+<p>00 06 表示根据常量池中#6找到父类全限定名</p>
+<p>00 00 表示接口的数量，本类为0</p>
+<h2 id="1-5-Field信息"><a href="#1-5-Field信息" class="headerlink" title="1.5 Field信息"></a>1.5 Field信息</h2><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">u2          fields_count<span class="comment">;</span></span><br><span class="line">field_info  fields[fields_count]<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">000001</span>c0h: <span class="number">00</span> <span class="number">21</span> <span class="number">00</span> <span class="number">05</span> <span class="number">00</span> <span class="number">06</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">02</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">07</span></span><br></pre></td></tr></table></figure>
+
+<p>00 00 表示成员变量数量，本类为0</p>
+<table>
+<thead>
+<tr>
+<th align="left">FieldType term</th>
+<th align="center">Type</th>
+<th align="left">Interpretation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">B</td>
+<td align="center">byte</td>
+<td align="left">signed byte</td>
+</tr>
+<tr>
+<td align="left">C</td>
+<td align="center">char</td>
+<td align="left">Unicode character code point in the Basic Multilingual Plane, encoded with UTF-16</td>
+</tr>
+<tr>
+<td align="left">D</td>
+<td align="center">double</td>
+<td align="left">double-precision floating-point value</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="center">float</td>
+<td align="left">single-precision floating-point value</td>
+</tr>
+<tr>
+<td align="left">I</td>
+<td align="center">int</td>
+<td align="left">integer</td>
+</tr>
+<tr>
+<td align="left">J</td>
+<td align="center">long</td>
+<td align="left">long integer</td>
+</tr>
+<tr>
+<td align="left">L ClassName ;</td>
+<td align="center">reference</td>
+<td align="left">an instance of class ClassName</td>
+</tr>
+<tr>
+<td align="left">S</td>
+<td align="center">short</td>
+<td align="left">signed short</td>
+</tr>
+<tr>
+<td align="left">Z</td>
+<td align="center">boolean</td>
+<td align="left">true or false</td>
+</tr>
+<tr>
+<td align="left">[</td>
+<td align="center">reference</td>
+<td align="left">one array dimension</td>
+</tr>
+</tbody></table>
+<h2 id="1-6-Method信息"><a href="#1-6-Method信息" class="headerlink" title="1.6 Method信息"></a>1.6 Method信息</h2><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">u2           methods_count<span class="comment">;</span></span><br><span class="line">method_info  methods[methods_count]<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>Method access and property flags：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Flag Name</th>
+<th align="center">Value</th>
+<th align="left">Interpretation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ACC_PUBLIC</td>
+<td align="center">0x0001</td>
+<td align="left">Declared public; may be accessed from outside its package.</td>
+</tr>
+<tr>
+<td align="left">ACC_PRIVATE</td>
+<td align="center">0x0002</td>
+<td align="left">Declared private; accessible only within the defining class.</td>
+</tr>
+<tr>
+<td align="left">ACC_PROTECTED</td>
+<td align="center">0x0004</td>
+<td align="left">Declared protected; may be accessed within subclasses.</td>
+</tr>
+<tr>
+<td align="left">ACC_STATIC</td>
+<td align="center">0x0008</td>
+<td align="left">Declared static.</td>
+</tr>
+<tr>
+<td align="left">ACC_FINAL</td>
+<td align="center">0x0010</td>
+<td align="left">Declared final; must not be overridden (§5.4.5).</td>
+</tr>
+<tr>
+<td align="left">ACC_SYNCHRONIZED</td>
+<td align="center">0x0020</td>
+<td align="left">Declared synchronized; invocation is wrapped by a monitor use.</td>
+</tr>
+<tr>
+<td align="left">ACC_BRIDGE</td>
+<td align="center">0x0040</td>
+<td align="left">A bridge method, generated by the compiler.</td>
+</tr>
+<tr>
+<td align="left">ACC_VARARGS</td>
+<td align="center">0x0080</td>
+<td align="left">Declared with variable number of arguments.</td>
+</tr>
+<tr>
+<td align="left">ACC_NATIVE</td>
+<td align="center">0x0100</td>
+<td align="left">Declared native; implemented in a language other than Java.</td>
+</tr>
+<tr>
+<td align="left">ACC_ABSTRACT</td>
+<td align="center">0x0400</td>
+<td align="left">Declared abstract; no implementation is provided.</td>
+</tr>
+<tr>
+<td align="left">ACC_STRICT</td>
+<td align="center">0x0800</td>
+<td align="left">Declared strictfp; floating-point mode is FP-strict.</td>
+</tr>
+<tr>
+<td align="left">ACC_SYNTHETIC</td>
+<td align="center">0x1000</td>
+<td align="left">Declared synthetic; not present in the source code.</td>
+</tr>
+</tbody></table>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">000001</span>c0h: <span class="number">00</span> <span class="number">21</span> <span class="number">00</span> <span class="number">05</span> <span class="number">00</span> <span class="number">06</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">02</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">07</span></span><br><span class="line"><span class="number">000001</span>d0h: <span class="number">00</span> <span class="number">08</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">09</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">2</span>F <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span></span><br><span class="line"><span class="number">000001e0</span>h: <span class="number">00</span> <span class="number">05</span> <span class="number">2</span>A B7 <span class="number">00</span> <span class="number">01</span> B1 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">02</span> <span class="number">00</span> <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span> <span class="number">00</span></span><br><span class="line"><span class="number">000001f</span>0h: <span class="number">06</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">09</span> <span class="number">00</span> <span class="number">0</span>B <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">0</span>C <span class="number">00</span> <span class="number">01</span> <span class="number">00</span></span><br><span class="line"><span class="number">00000200</span>h: <span class="number">00</span> <span class="number">00</span> <span class="number">05</span> <span class="number">00</span> <span class="number">0</span>C <span class="number">00</span> <span class="number">0</span>D <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">09</span> <span class="number">00</span> <span class="number">0</span>E <span class="number">00</span> <span class="number">0</span>F <span class="number">00</span></span><br></pre></td></tr></table></figure>
+
+<p>00 02 表示方法数量，本类为2</p>
+<p>一个方法由 访问修饰符 + 名称 + 参数描述 + 方法属性数量 + 方法属性 组成</p>
+<ol>
+<li>00 01 代表访问修饰符（本类中是public）</li>
+<li>00 07 代表引用了常量池#07项作为方法名称</li>
+<li>00 08 代表引用了常量池#08项作为方法参数描述</li>
+<li>00 01 代表方法属性数量，本方法是1</li>
+<li>方法属性：<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="number">00</span> <span class="number">09</span> 表示引用了常量池#<span class="number">09</span>项，是【Code】属性</span><br><span class="line"><span class="number">2.</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">2</span>F 表示此属性的长度是<span class="number">47</span></span><br><span class="line"><span class="number">3.</span> <span class="number">00</span> <span class="number">01</span> 表示【操作数栈】最大深度</span><br><span class="line"><span class="number">4.</span> <span class="number">00</span> <span class="number">01</span> 表示【局部变量表】最大槽数（slot）</span><br><span class="line"><span class="number">5.</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">05</span> 表示字节码长度，本例是<span class="number">5</span></span><br><span class="line"><span class="number">6.</span> <span class="number">2</span>A B7 <span class="number">00</span> <span class="number">01</span> B1 是字节码指令</span><br><span class="line"><span class="number">7.</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">02</span> 表示方法细节属性数量，本例是<span class="number">2</span></span><br><span class="line"><span class="number">8.</span> <span class="number">00</span> <span class="number">0</span>A 表示引用了常量池#<span class="number">10</span>项，是【LineNumberTable】属性</span><br><span class="line">    <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">06</span> 表示此属性的总长度，本例是<span class="number">6</span></span><br><span class="line">    <span class="number">00</span> <span class="number">01</span> 表示【LineNumberTable】长度</span><br><span class="line">    <span class="number">00</span> <span class="number">00</span> 表示【字节码】行号</span><br><span class="line">    <span class="number">00</span> <span class="number">09</span> 表示【java源码】行号</span><br><span class="line"><span class="number">9.</span> <span class="number">00</span> <span class="number">0</span>B 表示引用了常量池#<span class="number">11</span>项，是【LocalVariableTable】属性</span><br><span class="line">    <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">0</span>C 表示此属性的总长度，本例是<span class="number">12</span></span><br><span class="line">    <span class="number">00</span> <span class="number">01</span> 表示【LocalVariableTable】长度</span><br><span class="line">    <span class="number">00</span> <span class="number">00</span> 表示局部变量生命周期开始，相当于字节码的偏移量</span><br><span class="line">    <span class="number">00</span> <span class="number">05</span> 表示局部变量覆盖的范围长度</span><br><span class="line">    <span class="number">00</span> <span class="number">0</span>C 表示局部变量名称，本例引用了常量池#<span class="number">12</span>项，是【<span class="keyword">this</span>】</span><br><span class="line">    <span class="number">00</span> <span class="number">0</span>D 表示局部变量的类型，本例引用了常量池#<span class="number">13</span>项，是【Lpub/iyu/se/jvmday/day03/HelloWorld;】</span><br><span class="line">    <span class="number">00</span> <span class="number">00</span> 表示局部变量占有的槽位(slot)编号，本例是<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00000200</span>h: <span class="number">00</span> <span class="number">00</span> <span class="number">05</span> <span class="number">00</span> <span class="number">0</span>C <span class="number">00</span> <span class="number">0</span>D <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">09</span> <span class="number">00</span> <span class="number">0</span>E <span class="number">00</span> <span class="number">0</span>F <span class="number">00</span></span><br><span class="line"><span class="number">00000210</span>h: <span class="number">02</span> <span class="number">00</span> <span class="number">09</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">37</span> <span class="number">00</span> <span class="number">02</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">09</span> B2</span><br><span class="line"><span class="number">00000220</span>h: <span class="number">00</span> <span class="number">02</span> <span class="number">12</span> <span class="number">03</span> B6 <span class="number">00</span> <span class="number">04</span> B1 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">02</span> <span class="number">00</span> <span class="number">0</span>A <span class="number">00</span> <span class="number">00</span></span><br><span class="line"><span class="number">00000230</span>h: <span class="number">00</span> <span class="number">0</span>A <span class="number">00</span> <span class="number">02</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">0</span>B <span class="number">00</span> <span class="number">08</span> <span class="number">00</span> <span class="number">0</span>C <span class="number">00</span> <span class="number">0</span>B <span class="number">00</span> <span class="number">00</span></span><br><span class="line"><span class="number">00000240</span>h: <span class="number">00</span> <span class="number">0</span>C <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">09</span> <span class="number">00</span> <span class="number">10</span> <span class="number">00</span> <span class="number">11</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">12</span></span><br><span class="line"><span class="number">00000250</span>h: <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">05</span> <span class="number">01</span> <span class="number">00</span> <span class="number">10</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">13</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>00 09 代表访问修饰符（本类中是public static）</li>
+<li>00 0E 代表引用了常量池#14项作为方法名称</li>
+<li>00 0F 代表引用了常量池#15项作为方法参数描述</li>
+<li>00 02 代表方法属性数量，本方法是2</li>
+<li>方法属性1：<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00</span> <span class="number">09</span> 表示引用了常量池#<span class="number">09</span>项，是【Code】属性</span><br><span class="line"><span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">37</span> 表示此属性的长度是<span class="number">55</span></span><br><span class="line"><span class="number">00</span> <span class="number">02</span> 表示【操作数栈】最大深度</span><br><span class="line"><span class="number">00</span> <span class="number">01</span> 表示【局部变量表】最大槽数（slot）</span><br><span class="line"><span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">09</span> 表示字节码长度，本例是<span class="number">9</span></span><br><span class="line">B2 <span class="number">00</span> <span class="number">02</span> <span class="number">12</span> <span class="number">03</span> B6 <span class="number">00</span> <span class="number">04</span> B1 是字节码指令</span><br><span class="line"><span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">02</span> 表示方法细节属性数量，本例是<span class="number">2</span></span><br><span class="line"><span class="number">00</span> <span class="number">0</span>A 表示引用了常量池#<span class="number">10</span>项，是【LineNumberTable】属性</span><br><span class="line">    <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">0</span>A 表示此属性的总长度，本例是<span class="number">10</span></span><br><span class="line">    <span class="number">00</span> <span class="number">02</span> 表示【LineNumberTable】长度</span><br><span class="line">    <span class="number">00</span> <span class="number">00</span> 表示【字节码】行号</span><br><span class="line">    <span class="number">00</span> <span class="number">0</span>B 表示【java源码】行号</span><br><span class="line">    <span class="number">00</span> <span class="number">08</span> 表示【字节码】行号</span><br><span class="line">    <span class="number">00</span> <span class="number">0</span>C 表示【java源码】行号</span><br><span class="line"><span class="number">00</span> <span class="number">0</span>B 表示引用了常量池#<span class="number">11</span>项，是【LocalVariableTable】属性</span><br><span class="line">    <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">0</span>C 表示此属性的总长度，本例是<span class="number">12</span></span><br><span class="line">    <span class="number">00</span> <span class="number">01</span> 表示【LocalVariableTable】长度</span><br><span class="line">    <span class="number">00</span> <span class="number">00</span> 表示局部变量生命周期开始，相当于字节码的偏移量</span><br><span class="line">    <span class="number">00</span> <span class="number">09</span> 表示局部变量覆盖的范围长度</span><br><span class="line">    <span class="number">00</span> <span class="number">10</span> 表示局部变量名称，本例引用了常量池#<span class="number">16</span>项，是【args】</span><br><span class="line">    <span class="number">00</span> <span class="number">11</span> 表示局部变量的类型，本例引用了常量池#<span class="number">17</span>项，是【Ljava/lang/String;】</span><br><span class="line">    <span class="number">00</span> <span class="number">00</span> 表示局部变量占有的槽位(slot)编号，本例是<span class="number">0</span></span><br></pre></td></tr></table></figure></li>
+<li>方法属性2：<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">00 </span><span class="number">12</span> 表示引用了常量池#<span class="number">18</span>项，发现是【MethodParameters】属性</span><br><span class="line"><span class="symbol">00 </span><span class="number">00</span> <span class="number">00</span> <span class="number">05</span> 表示此属性的总长度，本例是<span class="number">5</span></span><br><span class="line"><span class="symbol">01 </span>参数数量</span><br><span class="line"><span class="symbol">00 </span><span class="number">10</span> 表示引用了常量池#<span class="number">16</span>项，是【args】</span><br><span class="line"><span class="symbol">00 </span><span class="number">00</span> 表示访问修饰符</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="1-7-附加属性"><a href="#1-7-附加属性" class="headerlink" title="1.7 附加属性"></a>1.7 附加属性</h2><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">u2             attributes_count<span class="comment">;</span></span><br><span class="line">attribute_info attributes[attributes_count]<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00000250</span>h: <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">05</span> <span class="number">01</span> <span class="number">00</span> <span class="number">10</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span> <span class="number">13</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span></span><br><span class="line"><span class="number">00000260</span>h: <span class="number">02</span> <span class="number">00</span> <span class="number">14</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">00 </span><span class="number">01</span> 表示附加属性数量</span><br><span class="line"><span class="symbol">00 </span><span class="number">13</span> 表示引用了常量池#<span class="number">19</span>项，即【SourceFile】</span><br><span class="line"><span class="symbol">00 </span><span class="number">00</span> <span class="number">00</span> <span class="number">02</span> 表示此属性的长度</span><br><span class="line"><span class="symbol">00 </span><span class="number">14</span> 表示引用了常量池#<span class="number">20</span>项，即【HelloWorld.java】</span><br></pre></td></tr></table></figure>
+
+<p>参考资料：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html">点击打开</a></p>
+<h1 id="2-字节码指令"><a href="#2-字节码指令" class="headerlink" title="2.字节码指令"></a>2.字节码指令</h1><h2 id="2-1-分析"><a href="#2-1-分析" class="headerlink" title="2.1 分析"></a>2.1 分析</h2><p>根据上面的分析，有两组字节码指令：</p>
+<p>(1)public pub.iyu.se.jvmday.day03.HelloWorld(); 构造方法的字节码指令</p>
+<pre><code>2A B7 00 01 B1 
+
+1.2A =&gt; aload_0加载slot()的局部变量，即this，作为下面的invokespecial构造方法调用的参数
+2.B7 =&gt; invokespecial预备调用构造方法，哪个方法呢？
+3.00 01 =&gt; 引用常量池中#1项，即【Method java/lang/Object.&quot;&lt;init&gt;&quot;:()v】
+4.B1 =&gt; 表示返回</code></pre>
+<p>(2)public static void main(java.lang.String[]) 主方法的字节码指令</p>
+<pre><code>B2 00 02 12 03 B6 00 04 B1 
+
+1.B2 =&gt; getstatic用来加载静态变量，哪个静态变量呢？
+2.00 02 =&gt; 引用常量池中#2项，即【Field java/lang/System.out:Ljava/io/PrintStream;】
+3.12 =&gt; ldc加载参数，哪个参数呢？
+4.03 =&gt; 引用常量池中#3项，即【String Hello world】
+5.B6 =&gt; invokevirtual预备调用成员方法，哪个方法呢？
+6.00 04 =&gt; 引用常量池中#4项，即【Method java/io/PrintStream.println:(Ljava/lang/String;)V】
+7.B1 =&gt; 表示返回</code></pre>
+<p>参考资料：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5">点击打开</a></p>
+<h2 id="2-2-javap工具"><a href="#2-2-javap工具" class="headerlink" title="2.2 javap工具"></a>2.2 javap工具</h2><p>Oracle 提供javap工具来反编译class文件</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javap -v <span class="module-access"><span class="module"><span class="identifier">HelloWorld</span>.</span></span><span class="keyword">class</span></span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">Classfile /E:/HelloWorld.class</span><br><span class="line">  Last modified <span class="number">2020</span><span class="number">-11</span><span class="number">-20</span>; size <span class="number">611</span> <span class="built_in">bytes</span></span><br><span class="line">  MD5 checksum <span class="number">93</span>d2a7c13284af1a96716e531e2f45e4</span><br><span class="line">  Compiled from <span class="string">&quot;HelloWorld.java&quot;</span></span><br><span class="line"><span class="keyword">public</span> class pub.iyu.se.jvmday.day03.HelloWorld</span><br><span class="line">  minor version: <span class="number">0</span></span><br><span class="line">  major version: <span class="number">52</span></span><br><span class="line">  flags: ACC_PUBLIC, ACC_SUPER</span><br><span class="line">Constant pool:</span><br><span class="line">   #1 = Methodref          #6.#21         <span class="comment">// java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">   #2 = Fieldref           #22.#23        <span class="comment">// java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">   #3 = <span class="built_in">String</span>             #24            <span class="comment">// Hello world</span></span><br><span class="line">   #4 = Methodref          #25.#26        <span class="comment">// java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line">   #5 = Class              #27            <span class="comment">// pub/iyu/se/jvmday/day03/HelloWorld</span></span><br><span class="line">   #6 = Class              #28            <span class="comment">// java/lang/Object</span></span><br><span class="line">   #7 = Utf8               &lt;init&gt;</span><br><span class="line">   #8 = Utf8               ()V</span><br><span class="line">   #9 = Utf8               Code</span><br><span class="line">  #10 = Utf8               LineNumberTable</span><br><span class="line">  #11 = Utf8               LocalVariableTable</span><br><span class="line">  #12 = Utf8               this</span><br><span class="line">  #13 = Utf8               Lpub/iyu/se/jvmday/day03/HelloWorld;</span><br><span class="line">  #14 = Utf8               main</span><br><span class="line">  #15 = Utf8               (<span class="meta">[</span>Ljava/lang/<span class="built_in">String</span>;)V</span><br><span class="line">  #16 = Utf8               args</span><br><span class="line">  #17 = Utf8               <span class="meta">[</span>Ljava/lang/<span class="built_in">String</span>;</span><br><span class="line">  #18 = Utf8               MethodParameters</span><br><span class="line">  #19 = Utf8               SourceFile</span><br><span class="line">  #20 = Utf8               HelloWorld.java</span><br><span class="line">  #21 = NameAndType        #7:#8          <span class="comment">// &quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">  #22 = Class              #29            <span class="comment">// java/lang/System</span></span><br><span class="line">  #23 = NameAndType        #30:#31        <span class="comment">// out:Ljava/io/PrintStream;</span></span><br><span class="line">  #24 = Utf8               Hello world</span><br><span class="line">  #25 = Class              #32            <span class="comment">// java/io/PrintStream</span></span><br><span class="line">  #26 = NameAndType        #33:#34        <span class="comment">// println:(Ljava/lang/String;)V</span></span><br><span class="line">  #27 = Utf8               pub/iyu/se/jvmday/day03/HelloWorld</span><br><span class="line">  #28 = Utf8               java/lang/Object</span><br><span class="line">  #29 = Utf8               java/lang/System</span><br><span class="line">  #30 = Utf8               out</span><br><span class="line">  #31 = Utf8               Ljava/io/PrintStream;</span><br><span class="line">  #32 = Utf8               java/io/PrintStream</span><br><span class="line">  #33 = Utf8               println</span><br><span class="line">  #34 = Utf8               (Ljava/lang/<span class="built_in">String</span>;)V</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> pub.iyu.se.jvmday.day03.HelloWorld();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      <span class="built_in">stack</span>=<span class="number">1</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: aload_0</span><br><span class="line">         <span class="number">1</span>: invokespecial #1                  <span class="comment">// Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">         <span class="number">4</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">9</span>: <span class="number">0</span></span><br><span class="line">      LocalVariableTable:</span><br><span class="line">        Start  Length  Slot  Name   Signature</span><br><span class="line">            <span class="number">0</span>       <span class="number">5</span>     <span class="number">0</span>  this   Lpub/iyu/se/jvmday/day03/HelloWorld;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> static <span class="literal">void</span> main(java.lang.<span class="built_in">String</span><span class="meta">[</span><span class="meta">]</span>);</span><br><span class="line">    descriptor: (<span class="meta">[</span>Ljava/lang/<span class="built_in">String</span>;)V</span><br><span class="line">    flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">    Code:</span><br><span class="line">      <span class="built_in">stack</span>=<span class="number">2</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: getstatic     #2                  <span class="comment">// Field java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">         <span class="number">3</span>: ldc           #3                  <span class="comment">// String Hello world</span></span><br><span class="line">         <span class="number">5</span>: invokevirtual #4                  <span class="comment">// Method java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line">         <span class="number">8</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">11</span>: <span class="number">0</span></span><br><span class="line">        line <span class="number">12</span>: <span class="number">8</span></span><br><span class="line">      LocalVariableTable:</span><br><span class="line">        Start  Length  Slot  Name   Signature</span><br><span class="line">            <span class="number">0</span>       <span class="number">9</span>     <span class="number">0</span>  args   <span class="meta">[</span>Ljava/lang/<span class="built_in">String</span>;</span><br><span class="line">    MethodParameters:</span><br><span class="line">      Name                           Flags</span><br><span class="line">      args</span><br><span class="line">&#125;</span><br><span class="line">SourceFile: <span class="string">&quot;HelloWorld.java&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-方法执行流程"><a href="#2-3-方法执行流程" class="headerlink" title="2.3 方法执行流程"></a>2.3 方法执行流程</h2><p>(1) Demo代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestDemo0301</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">int</span> a = <span class="number">10</span>;</span><br><span class="line">        <span class="built_in">int</span> b = Short.MAX_VALUE + <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">int</span> c = a + b;</span><br><span class="line">        System.<span class="keyword">out</span>.println(c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(2)编译后的字节码文件 javap -v TestDemo0301.class</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">Classfile</span> <span class="string">/E:/TestDemo0301.class</span></span><br><span class="line">  <span class="string">Last</span> <span class="string">modified</span> <span class="number">2020-11-23</span><span class="string">;</span> <span class="string">size</span> <span class="number">676</span> <span class="string">bytes</span></span><br><span class="line">  <span class="string">MD5</span> <span class="string">checksum</span> <span class="string">0292b59b6c598154c1fa633b3ccb3c74</span></span><br><span class="line">  <span class="string">Compiled</span> <span class="string">from</span> <span class="string">&quot;TestDemo0301.java&quot;</span></span><br><span class="line"><span class="string">public</span> <span class="string">class</span> <span class="string">pub.iyu.se.jvmday.day03.TestDemo0301</span></span><br><span class="line">  <span class="attr">minor version:</span> <span class="number">0</span></span><br><span class="line">  <span class="attr">major version:</span> <span class="number">52</span></span><br><span class="line">  <span class="attr">flags:</span> <span class="string">ACC_PUBLIC,</span> <span class="string">ACC_SUPER</span></span><br><span class="line"><span class="attr">Constant pool:</span></span><br><span class="line">   <span class="comment">#1 = Methodref          #7.#26         // java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">   <span class="comment">#2 = Class              #27            // java/lang/Short</span></span><br><span class="line">   <span class="comment">#3 = Integer            32768</span></span><br><span class="line">   <span class="comment">#4 = Fieldref           #28.#29        // java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">   <span class="comment">#5 = Methodref          #30.#31        // java/io/PrintStream.println:(I)V</span></span><br><span class="line">   <span class="comment">#6 = Class              #32            // pub/iyu/se/jvmday/day03/TestDemo0301</span></span><br><span class="line">   <span class="comment">#7 = Class              #33            // java/lang/Object</span></span><br><span class="line">   <span class="comment">#8 = Utf8               &lt;init&gt;</span></span><br><span class="line">   <span class="comment">#9 = Utf8               ()V</span></span><br><span class="line">  <span class="comment">#10 = Utf8               Code</span></span><br><span class="line">  <span class="comment">#11 = Utf8               LineNumberTable</span></span><br><span class="line">  <span class="comment">#12 = Utf8               LocalVariableTable</span></span><br><span class="line">  <span class="comment">#13 = Utf8               this</span></span><br><span class="line">  <span class="comment">#14 = Utf8               Lpub/iyu/se/jvmday/day03/TestDemo0301;</span></span><br><span class="line">  <span class="comment">#15 = Utf8               main</span></span><br><span class="line">  <span class="comment">#16 = Utf8               ([Ljava/lang/String;)V</span></span><br><span class="line">  <span class="comment">#17 = Utf8               args</span></span><br><span class="line">  <span class="comment">#18 = Utf8               [Ljava/lang/String;</span></span><br><span class="line">  <span class="comment">#19 = Utf8               a</span></span><br><span class="line">  <span class="comment">#20 = Utf8               I</span></span><br><span class="line">  <span class="comment">#21 = Utf8               b</span></span><br><span class="line">  <span class="comment">#22 = Utf8               c</span></span><br><span class="line">  <span class="comment">#23 = Utf8               MethodParameters</span></span><br><span class="line">  <span class="comment">#24 = Utf8               SourceFile</span></span><br><span class="line">  <span class="comment">#25 = Utf8               TestDemo0301.java</span></span><br><span class="line">  <span class="comment">#26 = NameAndType        #8:#9          // &quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">  <span class="comment">#27 = Utf8               java/lang/Short</span></span><br><span class="line">  <span class="comment">#28 = Class              #34            // java/lang/System</span></span><br><span class="line">  <span class="comment">#29 = NameAndType        #35:#36        // out:Ljava/io/PrintStream;</span></span><br><span class="line">  <span class="comment">#30 = Class              #37            // java/io/PrintStream</span></span><br><span class="line">  <span class="comment">#31 = NameAndType        #38:#39        // println:(I)V</span></span><br><span class="line">  <span class="comment">#32 = Utf8               pub/iyu/se/jvmday/day03/TestDemo0301</span></span><br><span class="line">  <span class="comment">#33 = Utf8               java/lang/Object</span></span><br><span class="line">  <span class="comment">#34 = Utf8               java/lang/System</span></span><br><span class="line">  <span class="comment">#35 = Utf8               out</span></span><br><span class="line">  <span class="comment">#36 = Utf8               Ljava/io/PrintStream;</span></span><br><span class="line">  <span class="comment">#37 = Utf8               java/io/PrintStream</span></span><br><span class="line">  <span class="comment">#38 = Utf8               println</span></span><br><span class="line">  <span class="comment">#39 = Utf8               (I)V</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">public</span> <span class="string">pub.iyu.se.jvmday.day03.TestDemo0301();</span></span><br><span class="line">    <span class="attr">descriptor:</span> <span class="string">()V</span></span><br><span class="line">    <span class="attr">flags:</span> <span class="string">ACC_PUBLIC</span></span><br><span class="line">    <span class="attr">Code:</span></span><br><span class="line">      <span class="string">stack=1</span>, <span class="string">locals=1</span>, <span class="string">args_size=1</span></span><br><span class="line">         <span class="attr">0:</span> <span class="string">aload_0</span></span><br><span class="line">         <span class="attr">1:</span> <span class="string">invokespecial</span> <span class="comment">#1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">         <span class="attr">4:</span> <span class="string">return</span></span><br><span class="line">      <span class="attr">LineNumberTable:</span></span><br><span class="line">        <span class="attr">line 9:</span> <span class="number">0</span></span><br><span class="line">      <span class="attr">LocalVariableTable:</span></span><br><span class="line">        <span class="string">Start</span>  <span class="string">Length</span>  <span class="string">Slot</span>  <span class="string">Name</span>   <span class="string">Signature</span></span><br><span class="line">            <span class="number">0</span>       <span class="number">5</span>     <span class="number">0</span>  <span class="string">this</span>   <span class="string">Lpub/iyu/se/jvmday/day03/TestDemo0301;</span></span><br><span class="line"></span><br><span class="line">  <span class="string">public</span> <span class="string">static</span> <span class="string">void</span> <span class="string">main(java.lang.String</span>[]<span class="string">);</span></span><br><span class="line">    <span class="attr">descriptor:</span> <span class="string">(</span>[<span class="string">Ljava/lang/String;)V</span></span><br><span class="line">    <span class="attr">flags:</span> <span class="string">ACC_PUBLIC</span>, <span class="string">ACC_STATIC</span></span><br><span class="line">    <span class="attr">Code:</span></span><br><span class="line">      <span class="string">stack=2</span>, <span class="string">locals=4</span>, <span class="string">args_size=1</span></span><br><span class="line">         <span class="attr">0:</span> <span class="string">bipush</span>        <span class="number">10</span></span><br><span class="line">         <span class="attr">2:</span> <span class="string">istore_1</span></span><br><span class="line">         <span class="attr">3:</span> <span class="string">ldc</span>           <span class="comment">#3                  // int 32768</span></span><br><span class="line">         <span class="attr">5:</span> <span class="string">istore_2</span></span><br><span class="line">         <span class="attr">6:</span> <span class="string">iload_1</span></span><br><span class="line">         <span class="attr">7:</span> <span class="string">iload_2</span></span><br><span class="line">         <span class="attr">8:</span> <span class="string">iadd</span></span><br><span class="line">         <span class="attr">9:</span> <span class="string">istore_3</span></span><br><span class="line">        <span class="attr">10:</span> <span class="string">getstatic</span>     <span class="comment">#4                  // Field java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">        <span class="attr">13:</span> <span class="string">iload_3</span></span><br><span class="line">        <span class="attr">14:</span> <span class="string">invokevirtual</span> <span class="comment">#5                  // Method java/io/PrintStream.println:(I)V</span></span><br><span class="line">        <span class="attr">17:</span> <span class="string">return</span></span><br><span class="line">      <span class="attr">LineNumberTable:</span></span><br><span class="line">        <span class="attr">line 11:</span> <span class="number">0</span></span><br><span class="line">        <span class="attr">line 12:</span> <span class="number">3</span></span><br><span class="line">        <span class="attr">line 13:</span> <span class="number">6</span></span><br><span class="line">        <span class="attr">line 14:</span> <span class="number">10</span></span><br><span class="line">        <span class="attr">line 15:</span> <span class="number">17</span></span><br><span class="line">      <span class="attr">LocalVariableTable:</span></span><br><span class="line">        <span class="string">Start</span>  <span class="string">Length</span>  <span class="string">Slot</span>  <span class="string">Name</span>   <span class="string">Signature</span></span><br><span class="line">            <span class="number">0</span>      <span class="number">18</span>     <span class="number">0</span>  <span class="string">args</span>   [<span class="string">Ljava/lang/String;</span></span><br><span class="line">            <span class="number">3</span>      <span class="number">15</span>     <span class="number">1</span>     <span class="string">a</span>   <span class="string">I</span></span><br><span class="line">            <span class="number">6</span>      <span class="number">12</span>     <span class="number">2</span>     <span class="string">b</span>   <span class="string">I</span></span><br><span class="line">           <span class="number">10</span>       <span class="number">8</span>     <span class="number">3</span>     <span class="string">c</span>   <span class="string">I</span></span><br><span class="line">    <span class="attr">MethodParameters:</span></span><br><span class="line">      <span class="string">Name</span>                           <span class="string">Flags</span></span><br><span class="line">      <span class="string">args</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="attr">SourceFile:</span> <span class="string">&quot;TestDemo0301.java&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>(3)常量池 载入 运行时常量池</p>
+<p><img src="https://i.loli.net/2020/11/23/6CaGMFvIUWN5Lks.png" alt="JVM-day03-03.png"></p>
+<p>(4)方法字节码载入方法区</p>
+<p><img src="https://i.loli.net/2020/11/23/gsdG6yBXI2rbvfN.png" alt="JVM-day03-04.png"></p>
+<p>(5)main线程开始运行，分配栈帧内存</p>
+<p>stack=2(操作数栈), locals=4(局部变量表)</p>
+<p><img src="https://i.loli.net/2020/11/23/WKUuZJTc2lrFLMp.png" alt="JVM-day03-05.png"></p>
+<p>(6)执行引擎开始执行字节码</p>
+<p>未完待续。。。</p>
+<h2 id="2-4-分析-i"><a href="#2-4-分析-i" class="headerlink" title="2.4 分析 i++"></a>2.4 分析 i++</h2><h2 id="2-5-条件判断指令"><a href="#2-5-条件判断指令" class="headerlink" title="2.5 条件判断指令"></a>2.5 条件判断指令</h2><h2 id="2-6-循环控制指令"><a href="#2-6-循环控制指令" class="headerlink" title="2.6 循环控制指令"></a>2.6 循环控制指令</h2><h2 id="2-7-判断结果"><a href="#2-7-判断结果" class="headerlink" title="2.7 判断结果"></a>2.7 判断结果</h2><h2 id="2-8-构造方法"><a href="#2-8-构造方法" class="headerlink" title="2.8 构造方法"></a>2.8 构造方法</h2><h2 id="2-9-方法调用"><a href="#2-9-方法调用" class="headerlink" title="2.9 方法调用"></a>2.9 方法调用</h2><h2 id="2-10-多态的原理"><a href="#2-10-多态的原理" class="headerlink" title="2.10 多态的原理"></a>2.10 多态的原理</h2><h2 id="2-11-异常处理"><a href="#2-11-异常处理" class="headerlink" title="2.11 异常处理"></a>2.11 异常处理</h2><h2 id="2-12-finally"><a href="#2-12-finally" class="headerlink" title="2.12 finally"></a>2.12 finally</h2><h2 id="2-13-synchronized"><a href="#2-13-synchronized" class="headerlink" title="2.13 synchronized"></a>2.13 synchronized</h2><h1 id="3-编译期处理"><a href="#3-编译期处理" class="headerlink" title="3.编译期处理"></a>3.编译期处理</h1><h1 id="4-类加载阶段"><a href="#4-类加载阶段" class="headerlink" title="4.类加载阶段"></a>4.类加载阶段</h1><h1 id="5-类加载器"><a href="#5-类加载器" class="headerlink" title="5.类加载器"></a>5.类加载器</h1><h1 id="6-运行期优化"><a href="#6-运行期优化" class="headerlink" title="6.运行期优化"></a>6.运行期优化</h1>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -374,7 +642,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E7%B1%BB%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-text">1.类文件结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E9%AD%94%E6%95%B0"><span class="toc-text">1.1 魔数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E7%89%88%E6%9C%AC"><span class="toc-text">1.2 版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="toc-text">1.3 常量池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%E8%AE%BF%E9%97%AE%E6%A0%87%E8%AF%86%E4%B8%8E%E7%BB%A7%E6%89%BF%E4%BF%A1%E6%81%AF"><span class="toc-text">1.4 访问标识与继承信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-Field%E4%BF%A1%E6%81%AF"><span class="toc-text">1.5 Field信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6-Method%E4%BF%A1%E6%81%AF"><span class="toc-text">1.6 Method信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7-%E9%99%84%E5%8A%A0%E5%B1%9E%E6%80%A7"><span class="toc-text">1.7 附加属性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4"><span class="toc-text">2.字节码指令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%BC%96%E8%AF%91%E6%9C%9F%E5%A4%84%E7%90%86"><span class="toc-text">3.编译期处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E9%98%B6%E6%AE%B5"><span class="toc-text">4.类加载阶段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-text">5.类加载器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%BF%90%E8%A1%8C%E6%9C%9F%E4%BC%98%E5%8C%96"><span class="toc-text">6.运行期优化</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E7%B1%BB%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-text">1.类文件结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E9%AD%94%E6%95%B0"><span class="toc-text">1.1 魔数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E7%89%88%E6%9C%AC"><span class="toc-text">1.2 版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="toc-text">1.3 常量池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%E8%AE%BF%E9%97%AE%E6%A0%87%E8%AF%86%E4%B8%8E%E7%BB%A7%E6%89%BF%E4%BF%A1%E6%81%AF"><span class="toc-text">1.4 访问标识与继承信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-Field%E4%BF%A1%E6%81%AF"><span class="toc-text">1.5 Field信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6-Method%E4%BF%A1%E6%81%AF"><span class="toc-text">1.6 Method信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7-%E9%99%84%E5%8A%A0%E5%B1%9E%E6%80%A7"><span class="toc-text">1.7 附加属性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4"><span class="toc-text">2.字节码指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%88%86%E6%9E%90"><span class="toc-text">2.1 分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-javap%E5%B7%A5%E5%85%B7"><span class="toc-text">2.2 javap工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-text">2.3 方法执行流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E5%88%86%E6%9E%90-i"><span class="toc-text">2.4 分析 i++</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD%E6%8C%87%E4%BB%A4"><span class="toc-text">2.5 条件判断指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-%E5%BE%AA%E7%8E%AF%E6%8E%A7%E5%88%B6%E6%8C%87%E4%BB%A4"><span class="toc-text">2.6 循环控制指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-7-%E5%88%A4%E6%96%AD%E7%BB%93%E6%9E%9C"><span class="toc-text">2.7 判断结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-8-%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="toc-text">2.8 构造方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-9-%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8"><span class="toc-text">2.9 方法调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-10-%E5%A4%9A%E6%80%81%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">2.10 多态的原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-11-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">2.11 异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-12-finally"><span class="toc-text">2.12 finally</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-13-synchronized"><span class="toc-text">2.13 synchronized</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%BC%96%E8%AF%91%E6%9C%9F%E5%A4%84%E7%90%86"><span class="toc-text">3.编译期处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E9%98%B6%E6%AE%B5"><span class="toc-text">4.类加载阶段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-text">5.类加载器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%BF%90%E8%A1%8C%E6%9C%9F%E4%BC%98%E5%8C%96"><span class="toc-text">6.运行期优化</span></a></li></ol>
   </div>
 </aside>
   
