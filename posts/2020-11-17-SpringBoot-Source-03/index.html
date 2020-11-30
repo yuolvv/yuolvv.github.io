@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>SpringBoot源码分析(3) | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Java,Java,SpringBoot,Source," />
+  
+
+  
+  <meta name="description" content="&amp;emsp;&amp;emsp; 记录SpringBoot的源码分析过程-SpringBoot自动配置的条件注解原理">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: ["383060d16dbbd03a8df851cdc6f513f7fdf4dadd8ae0dc62ae87151f537ec38c", ],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2020-11-17
+    </span>
+    
+      <span>
+        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>Unlock
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    SpringBoot源码分析(3)
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://cn.bing.com/th?id=OHR.ValCervara_ZH-CN1889046979_1920x1080.jpg);"></figure>
+    </div>
+  
+
+  
+
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <h1 id="1-SpringBoot-内置条件注解"><a href="#1-SpringBoot-内置条件注解" class="headerlink" title="1.SpringBoot 内置条件注解"></a>1.SpringBoot 内置条件注解</h1><p>SpringBoot自动配置是需要满足相应的条件才会自动配置,因此SpringBoot的自动配置大量应用了条件注解ConditionalOnXXX。</p>
+<pre><code>@ConditionalOnBean：当SpringIoc容器内存在指定Bean的条件
+@ConditionalOnClass：当SpringIoc容器内存在指定Class的条件
+@ConditionalOnExpression：基于SpEL表达式作为判断条件
+@ConditionalOnJava：基于JVM版本作为判断条件
+@ConditionalOnJndi：在JNDI存在时查找指定的位置
+@ConditionalOnMissingBean：当SpringIoc容器内不存在指定Bean的条件
+@ConditionalOnMissingClass：当SpringIoc容器内不存在指定Class的条件
+@ConditionalOnNotWebApplication：当前项目不是Web项目的条件
+@ConditionalOnProperty：指定的属性是否有指定的值
+@ConditionalOnResource：类路径是否有指定的值
+@ConditionalOnSingleCandidate：当指定Bean在SpringIoc容器内只有一个，或者虽然有多个但是指定首选的Bean
+@ConditionalOnWebApplication：当前项目是Web项目的条件</code></pre>
+<p>SpringBoot的@ConditionalOnXXX等条件注解都是派生注解，SpringBoot的自动配置原理是建立在大量的派生条件注解@ConditionalOnXXX之上，而这些条件注解的原理跟Spring的Condition接口有关。因此接下来先来看看Condition接口的相关源码。</p>
+<h1 id="2-Condition接口"><a href="#2-Condition接口" class="headerlink" title="2.Condition接口"></a>2.Condition接口</h1><h2 id="2-1-Condition接口demo"><a href="#2-1-Condition接口demo" class="headerlink" title="2.1 Condition接口demo"></a>2.1 Condition接口demo</h2><p>比如自定义一个@ConditionalOnLinux注解，该注解只有在其属性environment是”linux”才会创建相关的bean。</p>
+<p>LinuxCondition.java:</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 实现spring 的Condition接口，并且重写matches()方法，</span></span><br><span class="line"><span class="comment"> * 如果@ConditionalOnLinux的注解属性environment是linux就返回true</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> class LinuxCondition implements Condition &#123;</span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">boolean</span> matches(ConditionContext context, AnnotatedTypeMetadata metadata) &#123;</span><br><span class="line">		<span class="comment">// 获得注解@ConditionalOnLinux的所有属性</span></span><br><span class="line">		List&lt;AnnotationAttributes&gt; allAnnotationAttributes = annotationAttributesFromMultiValueMap(</span><br><span class="line">				metadata.getAllAnnotationAttributes(ConditionalOnLinux.class.getName()));</span><br><span class="line">		<span class="keyword">for</span> (AnnotationAttributes annotationAttributes : allAnnotationAttributes) &#123;</span><br><span class="line">			<span class="comment">// 获得注解@ConditionalOnLinux的environment属性</span></span><br><span class="line">			<span class="keyword">String</span> environment = annotationAttributes.getString(<span class="string">&quot;environment&quot;</span>);</span><br><span class="line">			<span class="comment">// 若environment等于linux，则返回true</span></span><br><span class="line">			<span class="keyword">if</span> (<span class="string">&quot;linux&quot;</span>.equals(environment)) &#123;</span><br><span class="line">				<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> List&lt;AnnotationAttributes&gt; annotationAttributesFromMultiValueMap(</span><br><span class="line">			MultiValueMap&lt;<span class="keyword">String</span>, <span class="keyword">Object</span>&gt; multiValueMap) &#123;</span><br><span class="line">		List&lt;Map&lt;<span class="keyword">String</span>, <span class="keyword">Object</span>&gt;&gt; maps = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">		multiValueMap.forEach((<span class="built_in">key</span>, value) -&gt; &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; value.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">				Map&lt;<span class="keyword">String</span>, <span class="keyword">Object</span>&gt; <span class="built_in">map</span>;</span><br><span class="line">				<span class="keyword">if</span> (i &lt; maps.<span class="built_in">size</span>()) &#123;</span><br><span class="line">					<span class="built_in">map</span> = maps.<span class="built_in">get</span>(i);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="built_in">map</span> = <span class="keyword">new</span> <span class="keyword">HashMap</span>&lt;&gt;();</span><br><span class="line">					maps.<span class="built_in">add</span>(<span class="built_in">map</span>);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="built_in">map</span>.put(<span class="built_in">key</span>, value.<span class="built_in">get</span>(i));</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">		List&lt;AnnotationAttributes&gt; annotationAttributes = <span class="keyword">new</span> ArrayList&lt;&gt;(maps.<span class="built_in">size</span>());</span><br><span class="line">		<span class="keyword">for</span> (Map&lt;<span class="keyword">String</span>, <span class="keyword">Object</span>&gt; <span class="built_in">map</span> : maps) &#123;</span><br><span class="line">			annotationAttributes.<span class="built_in">add</span>(AnnotationAttributes.fromMap(<span class="built_in">map</span>));</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> annotationAttributes;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ConditionalOnLinux.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(&#123; ElementType.TYPE, ElementType.METHOD &#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Conditional(LinuxCondition.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ConditionalOnLinux &#123;</span><br><span class="line">	<span class="comment">// 标注是哪个环境</span></span><br><span class="line">	<span class="function">String <span class="title">environment</span><span class="params">()</span> <span class="keyword">default</span> &quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ConditionConfig.java</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">@Configuration</span></span><br><span class="line">public class ConditionConfig &#123;</span><br><span class="line">	<span class="comment">// 只有`@ConditionalOnLinux`的注解属性`environment`是&quot;linux&quot;时才会创建bean</span></span><br><span class="line">	<span class="variable">@Bean</span></span><br><span class="line">	<span class="variable">@ConditionalOnLinux</span>(environment = <span class="string">&quot;linux&quot;</span>)</span><br><span class="line">	public Environment linuxEnvironment() &#123;</span><br><span class="line">		<span class="selector-tag">return</span> <span class="selector-tag">new</span> <span class="selector-tag">LinuxEnvironment</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>LinuxCondition实现了Condition接口并实现了matches方法，而matches方法则判断@ConditionalOnLinux的注解属性environment是否”linux”，是则返回true，否则false。</p>
+</li>
+<li><p>然后再定义一个注解@ConditionalOnLinux，这个注解是@Conditional的派生注解，与@Conditional(LinuxCondition.class)等价，注意@ConditionalOnLinux注解定义了一个属性environment。而最终可以利用LinuxCondition的matches方法中的参数AnnotatedTypeMetadata来获取@ConditionalOnLinux的注解属性environment的值，从而用来判断值是否为linux”。</p>
+</li>
+<li><p>最后定义一个配置类ConditionConfig，在linuxEnvironment方法上标注了@ConditionalOnLinux(environment = “linux”)。因此，这里只有 LinuxCondition的matches方法返回true才会创建bean。</p>
+</li>
+</ol>
+<h2 id="2-2-Condition接口源码分析"><a href="#2-2-Condition接口源码分析" class="headerlink" title="2.2 Condition接口源码分析"></a>2.2 Condition接口源码分析</h2><p>Condition接口的源码：</p>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@FunctionalInterface</span><br><span class="line">public interface <span class="keyword">Condition</span> &#123;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * Determine <span class="keyword">if</span> the condition matches.</span><br><span class="line">	 * @param <span class="literal">context</span> the condition <span class="literal">context</span></span><br><span class="line">	 * @param metadata metadata of the &#123;@<span class="literal">link</span> org.springframework.core.<span class="built_in">type</span>.AnnotationMetadata class&#125;</span><br><span class="line">	 * <span class="keyword">or</span> &#123;@<span class="literal">link</span> org.springframework.core.<span class="built_in">type</span>.MethodMetadata method&#125; <span class="keyword">being</span> <span class="keyword">checked</span></span><br><span class="line">	 * @<span class="keyword">return</span> &#123;@code <span class="keyword">true</span>&#125; <span class="keyword">if</span> <span class="keyword">the</span> <span class="keyword">condition</span> <span class="keyword">matches</span> <span class="keyword">and</span> <span class="keyword">the</span> <span class="keyword">component</span> <span class="keyword">can</span> <span class="keyword">be</span> <span class="keyword">registered</span>,</span><br><span class="line">	 * <span class="keyword">or</span> &#123;@code <span class="keyword">false</span>&#125; <span class="keyword">to</span> <span class="keyword">veto</span> <span class="keyword">the</span> <span class="keyword">annotated</span> <span class="keyword">component</span>&#x27;s registration</span><br><span class="line">	 */</span><br><span class="line">	boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Condition接口主要有一个matches方法，该方法决定了是否要注册相应的bean对象。其中matches方法中有两个参数，参数类型分别是ConditionContext和AnnotatedTypeMetadata，这两个参数非常重要。它们分别用来获取一些环境信息和注解元数据，从而用在matches方法中判断是否符合条件。</p>
+<ol>
+<li>ConditionContext 主要是跟Condition的上下文有关，主要用来获取Registry,BeanFactory,Environment,ResourceLoader和ClassLoader等。比如OnResourceCondition需要靠ConditionContext来获取ResourceLoader来加载指定资源，OnClassCondition需要靠ConditionContext来获取ClassLoader来加载指定类等，下面看下其源码：</li>
+</ol>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public interface <span class="keyword">ConditionContext</span> &#123;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * Return the &#123;@<span class="literal">link</span> BeanDefinitionRegistry&#125; <span class="keyword">that</span> <span class="keyword">will</span> <span class="keyword">hold</span> <span class="keyword">the</span> <span class="keyword">bean</span> <span class="keyword">definition</span></span><br><span class="line">	 * should the condition match.</span><br><span class="line">	 * @throws IllegalStateException if no registry is available (which is unusual:</span><br><span class="line">	 * only the case with a <span class="keyword">plain</span> &#123;@<span class="literal">link</span> ClassPathScanningCandidateComponentProvider&#125;)</span><br><span class="line">	 */</span><br><span class="line">	BeanDefinitionRegistry getRegistry();</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * Return <span class="keyword">the</span> &#123;@<span class="literal">link</span> ConfigurableListableBeanFactory&#125; <span class="keyword">that</span> <span class="keyword">will</span> <span class="keyword">hold</span> <span class="keyword">the</span> <span class="keyword">bean</span></span><br><span class="line">	 * definition should the condition match, <span class="keyword">or</span> &#123;@code null&#125; <span class="keyword">if</span> <span class="keyword">the</span> <span class="keyword">bean</span> <span class="keyword">factory</span> <span class="keyword">is</span></span><br><span class="line">	 * not available (or not downcastable <span class="keyword">to</span> &#123;@code ConfigurableListableBeanFactory&#125;).</span><br><span class="line">	 */</span><br><span class="line">	@Nullable</span><br><span class="line">	ConfigurableListableBeanFactory getBeanFactory();</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * Return <span class="keyword">the</span> &#123;@<span class="literal">link</span> Environment&#125; <span class="keyword">for</span> <span class="keyword">which</span> <span class="keyword">the</span> <span class="keyword">current</span> <span class="keyword">application</span> <span class="keyword">is</span> <span class="keyword">running</span>.</span><br><span class="line">	 */</span><br><span class="line">	Environment getEnvironment();</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * Return <span class="keyword">the</span> &#123;@<span class="literal">link</span> ResourceLoader&#125; <span class="keyword">currently</span> <span class="keyword">being</span> <span class="keyword">used</span>.</span><br><span class="line">	 */</span><br><span class="line">	ResourceLoader getResourceLoader();</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * Return <span class="keyword">the</span> &#123;@<span class="literal">link</span> ClassLoader&#125; <span class="keyword">that</span> <span class="keyword">should</span> <span class="keyword">be</span> <span class="keyword">used</span> <span class="keyword">to</span> <span class="keyword">load</span> <span class="keyword">additional</span> <span class="keyword">classes</span></span><br><span class="line">	 * (<span class="keyword">only</span> &#123;@code null&#125; <span class="keyword">if</span> <span class="keyword">even</span> <span class="keyword">the</span> <span class="keyword">system</span> <span class="keyword">ClassLoader</span> <span class="keyword">isn</span>&#x27;t accessible).</span><br><span class="line">	 * @see org.springframework.util.ClassUtils<span class="comment">#forName(String, ClassLoader)</span></span><br><span class="line">	 */</span><br><span class="line">	@Nullable</span><br><span class="line">	ClassLoader getClassLoader();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>AnnotatedTypeMetadata，这个跟注解元数据有关，利用AnnotatedTypeMetadata可以拿到某个注解的一些元数据，而这些元数据就包含了某个注解里面的属性，比如上面的demo，利用AnnotatedTypeMetadata可以拿到@ConditionalOnLinux的注解属性environment的值。下面看下其源码：</li>
+</ol>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> AnnotatedTypeMetadata &#123;</span><br><span class="line">    <span class="built_in">boolean</span> isAnnotated(<span class="built_in">String</span> var1);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">Object</span>&gt; getAnnotationAttributes(<span class="built_in">String</span> var1);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">Object</span>&gt; getAnnotationAttributes(<span class="built_in">String</span> var1, <span class="built_in">boolean</span> var2);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    MultiValueMap&lt;<span class="built_in">String</span>, <span class="built_in">Object</span>&gt; getAllAnnotationAttributes(<span class="built_in">String</span> var1);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    MultiValueMap&lt;<span class="built_in">String</span>, <span class="built_in">Object</span>&gt; getAllAnnotationAttributes(<span class="built_in">String</span> var1, <span class="built_in">boolean</span> var2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>@ConditionalOnLinux注解真正起作用的是Condition接口的具体实现类LinuxCondition的matches方法。</p>
+<p>这个matches方法是在何时被调用的呢？通过idea调试看调用的栈帧，如下图：</p>
+<p><img src="https://i.loli.net/2020/11/30/j5Z26J7wyzeSWGX.png" alt="sb13.png"></p>
+<p>从图片上可以看到，在ConditionEvaluator的shouldSkip方法中调用了LinuxCondition的matches方法，分析下ConditionEvaluator的shouldSkip方法。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这个方法主要是如果是解析阶段则跳过，如果是注册阶段则不跳过</span></span><br><span class="line">public boolean should<span class="constructor">Skip(@Nullable AnnotatedTypeMetadata <span class="params">metadata</span>, @Nullable ConfigurationPhase <span class="params">phase</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 若没有被@Conditional或其派生注解所标注，则不会跳过</span></span><br><span class="line">    <span class="keyword">if</span> (metadata<span class="operator"> == </span>null<span class="operator"> || </span>!metadata.is<span class="constructor">Annotated(Conditional.<span class="params">class</span>.<span class="params">getName</span>()</span>)) &#123;</span><br><span class="line">        return <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 没有指定phase，注意phase可以分为PARSE_CONFIGURATION或REGISTER_BEAN类型</span></span><br><span class="line">    <span class="keyword">if</span> (phase<span class="operator"> == </span>null) &#123;</span><br><span class="line">        <span class="comment">// 若标有@Component，@Import，@Bean或@Configuration等注解的话，则说明是PARSE_CONFIGURATION类型</span></span><br><span class="line">        <span class="keyword">if</span> (metadata instanceof AnnotationMetadata &amp;&amp;</span><br><span class="line">                <span class="module-access"><span class="module"><span class="identifier">ConfigurationClassUtils</span>.</span></span>is<span class="constructor">ConfigurationCandidate((AnnotationMetadata)</span> metadata)) &#123;</span><br><span class="line">            return should<span class="constructor">Skip(<span class="params">metadata</span>, ConfigurationPhase.PARSE_CONFIGURATION)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 否则是REGISTER_BEAN类型</span></span><br><span class="line">        return should<span class="constructor">Skip(<span class="params">metadata</span>, ConfigurationPhase.REGISTER_BEAN)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    List&lt;Condition&gt; conditions = <span class="keyword">new</span> ArrayList&lt;&gt;<span class="literal">()</span>;</span><br><span class="line">    <span class="comment">// TODO 获得所有标有@Conditional注解或其派生注解里面的Condition接口实现类并实例化成对象。</span></span><br><span class="line">	<span class="comment">// 比如@Conditional(OnBeanCondition.class)则获得OnBeanCondition.class，OnBeanCondition.class往往实现了Condition接口</span></span><br><span class="line">    <span class="keyword">for</span> (String<span class="literal">[]</span> conditionClasses : get<span class="constructor">ConditionClasses(<span class="params">metadata</span>)</span>) &#123;</span><br><span class="line">        <span class="comment">// 将类实例化成对象</span></span><br><span class="line">        <span class="keyword">for</span> (String conditionClass : conditionClasses) &#123;</span><br><span class="line">            Condition condition = get<span class="constructor">Condition(<span class="params">conditionClass</span>, <span class="params">this</span>.<span class="params">context</span>.<span class="params">getClassLoader</span>()</span>);</span><br><span class="line">            conditions.add(condition);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 排序，即按照Condition的优先级进行排序</span></span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">AnnotationAwareOrderComparator</span>.</span></span>sort(conditions);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Condition condition : conditions) &#123;</span><br><span class="line">        ConfigurationPhase requiredPhase = null;</span><br><span class="line">        <span class="keyword">if</span> (condition instanceof ConfigurationCondition) &#123;</span><br><span class="line">            <span class="comment">// 从condition中获得对bean是解析还是注册</span></span><br><span class="line">            requiredPhase = ((ConfigurationCondition) condition).get<span class="constructor">ConfigurationPhase()</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 若requiredPhase为null或获取的阶段类型正是当前阶段类型且不符合condition的matches条件，则跳过</span></span><br><span class="line">        <span class="keyword">if</span> ((requiredPhase<span class="operator"> == </span>null<span class="operator"> || </span>requiredPhase<span class="operator"> == </span>phase)<span class="operator"> &amp;&amp; </span>!condition.matches(this.context, metadata)) &#123;</span><br><span class="line">            return <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>shouldSkip这个方法执行的逻辑主要是如果是解析阶段(PARSE_CONFIGURATION)则跳过，如果是注册阶段(REGISTER_BEAN)则不跳过；如果是在注册阶段的话，此时会得到所有的Condition接口的具体实现类并实例化这些实现类，然后再执行下面关键的代码进行判断是否需要跳过。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((requiredPhase == <span class="literal">null</span> || requiredPhase == phase) &amp;&amp; !condition.matches(<span class="keyword">this</span>.context, metadata)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码最重要的逻辑是调用了Condition接口的具体实现类的matches方法，若matches返回false，则跳过，不进行注册bean的操作；若matches返回true，则不跳过，进行注册bean的操作；</p>
+<h2 id="2-3-Spring的内置Condition接口实现类"><a href="#2-3-Spring的内置Condition接口实现类" class="headerlink" title="2.3 Spring的内置Condition接口实现类"></a>2.3 Spring的内置Condition接口实现类</h2><p>Spring的Condition接口的具体实现类的关系图:</p>
+<p><img src="https://i.loli.net/2020/11/30/MZWav3w5ToeurN4.png" alt="sb14.png"></p>
+<p>发现Spring内置的Condition接口的具体实现类虽然有多个，但只有ProfileCondition不是测试相关的，因此真正内置的Condition接口的具体实现类只有ProfileCondition一个。</p>
+<p>ProfileCondition 是跟环境有关， 一般有dev,test和prod环境，而ProfileCondition就是判断 项目配置了哪个环境的。下面是ProfileCondition的源码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProfileCondition</span> <span class="keyword">implements</span> <span class="title">Condition</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) &#123;</span><br><span class="line">		MultiValueMap&lt;<span class="built_in">String</span>, <span class="built_in">Object</span>&gt; attrs = metadata.getAllAnnotationAttributes(Profile.<span class="keyword">class</span>.getName());</span><br><span class="line">		<span class="keyword">if</span> (attrs != <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="built_in">Object</span> value : attrs.<span class="keyword">get</span>(<span class="string">&quot;value&quot;</span>)) &#123;</span><br><span class="line">				<span class="keyword">if</span> (context.getEnvironment().acceptsProfiles(Profiles.of((<span class="built_in">String</span>[]) value))) &#123;</span><br><span class="line">					<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-SpringBootCondition源码解析"><a href="#3-SpringBootCondition源码解析" class="headerlink" title="3.SpringBootCondition源码解析"></a>3.SpringBootCondition源码解析</h1><p>前面Spring对Condition的内置注解只有ProfileCondition一个，但是，SpringBoot内置了大量的条件注解ConditionalOnXXX。</p>
+<p>SpringBootCondition的整体类图：</p>
+<p><img src="https://i.loli.net/2020/11/30/krTsXQ8GmCjulMB.png" alt="sb15.png"></p>
+<p>可以看到SpringBootCondition作为SpringBoot条件注解的基类，它实现了Condition接口，然后又有很多具体的子类OnXXXCondition,这些OnXXXCondition其实就是@ConditionalOnXXX的条件类。</p>
+<p>先来看下SpringBootCondition这个父类是主要做了哪些事情，抽象了哪些共有的逻辑？</p>
+<p>SpringBootConditon实现了Condition接口，作为SpringBoot众多条件注解OnXXXCondtion的父类，它的作用主要就是打印一些条件注解评估报告的日志，比如打印哪些配置类是符合条件注解的，哪些是不符合的。</p>
+<p>因为SpringBootConditon实现了Condition接口，也实现了matches方法，因此该方法同样也是被ConditionEvaluator的shouldSkip方法中调用，因此我们就以SpringBootConditon的matches方法为入口去进行分析。直接上代码：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> matches(ConditionContext context,</span><br><span class="line">        AnnotatedTypeMetadata metadata) &#123;</span><br><span class="line">    String classOrMethodName = getClassOrMethodName(metadata);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        ConditionOutcome outcome = getMatchOutcome(context, metadata);</span><br><span class="line">        logOutcome(classOrMethodName, outcome);</span><br><span class="line">        recordEvaluation(context, classOrMethodName, outcome);</span><br><span class="line">        <span class="function"><span class="keyword">return</span> outcome.<span class="title">isMatch</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (NoClassDefFoundError ex) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(</span><br><span class="line">                <span class="string">&quot;Could not evaluate condition on &quot;</span> + classOrMethodName + <span class="string">&quot; due to &quot;</span></span><br><span class="line">                        + ex.getMessage() + <span class="string">&quot; not &quot;</span></span><br><span class="line">                        + <span class="string">&quot;found. Make sure your own configuration does not rely on &quot;</span></span><br><span class="line">                        + <span class="string">&quot;that class. This can also happen if you are &quot;</span></span><br><span class="line">                        + <span class="string">&quot;@ComponentScanning a springframework package (e.g. if you &quot;</span></span><br><span class="line">                        + <span class="string">&quot;put a @ComponentScan in the default package by mistake)&quot;</span>,</span><br><span class="line">                ex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (RuntimeException ex) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(</span><br><span class="line">                <span class="string">&quot;Error processing condition on &quot;</span> + getName(metadata), ex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码的注释已经非常详细，知道了SpringBootCondition抽象了所有其具体实现类OnXXXCondition的共有逻辑–condition评估信息打印，最重要的是封装了一个模板方法getMatchOutcome(context, metadata)，留给各个OnXXXCondition具体子类去覆盖实现属于自己的判断逻辑，然后再返回相应的匹配结果给SpringBootCondition用于日志打印。</p>
+<p>SpringBootCondition其实就是用来打印condition评估信息的，对于其他枝节方法暂时先不追究过深，免得丢了主线。现在的重点是放在交给OnXXXCondition子类实现的模板方法上getMatchOutcome(context, metadata)，因为这个方法将会由很多OnXXXCondition覆盖重写判断逻辑，这里是接下来分析的重点。</p>
+<p>因为SpringBootCondition有众多具体实现类，下面只挑OnResourceCondition，OnBeanCondition和OnWebApplicationCondition进行讲解，而AutoConfigurationImportFilter跟自动配置有关，则留到自动配置源码解析的时候再进行分析。</p>
+<h2 id="3-1-OnResourceCondition源码分析"><a href="#3-1-OnResourceCondition源码分析" class="headerlink" title="3.1 OnResourceCondition源码分析"></a>3.1 OnResourceCondition源码分析</h2><h2 id="3-2-OnBeanCondition源码分析"><a href="#3-2-OnBeanCondition源码分析" class="headerlink" title="3.2 OnBeanCondition源码分析"></a>3.2 OnBeanCondition源码分析</h2><h2 id="3-3-OnWebApplicationCondition源码分析"><a href="#3-3-OnWebApplicationCondition源码分析" class="headerlink" title="3.3 OnWebApplicationCondition源码分析"></a>3.3 OnWebApplicationCondition源码分析</h2><h2 id="3-4-其他"><a href="#3-4-其他" class="headerlink" title="3.4 其他"></a>3.4 其他</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-SpringBoot-%E5%86%85%E7%BD%AE%E6%9D%A1%E4%BB%B6%E6%B3%A8%E8%A7%A3"><span class="toc-text">1.SpringBoot 内置条件注解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Condition%E6%8E%A5%E5%8F%A3"><span class="toc-text">2.Condition接口</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Condition%E6%8E%A5%E5%8F%A3demo"><span class="toc-text">2.1 Condition接口demo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Condition%E6%8E%A5%E5%8F%A3%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-text">2.2 Condition接口源码分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Spring%E7%9A%84%E5%86%85%E7%BD%AECondition%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0%E7%B1%BB"><span class="toc-text">2.3 Spring的内置Condition接口实现类</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-SpringBootCondition%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90"><span class="toc-text">3.SpringBootCondition源码解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-OnResourceCondition%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-text">3.1 OnResourceCondition源码分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-OnBeanCondition%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-text">3.2 OnBeanCondition源码分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-OnWebApplicationCondition%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-text">3.3 OnWebApplicationCondition源码分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%E5%85%B6%E4%BB%96"><span class="toc-text">3.4 其他</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2020-11-17-SpringBoot-Source-03/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
+     
+      <a href="/tags/SpringBoot/"><i class="fa fa-tags"></i>SpringBoot</a>
+     
+      <a href="/tags/Source/"><i class="fa fa-tags"></i>Source</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2020 <a href="https://blog.iyu.pub" target="_blank">https://blog.iyu.pub</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/2020-11-16-SpringBoot-Source-02/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+  </body>
+</html>
