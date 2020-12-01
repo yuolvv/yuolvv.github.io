@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>SpringBoot源码分析(5)-SpringBoot 的配置属性值的绑定流程 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Java,Java,SpringBoot,Source," />
+  
+
+  
+  <meta name="description" content="&amp;emsp;&amp;emsp; 记录SpringBoot的源码分析过程-SpringBoot 的配置属性值的绑定流程">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: ["383060d16dbbd03a8df851cdc6f513f7fdf4dadd8ae0dc62ae87151f537ec38c", ],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2020-11-19
+    </span>
+    
+      <span>
+        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>Unlock
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    SpringBoot源码分析(5)-SpringBoot 的配置属性值的绑定流程
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://cn.bing.com/th?id==OHR.CPMall_ZH-CN1202155438_1920x1080.jpg);"></figure>
+    </div>
+  
+
+  
+
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <p>上一篇分析了SpringBoot的自动配置的相关源码，自动配置主要有以下几个重要的步骤：</p>
+<ol>
+<li><p>从spring.factories配置文件中加载自动配置类；</p>
+</li>
+<li><p>加载的自动配置类中排除掉<code>@EnableAutoConfiguration</code>注解的<code>exclude</code>属性指定的自动配置类；</p>
+</li>
+<li><p>然后再用<code>AutoConfigurationImportFilter</code>接口去过滤自动配置类是否符合其标注注解（若有标注的话）<code>@ConditionalOnClass</code>,<code>@ConditionalOnBean</code>和<code>@ConditionalOnWebApplication</code>的条件，若都符合的话则返回匹配结果；</p>
+</li>
+<li><p>然后触发<code>AutoConfigurationImportEvent</code>事件，告诉<code>ConditionEvaluationReport</code>条件评估报告器对象来分别记录符合条件和<code>exclude</code>的自动配置类。</p>
+</li>
+<li><p>最后spring再将最后筛选后的自动配置类导入IOC容器中</p>
+</li>
+</ol>
+<p>继续来分析SpringBoot的自动配置的相关源码，我们来分析下<code>@EnableConfigurationProperties</code>和<code>@ConfigurationProperties</code>这两个注解，来探究下外部配置属性值是如何被绑定到@ConfigurationProperties注解的类属性中的？</p>
+<blockquote>
+<p>Example：以配置web项目的服务器端口为例，若我们要将服务器端口配置为<code>9999</code>，那么需要在<code>application.properties</code>配置文件中配置<code>server.port=9999</code>，此时该配置值<code>9999</code>就将会绑定到被<code>@ConfigurationProperties</code>注解的类<code>ServerProperties</code>的属性<code>port</code>上，从而使得配置生效。</p>
+</blockquote>
+<h1 id="1-EnableConfigurationProperties"><a href="#1-EnableConfigurationProperties" class="headerlink" title="1.@EnableConfigurationProperties"></a>1.@EnableConfigurationProperties</h1><p>以前面的设置服务器端口的例子来分析，先直接来看看<code>ServerProperties</code>的源码，应该能找到源码的入口：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">&quot;server&quot;</span>, ignoreUnknownFields = <span class="literal">true</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServerProperties</span> &#123;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Server HTTP port.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> Integer port;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，<code>ServerProperties</code>类上标注了<code>@ConfigurationProperties</code>这个注解，服务器属性配置前缀为<code>server</code>，是否忽略未知的配置值（<code>ignoreUnknownFields</code>）设置为<code>true</code>。</p>
+<p>那么再来看下<code>@ConfigurationProperties</code>这个注解的源码：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">@Target</span>(&#123; ElementType.TYPE, ElementType.METHOD &#125;)</span><br><span class="line"><span class="variable">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="variable">@Documented</span></span><br><span class="line">public <span class="variable">@interface</span> ConfigurationProperties &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * The name prefix of the properties that are valid to bind to this object. Synonym</span></span><br><span class="line"><span class="comment">	 * for &#123;@link #prefix()&#125;. A valid prefix is defined by one or more words separated</span></span><br><span class="line"><span class="comment">	 * with dots (e.g. &#123;@code &quot;acme.system.feature&quot;&#125;).</span></span><br><span class="line"><span class="comment">	 * @return the name prefix of the properties to bind</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// 前缀别名</span></span><br><span class="line">	<span class="variable">@AliasFor</span>(<span class="string">&quot;prefix&quot;</span>)</span><br><span class="line">	String value() default <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * The name prefix of the properties that are valid to bind to this object. Synonym</span></span><br><span class="line"><span class="comment">	 * for &#123;@link #value()&#125;. A valid prefix is defined by one or more words separated with</span></span><br><span class="line"><span class="comment">	 * dots (e.g. &#123;@code &quot;acme.system.feature&quot;&#125;).</span></span><br><span class="line"><span class="comment">	 * @return the name prefix of the properties to bind</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// 前缀</span></span><br><span class="line">	<span class="variable">@AliasFor</span>(<span class="string">&quot;value&quot;</span>)</span><br><span class="line">	String prefix() default <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Flag to indicate that when binding to this object invalid fields should be ignored.</span></span><br><span class="line"><span class="comment">	 * Invalid means invalid according to the binder that is used, and usually this means</span></span><br><span class="line"><span class="comment">	 * fields of the wrong type (or that cannot be coerced into the correct type).</span></span><br><span class="line"><span class="comment">	 * @return the flag value (default false)</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// 忽略无效的配置属性</span></span><br><span class="line">	<span class="selector-tag">boolean</span> <span class="selector-tag">ignoreInvalidFields</span>() <span class="selector-tag">default</span> <span class="selector-tag">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Flag to indicate that when binding to this object unknown fields should be ignored.</span></span><br><span class="line"><span class="comment">	 * An unknown field could be a sign of a mistake in the Properties.</span></span><br><span class="line"><span class="comment">	 * @return the flag value (default true)</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// 忽略未知的配置属性</span></span><br><span class="line">	<span class="selector-tag">boolean</span> <span class="selector-tag">ignoreUnknownFields</span>() <span class="selector-tag">default</span> <span class="selector-tag">true</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>@ConfigurationProperties</code>这个注解的作用就是将外部配置的配置值绑定到其注解的类的属性上，可以作用于配置类或配置类的方法上。可以看到<code>@ConfigurationProperties</code>注解除了有设置前缀，是否忽略一些不存在或无效的配置等属性等外，这个注解没有其他任何的处理逻辑，可以看到<code>@ConfigurationProperties</code>是一个标志性的注解，源码入口不在这里。</p>
+<p>这里讲的是服务器的自动配置，来看下自动配置类<code>ServletWebServerFactoryAutoConfiguration</code>的源码：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">@Configuration</span></span><br><span class="line"><span class="variable">@AutoConfigureOrder</span>(Ordered.HIGHEST_PRECEDENCE)</span><br><span class="line"><span class="variable">@ConditionalOnClass</span>(ServletRequest.class)</span><br><span class="line"><span class="variable">@ConditionalOnWebApplication</span>(type = Type.SERVLET)</span><br><span class="line"><span class="variable">@EnableConfigurationProperties</span>(ServerProperties.class)</span><br><span class="line"><span class="variable">@Import</span>(&#123; ServletWebServerFactoryAutoConfiguration.BeanPostProcessorsRegistrar.class,</span><br><span class="line">		ServletWebServerFactoryConfiguration.EmbeddedTomcat.class,</span><br><span class="line">		ServletWebServerFactoryConfiguration.EmbeddedJetty.class,</span><br><span class="line">		ServletWebServerFactoryConfiguration.EmbeddedUndertow.class &#125;)</span><br><span class="line">public class ServletWebServerFactoryAutoConfiguration &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，<code>ServletWebServerFactoryAutoConfiguration</code>自动配置类中有一个<code>@EnableConfigurationProperties</code>注解，且注解值是前面讲的<code>ServerProperties.class</code>，因此<code>@EnableConfigurationProperties</code>注解肯定就是关注的重点了。</p>
+<p>再来看下<code>@EnableConfigurationProperties</code>注解的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.TYPE)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Import(EnableConfigurationPropertiesImportSelector.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableConfigurationProperties &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Convenient way to quickly register &#123;<span class="doctag">@link</span> ConfigurationProperties&#125; annotated beans</span></span><br><span class="line"><span class="comment">	 * with Spring. Standard Spring Beans will also be scanned regardless of this value.</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> &#123;<span class="doctag">@link</span> ConfigurationProperties&#125; annotated beans to register</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// 这个值指定的类就是@ConfigurationProperties注解标注的类，其将会被注册到spring容器中</span></span><br><span class="line">	Class&lt;?&gt;[] value() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>@EnableConfigurationProperties</code>注解的主要作用就是为<code>@ConfigurationProperties</code>注解标注的类提供支持，即对将外部配置属性值（比如application.properties配置值）绑定到<code>@ConfigurationProperties</code>标注的类的属性中。</p>
+<blockquote>
+<p>SpringBoot源码中还存在了<code>ConfigurationPropertiesAutoConfiguration</code>这个自动配置类，同时<code>spring.factories</code>配置文件中的<code>EnableAutoConfiguration</code>接口也配置了<code>ConfigurationPropertiesAutoConfiguration</code>，这个自动配置类上也有<code>@EnableConfigurationProperties</code>这个注解，堆属性绑定进行了默认开启。</p>
+</blockquote>
+<p><strong>那么，<code>@EnableConfigurationProperties</code>这个注解对属性绑定提供怎样的支持呢？</strong></p>
+<p>可以看到<code>@EnableConfigurationProperties</code>这个注解上还标注了<code>@Import(EnableConfigurationPropertiesImportSelector.class)</code>，其导入了<code>EnableConfigurationPropertiesImportSelector</code>，因此可以肯定的是<code>@EnableConfigurationProperties</code>这个注解对属性绑定提供的支持必定跟<code>EnableConfigurationPropertiesImportSelector</code>有关。</p>
+<p>接下来分析<code>EnableConfigurationPropertiesImportSelector</code>，是如何承担将外部配置属性值绑定到<code>@ConfigurationProperties</code>标注的类的属性中的。</p>
+<h1 id="2-EnableConfigurationPropertiesImportSelector"><a href="#2-EnableConfigurationPropertiesImportSelector" class="headerlink" title="2.EnableConfigurationPropertiesImportSelector"></a>2.EnableConfigurationPropertiesImportSelector</h1><p><code>EnableConfigurationPropertiesImportSelector</code>类的作用主要用来处理外部属性绑定的相关逻辑，其实现了<code>ImportSelector</code>接口的<code>selectImports</code>方法可以向容器中注册bean。</p>
+<p>那么，看下<code>EnableConfigurationPropertiesImportSelector</code>覆写的<code>selectImports</code>方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EnableConfigurationPropertiesImportSelector</span> <span class="keyword">implements</span> <span class="title">ImportSelector</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// IMPORTS数组即是要向spring容器中注册的bean</span></span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">static</span> <span class="keyword">final</span> <span class="keyword">String</span>[] IMPORTS = &#123;</span><br><span class="line">			ConfigurationPropertiesBeanRegistrar.<span class="keyword">class</span>.getName(),</span><br><span class="line">			ConfigurationPropertiesBindingPostProcessorRegistrar.<span class="keyword">class</span>.getName() &#125;;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">String</span>[] selectImports(AnnotationMetadata metadata) &#123;</span><br><span class="line">		<span class="comment">// 返回ConfigurationPropertiesBeanRegistrar和 ConfigurationPropertiesBindingPostProcessorRegistrar的全限定名</span></span><br><span class="line">		<span class="comment">// 即上面两个类将会被注册到Spring容器中</span></span><br><span class="line">		<span class="keyword">return</span> IMPORTS;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>EnableConfigurationPropertiesImportSelector</code>类中的<code>selectImports</code>方法中返回的是<code>IMPORTS</code>数组，而这个<code>IMPORTS</code>是一个常量数组，值是<code>ConfigurationPropertiesBeanRegistrar</code>和<code>ConfigurationPropertiesBindingPostProcessorRegistrar</code>。即<code>EnableConfigurationPropertiesImportSelector</code>的作用是向Spring容器中注册了<code>ConfigurationPropertiesBeanRegistrar</code>和<code>ConfigurationPropertiesBindingPostProcessorRegistrar</code>这两个<code>bean</code>。</p>
+<p>在<code>EnableConfigurationPropertiesImportSelector</code>类中没看到处理外部属性绑定的相关逻辑，其只是注册了<code>ConfigurationPropertiesBeanRegistrar</code>和<code>ConfigurationPropertiesBindingPostProcessorRegistrar</code>这两个<code>bean</code>,接下来我们再看下注册的这两个<code>bean</code>类。</p>
+<h2 id="2-1-ConfigurationPropertiesBeanRegistrar"><a href="#2-1-ConfigurationPropertiesBeanRegistrar" class="headerlink" title="2.1 ConfigurationPropertiesBeanRegistrar"></a>2.1 ConfigurationPropertiesBeanRegistrar</h2><p>先来看下<code>ConfigurationPropertiesBeanRegistrar</code>这个类的源码：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigurationPropertiesBeanRegistrar</span> <span class="title">implements</span> <span class="title">ImportBeanDefinitionRegistrar</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// metadata是 AnnotationMetadata 对象，存储了某个配置类的元数据</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">void</span> <span class="function"><span class="title">registerBeanDefinitions</span>(<span class="params">AnnotationMetadata metadata, BeanDefinitionRegistry registry</span>)</span> &#123;</span><br><span class="line">		<span class="comment">// （1）得到 @EnableConfigurationProperties注解的所有属性值,</span></span><br><span class="line">		<span class="comment">// 比如 @EnableConfigurationProperties(ServerProperties.class),那么得到的值是ServerProperties.class</span></span><br><span class="line">		<span class="comment">// （2）然后再将得到的@EnableConfigurationProperties注解的所有属性值注册到容器中</span></span><br><span class="line">		getTypes(metadata).forEach((<span class="keyword">type</span>) -&gt; register(registry,</span><br><span class="line">				(ConfigurableListableBeanFactory) registry, <span class="keyword">type</span>));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ConfigurationPropertiesBeanRegistrar</code>是<code>EnableConfigurationPropertiesImportSelector</code>的内部类，其实现了<code>ImportBeanDefinitionRegistrar</code>接口，覆写了<code>registerBeanDefinitions</code>方法。可见，<code>ConfigurationPropertiesBeanRegistrar</code>又是用来注册一些<code>bean</code> <code>definition</code>的，即也是向<code>Spring</code>容器中注册一些bean。</p>
+<p>在<code>ConfigurationPropertiesBeanRegistrar</code>实现的<code>registerBeanDefinitions</code>中，可以看到主要做了两件事：</p>
+<ol>
+<li>调用<code>getTypes</code>方法获取<code>@EnableConfigurationProperties</code>注解的属性值<code>XxxProperties</code>；</li>
+<li>调用<code>register</code>方法将获取的属性值<code>XxxProperties</code>注册到<code>Spring</code>容器中，用于以后和外部属性绑定时使用。</li>
+</ol>
+<p>来看下<code>getTypes</code>方法的源码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">private <span class="built_in">List</span>&lt;Class&lt;?&gt;&gt; getTypes(AnnotationMetadata metadata) &#123;</span><br><span class="line">	<span class="comment">// 得到 @EnableConfigurationProperties注解的所有属性值,</span></span><br><span class="line">	<span class="comment">// 比如 @EnableConfigurationProperties(ServerProperties.class),那么得到的值是ServerProperties.class</span></span><br><span class="line">	MultiValueMap&lt;<span class="built_in">String</span>, <span class="built_in">Object</span>&gt; attributes = metadata</span><br><span class="line">			.getAllAnnotationAttributes(</span><br><span class="line">					EnableConfigurationProperties.<span class="keyword">class</span>.getName(), <span class="keyword">false</span>);</span><br><span class="line">	<span class="comment">// 将属性值取出装进List集合并返回</span></span><br><span class="line">	<span class="keyword">return</span> collectClasses((attributes != <span class="keyword">null</span>) ? attributes.<span class="keyword">get</span>(<span class="string">&quot;value&quot;</span>) : Collections.emptyList());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>getTypes</code>方法里面的逻辑很简单，即将<code>@EnableConfigurationProperties</code>注解里面的属性值<code>XxxProperties</code>（比如<code>ServerProperties.class</code>）取出并装进<code>List</code>集合并返回。</p>
+<p>由<code>getTypes</code>方法拿到<code>@EnableConfigurationProperties</code>注解里面的属性值<code>XxxProperties</code>（比如<code>ServerProperties.class</code>）后，此时再遍历将<code>XxxProperties</code>逐个注册进<code>Spring</code>容器中，来看下<code>register</code>方法：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> void register(BeanDefinitionRegistry registry,</span><br><span class="line">				ConfigurableListableBeanFactory beanFactory, Class&lt;?&gt; <span class="keyword">type</span>) &#123;</span><br><span class="line">	<span class="comment">// 得到type的名字，一般用类的全限定名作为bean name</span></span><br><span class="line">	String name = get<span class="constructor">Name(<span class="params">type</span>)</span>;</span><br><span class="line">	<span class="comment">// 根据bean name判断beanFactory容器中是否包含该bean</span></span><br><span class="line">	<span class="keyword">if</span> (!contains<span class="constructor">BeanDefinition(<span class="params">beanFactory</span>, <span class="params">name</span>)</span>) &#123;</span><br><span class="line">		<span class="comment">// 若不包含，那么注册bean definition</span></span><br><span class="line">		register<span class="constructor">BeanDefinition(<span class="params">registry</span>, <span class="params">name</span>, <span class="params">type</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-ConfigurationPropertiesBindingPostProcessorRegistrar"><a href="#2-2-ConfigurationPropertiesBindingPostProcessorRegistrar" class="headerlink" title="2.2 ConfigurationPropertiesBindingPostProcessorRegistrar"></a>2.2 ConfigurationPropertiesBindingPostProcessorRegistrar</h2><p>可以看到<code>ConfigurationPropertiesBindingPostProcessorRegistrar</code>类名字又是以<code>Registrar</code>单词为结尾，说明其肯定又是导入一些<code>bean</code> <code>definition</code>的。直接看源码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ConfigurationPropertiesBindingPostProcessorRegistrar</span></span><br><span class="line">		<span class="title">implements</span> <span class="title">ImportBeanDefinitionRegistrar</span> &#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerBeanDefinitions</span>(<span class="params">AnnotationMetadata importingClassMetadata,</span></span></span><br><span class="line"><span class="function"><span class="params">			BeanDefinitionRegistry registry</span>)</span> &#123;</span><br><span class="line">		<span class="comment">// 若容器中没有注册ConfigurationPropertiesBindingPostProcessor这个处理属性绑定的后置处理器，</span></span><br><span class="line">		<span class="comment">// 那么将注册ConfigurationPropertiesBindingPostProcessor和ConfigurationBeanFactoryMetadata这两个bean</span></span><br><span class="line">		<span class="comment">// 注意onApplicationEnvironmentPreparedEvent事件加载配置属性在先，然后再注册一些后置处理器用来处理这些配置属性</span></span><br><span class="line">		<span class="keyword">if</span> (!registry.containsBeanDefinition(ConfigurationPropertiesBindingPostProcessor.BEAN_NAME)) &#123;</span><br><span class="line">			<span class="comment">// (1)注册ConfigurationPropertiesBindingPostProcessor后置处理器，用来对配置属性进行后置处理</span></span><br><span class="line">			registerConfigurationPropertiesBindingPostProcessor(registry);</span><br><span class="line">			<span class="comment">// (2)注册一个ConfigurationBeanFactoryMetadata类型的bean，</span></span><br><span class="line">			<span class="comment">// 注意ConfigurationBeanFactoryMetadata实现了BeanFactoryPostProcessor，然后其会在postProcessBeanFactory中注册一些元数据</span></span><br><span class="line">			registerConfigurationBeanFactoryMetadata(registry);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 注册ConfigurationPropertiesBindingPostProcessor后置处理器</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">registerConfigurationPropertiesBindingPostProcessor</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">			BeanDefinitionRegistry registry</span>)</span> &#123;</span><br><span class="line">		GenericBeanDefinition definition = <span class="keyword">new</span> GenericBeanDefinition();</span><br><span class="line">		definition.setBeanClass(ConfigurationPropertiesBindingPostProcessor.<span class="keyword">class</span>);</span><br><span class="line">		definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);</span><br><span class="line">		registry.registerBeanDefinition(</span><br><span class="line">				ConfigurationPropertiesBindingPostProcessor.BEAN_NAME, definition);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 注册ConfigurationBeanFactoryMetadata后置处理器</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">registerConfigurationBeanFactoryMetadata</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">			BeanDefinitionRegistry registry</span>)</span> &#123;</span><br><span class="line">		GenericBeanDefinition definition = <span class="keyword">new</span> GenericBeanDefinition();</span><br><span class="line">		definition.setBeanClass(ConfigurationBeanFactoryMetadata.<span class="keyword">class</span>);</span><br><span class="line">		definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);</span><br><span class="line">		registry.registerBeanDefinition(ConfigurationBeanFactoryMetadata.BEAN_NAME,</span><br><span class="line">				definition);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ConfigurationPropertiesBindingPostProcessorRegistrar</code>类的逻辑非常简单，主要用来注册外部配置属性绑定相关的后置处理器即<code>ConfigurationBeanFactoryMetadata</code>和<code>ConfigurationPropertiesBindingPostProcessor</code>。</p>
+<p>那么接下来再来探究下注册的这两个后置处理器又是执行怎样的后置处理逻辑呢？</p>
+<h2 id="2-2-1-ConfigurationBeanFactoryMetadata"><a href="#2-2-1-ConfigurationBeanFactoryMetadata" class="headerlink" title="2.2.1 ConfigurationBeanFactoryMetadata"></a>2.2.1 ConfigurationBeanFactoryMetadata</h2><p>先来看下<code>ConfigurationBeanFactoryMetadata</code>类源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigurationBeanFactoryMetadata</span> <span class="keyword">implements</span> <span class="title">BeanFactoryPostProcessor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * The bean name that this class is registered with.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">static</span> <span class="keyword">final</span> <span class="keyword">String</span> BEAN_NAME = ConfigurationBeanFactoryMetadata.<span class="keyword">class</span>.getName();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> ConfigurableListableBeanFactory beanFactory;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * beansFactoryMetadata集合存储beansFactory的元数据</span></span><br><span class="line"><span class="comment">	 * key:某个bean的名字  value：FactoryMetadata对象（封装了工厂bean名和工厂方法名）</span></span><br><span class="line"><span class="comment">	 * 比如下面这个配置类：</span></span><br><span class="line"><span class="comment">	 *</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@Configuration</span></span></span><br><span class="line"><span class="comment">	 * public class ConfigA &#123;</span></span><br><span class="line"><span class="comment">	 *      <span class="doctag">@Bean</span></span></span><br><span class="line"><span class="comment">	 *      public BeanXXX methodB（configA, ） &#123;</span></span><br><span class="line"><span class="comment">	 *          return new BeanXXX();</span></span><br><span class="line"><span class="comment">	 *      &#125;</span></span><br><span class="line"><span class="comment">	 * &#125;</span></span><br><span class="line"><span class="comment">	 *</span></span><br><span class="line"><span class="comment">	 * 那么：key值为&quot;methodB&quot;，value为FactoryMetadata（configA, methodB）对象，其bean属性值为&quot;configA&quot;,method属性值为&quot;methodB&quot;</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Map&lt;<span class="keyword">String</span>, FactoryMetadata&gt; beansFactoryMetadata = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)</span><br><span class="line">			throws BeansException &#123;</span><br><span class="line">		this.beanFactory = beanFactory;</span><br><span class="line">		<span class="comment">// 遍历beanFactory的beanDefinitionName，即每个bean的名字（比如工厂方法对应的bean名字）</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">String</span> name : beanFactory.getBeanDefinitionNames()) &#123;</span><br><span class="line">			<span class="comment">// 根据name得到beanDefinition</span></span><br><span class="line">			BeanDefinition definition = beanFactory.getBeanDefinition(name);</span><br><span class="line">			<span class="comment">// 工厂方法名：一般是注解@Bean的方法名</span></span><br><span class="line">			<span class="keyword">String</span> method = definition.getFactoryMethodName();</span><br><span class="line">			<span class="comment">// 工厂bean名：一般是注解@Configuration的类名</span></span><br><span class="line">			<span class="keyword">String</span> bean = definition.getFactoryBeanName();</span><br><span class="line">			<span class="keyword">if</span> (method != <span class="literal">null</span> &amp;&amp; bean != <span class="literal">null</span>) &#123;</span><br><span class="line">				<span class="comment">// 将beanDefinitionName作为Key，封装了工厂bean名和工厂方法名的FactoryMetadata对象作为value装入beansFactoryMetadata中</span></span><br><span class="line">				this.beansFactoryMetadata.put(name, <span class="keyword">new</span> FactoryMetadata(bean, method));</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ConfigurationBeanFactoryMetadata</code>这个后置处理器，其实现了<code>BeanFactoryPostProcessor</code>接口的<code>postProcessBeanFactory</code>方法，在初始化<code>bean</code> <code>factory</code>时将<code>@Bean</code>注解的元数据存储起来，以便在后续的外部配置属性绑定的相关逻辑中使用。</p>
+<p>从上面代码可以看到<code>ConfigurationBeanFactoryMetadata</code>类覆写的<code>postProcessBeanFactory</code>方法做的事情就是将工厂<code>Bean</code>（可以理解为<code>@Configuration</code>注解的类）及其<code>@Bean</code>注解的工厂方法的一些元数据缓存到<code>beansFactoryMetadata</code>集合中，以便后续使用。</p>
+<p>由上代码中我们看到了<code>ConfigurationBeanFactoryMetadata</code>类的<code>beansFactoryMetadata</code>集合类型是<code>Map&lt;String, FactoryMetadata&gt;</code>，那么我们再来看下封装相关工厂元数据的<code>FactoryMetadata</code>类：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">FactoryMetadata</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// @Configuration注解的配置类的类名</span></span><br><span class="line">	<span class="keyword">private</span> final <span class="built_in">String</span> bean;</span><br><span class="line">	<span class="comment">// @Bean注解的方法名</span></span><br><span class="line">	<span class="keyword">private</span> final <span class="built_in">String</span> method;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">FactoryMetadata</span>(<span class="params"><span class="built_in">String</span> bean, <span class="built_in">String</span> method</span>)</span> &#123;</span><br><span class="line">		<span class="built_in">this</span>.bean = bean;</span><br><span class="line">		<span class="built_in">this</span>.method = method;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">String</span> <span class="function"><span class="title">getBean</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">this</span>.bean;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">String</span> <span class="function"><span class="title">getMethod</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">this</span>.method;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>FactoryMetadata</code>仅有两个属性<code>bean</code>和<code>method</code>，分别表示<code>@Configuration</code>注解的工厂<code>bean</code>和<code>@Bean</code>注解的工厂方法。</p>
+<p>例如：</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * beansFactoryMetadata集合存储beansFactory的元数据</span><br><span class="line"> * key:某个bean的名字  <span class="keyword">value</span>：<span class="type">FactoryMetadata</span>对象（封装了工厂bean名和工厂方法名）</span><br><span class="line"> * 比如下面这个配置类：</span><br><span class="line"> *</span><br><span class="line"> * @<span class="type">Configuration</span></span><br><span class="line"> * public <span class="keyword">class</span> <span class="type">ConfigA</span> &#123;</span><br><span class="line"> *      @<span class="type">Bean</span></span><br><span class="line"> *      public <span class="type">BeanXXX</span> methodB（configA, ） &#123;</span><br><span class="line"> *          return <span class="keyword">new</span> <span class="type">BeanXXX</span><span class="literal">()</span>;</span><br><span class="line"> *      &#125;</span><br><span class="line"> * &#125;</span><br><span class="line"> *</span><br><span class="line"> * 那么：key值为<span class="string">&quot;methodB&quot;</span>，<span class="keyword">value</span>为<span class="type">FactoryMetadata</span>（configA, methodB）对象，其bean属性值为<span class="string">&quot;configA&quot;</span>,<span class="keyword">method</span>属性值为<span class="string">&quot;methodB&quot;</span></span><br><span class="line"> */</span><br><span class="line"> <span class="keyword">private</span> final <span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">FactoryMetadata</span>&gt; beansFactoryMetadata = <span class="keyword">new</span> <span class="type">HashMap</span>&lt;&gt;<span class="literal">()</span>;</span><br></pre></td></tr></table></figure>
+<p>为了更好理解上面<code>beansFactoryMetadata</code>集合存储的数据是啥，最好动手调试看看里面装的是什么。总之这里记住一点就好了：<code>ConfigurationBeanFactoryMetadata</code>类的<code>beansFactoryMetadata</code>集合存储的是工厂<code>bean</code>的相关元数据，以便在<code>ConfigurationPropertiesBindingPostProcessor</code>后置处理器中使用。</p>
+<h2 id="2-2-2-ConfigurationPropertiesBindingPostProcessor"><a href="#2-2-2-ConfigurationPropertiesBindingPostProcessor" class="headerlink" title="2.2.2 ConfigurationPropertiesBindingPostProcessor"></a>2.2.2 ConfigurationPropertiesBindingPostProcessor</h2><p>再来看下<code>ConfigurationPropertiesBindingPostProcessorRegistrar</code>类注册的另外一个后置处理器<code>ConfigurationPropertiesBindingPostProcessor</code>，这个后置处理器主要承担了<strong>将外部配置属性绑定到<code>@ConfigurationProperties</code>注解标注的XxxProperties类的属性中</strong>（比如<code>application.properties</code>配置文件中设置了<code>server.port=9999</code>,那么<code>9999</code>将会绑定到<code>ServerProperties</code>类的<code>port</code>属性中）的实现逻辑。</p>
+<p>先来看下<code>ConfigurationPropertiesBindingPostProcessor</code>的源码：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">ConfigurationPropertiesBindingPostProcessor</span> <span class="symbol">implements</span> <span class="symbol">BeanPostProcessor,</span></span><br><span class="line">	<span class="symbol">PriorityOrdered, <span class="symbol">ApplicationContextAware</span>, <span class="symbol">InitializingBean</span></span> &#123;</span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">void</span> afterPropertiesSet() throws Exception &#123;</span><br><span class="line">	    <span class="comment">// ...这里省略实现代码先</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> Object postProcessBeforeInitialization(Object bean, String beanName) &#123;</span><br><span class="line">	    <span class="comment">// ...这里省略实现代码先</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// ...省略非关键代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>ConfigurationPropertiesBindingPostProcessor</code>后置处理器实现了两个重要的接口<code>InitializingBean</code>和<code>BeanPostProcessor</code>。</p>
+<ol>
+<li><code>InitializingBean</code>接口的<code>afterPropertiesSet</code>方法会在<code>bean</code>属性赋值后调用，用来执行一些自定义的初始化逻辑比如检查某些强制的属性是否有被赋值，校验某些配置或给一些未被赋值的属性赋值。</li>
+<li><code>BeanPostProcessor</code>接口是<code>bean</code>的后置处理器，其有<code>postProcessBeforeInitialization</code>和<code>postProcessAfterInitialization</code>两个勾子方法，分别会在<code>bean</code>初始化前后被调用来执行一些后置处理逻辑，比如检查标记接口或是否用代理包装了<code>bean</code>。</li>
+</ol>
+<p>同时以上代码可以看到<code>ConfigurationPropertiesBindingPostProcessor</code>后置处理器覆写了<code>InitializingBean</code>的<code>afterPropertiesSet</code>方法和<code>BeanPostProcessor</code>的<code>postProcessBeforeInitialization</code>方法。</p>
+<p>接下来再来探究<code>ConfigurationPropertiesBindingPostProcessor</code>后置处理器覆写的两个方法的源码。</p>
+<h3 id="2-2-2-1-在执行外部属性绑定逻辑前先准备好相关元数据和配置属性绑定器"><a href="#2-2-2-1-在执行外部属性绑定逻辑前先准备好相关元数据和配置属性绑定器" class="headerlink" title="2.2.2.1 在执行外部属性绑定逻辑前先准备好相关元数据和配置属性绑定器"></a>2.2.2.1 在执行外部属性绑定逻辑前先准备好相关元数据和配置属性绑定器</h3><p>先来分析下<code>ConfigurationPropertiesBindingPostProcessor</code>覆写<code>InitializingBean</code>接口的<code>afterPropertiesSet</code>方法：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里主要是给 beanFactoryMetadata 和 configurationPropertiesBinder 的属性赋值，用于后面的后置处理器方法处理属性绑定的时候用</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> void afterPropertiesSet() throws Exception &#123;</span><br><span class="line">	<span class="comment">// We can&#x27;t use constructor injection of the application context because</span></span><br><span class="line">	<span class="comment">// it causes eager factory bean initialization</span></span><br><span class="line">	<span class="comment">// 【1】利用afterPropertiesSet这个勾子方法从容器中获取之前注册的ConfigurationBeanFactoryMetadata对象赋给beanFactoryMetadata属性</span></span><br><span class="line">	<span class="comment">// （问1）beanFactoryMetadata这个bean是什么时候注册到容器中的？</span></span><br><span class="line">	<span class="comment">// （答1）在ConfigurationPropertiesBindingPostProcessorRegistrar类的registerBeanDefinitions方法中将beanFactoryMetadata这个bean注册到容器中</span></span><br><span class="line">	<span class="comment">// （问2）从容器中获取beanFactoryMetadata对象后，什么时候会被用到？</span></span><br><span class="line">	<span class="comment">// （答2）beanFactoryMetadata对象的beansFactoryMetadata集合保存的工厂bean相关的元数据，在ConfigurationPropertiesBindingPostProcessor类</span></span><br><span class="line">	<span class="comment">//        要判断某个bean是否有FactoryAnnotation或FactoryMethod时会根据这个beanFactoryMetadata对象的beansFactoryMetadata集合的元数据来查找</span></span><br><span class="line">	<span class="keyword">this</span>.beanFactoryMetadata = <span class="keyword">this</span>.applicationContext.getBean(ConfigurationBeanFactoryMetadata.BEAN_NAME, ConfigurationBeanFactoryMetadata.<span class="keyword">class</span>);</span><br><span class="line">	<span class="comment">// 【2】new一个ConfigurationPropertiesBinder，用于后面的外部属性绑定时使用</span></span><br><span class="line">	<span class="comment">// VALIDATOR_BEAN_NAME=&quot;configurationPropertiesValidator&quot;</span></span><br><span class="line">	<span class="keyword">this</span>.configurationPropertiesBinder = new ConfigurationPropertiesBinder(<span class="keyword">this</span>.applicationContext, VALIDATOR_BEAN_NAME);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到以上代码主要逻辑就是<strong>在执行外部属性绑定逻辑前先准备好相关元数据和配置属性绑定器</strong>，即从<code>Spring</code>容器中获取到之前注册的<code>ConfigurationBeanFactoryMetadata</code>对象赋给<code>ConfigurationPropertiesBindingPostProcessor</code>后置处理器的<code>beanFactoryMetadata</code>属性,还有就是新建一个<code>ConfigurationPropertiesBinder</code>配置属性绑定器对象并赋值给<code>configurationPropertiesBinder</code>属性。</p>
+<p>再来看下<code>ConfigurationPropertiesBinder</code>这个配置属性绑定器对象是如何构造的。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="constructor">ConfigurationPropertiesBinder(ApplicationContext <span class="params">applicationContext</span>, String <span class="params">validatorBeanName</span>)</span> &#123;</span><br><span class="line">	this.applicationContext = applicationContext;</span><br><span class="line">	<span class="comment">// 将applicationContext封装到PropertySourcesDeducer对象中并返回</span></span><br><span class="line">	<span class="comment">// 获取属性源，主要用于在ConfigurableListableBeanFactory的后置处理方法postProcessBeanFactory中处理</span></span><br><span class="line">	this.propertySources = <span class="keyword">new</span> <span class="constructor">PropertySourcesDeducer(<span class="params">applicationContext</span>)</span>.get<span class="constructor">PropertySources()</span>;</span><br><span class="line">	<span class="comment">// 如果没有配置validator的话，这里一般返回的是null</span></span><br><span class="line">	this.configurationPropertiesValidator = get<span class="constructor">ConfigurationPropertiesValidator(<span class="params">applicationContext</span>, <span class="params">validatorBeanName</span>)</span>;</span><br><span class="line">	<span class="comment">// 检查实现JSR-303规范的bean校验器相关类在classpath中是否存在</span></span><br><span class="line">	this.jsr303Present = <span class="module-access"><span class="module"><span class="identifier">ConfigurationPropertiesJsr303Validator</span>.</span></span>is<span class="constructor">Jsr303Present(<span class="params">applicationContext</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到在构造<code>ConfigurationPropertiesBinder</code>对象时主要给其相关属性赋值（一般构造器逻辑都是这样）：</p>
+<ol>
+<li>给<code>applicationContext</code>属性赋值注入上下文对象；</li>
+<li>给<code>propertySources</code>属性赋值，属性源即外部配置值比如<code>application.properties</code>配置的属性值，注意这里的属性源是由<code>ConfigFileApplicationListener</code>这个监听器负责读取的。</li>
+<li>给<code>configurationPropertiesValidator</code>属性赋值，值来自<code>Spring</code>容器中名为<code>configurationPropertiesValidator</code>的<code>bean</code>。</li>
+<li>给<code>jsr303Present</code>属性赋值，当<code>javax.validation.Validator</code>,<code>javax.validation.ValidatorFactory</code>和<code>javax.validation.bootstrap.GenericBootstrap&quot;</code>这三个类同时存在于<code>classpath</code>中<code>jsr303Present</code>属性值才为<code>true</code>。</li>
+</ol>
+<blockquote>
+<p><strong>关于JSR303</strong>：<code>JSR-303</code>是JAVA EE 6中的一项子规范，叫做<code>Bean Validation</code>，<code>Hibernate Validator</code>是<code>Bean Validation</code>的参考实现 。<code>Hibernate Validator</code>提供了<code>JSR 303</code>规范中所有内置<code>constraint</code> 的实现，除此之外还有一些附加的<code>constraint</code>。</p>
+</blockquote>
+<h3 id="2-2-2-2-执行真正的外部属性绑定逻辑【主线】"><a href="#2-2-2-2-执行真正的外部属性绑定逻辑【主线】" class="headerlink" title="2.2.2.2 执行真正的外部属性绑定逻辑【主线】"></a>2.2.2.2 执行真正的外部属性绑定逻辑【主线】</h3><p>前面分析了那么多，发现都还没到外部属性绑定的真正处理逻辑，前面步骤都是在做一些准备性工作，为外部属性绑定做铺垫。</p>
+<p>在执行外部属性绑定逻辑前，准备好了相关元数据和配置属性绑定器后，此时再来看看<code>ConfigurationPropertiesBindingPostProcessor</code>实现<code>BeanPostProcessor</code>接口的<code>postProcessBeforeInitialization</code>后置处理方法了，<strong>外部属性绑定逻辑</strong>都是在这个后置处理方法里实现。</p>
+<p>直接看代码：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> 因为是外部配置属性后置处理器，因此这里对@ConfigurationProperties注解标注的XxxProperties类进行后置处理完成属性绑定</span><br><span class="line">@Override</span><br><span class="line">public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException &#123;</span><br><span class="line">	<span class="regexp">//</span> 注意，BeanPostProcessor后置处理器默认会对所有的bean进行处理，因此需要根据bean的一些条件进行过滤得到最终要处理的目的bean，</span><br><span class="line">	<span class="regexp">//</span> 这里的过滤条件就是判断某个bean是否有@ConfigurationProperties注解</span><br><span class="line">	<span class="regexp">//</span> 【<span class="number">1</span>】从bean上获取@ConfigurationProperties注解,若bean有标注，那么返回该注解；若没有，则返回Null。</span><br><span class="line">	<span class="regexp">//</span> 比如ServerProperty上标注了@ConfigurationProperties注解</span><br><span class="line">	ConfigurationProperties annotation = getAnnotation(bean, beanName, ConfigurationProperties.class);</span><br><span class="line">	<span class="regexp">//</span> 【<span class="number">2</span>】若标注有@ConfigurationProperties注解的bean，那么则进行进一步处理：将配置文件的配置注入到bean的属性值中</span><br><span class="line">	<span class="keyword">if</span> (annotation != null) &#123;</span><br><span class="line">		<span class="regexp">/********主线，重点关注】********/</span></span><br><span class="line">		bind(bean, beanName, annotation);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="regexp">//</span> 【<span class="number">3</span>】返回外部配置属性值绑定后的bean（一般是XxxProperties对象）</span><br><span class="line">	return bean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ConfigurationPropertiesBindingPostProcessor</code>类覆写的<code>postProcessBeforeInitialization</code>方法的做的事情就是将外部属性配置绑定到<code>@ConfigurationProperties</code>注解标注的<code>XxxProperties</code>类上，关键步骤总结如下：</p>
+<ol>
+<li>从<code>bean</code>上获取<code>@ConfigurationProperties</code>注解；</li>
+<li>若标注有<code>@ConfigurationProperties</code>注解的<code>bean</code>，那么则进行进一步的处理：将外部配置属性值绑定到bean的属性值中后再返回<code>bean</code>；若没有标注有<code>@ConfigurationProperties</code>注解的<code>bean</code>，那么将直接原样返回<code>bean</code>。</li>
+</ol>
+<blockquote>
+<p><strong>注意</strong>：后置处理器默认会对每个容器中的<code>bean</code>进行后置处理，因为这里只针对标注有<code>@ConfigurationProperties</code>注解的<code>bean</code>进行外部属性绑定，因此没有标注<code>@ConfigurationProperties</code>注解的<code>bean</code>将不会被处理。</p>
+</blockquote>
+<p>接下来再来看看<strong>外部配置属性是如何绑定到<code>@ConfigurationProperties</code>注解的<code>XxxProperties</code>类属性上的呢？</strong></p>
+<p>直接看代码：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> void bind(Object bean, String beanName, ConfigurationProperties <span class="keyword">annotation</span>) &#123;</span><br><span class="line">	/<span class="regexp">/ 【1】得到bean的类型，比如ServerPropertie这个bean得到的类型是：org.springframework.boot.autoconfigure.web.ServerProperties</span></span><br><span class="line"><span class="regexp">	ResolvableType type = getBeanType(bean, beanName);</span></span><br><span class="line"><span class="regexp">	/</span><span class="regexp">/ 【2】获取bean上标注的@Validated注解</span></span><br><span class="line"><span class="regexp">	Validated validated = getAnnotation(bean, beanName, Validated.class);</span></span><br><span class="line"><span class="regexp">	/</span><span class="regexp">/ 若标注有@Validated注解的话则跟@ConfigurationProperties注解一起组成一个Annotation数组</span></span><br><span class="line"><span class="regexp">	Annotation[] annotations = (validated != null) ? new Annotation[] &#123; annotation, validated &#125; : new Annotation[] &#123; annotation &#125;;</span></span><br><span class="line"><span class="regexp">	/</span><span class="regexp">/ 【3】返回一个绑定了XxxProperties类的Bindable对象target，这个target对象即被外部属性值注入的目标对象</span></span><br><span class="line"><span class="regexp">	/</span><span class="regexp">/ （比如封装了标注有@ConfigurationProperties注解的ServerProperties对象的Bindable对象）</span></span><br><span class="line"><span class="regexp">	/</span><span class="regexp">/ 设置annotations属性数组</span></span><br><span class="line"><span class="regexp">	Bindable&lt;?&gt; target = Bindable.of(type).withExistingValue(bean).withAnnotations(annotations);</span></span><br><span class="line"><span class="regexp">	try &#123;</span></span><br><span class="line"><span class="regexp">		/</span><span class="regexp">/ 【4】执行外部配置属性绑定逻辑</span></span><br><span class="line"><span class="regexp">		/</span>********【主线，重点关注】********<span class="regexp">/</span></span><br><span class="line"><span class="regexp">		this.configurationPropertiesBinder.bind(target);</span></span><br><span class="line"><span class="regexp">	&#125;</span></span><br><span class="line"><span class="regexp">	catch (Exception ex) &#123;</span></span><br><span class="line"><span class="regexp">		throw new ConfigurationPropertiesBindException(beanName, bean, annotation, ex);</span></span><br><span class="line"><span class="regexp">	&#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>前面分析了解到 <code>ConfigurationBeanFactoryMetadata</code>覆写的<code>postProcessBeanFactory</code>方法里已经将相关工厂<code>bean</code>的元数据封装到<code>ConfigurationBeanFactoryMetadata</code>类的<code>beansFactoryMetadata</code>集合。</p>
+<p>再来看下上面代码中的<code>【1】getBeanType</code>和<code>【2】getAnnotation</code>方法源码：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ResolvableType get<span class="constructor">BeanType(Object <span class="params">bean</span>, String <span class="params">beanName</span>)</span> &#123;</span><br><span class="line">	<span class="comment">// 首先获取有没有工厂方法</span></span><br><span class="line">	Method factoryMethod = this.beanFactoryMetadata.find<span class="constructor">FactoryMethod(<span class="params">beanName</span>)</span>;</span><br><span class="line">	<span class="comment">// 若有工厂方法</span></span><br><span class="line">	<span class="keyword">if</span> (factoryMethod != null) &#123;</span><br><span class="line">		return <span class="module-access"><span class="module"><span class="identifier">ResolvableType</span>.</span></span><span class="keyword">for</span><span class="constructor">MethodReturnType(<span class="params">factoryMethod</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 没有工厂方法，则说明是普通的配置类</span></span><br><span class="line">	return <span class="module-access"><span class="module"><span class="identifier">ResolvableType</span>.</span></span><span class="keyword">for</span><span class="constructor">Class(<span class="params">bean</span>.<span class="params">getClass</span>()</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> &lt;A extends Annotation&gt; A get<span class="constructor">Annotation(Object <span class="params">bean</span>, String <span class="params">beanName</span>, Class&lt;A&gt; <span class="params">type</span>)</span> &#123;</span><br><span class="line">	A annotation = this.beanFactoryMetadata.find<span class="constructor">FactoryAnnotation(<span class="params">beanName</span>, <span class="params">type</span>)</span>;</span><br><span class="line">	<span class="keyword">if</span> (annotation<span class="operator"> == </span>null) &#123;</span><br><span class="line">		annotation = <span class="module-access"><span class="module"><span class="identifier">AnnotationUtils</span>.</span></span>find<span class="constructor">Annotation(<span class="params">bean</span>.<span class="params">getClass</span>()</span>, <span class="keyword">type</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	return annotation;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意到上面代码中的<code>beanFactoryMetadata</code>对象没，<code>ConfigurationPropertiesBindingPostProcessor</code>后置处理器的<code>getBeanType</code>和<code>getAnnotation</code>方法分别会调用<code>ConfigurationBeanFactoryMetadata</code>的<code>findFactoryMethod</code>和<code>findFactoryAnnotation</code>方法，而<code>ConfigurationBeanFactoryMetadata</code>的<code>findFactoryMethod</code>和<code>findFactoryAnnotation</code>方法又会依赖存储工厂<code>bean</code>元数据的<code>beansFactoryMetadata</code>集合来寻找是否有<code>FactoryMethod</code>和<code>FactoryAnnotation</code>。因此，到这里就知道之前<code>ConfigurationBeanFactoryMetadata</code>的<code>beansFactoryMetadata</code>集合存储工厂<code>bean</code>元数据的作用了。</p>
+<h1 id="3-ConfigurationPropertiesBinder"><a href="#3-ConfigurationPropertiesBinder" class="headerlink" title="3.ConfigurationPropertiesBinder"></a>3.ConfigurationPropertiesBinder</h1><p>分析<code>this.configurationPropertiesBinder.bind(target);</code>这行代码：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public void bind(Bindable&lt;?&gt; target) &#123;</span><br><span class="line">	<span class="comment">//【1】得到@ConfigurationProperties注解</span></span><br><span class="line">	ConfigurationProperties annotation = target.get<span class="constructor">Annotation(ConfigurationProperties.<span class="params">class</span>)</span>;</span><br><span class="line">	<span class="module-access"><span class="module"><span class="identifier">Assert</span>.</span></span>state(annotation != null, <span class="literal">()</span> -&gt; <span class="string">&quot;Missing @ConfigurationProperties on &quot;</span> + target);</span><br><span class="line">	<span class="comment">// 【2】得到Validator对象集合，用于属性校验</span></span><br><span class="line">	List&lt;Validator&gt; validators = get<span class="constructor">Validators(<span class="params">target</span>)</span>;</span><br><span class="line">	<span class="comment">// 【3】得到BindHandler对象（默认是IgnoreTopLevelConverterNotFoundBindHandler对象），</span></span><br><span class="line">	<span class="comment">// 用于对ConfigurationProperties注解的ignoreUnknownFields等属性的处理</span></span><br><span class="line">	BindHandler bindHandler = get<span class="constructor">BindHandler(<span class="params">annotation</span>, <span class="params">validators</span>)</span>;</span><br><span class="line">	<span class="comment">// 【4】得到一个Binder对象，并利用其bind方法执行外部属性绑定逻辑</span></span><br><span class="line">	<span class="comment">/********************【主线，重点关注】********************/</span></span><br><span class="line">	get<span class="constructor">Binder()</span>.bind(annotation.prefix<span class="literal">()</span>, target, bindHandler);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码的主要逻辑是：</p>
+<ol>
+<li>先获取<code>target</code>对象（对应<code>XxxProperties</code>类）上的<code>@ConfigurationProperties</code>注解和校验器（若有）;</li>
+<li>然后再根据获取的的<code>@ConfigurationProperties</code>注解和校验器来获得<code>BindHandler</code>对象，<code>BindHandler</code>的作用是用于在属性绑定时来处理一些附件逻辑;</li>
+<li>最后再获取一个<code>Binder</code>对象，调用其<code>bind</code>方法来执行外部属性绑定的逻辑。</li>
+</ol>
+<h2 id="3-1-获取BindHandler对象以便在属性绑定时来处理一些附件逻辑"><a href="#3-1-获取BindHandler对象以便在属性绑定时来处理一些附件逻辑" class="headerlink" title="3.1 获取BindHandler对象以便在属性绑定时来处理一些附件逻辑"></a>3.1 获取BindHandler对象以便在属性绑定时来处理一些附件逻辑</h2><p>在看<code>getBindHandler</code>方法的逻辑前先来认识下<code>BindHandler</code>是干什么的。</p>
+<p><code>BindHandler</code>是一个父类接口，用于在属性绑定时来处理一些附件逻辑。先看下<code>BindHandler</code>的类图，好有一个整体的认识：</p>
+<p><img src="https://i.loli.net/2020/12/01/kbWL2vQF8fiVGTe.png" alt="sb21.png"></p>
+<p>可以看到<code>AbstractBindHandler</code>作为抽象基类实现了<code>BindHandler</code>接口，其有四个具体的子类分别是<code>IgnoreTopLevelConverterNotFoundBindHandler</code>,<code>NoUnboundElementsBindHandler</code>,<code>IgnoreErrorsBindHandler</code>和<code>ValidationBindHandler</code>。</p>
+<ol>
+<li><code>IgnoreTopLevelConverterNotFoundBindHandler</code>：在处理外部属性绑定时的默认<code>BindHandler</code>，当属性绑定失败时会忽略最顶层的<code>ConverterNotFoundException</code>；</li>
+<li><code>NoUnboundElementsBindHandler</code>：用来处理配置文件配置的未知的属性；</li>
+<li><code>IgnoreErrorsBindHandler</code>：用来忽略无效的配置属性例如类型错误；</li>
+<li><code>ValidationBindHandler</code>：利用校验器对绑定的结果值进行校验。</li>
+</ol>
+<p>分析完类关系后，再来看下<code>BindHandler</code>接口提供了哪些方法在外部属性绑定时提供一些额外的处理逻辑，直接看代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BindHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Default no-op bind handler.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	BindHandler <span class="keyword">DEFAULT</span> = <span class="keyword">new</span> BindHandler() &#123;</span><br><span class="line"></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Called when binding of an element starts but before any result has been determined.</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> &lt;T&gt; the bindable source type</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name the name of the element being bound</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> target the item being bound</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> context the bind context</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> the actual item that should be used for binding (may be &#123;<span class="doctag">@code</span> null&#125;)</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// onStart方法在外部属性绑定前被调用</span></span><br><span class="line">	<span class="keyword">default</span> &lt;T&gt; Bindable&lt;T&gt; onStart(ConfigurationPropertyName name, Bindable&lt;T&gt; target,</span><br><span class="line">			BindContext context) &#123;</span><br><span class="line">		<span class="keyword">return</span> target;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Called when binding of an element ends with a successful result. Implementations</span></span><br><span class="line"><span class="comment">	 * may change the ultimately returned result or perform addition validation.</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name the name of the element being bound</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> target the item being bound</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> context the bind context</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> result the bound result (never &#123;<span class="doctag">@code</span> null&#125;)</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> the actual result that should be used (may be &#123;<span class="doctag">@code</span> null&#125;)</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// onSuccess方法在外部属性成功绑定时被调用，该方法能够改变最终返回的属性值或对属性值进行校验</span></span><br><span class="line">	<span class="keyword">default</span> <span class="keyword">Object</span> onSuccess(ConfigurationPropertyName name, Bindable<span class="meta">&lt;?</span>&gt; target,</span><br><span class="line">			BindContext context, <span class="keyword">Object</span> result) &#123;</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Called when binding fails for any reason (including failures from</span></span><br><span class="line"><span class="comment">	 * &#123;<span class="doctag">@link</span> #onSuccess&#125; calls). Implementations may choose to swallow exceptions and</span></span><br><span class="line"><span class="comment">	 * return an alternative result.</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name the name of the element being bound</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> target the item being bound</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> context the bind context</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> error the cause of the error (if the exception stands it may be re-thrown)</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> the actual result that should be used (may be &#123;<span class="doctag">@code</span> null&#125;).</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception if the binding isn&#x27;t valid</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// onFailure方法在外部属性绑定失败（包括onSuccess方法里的逻辑执行失败）时被调用，</span></span><br><span class="line">	<span class="comment">// 该方法可以用来catch住相关异常或者返回一个替代的结果（跟微服务的降级结果有点类似）</span></span><br><span class="line">	<span class="keyword">default</span> <span class="keyword">Object</span> onFailure(ConfigurationPropertyName name, Bindable<span class="meta">&lt;?</span>&gt; target,</span><br><span class="line">			BindContext context, <span class="built_in">Exception</span> <span class="built_in">error</span>) throws <span class="built_in">Exception</span> &#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="built_in">error</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Called when binding finishes, regardless of whether the property was bound or not.</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> name the name of the element being bound</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> target the item being bound</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> context the bind context</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> result the bound result (may be &#123;<span class="doctag">@code</span> null&#125;)</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception if the binding isn&#x27;t valid</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// 当外部属性绑定结束时（不管绑定成功还是失败）被调用</span></span><br><span class="line">	<span class="keyword">default</span> <span class="keyword">void</span> onFinish(ConfigurationPropertyName name, Bindable<span class="meta">&lt;?</span>&gt; target,</span><br><span class="line">			BindContext context, <span class="keyword">Object</span> result) throws <span class="built_in">Exception</span> &#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到<code>BindHandler</code>接口定义了<code>onStart</code>,<code>onSuccess</code>,<code>onFailure</code>和<code>onFinish</code>方法，这四个方法分别会在执行外部属性绑定时的不同时段被调用，在属性绑定时用来添加一些额外的处理逻辑，比如在<code>onSuccess</code>方法改变最终绑定的属性值或对属性值进行校验，在<code>onFailure</code>方法<code>catch</code>住相关异常或者返回一个替代的绑定的属性值。</p>
+<p>知道了<code>BindHandler</code>是在属性绑定时添加一些额外的处理逻辑后，再来看下<code>getBindHandler</code>方法的逻辑，直接上代码：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注意BindHandler的设计技巧，应该是责任链模式，非常巧妙，值得借鉴</span></span><br><span class="line"><span class="keyword">private</span> BindHandler get<span class="constructor">BindHandler(ConfigurationProperties <span class="params">annotation</span>, List&lt;Validator&gt; <span class="params">validators</span>)</span> &#123;</span><br><span class="line">	<span class="comment">// 新建一个IgnoreTopLevelConverterNotFoundBindHandler对象，这是个默认的BindHandler对象</span></span><br><span class="line">	BindHandler handler = <span class="keyword">new</span> <span class="constructor">IgnoreTopLevelConverterNotFoundBindHandler()</span>;</span><br><span class="line">	<span class="comment">// 若注解@ConfigurationProperties的ignoreInvalidFields属性设置为true，</span></span><br><span class="line">	<span class="comment">// 则说明可以忽略无效的配置属性例如类型错误，此时新建一个IgnoreErrorsBindHandler对象</span></span><br><span class="line">	<span class="keyword">if</span> (annotation.ignore<span class="constructor">InvalidFields()</span>) &#123;</span><br><span class="line">		handler = <span class="keyword">new</span> <span class="constructor">IgnoreErrorsBindHandler(<span class="params">handler</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 若注解@ConfigurationProperties的ignoreUnknownFields属性设置为true，</span></span><br><span class="line">	<span class="comment">// 则说明配置文件配置了一些未知的属性配置，此时新建一个ignoreUnknownFields对象</span></span><br><span class="line">	<span class="keyword">if</span> (!annotation.ignore<span class="constructor">UnknownFields()</span>) &#123;</span><br><span class="line">		UnboundElementsSourceFilter filter = <span class="keyword">new</span> <span class="constructor">UnboundElementsSourceFilter()</span>;</span><br><span class="line">		handler = <span class="keyword">new</span> <span class="constructor">NoUnboundElementsBindHandler(<span class="params">handler</span>, <span class="params">filter</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 如果@Valid注解不为空，则创建一个ValidationBindHandler对象</span></span><br><span class="line">	<span class="keyword">if</span> (!validators.is<span class="constructor">Empty()</span>) &#123;</span><br><span class="line">		handler = <span class="keyword">new</span> <span class="constructor">ValidationBindHandler(<span class="params">handler</span>, <span class="params">validators</span>.<span class="params">toArray</span>(<span class="params">new</span> Validator[0])</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 遍历获取的ConfigurationPropertiesBindHandlerAdvisor集合，</span></span><br><span class="line">	<span class="comment">// ConfigurationPropertiesBindHandlerAdvisor目前只在测试类中有用到</span></span><br><span class="line">	<span class="keyword">for</span> (ConfigurationPropertiesBindHandlerAdvisor advisor : get<span class="constructor">BindHandlerAdvisors()</span>) &#123;</span><br><span class="line">		<span class="comment">// 对handler进一步处理</span></span><br><span class="line">		handler = advisor.apply(handler);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 返回handler</span></span><br><span class="line">	return handler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>getBindHandler</code>方法的逻辑很简单，主要是根据传入的<code>@ConfigurationProperties</code>注解和<code>validators</code>校验器来创建不同的<code>BindHandler</code>具体实现类：</p>
+<ol>
+<li>首先<code>new</code>一个<code>IgnoreTopLevelConverterNotFoundBindHandler</code>作为默认的<code>BindHandler</code>;</li>
+<li>若<code>@ConfigurationProperties</code>注解的属性<code>ignoreInvalidFields</code>值为<code>true</code>，那么再<code>new</code>一个<code>IgnoreErrorsBindHandler</code>对象，把刚才新建的<code>IgnoreTopLevelConverterNotFoundBindHandler</code>对象作为构造参数传入赋值给<code>AbstractBindHandler</code>父类的<code>parent</code>属性；</li>
+<li>若<code>@ConfigurationProperties</code>注解的属性<code>ignoreUnknownFields</code>值为<code>false</code>，那么再<code>new</code>一个<code>UnboundElementsSourceFilter</code>对象，把之前构造的<code>BindHandler</code>对象作为构造参数传入赋值给<code>AbstractBindHandler</code>父类的<code>parent</code>属性；</li>
+<li>……以此类推，前一个<code>handler</code>对象作为后一个<code>hangdler</code>对象的构造参数，就这样利用<code>AbstractBindHandler</code>父类的<code>parent</code>属性将每一个<code>handler</code>链起来，最后再得到最终构造的<code>handler</code>。</li>
+</ol>
+<blockquote>
+<p><strong>GET技巧</strong>：上面的这个设计模式是不是很熟悉，这个就是<strong>责任链模式</strong>。学习源码，同时也是学习别人怎么熟练运用设计模式。责任链模式的应用案例有很多，比如<code>Dubbo</code>的各种<code>Filter</code>们（比如<code>AccessLogFilter</code>是用来记录服务的访问日志的，<code>ExceptionFilter</code>是用来处理异常的…），一开始学习java web时的<code>Servlet</code>的<code>Filter</code>,<code>MyBatis</code>的<code>Plugin</code>们以及<code>Netty</code>的<code>Pipeline</code>都采用了责任链模式。</p>
+</blockquote>
+<p>了解了<code>BindHandler</code>的作用后，再来紧跟主线，看属性绑定是如何绑定的？</p>
+<h2 id="3-2-获取Binder对象用于进行属性绑定【主线】"><a href="#3-2-获取Binder对象用于进行属性绑定【主线】" class="headerlink" title="3.2 获取Binder对象用于进行属性绑定【主线】"></a>3.2 获取Binder对象用于进行属性绑定【主线】</h2><p>这里分析 ConfigurationPropertiesBinder代码中标注<code>【4】</code>的主线代码<code>getBinder().bind(annotation.prefix(), target, bindHandler);</code></p>
+<p>可以看到这句代码主要做了两件事：</p>
+<ol>
+<li>调用<code>getBinder</code>方法获取用于属性绑定的<code>Binder</code>对象；</li>
+<li>调用<code>Binder</code>对象的<code>bind</code>方法进行外部属性绑定到<code>@ConfigurationProperties</code>注解的<code>XxxProperties</code>类的属性上。</li>
+</ol>
+<p>那么我们先看下<code>getBinder</code>方法源码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Binder getBinder() &#123;</span><br><span class="line">	<span class="comment">// Binder是一个能绑定ConfigurationPropertySource的容器对象</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">this</span>.binder == <span class="literal">null</span>) &#123;</span><br><span class="line">		<span class="comment">// 新建一个Binder对象，这个binder对象封装了ConfigurationPropertySources，</span></span><br><span class="line">		<span class="comment">// PropertySourcesPlaceholdersResolver，ConversionService和PropertyEditorInitializer对象</span></span><br><span class="line">		<span class="comment">// getConfigurationPropertySources() 将PropertySources对象封装成SpringConfigurationPropertySources对象并返回</span></span><br><span class="line">		<span class="comment">// getPropertySourcesPlaceholdersResolver(), getConversionService() 将PropertySources对象封装成PropertySourcesPlaceholdersResolver对象并返回，从容器中获取到ConversionService对象</span></span><br><span class="line">		<span class="comment">// getPropertyEditorInitializer() 得到Consumer&lt;PropertyEditorRegistry&gt;对象，这些初始化器用来配置property editors，property editors通常可以用来转换值</span></span><br><span class="line">		<span class="keyword">this</span>.binder = new Binder(getConfigurationPropertySources(),</span><br><span class="line">				getPropertySourcesPlaceholdersResolver(), getConversionService(),</span><br><span class="line">				getPropertyEditorInitializer());</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 返回binder</span></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.binder;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>Binder</code>对象封装了<code>ConfigurationPropertySources</code>,<code>PropertySourcesPlaceholdersResolver</code>,<code>ConversionService</code>和<code>PropertyEditorInitializer</code>这四个对象，<code>Binder</code>对象封装了这四个肯定是在后面属性绑定逻辑中会用到，先看下这四个对象是干嘛的：</p>
+<ol>
+<li><code>ConfigurationPropertySources</code>:外部配置文件的属性源，由<code>ConfigFileApplicationListener</code>监听器负责触发读取；</li>
+<li><code>PropertySourcesPlaceholdersResolver</code>:解析属性源中的占位符<code>$&#123;&#125;</code>；</li>
+<li><code>ConversionService</code>:对属性类型进行转换</li>
+<li><code>PropertyEditorInitializer</code>:用来配置<code>property editors</code></li>
+</ol>
+<p>获取了<code>Binder</code>属性绑定器后，再来看下它的<code>bind</code>方法是如何执行属性绑定的。</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> &lt;T&gt; BindResult&lt;T&gt; bind(String <span class="type">name</span>, Bindable&lt;T&gt; target, BindHandler <span class="keyword">handler</span>) &#123;</span><br><span class="line">	// ConfigurationPropertyName.<span class="keyword">of</span>(<span class="type">name</span>)：将<span class="type">name</span>（这里指属性前缀名）封装到ConfigurationPropertyName对象中</span><br><span class="line">	// 将外部配置属性绑定到目标对象target中</span><br><span class="line">	<span class="keyword">return</span> bind(ConfigurationPropertyName.<span class="keyword">of</span>(<span class="type">name</span>), target, <span class="keyword">handler</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">public</span> &lt;T&gt; BindResult&lt;T&gt; bind(ConfigurationPropertyName <span class="type">name</span>, Bindable&lt;T&gt; target, BindHandler <span class="keyword">handler</span>) &#123;</span><br><span class="line">	<span class="keyword">Assert</span>.<span class="keyword">notNull</span>(<span class="type">name</span>, &quot;Name must not be null&quot;);</span><br><span class="line">	<span class="keyword">Assert</span>.<span class="keyword">notNull</span>(target, &quot;Target must not be null&quot;);</span><br><span class="line">	<span class="keyword">handler</span> = (<span class="keyword">handler</span> != <span class="keyword">null</span>) ? <span class="keyword">handler</span> : BindHandler.<span class="keyword">DEFAULT</span>;</span><br><span class="line">	// Context是Binder的内部类，实现了BindContext，Context可以理解为Binder的上下文，可以用来获取binder的属性比如Binder的sources属性</span><br><span class="line">	Context context = <span class="built_in">new</span> Context();</span><br><span class="line">	// 进行属性绑定，并返回绑定属性后的对象bound，注意bound的对象类型是T，T就是@ConfigurationProperties注解的类比如ServerProperties</span><br><span class="line">	<span class="comment">/********【主线，重点关注】************/</span></span><br><span class="line">	T bound = bind(<span class="type">name</span>, target, <span class="keyword">handler</span>, context, <span class="keyword">false</span>);</span><br><span class="line">	// 将刚才返回的bound对象封装到BindResult对象中并返回</span><br><span class="line">	<span class="keyword">return</span> BindResult.<span class="keyword">of</span>(bound);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中首先创建了一个<code>Context</code>对象，<code>Context</code>是<code>Binder</code>的内部类，为<code>Binder</code>的上下文，利用<code>Context</code>上下文可以获取<code>Binder</code>的属性比如获取<code>Binder</code>的<code>sources</code>属性值并绑定到<code>XxxProperties</code>属性中。然后再紧跟主线看下<code> bind(name, target, handler, context, false)</code>方法源码：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">final</span> &lt;T&gt; <span class="function">T <span class="title">bind</span><span class="params">(ConfigurationPropertyName name, Bindable&lt;T&gt; <span class="keyword">target</span>, BindHandler <span class="keyword">handler</span>, Context context, <span class="keyword">boolean</span> allowRecursiveBinding)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 清空Binder的configurationProperty属性值</span></span><br><span class="line">	context.clearConfigurationProperty();</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="comment">// 【1】调用BindHandler的onStart方法，执行一系列的责任链对象的该方法</span></span><br><span class="line">		<span class="keyword">target</span> = <span class="keyword">handler</span>.onStart(name, <span class="keyword">target</span>, context);</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">target</span> == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 【2】调用bindObject方法对Bindable对象target的属性进行绑定外部配置的值，并返回赋值给bound对象。</span></span><br><span class="line">		<span class="comment">// 例如：比如设置了server.port=9999,那么该方法最终会调用Binder.bindProperty方法，最终返回的bound的value值为9999</span></span><br><span class="line">		<span class="comment">/************【主线：重点关注】***********/</span></span><br><span class="line">		Object bound = bindObject(name, <span class="keyword">target</span>, <span class="keyword">handler</span>, context, allowRecursiveBinding);</span><br><span class="line">		<span class="comment">// 【3】封装handleBindResult对象并返回，注意在handleBindResult的构造函数中会调用BindHandler的onSucess，onFinish方法</span></span><br><span class="line">		<span class="function"><span class="keyword">return</span> <span class="title">handleBindResult</span><span class="params">(name, <span class="keyword">target</span>, <span class="keyword">handler</span>, context, bound)</span></span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">		<span class="function"><span class="keyword">return</span> <span class="title">handleBindError</span><span class="params">(name, <span class="keyword">target</span>, <span class="keyword">handler</span>, context, ex)</span></span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着紧跟主线来看看<code>bindObject</code>方法源码:</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> &lt;T&gt; Object bind<span class="constructor">Object(ConfigurationPropertyName <span class="params">name</span>, Bindable&lt;T&gt; <span class="params">target</span>, BindHandler <span class="params">handler</span>, Context <span class="params">context</span>, <span class="params">boolean</span> <span class="params">allowRecursiveBinding</span>)</span> &#123;</span><br><span class="line">	<span class="comment">// 从propertySource中的配置属性，获取ConfigurationProperty对象property即application.properties配置文件中若有相关的配置的话，</span></span><br><span class="line">	<span class="comment">// 那么property将不会为null。例如：假如你在配置文件中配置了spring.profiles.active=dev，那么相应property值为dev；否则为null</span></span><br><span class="line">	ConfigurationProperty property = find<span class="constructor">Property(<span class="params">name</span>, <span class="params">context</span>)</span>;</span><br><span class="line">	<span class="comment">// 若property为null，则不会执行后续的属性绑定相关逻辑</span></span><br><span class="line">	<span class="keyword">if</span> (property<span class="operator"> == </span>null<span class="operator"> &amp;&amp; </span>contains<span class="constructor">NoDescendantOf(<span class="params">context</span>.<span class="params">getSources</span>()</span>, name)) &#123;</span><br><span class="line">		<span class="comment">// 如果property == null，则返回null</span></span><br><span class="line">		return null;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 根据target类型获取不同的Binder，可以是null（普通的类型一般是Null）,MapBinder,CollectionBinder或ArrayBinder</span></span><br><span class="line">	AggregateBinder&lt;?&gt; aggregateBinder = get<span class="constructor">AggregateBinder(<span class="params">target</span>, <span class="params">context</span>)</span>;</span><br><span class="line">	<span class="comment">// 若aggregateBinder不为null比如配置了spring.profiles属性（当然包括其子属性比如spring.profiles.active等）</span></span><br><span class="line">	<span class="keyword">if</span> (aggregateBinder != null) &#123;</span><br><span class="line">		<span class="comment">// 若aggregateBinder不为null，则调用bindAggregate并返回绑定后的对象</span></span><br><span class="line">		return bind<span class="constructor">Aggregate(<span class="params">name</span>, <span class="params">target</span>, <span class="params">handler</span>, <span class="params">context</span>, <span class="params">aggregateBinder</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 若property不为null</span></span><br><span class="line">	<span class="keyword">if</span> (property != null) &#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// 绑定属性到对象中，比如配置文件中设置了server.port=8888，那么将会最终调用bindProperty方法进行属性设置</span></span><br><span class="line">			return bind<span class="constructor">Property(<span class="params">target</span>, <span class="params">context</span>, <span class="params">property</span>)</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		catch (ConverterNotFoundException ex) &#123;</span><br><span class="line">			<span class="comment">// We might still be able to bind it as a bean</span></span><br><span class="line">			Object bean = bind<span class="constructor">Bean(<span class="params">name</span>, <span class="params">target</span>, <span class="params">handler</span>, <span class="params">context</span>, <span class="params">allowRecursiveBinding</span>)</span>;</span><br><span class="line">			<span class="keyword">if</span> (bean != null) &#123;</span><br><span class="line">				return bean;</span><br><span class="line">			&#125;</span><br><span class="line">			throw ex;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 只有@ConfigurationProperties注解的类进行外部属性绑定才会走这里</span></span><br><span class="line">	<span class="comment">/***********************【主线，重点关注】****************************/</span></span><br><span class="line">	return bind<span class="constructor">Bean(<span class="params">name</span>, <span class="params">target</span>, <span class="params">handler</span>, <span class="params">context</span>, <span class="params">allowRecursiveBinding</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由上代码中可以看到<code>bindObject</code>中执行属性绑定的逻辑会根据不同的属性类型进入不同的绑定逻辑中，例如：</p>
+<ol>
+<li><code>application.properties</code>配置文件中配置了<code>spring.profiles.active=dev</code>的话，那么将会进入<code>return bindAggregate(name, target, handler, context, aggregateBinder);</code>这个属性绑定的代码逻辑；</li>
+<li><code>application.properties</code>配置文件中配置了<code>server.port=9999</code>的话，那么将会进入<code>return bindBean(name, target, handler, context, allowRecursiveBinding);</code>的属性绑定的逻辑。</li>
+</ol>
+<p>再次紧跟主线，进入<code>@ConfigurationProperties</code>注解的<code>XxxProperties</code>类的属性绑定逻辑中的<code>bindBean</code>方法中：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">// name指的是ConfigurationProperties的前缀名</span></span><br><span class="line"><span class="regexp">private Object bindBean(ConfigurationPropertyName name, Bindable&lt;?&gt; target,</span></span><br><span class="line"><span class="regexp">		BindHandler handler, Context context, boolean allowRecursiveBinding) &#123;</span></span><br><span class="line"><span class="regexp">	//</span> 这里做一些ConfigurationPropertyState的相关检查</span><br><span class="line">	<span class="keyword">if</span> (containsNoDescendantOf(context.getSources(), name)</span><br><span class="line">			|| isUnbindableBean(name, target, context)) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="regexp">// 这里新建一个BeanPropertyBinder的实现类对象，注意这个对象实现了bindProperty方法</span></span><br><span class="line"><span class="regexp">	BeanPropertyBinder propertyBinder = (propertyName, propertyTarget) -&gt; bind(</span></span><br><span class="line"><span class="regexp">			name.append(propertyName), propertyTarget, handler, context, false);</span></span><br><span class="line"><span class="regexp">	/**</span></span><br><span class="line"><span class="regexp">		* (propertyName, propertyTarget) -&gt; bind(</span></span><br><span class="line"><span class="regexp">		* 				name.append(propertyName), propertyTarget, handler, context, false);</span></span><br><span class="line"><span class="regexp">		* 	等价于</span></span><br><span class="line"><span class="regexp">		* 	new BeanPropertyBinder() &#123;</span></span><br><span class="line"><span class="regexp">		*		Object bindProperty(String propertyName, Bindable&lt;?&gt; target)&#123;</span></span><br><span class="line"><span class="regexp">		*			bind(name.append(propertyName), propertyTarget, handler, context, false);</span></span><br><span class="line"><span class="regexp">		*		&#125;</span></span><br><span class="line"><span class="regexp">		* 	&#125;</span></span><br><span class="line"><span class="regexp">		*/</span></span><br><span class="line"><span class="regexp">	//</span> type类型即@ConfigurationProperties注解标注的XxxProperties类</span><br><span class="line">	Class&lt;?&gt; type = target.getType().resolve(<span class="built_in">Object</span>.<span class="keyword">class</span>);</span><br><span class="line">	<span class="keyword">if</span> (!allowRecursiveBinding &amp;&amp; context.hasBoundBean(type)) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="regexp">// 这里应用了java8的lambda语法，作为没怎么学习java8的lambda语法的我，不怎么好理解下面的逻辑，哈哈</span></span><br><span class="line"><span class="regexp">	//</span> 真正实现将外部配置属性绑定到@ConfigurationProperties注解的XxxProperties类的属性中的逻辑应该就是在这句lambda代码了</span><br><span class="line">	<span class="comment">/*******************【主线】***************************/</span></span><br><span class="line">	<span class="keyword">return</span> context.withBean<span class="function"><span class="params">(type, () -&gt; &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">		Stream&lt;?&gt; boundBeans = BEAN_BINDERS.stream()</span></span></span><br><span class="line"><span class="function"><span class="params">				.<span class="keyword">map</span>((b) -&gt; b.bind(name, target, context, propertyBinder));</span></span></span><br><span class="line"><span class="function"><span class="params">		<span class="keyword">return</span> boundBeans.filter(Objects::nonNull).findFirst().orElse(<span class="literal">null</span>);</span></span></span><br><span class="line"><span class="function"><span class="params">	&#125;)</span>;</span></span><br><span class="line"><span class="function">	// 根据上面的<span class="title">lambda</span>语句翻译如下：</span></span><br><span class="line"><span class="function">	/** 这里的<span class="title">T</span>指的是各种属性绑定对象，比如<span class="title">ServerProperties</span></span></span><br><span class="line"><span class="function">		* <span class="title">return</span> <span class="title">context</span>.<span class="title">withBean</span><span class="params">(type, <span class="keyword">new</span> Supplier&lt;T&gt;() &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">		* 	T get() &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">		* 		Stream&lt;?&gt; boundBeans = BEAN_BINDERS.stream()</span></span></span><br><span class="line"><span class="function"><span class="params">		* 					.<span class="keyword">map</span>((b) -&gt; b.bind(name, target, context, propertyBinder));</span></span></span><br><span class="line"><span class="function"><span class="params">		* 			<span class="keyword">return</span> boundBeans.filter(Objects::nonNull).findFirst().orElse(<span class="literal">null</span>);</span></span></span><br><span class="line"><span class="function"><span class="params">		*        &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">		*  &#125;)</span>;</span></span><br><span class="line"><span class="function">		*/</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>从上面代码中，追根究底来到了外部配置属性绑定到<code>XxxProperties</code>类属性中的比较底层的代码了，可以看到属性绑定的逻辑应该就在上面代码标注<code>【主线】</code>的<code>lambda</code>代码处了。这个属于SpringBoot的属性绑定<code>Binder</code>的范畴，<code>Binder</code>相关类是SpringBoot2.0才出现的，即对之前的属性绑定相关代码进行推翻重写了。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>好了，外部配置属性值是如何被绑定到<code>XxxProperties</code>类属性上的源码分析就到此结束了，重要步骤总结：</p>
+<ol>
+<li>首先是<code>@EnableConfigurationProperties</code>注解<code>import</code>了<code>EnableConfigurationPropertiesImportSelector</code>后置处理器；</li>
+<li><code>EnableConfigurationPropertiesImportSelector</code>后置处理器又向<code>Spring</code>容器中注册了<code>ConfigurationPropertiesBeanRegistrar</code>和<code>ConfigurationPropertiesBindingPostProcessorRegistrar</code>这两个<code>bean</code>；</li>
+<li>其中<code>ConfigurationPropertiesBeanRegistrar</code>向<code>Spring</code>容器中注册了<code>XxxProperties</code>类型的<code>bean</code>；<code>ConfigurationPropertiesBindingPostProcessorRegistrar</code>向<code>Spring</code>容器中注册了<code>ConfigurationBeanFactoryMetadata</code>和<code>ConfigurationPropertiesBindingPostProcessor</code>两个后置处理器；</li>
+<li><code>ConfigurationBeanFactoryMetadata</code>后置处理器在初始化<code>bean</code> <code>factory</code>时将<code>@Bean</code>注解的元数据存储起来，以便在后续的外部配置属性绑定的相关逻辑中使用；</li>
+<li><code>ConfigurationPropertiesBindingPostProcessor</code>后置处理器将外部配置属性值绑定到<code>XxxProperties</code>类属性的逻辑委托给<code>ConfigurationPropertiesBinder</code>对象，然后<code>ConfigurationPropertiesBinder</code>对象又最终将属性绑定的逻辑委托给<code>Binder</code>对象来完成。</li>
+</ol>
+<p>可见，重要的是上面的<strong>第5步</strong>。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/554533f88370">https://www.jianshu.com/p/554533f88370</a></li>
+</ol>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-EnableConfigurationProperties"><span class="toc-text">1.@EnableConfigurationProperties</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-EnableConfigurationPropertiesImportSelector"><span class="toc-text">2.EnableConfigurationPropertiesImportSelector</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-ConfigurationPropertiesBeanRegistrar"><span class="toc-text">2.1 ConfigurationPropertiesBeanRegistrar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-ConfigurationPropertiesBindingPostProcessorRegistrar"><span class="toc-text">2.2 ConfigurationPropertiesBindingPostProcessorRegistrar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-1-ConfigurationBeanFactoryMetadata"><span class="toc-text">2.2.1 ConfigurationBeanFactoryMetadata</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-2-ConfigurationPropertiesBindingPostProcessor"><span class="toc-text">2.2.2 ConfigurationPropertiesBindingPostProcessor</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-1-%E5%9C%A8%E6%89%A7%E8%A1%8C%E5%A4%96%E9%83%A8%E5%B1%9E%E6%80%A7%E7%BB%91%E5%AE%9A%E9%80%BB%E8%BE%91%E5%89%8D%E5%85%88%E5%87%86%E5%A4%87%E5%A5%BD%E7%9B%B8%E5%85%B3%E5%85%83%E6%95%B0%E6%8D%AE%E5%92%8C%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7%E7%BB%91%E5%AE%9A%E5%99%A8"><span class="toc-text">2.2.2.1 在执行外部属性绑定逻辑前先准备好相关元数据和配置属性绑定器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-2-%E6%89%A7%E8%A1%8C%E7%9C%9F%E6%AD%A3%E7%9A%84%E5%A4%96%E9%83%A8%E5%B1%9E%E6%80%A7%E7%BB%91%E5%AE%9A%E9%80%BB%E8%BE%91%E3%80%90%E4%B8%BB%E7%BA%BF%E3%80%91"><span class="toc-text">2.2.2.2 执行真正的外部属性绑定逻辑【主线】</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-ConfigurationPropertiesBinder"><span class="toc-text">3.ConfigurationPropertiesBinder</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E8%8E%B7%E5%8F%96BindHandler%E5%AF%B9%E8%B1%A1%E4%BB%A5%E4%BE%BF%E5%9C%A8%E5%B1%9E%E6%80%A7%E7%BB%91%E5%AE%9A%E6%97%B6%E6%9D%A5%E5%A4%84%E7%90%86%E4%B8%80%E4%BA%9B%E9%99%84%E4%BB%B6%E9%80%BB%E8%BE%91"><span class="toc-text">3.1 获取BindHandler对象以便在属性绑定时来处理一些附件逻辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E8%8E%B7%E5%8F%96Binder%E5%AF%B9%E8%B1%A1%E7%94%A8%E4%BA%8E%E8%BF%9B%E8%A1%8C%E5%B1%9E%E6%80%A7%E7%BB%91%E5%AE%9A%E3%80%90%E4%B8%BB%E7%BA%BF%E3%80%91"><span class="toc-text">3.2 获取Binder对象用于进行属性绑定【主线】</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2020-11-19-SpringBoot-Source-05/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
+     
+      <a href="/tags/SpringBoot/"><i class="fa fa-tags"></i>SpringBoot</a>
+     
+      <a href="/tags/Source/"><i class="fa fa-tags"></i>Source</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2020 <a href="https://blog.iyu.pub" target="_blank">https://blog.iyu.pub</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/2020-11-20-SpringBoot-Source-06/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/2020-11-18-SpringBoot-Source-04/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+  </body>
+</html>
