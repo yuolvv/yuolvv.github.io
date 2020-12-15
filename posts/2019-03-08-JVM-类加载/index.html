@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>JVM-类加载 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Java,Java,JVM," />
+  
+
+  
+  <meta name="description" content="一直零零散散的学习JVM，看完就忘了，这里做个JVM的入门记录。">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: ["383060d16dbbd03a8df851cdc6f513f7fdf4dadd8ae0dc62ae87151f537ec38c", ],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-03-08
+    </span>
+    
+      <span>
+        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>Unlock
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    JVM-类加载
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://cn.bing.com/th?id=OHR.CamelsBalloons_EN-CN9144966934_1920x1080.jpg);"></figure>
+    </div>
+  
+
+  
+
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <h1 id="1-类加载的时机"><a href="#1-类加载的时机" class="headerlink" title="1 类加载的时机"></a>1 类加载的时机</h1><h2 id="1-1-类的生命周期"><a href="#1-1-类的生命周期" class="headerlink" title="1.1 类的生命周期"></a>1.1 类的生命周期</h2><p><img src="https://i.loli.net/2019/11/13/hVylYoAd3ic5P69.png" alt="JVM_09.png"></p>
+<p>一个类从加载进内存到卸载出内存为止，一共经历7个阶段：</p>
+<pre><code>加载——&gt;验证——&gt;准备——&gt;解析——&gt;初始化——&gt;使用——&gt;卸载</code></pre>
+<p>其中，类加载包括5个阶段：</p>
+<pre><code>加载——&gt;验证——&gt;准备——&gt;解析——&gt;初始化</code></pre>
+<p>在类加载的过程中，以下3个过程称为连接：</p>
+<pre><code>验证——&gt;准备——&gt;解析</code></pre>
+<p>因此，JVM的类加载过程也可以概括为3个过程：</p>
+<pre><code>加载——&gt;连接——&gt;初始化</code></pre>
+<p>加载、验证、准备、初始化和卸载这 5 个阶段的顺序是确定的，类的加载过程必须按照这种顺序按部就班地开始（注意是“开始”，而不是“进行”或“完成”），而解析阶段则不一定：它在某些情况下可以在初始化后再开始，这是为了支持 Java 语言的运行时绑定。</p>
+<p>C/C++在运行前需要完成预处理、编译、汇编、链接；而在Java中，类加载(加载、连接、初始化)是在程序运行期间完成的。</p>
+<p>在程序运行期间进行类加载会稍微增加程序的开销，但随之会带来更大的好处——提高程序的灵活性。Java语言的灵活性体现在它可以在运行期间 动态扩展 ，所谓动态扩展就是在运行期间 动态加载 和 动态连接 。</p>
+<h2 id="1-2-类加载的时机"><a href="#1-2-类加载的时机" class="headerlink" title="1.2 类加载的时机"></a>1.2 类加载的时机</h2><h3 id="1-2-1-类加载过程中每个步骤的顺序"><a href="#1-2-1-类加载过程中每个步骤的顺序" class="headerlink" title="1.2.1 类加载过程中每个步骤的顺序"></a>1.2.1 类加载过程中每个步骤的顺序</h3><p>我们已经知道，类加载的过程包括：加载、连接、初始化，连接又分为：验证、准备、解析，所以说类加载一共分为5步：加载、验证、准备、解析、初始化。</p>
+<p>其中加载、验证、准备、初始化的 开始 顺序是依次进行的，这些步骤开始之后的过程可能会有重叠。</p>
+<p>而解析过程会发生在初始化过程中。</p>
+<h3 id="1-2-2-类加载过程中“初始化”开始的时机"><a href="#1-2-2-类加载过程中“初始化”开始的时机" class="headerlink" title="1.2.2 类加载过程中“初始化”开始的时机"></a>1.2.2 类加载过程中“初始化”开始的时机</h3><p>JVM规范中只定义了类加载过程中初始化过程开始的时机，加载、连接过程都应该在初始化之前开始(解析除外)，这些过程具体在何时开始，JVM规范并没有定义，不同的虚拟机可以根据具体的需求自定义。</p>
+<p>初始化开始的时机：</p>
+<p>在运行过程中遇到如下字节码指令时，如果类尚未初始化，那就要进行初始化：new、getstatic、putstatic、invokestatic。</p>
+<p>这四个指令对应的Java代码场景是：</p>
+<p>通过new创建对象；</p>
+<p>读取、设置一个类的静态成员变量（不包括final修饰的静态变量）；</p>
+<p>调用一个类的静态成员函数。</p>
+<p>使用java.lang.reflect进行反射调用的时候，如果类没有初始化，那就需要初始化；</p>
+<p>当初始化一个类的时候，若其父类尚未初始化，那就先要让其父类初始化，然后再初始化本类；</p>
+<p>当虚拟机启动时，虚拟机会首先初始化带有main方法的类，即主类；</p>
+<p>Java 虚拟机规范没有强制约束类加载过程的第一阶段（即：加载）什么时候开始，但对于“初始化”阶段，有着严格的规定。有且仅有 5 种情况必须立即对类进行“初始化”：</p>
+<p>(1)在遇到 new、putstatic、getstatic、invokestatic 字节码指令时，如果类尚未初始化，则需要先触发其初始化。</p>
+<p>(2)对类进行反射调用时，如果类还没有初始化，则需要先触发其初始化。</p>
+<p>(3)初始化一个类时，如果其父类还没有初始化，则需要先初始化父类。</p>
+<p>(4)虚拟机启动时，用于需要指定一个包含 main() 方法的主类，虚拟机会先初始化这个主类。</p>
+<p>(5)当使用 JDK 1.7 的动态语言支持时，如果一个 java.lang.invoke.MethodHandle 实例最后的解析结果为 REF_getStatic、REF_putStatic、REF_invokeStatic 的方法句柄，并且这个方法句柄所对应的类还没初始化，则需要先触发其初始化。</p>
+<p>这 5 种场景中的行为称为对一个类进行主动引用，除此之外，其它所有引用类的方式都不会触发初始化，称为被动引用。</p>
+<h3 id="1-2-3-主动引用-与-被动引用"><a href="#1-2-3-主动引用-与-被动引用" class="headerlink" title="1.2.3 主动引用 与 被动引用"></a>1.2.3 主动引用 与 被动引用</h3><p>JVM规范中要求在程序运行过程中，“当且仅当”出现上述4个条件之一的情况才会初始化一个类。如果间接满足上述初始化条件是不会初始化类的。</p>
+<p>其中，直接满足上述初始化条件的情况叫做 主动引用 ；间接满足上述初始化过程的情况叫做 被动引用 。</p>
+<p>那么，只有当程序在运行过程中满足主动引用的时候才会初始化一个类，若满足被动引用就不会初始化一个类。</p>
+<h3 id="1-2-4-被动引用的场景示例"><a href="#1-2-4-被动引用的场景示例" class="headerlink" title="1.2.4 被动引用的场景示例"></a>1.2.4 被动引用的场景示例</h3><p>Demo1</p>
+<pre><code>public class Fu&#123;
+    public static String name = &quot;听风行&quot;;
+        static&#123;
+            System.out.println(&quot;父类被初始化！&quot;);
+        &#125;
+    &#125;
+
+    public class Zi&#123;
+        static&#123;
+            System.out.println(&quot;子类被初始化！&quot;);
+        &#125;
+    &#125;
+
+    public static void main(String[] args)&#123;
+        System.out.println(Zi.name);
+    &#125;
+&#125;</code></pre>
+<p>输出结果：</p>
+<pre><code>父类被初始化！
+
+听风行</code></pre>
+<p>原因分析：</p>
+<p>本示例看似满足初始化时机的第一条：当要获取某一个类的静态成员变量的时候如果该类尚未初始化，则对该类进行初始化。</p>
+<p>但由于这个静态成员变量属于Fu类，Zi类只是间接调用Fu类中的静态成员变量，因此Zi类调用name属性属于间接引用，而Fu类调用name属性属于直接引用，由于JVM只初始化直接引用的类，因此只有Fu类被初始化。</p>
+<p>Demo2</p>
+<pre><code>public class A&#123;
+    public static void main(String[] args)&#123;
+        Fu[] arr = new Fu[10];
+    &#125;
+
+&#125;</code></pre>
+<p>输出结果：</p>
+<p>并没有输出“父类被初始化！”</p>
+<p>原因分析：</p>
+<p>这个过程看似满足初始化时机的第一条：遇到new创建对象时若类没被初始化，则初始化该类。</p>
+<p>但现在通过new要创建的是一个数组对象，而非Fu类对象，因此也属于间接引用，不会初始化Fu类。</p>
+<p>Demo3</p>
+<pre><code>public class Fu&#123;
+    public static final String name = &quot;听风行&quot;;
+        static&#123;
+            System.out.println(&quot;父类被初始化！&quot;);
+        &#125;
+    &#125;
+
+    public class A&#123;
+        public static void main(String[] args)&#123;
+            System.out.println(Fu.name);
+        &#125;
+    &#125;
+&#125;</code></pre>
+<p>输出结果：</p>
+<pre><code>听风行</code></pre>
+<p>原因分析：</p>
+<p>本示例看似满足类初始化时机的第一个条件：获取一个类静态成员变量的时候若类尚未初始化则初始化类。</p>
+<p>但是，Fu类的静态成员变量被final修饰，它已经是一个常量。被final修饰的常量在Java代码编译的过程中就会被放入它被引用的class文件的常量池中（这里是A的常量池）。所以程序在运行期间如果需要调用这个常量，直接去当前类的常量池中取，而不需要初始化这个类。</p>
+<p>Demo4</p>
+<pre><code>/**
+ * 被动引用 Demo1:
+ * 通过子类引用父类的静态字段，不会导致子类初始化。
+ */
+class SuperClass &#123;
+    static &#123;
+        System.out.println(&quot;SuperClass init!&quot;);
+    &#125;
+    public static int value = 123;
+&#125;
+
+class SubClass extends SuperClass &#123;
+    static &#123;
+        System.out.println(&quot;SubClass init!&quot;);
+    &#125;
+&#125;
+
+public class NotInitialization &#123;
+    public static void main(String[] args) &#123;
+        System.out.println(SubClass.value);
+        // SuperClass init!
+    &#125;
+&#125;</code></pre>
+<p>对于静态字段，只有直接定义这个字段的类才会被初始化，因此通过其子类来引用父类中定义的静态字段，只会触发父类的初始化而不会触发子类的初始化。</p>
+<p>Demo5</p>
+<pre><code>/**
+ * 被动引用 Demo2:
+ * 通过数组定义来引用类，不会触发此类的初始化。
+ */
+
+public class NotInitialization &#123;
+    public static void main(String[] args) &#123;
+        SuperClass[] superClasses = new SuperClass[10];
+    &#125;
+&#125;</code></pre>
+<p>这段代码不会触发父类的初始化，但会触发“[L 全类名”这个类的初始化，它由虚拟机自动生成，直接继承自 java.lang.Object，创建动作由字节码指令 newarray 触发。</p>
+<p>Demo6</p>
+<pre><code>/**
+ * 被动引用 Demo3:
+ * 常量在编译阶段会存入调用类的常量池中，本质上并没有直接引用到定义常量的类，因此不会触发定义常量的类的初始化。
+ */
+class ConstClass &#123;
+    static &#123;
+        System.out.println(&quot;ConstClass init!&quot;);
+    &#125;
+    public static final String HELLO_BINGO = &quot;Hello Bingo&quot;;
+
+&#125;
+
+public class NotInitialization &#123;
+    public static void main(String[] args) &#123;
+        System.out.println(ConstClass.HELLO_BINGO);
+    &#125;
+&#125;</code></pre>
+<p>编译通过之后，常量存储到 NotInitialization 类的常量池中，NotInitialization 的 Class 文件中并没有 ConstClass 类的符号引用入口，这两个类在编译成 Class 之后就没有任何联系了。</p>
+<h3 id="1-2-5-接口的初始化-接口的加载过程"><a href="#1-2-5-接口的初始化-接口的加载过程" class="headerlink" title="1.2.5 接口的初始化(接口的加载过程)"></a>1.2.5 接口的初始化(接口的加载过程)</h3><p>接口和类都需要初始化，接口和类的初始化过程基本一样，不同点在于：类初始化时，如果发现父类尚未被初始化，则先要初始化父类，然后再初始化自己；但接口初始化时，并不要求父接口已经全部初始化，只有程序在运行过程中用到当父接口中的东西时才初始化父接口。</p>
+<p>当一个类在初始化时，要求其父类全部都已经初始化过了，但是一个接口在初始化时，并不要求其父接口全部都完成了初始化，当真正用到父接口的时候才会初始化。</p>
+<h1 id="2-类加载的过程"><a href="#2-类加载的过程" class="headerlink" title="2 类加载的过程"></a>2 类加载的过程</h1><p>通过之前的介绍可知，类加载过程共有5个步骤，分别是：加载、验证、准备、解析、初始化。其中，验证、准备、解析称为连接。下面详细介绍这5个过程JVM所做的工作。</p>
+<h2 id="2-1-加载"><a href="#2-1-加载" class="headerlink" title="2.1 加载"></a>2.1 加载</h2><p>注意：“加载”是“类加载”过程的第一步，不能混淆这两个名词。</p>
+<p>在加载过程中，JVM主要做3件事情：</p>
+<pre><code>(1)通过一个类的全限定名来获取这个类的二进制字节流，即class文件：
+
+在程序运行过程中，当要访问一个类时，若发现这个类尚未被加载，并满足类初始化时机的条件时，就根据要被初始化的这个类的全限定名找到该类的二进制字节流，开始加载过程。
+
+(2)将二进制字节流的存储结构转化为特定的数据结构，存储在方法区中；[将二进制字节流所代表的静态结构转化为方法区的运行时数据结构]
+
+(3)在内存中创建一个代表该类的java.lang.Class类型的对象，作为方法区这个类的各种数据的访问入口。
+
+接下来程序在运行过程中所有对该类的访问都通过这个类对象，也就是这个Class类型的类对象是提供给外界访问该类的接口。</code></pre>
+<p>(1)获取二进制字节流</p>
+<p>JVM规范对于加载过程给予了较大的宽松度。一般二进制字节流都从已经编译好的本地class文件中读取，此外还可以从以下地方读取：</p>
+<p>a.从压缩包zip中读取，如：Jar、War、Ear等。</p>
+<p>b.从网络中获取，从网络中获取二进制字节流。如：Applet。</p>
+<p>c.通过动态代理计数生成代理类的二进制字节流</p>
+<p>d.从其它文件中动态生成，如：从JSP文件中生成Class类。</p>
+<p>e.从数据库中读取，将二进制字节流存储至数据库中，然后在加载时从数据库中读取。有些中间件会这么做，用来实现代码在集群间分发。如：有些中间件服务器可以选择把程序安装到数据库中来完成程序代码在集群间的分发。</p>
+<p>(2)类 和 数组加载过程的区别？</p>
+<p>数组也有类型，称为“数组类型”。如：</p>
+<p>String[] str = new String[10];</p>
+<p>这个数组的数组类型是Ljava.lang.String，而String只是这个数组中元素的类型。</p>
+<p>当程序在运行过程中遇到new关键字创建一个数组时，由JVM直接创建数组类，再由类加载器创建数组中的元素类。</p>
+<p>而普通类的加载由类加载器完成。既可以使用系统提供的引导类加载器，也可以使用用户自定义的类加载器。</p>
+<p>a.非数组类加载阶段可以使用系统提供的引导类加载器，也可以由用户自定义的类加载器完成，开发人员可以通过定义自己的类加载器控制字节流的获取方式（如重写一个类加载器的 loadClass() 方法）</p>
+<p>b.数组类本身不通过类加载器创建，它是由 Java 虚拟机直接创建的，再由类加载器创建数组中的元素类。</p>
+<p>(3)加载过程的注意点</p>
+<p>a.JVM规范并未给出类在方法区中存放的数据结构</p>
+<p>类完成加载后，二进制字节流就以特定的数据结构存储在方法区中，但存储的数据结构是由虚拟机自己定义的，JVM规范并没有指定。</p>
+<p>b.JVM规范并没有指定Class对象存放的位置</p>
+<p>在二进制字节流以特定格式存储在方法区后，JVM会创建一个java.lang.Class类型的对象，作为本类的外部接口。既然是对象就应该存放在堆内存中，不过JVM规范并没有给出限制，不同的虚拟机根据自己的需求存放这个对象。HotSpot将Class对象存放在方法区。</p>
+<p>c.加载阶段和连接阶段是交叉的</p>
+<p>通过之前的介绍可知，类加载过程中每个步骤的开始顺序都有严格限制，但每个步骤的结束顺序没有限制。也就是说，类加载过程中，必须按照如下顺序开始：</p>
+<p>加载、连接、初始化，但结束顺序无所谓，因此由于每个步骤处理时间的长短不一就会导致有些步骤会出现交叉。</p>
+<pre><code>虚拟机规范未规定 Class 对象的存储位置，对于 HotSpot 虚拟机而言，Class 对象比较特殊，它虽然是对象，但存放在方法区中。
+
+加载阶段与连接阶段的部分内容交叉进行，加载阶段尚未完成，连接阶段可能已经开始了。但这两个阶段的开始实践仍然保持着固定的先后顺序。</code></pre>
+<h2 id="2-2-验证"><a href="#2-2-验证" class="headerlink" title="2.2 验证"></a>2.2 验证</h2><p>验证阶段比较耗时，它非常重要但不一定必要，如果所运行的代码已经被反复使用和验证过，那么可以使用-Xverify:none参数关闭，以缩短类加载时间。</p>
+<h3 id="2-2-1-验证的目的"><a href="#2-2-1-验证的目的" class="headerlink" title="2.2.1 验证的目的"></a>2.2.1 验证的目的</h3><p>验证是为了保证二进制字节流中的信息符合虚拟机规范，并没有安全问题。验证阶段确保 Class 文件的字节流中包含的信息符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。</p>
+<p>为什么需要验证？</p>
+<p>虽然Java语言是一门安全的语言，它能确保程序猿无法访问数组边界以外的内存、避免让一个对象转换成任意类型、避免跳转到不存在的代码行，如果出现这些情况，编译无法通过。也就是说，Java语言的安全性是通过编译器来保证的。</p>
+<p>但是我们知道，编译器和虚拟机是两个独立的东西，虚拟机只认二进制字节流，它不会管所获得的二进制字节流是哪来的，当然，如果是编译器给它的，那么就相对安全，但如果是从其它途径获得的，那么无法确保该二进制字节流是安全的。通过上文可知，虚拟机规范中没有限制二进制字节流的来源，那么任意来源的二进制字节流虚拟机都能接受，为了防止字节流中有安全问题，因此需要验证！</p>
+<h3 id="2-2-2-验证的过程"><a href="#2-2-2-验证的过程" class="headerlink" title="2.2.2 验证的过程"></a>2.2.2 验证的过程</h3><p>（1）文件格式验证</p>
+<p>这个阶段主要验证输入的二进制字节流是否符合class文件结构的规范。二进制字节流只有通过了本阶段的验证，才会被允许存入到方法区中。</p>
+<p>本验证阶段是基于二进制字节流的，而后面的三个验证阶段都是在方法区中进行，并基于类特定的数据结构的。</p>
+<p>通过上文可知，加载开始前，二进制字节流还没进方法区，而加载完成后，二进制字节流已经存入方法区。而在文件格式验证前，二进制字节流尚未进入方法区，文件格式验证通过之后才进入方法区。也就是说，加载开始后，立即启动了文件格式验证，本阶段验证通过后，二进制字节流被转换成特定数据结构存储至方法区中，继而开始下阶段的验证和创建Class对象等操作。这个过程印证了：加载和验证是交叉进行的。</p>
+<p>验证字节流是否符合 Class 文件格式的规范，并且能被当前版本的虚拟机处理，验证点如下：</p>
+<pre><code>a.是否以魔数 0XCAFEBABE 开头
+
+b.主次版本号是否在当前虚拟机处理范围内
+
+c.常量池是否有不被支持的常量类型
+
+d.指向常量的索引值是否指向了不存在的常量
+
+e.CONSTANT_Utf8_info 型的常量是否有不符合 UTF8 编码的数据
+
+f.......</code></pre>
+<p>（2）元数据验证</p>
+<p>本阶段对方法区中的字节码描述信息进行语义分析，确保其符合Java语法规范。</p>
+<p>（3）字节码验证</p>
+<p>本阶段是验证过程的最复杂的一个阶段。对方法体进行语义分析，保证方法在运行时不会出现危害虚拟机的事件。</p>
+<p>（4）符号引用验证，本阶段验证发生在解析阶段，确保解析能正常执行。</p>
+<h2 id="2-3-准备"><a href="#2-3-准备" class="headerlink" title="2.3 准备"></a>2.3 准备</h2><p>准备阶段是正式为类变量（或称“静态成员变量”）分配内存并设置初始值的阶段。这些变量（不包括实例变量）所使用的内存都在方法区中进行分配。</p>
+<p>准备阶段完成两件事情：</p>
+<p>(1)为已经在方法区中的类中的静态成员变量分配内存</p>
+<p>类的静态成员变量也存储在方法区中。</p>
+<p>(2)为静态成员变量设置初始值</p>
+<p>初始值为0、false、null等。</p>
+<p>示例1：</p>
+<p>public static String name = “听风行”;</p>
+<p>在准备阶段，JVM会在方法区中为name分配内存空间，并赋上初始值null。</p>
+<p>给name赋上”柴毛毛”是在初始化阶段完成的。</p>
+<p>示例2:</p>
+<p>public static final String name = “听风行”;</p>
+<p>被final修饰的常量如果有初始值，那么在编译阶段就会将初始值存入constantValue属性中，在准备阶段就将constantValue的值赋给该字段。</p>
+<h2 id="2-4-解析"><a href="#2-4-解析" class="headerlink" title="2.4 解析"></a>2.4 解析</h2><p>解析阶段是虚拟机将常量池中的符号引用替换为直接引用的过程。</p>
+<h2 id="2-5-初始化"><a href="#2-5-初始化" class="headerlink" title="2.5 初始化"></a>2.5 初始化</h2><p>类初始化阶段是类加载过程的最后一步，是执行类构造器<clinit>() 的过程。</p>
+<p><clinit>() 方法由编译器自动产生，收集类中static{}代码块中的类变量赋值语句和类中静态成员变量的赋值语句。在准备阶段，类中静态成员变量已经完成了默认初始化，而在初始化阶段，clinit()方法对静态成员变量进行显示初始化。</p>
+<p><clinit>() 方法是由编译器自动收集类中的所有类变量的赋值动作和静态语句块（static {} 块）中的语句合并产生的，编译器收集的顺序是由语句在源文件中出现的顺序所决定的。</p>
+<p>初始化过程的注意点：</p>
+<pre><code>clinit()方法中静态成员变量的赋值顺序是根据Java代码中成员变量的出现的顺序决定的。
+
+静态代码块能访问出现在静态代码块之前的静态成员变量，无法访问出现在静态代码块之后的成员变量。
+
+静态代码块能给出现在静态代码块之后的静态成员变量赋值。
+
+构造函数init()需要显示调用父类构造函数，而类的构造函数clinit()不需要调用父类的类构造函数，因为虚拟机会确保子类的clinit()方法执行前已经执行了父类的clinit()方法。
+
+如果一个类/接口中没有静态代码块，也没有静态成员变量的赋值操作，那么编译器就不会生成clinit()方法。
+
+接口也需要通过clinit()方法为接口中定义的静态成员变量显示初始化。
+
+接口中不能使用静态代码块。
+
+接口在执行clinit()方法前，虚拟机不会确保其父接口的clinit()方法被执行，只有当父接口中的静态成员变量被使用到时才会执行父接口的clinit()方法。
+
+虚拟机会给clinit()方法加锁，因此当多条线程同时执行某一个类的clinit()方法时，只有一个方法会被执行，其它的方法都被阻塞。并且，只要有一个clinit()方法执行完，其它的clinit()方法就不会再被执行。因此，在同一个类加载器下，同一个类只会被初始化一次。</code></pre>
+<p>静态语句块中只能访问定义在静态语句块之前的变量，定义在它之后的变量，在前面的静态语句块中可以赋值，但不能访问。如下方代码所示：<br>    public class Test {<br>        static {<br>            i = 0;  // 给变量赋值可以正常编译通过<br>            System.out.println(i);  // 这句编译器会提示“非法向前引用”<br>        }<br>        static int i = 1;<br>    }</p>
+<p><clinit>() 方法不需要显式调用父类构造器，虚拟机会保证在子类的 <clinit>() 方法执行之前，父类的 <clinit>() 方法已经执行完毕。</p>
+<p>由于父类的 <clinit>() 方法先执行，意味着父类中定义的静态语句块要优先于子类的变量赋值操作。如下方代码所示：</p>
+<pre><code>static class Parent &#123;
+    public static int A = 1;
+    static &#123;
+        A = 2;
+    &#125;
+&#125;
+
+static class Sub extends Parent &#123;
+    public static int B = A;
+&#125;
+
+public static void main(String[] args) &#123;
+    System.out.println(Sub.B); // 输出 2
+&#125;</code></pre>
+<p><clinit>() 方法不是必需的，如果一个类没有静态语句块，也没有对类变量的赋值操作，那么编译器可以不为这个类生成 <clinit>() 方法。</p>
+<p>接口中不能使用静态代码块，但接口也需要通过 <clinit>() 方法为接口中定义的静态成员变量显式初始化。但接口与类不同，接口的 <clinit>() 方法不需要先执行父类的 <clinit>() 方法，只有当父接口中定义的变量使用时，父接口才会初始化。</p>
+<p>虚拟机会保证一个类的 <clinit>() 方法在多线程环境中被正确加锁、同步。如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的 <clinit>() 方法。</p>
+<h1 id="3-类加载器"><a href="#3-类加载器" class="headerlink" title="3 类加载器"></a>3 类加载器</h1><h2 id="3-1-类与类加载器"><a href="#3-1-类与类加载器" class="headerlink" title="3.1 类与类加载器"></a>3.1 类与类加载器</h2><p>类加载器的作用：将class文件加载进JVM的方法区，并在方法区中创建一个java.lang.Class对象作为外界访问这个类的接口。</p>
+<p>类与类加载器的关系：比较两个类是否相等，只有当这两个类由同一个加载器加载才有意义；否则，即使同一个class文件被不同的类加载器加载，那这两个类必定不同，即通过类的Class对象的equals执行的结果必为false。</p>
+<p>任意一个类，都由加载它的类加载器和这个类本身一同确立其在 Java 虚拟机中的唯一性，每一个类加载器，都有一个独立的类名称空间。</p>
+<p>因此，比较两个类是否“相等”，只有在这两个类是由同一个类加载器加载的前提下才有意义，否则，即使这两个类来源于同一个 Class 文件，被同一个虚拟机加载，只要加载它们的类加载器不同，那么这两个类就必定不相等。</p>
+<p>这里的“相等”，包括代表类的 Class 对象的 equals() 方法、isInstance() 方法的返回结果，也包括使用 instanceof 关键字做对象所属关系判定等情况。</p>
+<h2 id="3-2-类加载器种类"><a href="#3-2-类加载器种类" class="headerlink" title="3.2 类加载器种类"></a>3.2 类加载器种类</h2><p>JVM提供如下三种类加载器：</p>
+<pre><code>（1）启动类加载器（Bootstrap ClassLoader）: 负责加载Java_Home\lib中的class文件。
+
+    负责将存放在 &lt;JAVA_HOME&gt;\lib 目录中的，并且能被虚拟机识别的（仅按照文件名识别，如 rt.jar，名字不符合的类库即使放在 lib 目录中也不会被加载）类库加载到虚拟机内存中。
+
+（2）扩展类加载器（Extension ClassLoader）: 负责加载Java_Home\lib\ext目录下的class文件。
+
+    负责加载 &lt;JAVA_HOME&gt;\lib\ext 目录中的所有类库，开发者可以直接使用扩展类加载器。
+
+（3）应用程序类加载器（Application ClassLoader）: 负责加载用户classpath下的class文件。
+
+    由于这个类加载器是 ClassLoader 中的 getSystemClassLoader() 方法的返回值，所以一般也称它为“系统类加载器”。它负责加载用户类路径（classpath）上所指定的类库，开发者可以直接使用这个类加载器，如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。</code></pre>
+<p><img src="https://i.loli.net/2019/11/13/ZypIbv8KAX3iz1J.png" alt="JVM_10.png"></p>
+<p>当然，如果有必要，还可以加入自己定义的类加载器。</p>
+<h2 id="3-3-双亲委派模型"><a href="#3-3-双亲委派模型" class="headerlink" title="3.3 双亲委派模型"></a>3.3 双亲委派模型</h2><h3 id="3-3-1-双亲委派模型的定义"><a href="#3-3-1-双亲委派模型的定义" class="headerlink" title="3.3.1 双亲委派模型的定义"></a>3.3.1 双亲委派模型的定义</h3><p>双亲委派模型是描述类加载器之间的层次关系。它要求除了顶层的启动类加载器外，其余的类加载器都应当有自己的父类加载器。（父子关系一般不会以继承的关系实现，而是以组合关系来复用父加载器的代码）</p>
+<h3 id="3-3-2-工作过程"><a href="#3-3-2-工作过程" class="headerlink" title="3.3.2 工作过程"></a>3.3.2 工作过程</h3><p>如果一个类加载器收到了加载类的请求，它首先将请求交由父类加载器加载；若父类加载器加载失败，当前类加载器才会自己加载类。</p>
+<p>如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成，每一个层次的类加载器都是如此，因此所有的加载请求最终都应该传送到顶层的启动类加载器中，只有当父加载器反馈自己无法完成这个加载请求（找不到所需的类）时，子加载器才会尝试自己去加载。</p>
+<p>在 java.lang.ClassLoader 中的 loadClass() 方法中实现该过程。</p>
+<h3 id="3-3-3-作用"><a href="#3-3-3-作用" class="headerlink" title="3.3.3 作用"></a>3.3.3 作用</h3><p>像java.lang.Object这些存放在rt.jar中的类，无论使用哪个类加载器加载，最终都会委派给最顶端的启动类加载器加载，从而使得不同加载器加载的Object类都是同一个。</p>
+<p>相反，如果没有使用双亲委派模型，由各个类加载器自行去加载的话，如果用户自己编写了一个称为 java.lang.Object 的类，并放在 classpath 下，那么系统将会出现多个不同的 Object 类，Java 类型体系中最基础的行为也就无法保证。</p>
+<h3 id="3-3-4-原理"><a href="#3-3-4-原理" class="headerlink" title="3.3.4 原理"></a>3.3.4 原理</h3><p>双亲委派模型的代码在java.lang.ClassLoader类中的loadClass函数中实现，其逻辑如下：</p>
+<p>首先检查类是否被加载；</p>
+<pre><code>若未加载，则调用父类加载器的loadClass方法；
+
+若该方法抛出ClassNotFoundException异常，则表示父类加载器无法加载，则当前类加载器调用findClass加载类；
+
+若父类加载器可以加载，则直接返回Class对象；</code></pre>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-text">1 类加载的时机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">1.1 类的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-text">1.2 类加载的时机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E4%B8%AD%E6%AF%8F%E4%B8%AA%E6%AD%A5%E9%AA%A4%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="toc-text">1.2.1 类加载过程中每个步骤的顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E4%B8%AD%E2%80%9C%E5%88%9D%E5%A7%8B%E5%8C%96%E2%80%9D%E5%BC%80%E5%A7%8B%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-text">1.2.2 类加载过程中“初始化”开始的时机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-%E4%B8%BB%E5%8A%A8%E5%BC%95%E7%94%A8-%E4%B8%8E-%E8%A2%AB%E5%8A%A8%E5%BC%95%E7%94%A8"><span class="toc-text">1.2.3 主动引用 与 被动引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-4-%E8%A2%AB%E5%8A%A8%E5%BC%95%E7%94%A8%E7%9A%84%E5%9C%BA%E6%99%AF%E7%A4%BA%E4%BE%8B"><span class="toc-text">1.2.4 被动引用的场景示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-5-%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96-%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="toc-text">1.2.5 接口的初始化(接口的加载过程)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">2 类加载的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%8A%A0%E8%BD%BD"><span class="toc-text">2.1 加载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E9%AA%8C%E8%AF%81"><span class="toc-text">2.2 验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E9%AA%8C%E8%AF%81%E7%9A%84%E7%9B%AE%E7%9A%84"><span class="toc-text">2.2.1 验证的目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E9%AA%8C%E8%AF%81%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">2.2.2 验证的过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E5%87%86%E5%A4%87"><span class="toc-text">2.3 准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E8%A7%A3%E6%9E%90"><span class="toc-text">2.4 解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">2.5 初始化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-text">3 类加载器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E7%B1%BB%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-text">3.1 类与类加载器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E7%A7%8D%E7%B1%BB"><span class="toc-text">3.2 类加载器种类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B"><span class="toc-text">3.3 双亲委派模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">3.3.1 双亲委派模型的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-text">3.3.2 工作过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-%E4%BD%9C%E7%94%A8"><span class="toc-text">3.3.3 作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-4-%E5%8E%9F%E7%90%86"><span class="toc-text">3.3.4 原理</span></a></li></ol></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-08-JVM-%E7%B1%BB%E5%8A%A0%E8%BD%BD/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
+     
+      <a href="/tags/JVM/"><i class="fa fa-tags"></i>JVM</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2020 <a href="https://blog.iyu.pub" target="_blank">https://blog.iyu.pub</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/2019-03-09-JVM-%E9%94%81%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/2019-03-07-JVM-%E7%B1%BB%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+
+
+  </body>
+</html>

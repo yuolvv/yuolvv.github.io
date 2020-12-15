@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>JVM-day02 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Java,Java,JVM," />
+  
+
+  
+  <meta name="description" content="&amp;emsp;&amp;emsp; 记录JVM的学习过程-垃圾回收">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: ["383060d16dbbd03a8df851cdc6f513f7fdf4dadd8ae0dc62ae87151f537ec38c", ],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2020-11-03
+    </span>
+    
+      <span>
+        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>Unlock
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    JVM-day02
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://cn.bing.com/th?id=OHR.MischwaldFuessen_ZH-CN0005213724_1920x1080.jpg);"></figure>
+    </div>
+  
+
+  
+
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <h1 id="1-如何判断对象可以回收"><a href="#1-如何判断对象可以回收" class="headerlink" title="1.如何判断对象可以回收"></a>1.如何判断对象可以回收</h1><h2 id="1-1-引用计数法"><a href="#1-1-引用计数法" class="headerlink" title="1.1 引用计数法"></a>1.1 引用计数法</h2><p><img src="https://i.loli.net/2020/11/17/EhmX1lJWYGsnt8r.png" alt="JVM-day02-01.png"></p>
+<p>弊端：循环引用</p>
+<h2 id="1-2-可达性分析算法"><a href="#1-2-可达性分析算法" class="headerlink" title="1.2 可达性分析算法"></a>1.2 可达性分析算法</h2><ol>
+<li>Java虚拟机中的垃圾回收器采用 可达性分析 来探索所有存活的对象</li>
+<li>扫描堆中的对象，看是否能够沿着GC Root对象 为起点的引用链找到该对象，找不到则表示可以回收</li>
+<li>哪些对象可以作为GC Root?</li>
+</ol>
+<p>Java堆分析器 : MAT(Eclipse Memory Analyzer) 是一个快速且功能丰富的Java堆分析器，可帮助您查找内存泄漏并减少内存消耗。使用Memory Analyzer分析具有数亿个对象的高效堆转储，快速计算对象的保留大小，查看谁阻止垃圾收集器收集对象，运行报告以自动提取泄漏嫌疑者。</p>
+<p>下载地址：<a target="_blank" rel="noopener" href="https://www.eclipse.org/mat/downloads.php">https://www.eclipse.org/mat/downloads.php</a></p>
+<p>功能：</p>
+<ol>
+<li>找出内存泄漏的原因</li>
+<li>找出重复引用的类和jar</li>
+<li>分析集合的使用</li>
+<li>分析类加载器</li>
+</ol>
+<p>演示如下：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">List&lt;<span class="keyword">Object</span>&gt; list1 = <span class="built_in">new</span> ArrayList&lt;&gt;();</span><br><span class="line">list1.<span class="keyword">add</span>(&quot;a&quot;);</span><br><span class="line">list1.<span class="keyword">add</span>(&quot;b&quot;);</span><br><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">System</span>.<span class="keyword">in</span>.<span class="keyword">read</span>();</span><br><span class="line"></span><br><span class="line">list1 = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println(<span class="number">2</span>);</span><br><span class="line"><span class="keyword">System</span>.<span class="keyword">in</span>.<span class="keyword">read</span>();</span><br><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println(&quot;end...&quot;);</span><br></pre></td></tr></table></figure>
+<p>运行以上代码，使用 jps 指令找到当前的进程ID</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">15136</span></span><br><span class="line"><span class="symbol">13604 </span>Jps</span><br><span class="line"><span class="number">15772</span></span><br><span class="line"><span class="symbol">15948 </span>Launcher</span><br><span class="line"><span class="symbol">3612 </span>TestDemo01</span><br></pre></td></tr></table></figure>
+
+<p>出现 1 时，使用如下的jmap指令</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap -dump:format=b,live,file=<span class="number">1.</span>bin <span class="number">3612</span></span><br></pre></td></tr></table></figure>
+<p>简单解释下format（转储文件的格式）的参数：</p>
+<pre><code>b: 二进制文件
+live: 只抓取存活的类型，live前会进行一次垃圾回收FullGC
+file: 存储文件路径</code></pre>
+<p>出现 2 时，使用如下的jmap指令</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap -dump:format=b,live,file=<span class="number">2.</span>bin <span class="number">3612</span></span><br></pre></td></tr></table></figure>
+
+<p>这样可以看到在当前目录下有两个文件，1.bin和2.bin</p>
+<p>在MAT工具中分别打开这两个bin文件，如下图：</p>
+<p><img src="https://i.loli.net/2020/11/17/YOdmcSAR4ka63xG.png" alt="JVM-day02-02.png"></p>
+<p>打开GC Roots 如下：</p>
+<p><img src="https://i.loli.net/2020/11/18/z2OMTegbWGYjPuq.png" alt="JVM-day02-03.png"></p>
+<h2 id="1-3-四种引用-终结器引用"><a href="#1-3-四种引用-终结器引用" class="headerlink" title="1.3 四种引用 + 终结器引用"></a>1.3 四种引用 + 终结器引用</h2><p><img src="https://i.loli.net/2020/11/18/bzvSWMET4OnqL8K.png" alt="JVM-day02-04.png"></p>
+<ol>
+<li><p>强引用：</p>
+<p> 只有所有GC Roots对象都不通过 强引用 引用该对象，该对象才能被垃圾回收</p>
+</li>
+<li><p>软引用（SoftReference）</p>
+<p> (1)仅有 软引用 引用该对象时，在垃圾回收后，内存仍不足时会再次触发垃圾回收，回收软引用对象</p>
+<p> (2)可以配合引用队列来释放软引用自身</p>
+</li>
+</ol>
+<p>软引用的案例：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//打印参数： -Xmx20m -XX:+PrintGCDetails -verbose:gc</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDemo02</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> _4MB = <span class="number">4</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws IOException </span>&#123;</span><br><span class="line">        <span class="comment">//强引用</span></span><br><span class="line">        <span class="comment">/*List&lt;byte[]&gt; list1 = new ArrayList&lt;&gt;();</span></span><br><span class="line"><span class="comment">        for (int i = 0; i &lt; 5; i++) &#123;</span></span><br><span class="line"><span class="comment">            list1.add(new byte[_4MB]);</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">        System.in.read();*/</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//软引用</span></span><br><span class="line">        soft();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">soft</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// list  --&gt;  SoftReference --&gt; byte[]</span></span><br><span class="line">        List&lt;SoftReference&lt;<span class="keyword">byte</span>[]&gt;&gt; <span class="built_in">list</span> = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            SoftReference&lt;<span class="keyword">byte</span>[]&gt; reference = <span class="keyword">new</span> SoftReference&lt;&gt;(<span class="keyword">new</span> <span class="keyword">byte</span>[_4MB]);</span><br><span class="line">            System.out.<span class="built_in">println</span>(reference.<span class="built_in">get</span>());</span><br><span class="line">            <span class="built_in">list</span>.add(reference);</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="built_in">list</span>.<span class="built_in">size</span>());</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">&quot;循环结束：&quot;</span> + <span class="built_in">list</span>.<span class="built_in">size</span>());</span><br><span class="line">        <span class="keyword">for</span> (SoftReference&lt;<span class="keyword">byte</span>[]&gt; ref : <span class="built_in">list</span>)&#123;</span><br><span class="line">            System.out.<span class="built_in">println</span>(ref.<span class="built_in">get</span>());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果如下：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">[<span class="name">B@7ba4f24f</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line">[<span class="name">B@3b9a45b3</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line">[<span class="name">B@7699a589</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line">[<span class="name">GC</span> (<span class="name">Allocation</span> Failure) [<span class="name">PSYoungGen:</span> <span class="number">2913</span>K-&gt;504K(<span class="name">6144K</span>)] <span class="number">15201</span>K-&gt;13317K(<span class="name">19968K</span>), <span class="number">0.0237151</span> secs] [<span class="name">Times:</span> user=0.00 sys=0.00, real=0.02 secs] </span><br><span class="line">[<span class="name">Full</span> GC (<span class="name">Ergonomics</span>) [<span class="name">PSYoungGen:</span> <span class="number">504</span>K-&gt;0K(<span class="name">6144K</span>)] [<span class="name">ParOldGen:</span> <span class="number">12813</span>K-&gt;13268K(<span class="name">13824K</span>)] <span class="number">13317</span>K-&gt;13268K(<span class="name">19968K</span>), [<span class="name">Metaspace:</span> <span class="number">3272</span>K-&gt;3272K(<span class="name">1056768K</span>)], <span class="number">0.0235688</span> secs] [<span class="name">Times:</span> user=0.02 sys=0.00, real=0.02 secs] </span><br><span class="line">[<span class="name">B@58372a00</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line">[<span class="name">Full</span> GC (<span class="name">Ergonomics</span>) [<span class="name">PSYoungGen:</span> <span class="number">4208</span>K-&gt;4096K(<span class="name">6144K</span>)] [<span class="name">ParOldGen:</span> <span class="number">13268</span>K-&gt;13117K(<span class="name">13824K</span>)] <span class="number">17477</span>K-&gt;17213K(<span class="name">19968K</span>), [<span class="name">Metaspace:</span> <span class="number">3274</span>K-&gt;3274K(<span class="name">1056768K</span>)], <span class="number">0.0060131</span> secs] [<span class="name">Times:</span> user=0.00 sys=0.00, real=0.01 secs] </span><br><span class="line">[<span class="name">Full</span> GC (<span class="name">Allocation</span> Failure) [<span class="name">PSYoungGen:</span> <span class="number">4096</span>K-&gt;0K(<span class="name">6144K</span>)] [<span class="name">ParOldGen:</span> <span class="number">13117</span>K-&gt;811K(<span class="name">7680K</span>)] <span class="number">17213</span>K-&gt;811K(<span class="name">13824K</span>), [<span class="name">Metaspace:</span> <span class="number">3274</span>K-&gt;3274K(<span class="name">1056768K</span>)], <span class="number">0.0081056</span> secs] [<span class="name">Times:</span> user=0.00 sys=0.00, real=0.01 secs] </span><br><span class="line">[<span class="name">B@4dd8dc3</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line">循环结束：5</span><br><span class="line">null</span><br><span class="line">null</span><br><span class="line">null</span><br><span class="line">null</span><br><span class="line">[<span class="name">B@4dd8dc3</span></span><br><span class="line">Heap</span><br><span class="line"> PSYoungGen      total <span class="number">6144</span>K, used <span class="number">4377</span>K [<span class="name">0x00000000ff980000</span>, <span class="number">0</span>x0000000100000000, <span class="number">0</span>x0000000100000000)</span><br><span class="line">  eden space <span class="number">5632</span>K, <span class="number">77</span>% used [<span class="name">0x00000000ff980000</span>,<span class="number">0</span>x00000000ffdc6400,<span class="number">0</span>x00000000fff00000)</span><br><span class="line">  from space <span class="number">512</span>K, <span class="number">0</span>% used [<span class="name">0x00000000fff00000</span>,<span class="number">0</span>x00000000fff00000,<span class="number">0</span>x00000000fff80000)</span><br><span class="line">  to   space <span class="number">512</span>K, <span class="number">0</span>% used [<span class="name">0x00000000fff80000</span>,<span class="number">0</span>x00000000fff80000,<span class="number">0</span>x0000000100000000)</span><br><span class="line"> ParOldGen       total <span class="number">7680</span>K, used <span class="number">811</span>K [<span class="name">0x00000000fec00000</span>, <span class="number">0</span>x00000000ff380000, <span class="number">0</span>x00000000ff980000)</span><br><span class="line">  object space <span class="number">7680</span>K, <span class="number">10</span>% used [<span class="name">0x00000000fec00000</span>,<span class="number">0</span>x00000000feccac50,<span class="number">0</span>x00000000ff380000)</span><br><span class="line"> Metaspace       used <span class="number">3280</span>K, capacity <span class="number">4500</span>K, committed <span class="number">4864</span>K, reserved <span class="number">1056768</span>K</span><br><span class="line">  class space    used <span class="number">355</span>K, capacity <span class="number">388</span>K, committed <span class="number">512</span>K, reserved <span class="number">1048576</span>K</span><br><span class="line"></span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>加入引用队列ReferenceQueue：移除无用的软引用对象 </p>
+<p>以上的代码修改如下：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDemo02</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//打印参数： -Xmx20m -XX:+PrintGCDetails -verbose:gc</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> _4MB = <span class="number">4</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws IOException </span>&#123;</span><br><span class="line">        <span class="comment">//强引用</span></span><br><span class="line">        <span class="comment">/*List&lt;byte[]&gt; list1 = new ArrayList&lt;&gt;();</span></span><br><span class="line"><span class="comment">        for (int i = 0; i &lt; 5; i++) &#123;</span></span><br><span class="line"><span class="comment">            list1.add(new byte[_4MB]);</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">        System.in.read();*/</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//软引用</span></span><br><span class="line">        soft();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">soft</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// list  --&gt;  SoftReference --&gt; byte[]</span></span><br><span class="line">        List&lt;SoftReference&lt;<span class="keyword">byte</span>[]&gt;&gt; <span class="built_in">list</span> = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//引用队列</span></span><br><span class="line">        ReferenceQueue&lt;<span class="keyword">byte</span>[]&gt; <span class="built_in">queue</span> = <span class="keyword">new</span> ReferenceQueue&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            <span class="comment">//关联引用队列: 当软引用所关联的byte[]被回收时，软引用自己会加入到queue中去</span></span><br><span class="line">            SoftReference&lt;<span class="keyword">byte</span>[]&gt; reference = <span class="keyword">new</span> SoftReference&lt;&gt;(<span class="keyword">new</span> <span class="keyword">byte</span>[_4MB],<span class="built_in">queue</span>);</span><br><span class="line">            System.out.<span class="built_in">println</span>(reference.<span class="built_in">get</span>());</span><br><span class="line">            <span class="built_in">list</span>.add(reference);</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="built_in">list</span>.<span class="built_in">size</span>());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//从引用队列中获取无用的软引用对象 并移除</span></span><br><span class="line">        Reference&lt;? extends <span class="keyword">byte</span>[]&gt; poll = <span class="built_in">queue</span>.poll();</span><br><span class="line">        <span class="keyword">while</span> (poll != null)&#123;</span><br><span class="line">            <span class="built_in">list</span>.<span class="built_in">remove</span>(poll);</span><br><span class="line">            poll = <span class="built_in">queue</span>.poll();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">&quot;===================================&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (SoftReference&lt;<span class="keyword">byte</span>[]&gt; ref : <span class="built_in">list</span>)&#123;</span><br><span class="line">            System.out.<span class="built_in">println</span>(ref.<span class="built_in">get</span>());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[<span class="name">B@7ba4f24f</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line">[<span class="name">B@3b9a45b3</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line">[<span class="name">B@7699a589</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line">[<span class="name">GC</span> (<span class="name">Allocation</span> Failure) [<span class="name">PSYoungGen:</span> <span class="number">2913</span>K-&gt;504K(<span class="name">6144K</span>)] <span class="number">15201</span>K-&gt;13329K(<span class="name">19968K</span>), <span class="number">0.0018256</span> secs] [<span class="name">Times:</span> user=0.00 sys=0.00, real=0.00 secs] </span><br><span class="line">[<span class="name">Full</span> GC (<span class="name">Ergonomics</span>) [<span class="name">PSYoungGen:</span> <span class="number">504</span>K-&gt;0K(<span class="name">6144K</span>)] [<span class="name">ParOldGen:</span> <span class="number">12825</span>K-&gt;13268K(<span class="name">13824K</span>)] <span class="number">13329</span>K-&gt;13268K(<span class="name">19968K</span>), [<span class="name">Metaspace:</span> <span class="number">3274</span>K-&gt;3274K(<span class="name">1056768K</span>)], <span class="number">0.0057513</span> secs] [<span class="name">Times:</span> user=0.02 sys=0.00, real=0.01 secs] </span><br><span class="line">[<span class="name">B@58372a00</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line">[<span class="name">Full</span> GC (<span class="name">Ergonomics</span>) [<span class="name">PSYoungGen:</span> <span class="number">4208</span>K-&gt;4096K(<span class="name">6144K</span>)] [<span class="name">ParOldGen:</span> <span class="number">13268</span>K-&gt;13117K(<span class="name">13824K</span>)] <span class="number">17477</span>K-&gt;17213K(<span class="name">19968K</span>), [<span class="name">Metaspace:</span> <span class="number">3274</span>K-&gt;3274K(<span class="name">1056768K</span>)], <span class="number">0.0078122</span> secs] [<span class="name">Times:</span> user=0.00 sys=0.00, real=0.01 secs] </span><br><span class="line">[<span class="name">Full</span> GC (<span class="name">Allocation</span> Failure) [<span class="name">PSYoungGen:</span> <span class="number">4096</span>K-&gt;0K(<span class="name">6144K</span>)] [<span class="name">ParOldGen:</span> <span class="number">13117</span>K-&gt;811K(<span class="name">7680K</span>)] <span class="number">17213</span>K-&gt;811K(<span class="name">13824K</span>), [<span class="name">Metaspace:</span> <span class="number">3274</span>K-&gt;3274K(<span class="name">1056768K</span>)], <span class="number">0.0058282</span> secs] [<span class="name">Times:</span> user=0.00 sys=0.00, real=0.01 secs] </span><br><span class="line">[<span class="name">B@4dd8dc3</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line">===================================</span><br><span class="line">[<span class="name">B@4dd8dc3</span></span><br><span class="line">Heap</span><br><span class="line"> PSYoungGen      total <span class="number">6144</span>K, used <span class="number">4377</span>K [<span class="name">0x00000000ff980000</span>, <span class="number">0</span>x0000000100000000, <span class="number">0</span>x0000000100000000)</span><br><span class="line">  eden space <span class="number">5632</span>K, <span class="number">77</span>% used [<span class="name">0x00000000ff980000</span>,<span class="number">0</span>x00000000ffdc6400,<span class="number">0</span>x00000000fff00000)</span><br><span class="line">  from space <span class="number">512</span>K, <span class="number">0</span>% used [<span class="name">0x00000000fff00000</span>,<span class="number">0</span>x00000000fff00000,<span class="number">0</span>x00000000fff80000)</span><br><span class="line">  to   space <span class="number">512</span>K, <span class="number">0</span>% used [<span class="name">0x00000000fff80000</span>,<span class="number">0</span>x00000000fff80000,<span class="number">0</span>x0000000100000000)</span><br><span class="line"> ParOldGen       total <span class="number">7680</span>K, used <span class="number">811</span>K [<span class="name">0x00000000fec00000</span>, <span class="number">0</span>x00000000ff380000, <span class="number">0</span>x00000000ff980000)</span><br><span class="line">  object space <span class="number">7680</span>K, <span class="number">10</span>% used [<span class="name">0x00000000fec00000</span>,<span class="number">0</span>x00000000feccad40,<span class="number">0</span>x00000000ff380000)</span><br><span class="line"> Metaspace       used <span class="number">3281</span>K, capacity <span class="number">4500</span>K, committed <span class="number">4864</span>K, reserved <span class="number">1056768</span>K</span><br><span class="line">  class space    used <span class="number">355</span>K, capacity <span class="number">388</span>K, committed <span class="number">512</span>K, reserved <span class="number">1048576</span>K</span><br><span class="line"></span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>弱引用（WeakReference）</p>
+<p> (1)仅有 弱引用 引用该对象时，在垃圾回收时，无论内存是否充足，都会回收弱引用对象</p>
+<p> (2)可以配合引用队列来释放弱引用自身</p>
+</li>
+</ol>
+<p>弱引用案例：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//打印参数： -Xmx20m -XX:+PrintGCDetails -verbose:gc</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDemo03</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> _4MB = <span class="number">4</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws IOException </span>&#123;</span><br><span class="line">        <span class="comment">// list --&gt; WeakReference --&gt; byte[]</span></span><br><span class="line">        List&lt;WeakReference&lt;<span class="keyword">byte</span>[]&gt;&gt; <span class="built_in">list</span> = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            WeakReference&lt;<span class="keyword">byte</span>[]&gt; reference = <span class="keyword">new</span> WeakReference&lt;&gt;(<span class="keyword">new</span> <span class="keyword">byte</span>[_4MB]);</span><br><span class="line">            <span class="built_in">list</span>.add(reference);</span><br><span class="line">            <span class="keyword">for</span> (WeakReference&lt;<span class="keyword">byte</span>[]&gt; w : <span class="built_in">list</span>)&#123;</span><br><span class="line">                System.out.<span class="built_in">println</span>(w.<span class="built_in">get</span>()+<span class="string">&quot; &quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.<span class="built_in">println</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">&quot;循环结束：&quot;</span>+<span class="built_in">list</span>.<span class="built_in">size</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[B@<span class="number">7</span>ba4f24f </span><br><span class="line"></span><br><span class="line">[B@<span class="number">7</span>ba4f24f </span><br><span class="line">[B@<span class="number">3</span>b9a45b3 </span><br><span class="line"></span><br><span class="line">[B@<span class="number">7</span>ba4f24f </span><br><span class="line">[B@<span class="number">3</span>b9a45b3 </span><br><span class="line">[B@<span class="number">7699</span>a589 </span><br><span class="line"></span><br><span class="line">[GC (Allocation Failure) [PSYoungGen: <span class="number">2913</span>K-&gt;<span class="number">488</span>K(<span class="number">6144</span>K)] <span class="number">15201</span>K-&gt;<span class="number">13301</span>K(<span class="number">19968</span>K), <span class="number">0.0018384</span> secs] [Times: user=<span class="number">0.00</span> sys=<span class="number">0.00</span>, real=<span class="number">0.00</span> secs] </span><br><span class="line">[Full GC (Ergonomics) [PSYoungGen: <span class="number">488</span>K-&gt;<span class="number">0</span>K(<span class="number">6144</span>K)] [ParOldGen: <span class="number">12813</span>K-&gt;<span class="number">980</span>K(<span class="number">11776</span>K)] <span class="number">13301</span>K-&gt;<span class="number">980</span>K(<span class="number">17920</span>K), [Metaspace: <span class="number">3274</span>K-&gt;<span class="number">3274</span>K(<span class="number">1056768</span>K)], <span class="number">0.0049699</span> secs] [Times: user=<span class="number">0.00</span> sys=<span class="number">0.00</span>, real=<span class="number">0.01</span> secs] </span><br><span class="line"><span class="literal">null</span> </span><br><span class="line"><span class="literal">null</span> </span><br><span class="line"><span class="literal">null</span> </span><br><span class="line">[B@<span class="number">58372</span>a00 </span><br><span class="line"></span><br><span class="line"><span class="literal">null</span> </span><br><span class="line"><span class="literal">null</span> </span><br><span class="line"><span class="literal">null</span> </span><br><span class="line">[B@<span class="number">58372</span>a00 </span><br><span class="line">[B@<span class="number">4</span>dd8dc3 </span><br><span class="line"></span><br><span class="line">循环结束：<span class="number">5</span></span><br><span class="line">Heap</span><br><span class="line"> PSYoungGen      total <span class="number">6144</span>K, used <span class="number">4265</span>K [<span class="number">0x00000000ff980000</span>, <span class="number">0x0000000100000000</span>, <span class="number">0x0000000100000000</span>)</span><br><span class="line">  eden space <span class="number">5632</span>K, <span class="number">75</span>% used [<span class="number">0x00000000ff980000</span>,<span class="number">0x00000000ffdaa5b8</span>,<span class="number">0x00000000fff00000</span>)</span><br><span class="line">  from space <span class="number">512</span>K, <span class="number">0</span>% used [<span class="number">0x00000000fff00000</span>,<span class="number">0x00000000fff00000</span>,<span class="number">0x00000000fff80000</span>)</span><br><span class="line">  to   space <span class="number">512</span>K, <span class="number">0</span>% used [<span class="number">0x00000000fff80000</span>,<span class="number">0x00000000fff80000</span>,<span class="number">0x0000000100000000</span>)</span><br><span class="line"> ParOldGen       total <span class="number">11776</span>K, used <span class="number">5076</span>K [<span class="number">0x00000000fec00000</span>, <span class="number">0x00000000ff780000</span>, <span class="number">0x00000000ff980000</span>)</span><br><span class="line">  object space <span class="number">11776</span>K, <span class="number">43</span>% used [<span class="number">0x00000000fec00000</span>,<span class="number">0x00000000ff0f53b0</span>,<span class="number">0x00000000ff780000</span>)</span><br><span class="line"> Metaspace       used <span class="number">3281</span>K, capacity <span class="number">4500</span>K, committed <span class="number">4864</span>K, reserved <span class="number">1056768</span>K</span><br><span class="line">  class space    used <span class="number">355</span>K, capacity <span class="number">388</span>K, committed <span class="number">512</span>K, reserved <span class="number">1048576</span>K</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p>虚引用（PhantomReference）</p>
+<p> 必须配合引用队列来使用，主要配合ByteBuffer使用，被引用对象回收时，会将虚引用入队列，由ReferenceHandler线程调用虚引用相关方法释放直接内存</p>
+</li>
+<li><p>终结器引用（FinalReference）</p>
+<p> 无需手动编码，但其内部配合引用队列使用，在垃圾回收时，终结器引用入队列（被引用对象暂时没有被回收），再由Finalizer线程通过终结器引用找到被引用对象并调用它的finalize方法，第二次GC时才能回收被引用对象</p>
+</li>
+</ol>
+<h1 id="2-垃圾回收算法"><a href="#2-垃圾回收算法" class="headerlink" title="2.垃圾回收算法"></a>2.垃圾回收算法</h1><h2 id="2-1-标记清除"><a href="#2-1-标记清除" class="headerlink" title="2.1 标记清除"></a>2.1 标记清除</h2><p><img src="https://i.loli.net/2020/11/18/1pLfPmUozeW79hi.png" alt="JVM-day02-05.png"></p>
+<p>定义： Mark Sweep</p>
+<p>优点： 速度较快</p>
+<p>缺点： 容易产生内存碎片</p>
+<h2 id="2-2-标记整理"><a href="#2-2-标记整理" class="headerlink" title="2.2 标记整理"></a>2.2 标记整理</h2><p><img src="https://i.loli.net/2020/11/18/i8O5b7JqywDKlxc.png" alt="JVM-day02-06.png"></p>
+<p>定义： Mark Compact</p>
+<p>优点： 没有内存碎片</p>
+<p>缺点： 速度慢</p>
+<h2 id="2-3-复制"><a href="#2-3-复制" class="headerlink" title="2.3 复制"></a>2.3 复制</h2><p><img src="https://i.loli.net/2020/11/18/vUaxSOfApuLjGZJ.png" alt="JVM-day02-07.png"></p>
+<p>定义： Copy</p>
+<p>优点： 没有内存碎片</p>
+<p>缺点： 需要占用双倍的内存空间</p>
+<h1 id="3-分代垃圾回收"><a href="#3-分代垃圾回收" class="headerlink" title="3.分代垃圾回收"></a>3.分代垃圾回收</h1><p><img src="https://i.loli.net/2020/11/18/TEgwZcp4Uz8t1OI.png" alt="JVM-day02-08.png"></p>
+<pre><code>MinorGC：新生代垃圾回收，包括Eden和SurvivorFrom以及SurvivorTo
+MajorGC：老年代垃圾回收
+FullGC：整个堆空间的垃圾回收，包括新生代和老年代</code></pre>
+<ol>
+<li>对象首先分配在Eden区域</li>
+<li>新生代空间不足时，触发MinorGC，Eden和From存活的对象使用copy复制到To中，存活的对象年龄加1并且交换From和To</li>
+<li>MinorGC会引发stop the world，暂停其他用户的线程，等垃圾回收结束，用户线程才恢复运行</li>
+<li>当对象寿命超过阈值时，会晋升至老年代，最大寿命是15（4bit）</li>
+<li>当老年代空间不足，会先尝试触发MinorGC，如果之后空间仍不足，那么触发FullGC，STW的时间更长</li>
+</ol>
+<h2 id="3-1-相关JVM参数"><a href="#3-1-相关JVM参数" class="headerlink" title="3.1 相关JVM参数"></a>3.1 相关JVM参数</h2><table>
+<thead>
+<tr>
+<th align="center">含义</th>
+<th align="center">参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">堆初始大小</td>
+<td align="center">-Xms</td>
+</tr>
+<tr>
+<td align="center">堆最大大小</td>
+<td align="center">-Xmx或者-XX:MaxHeapSize=size</td>
+</tr>
+<tr>
+<td align="center">新生代大小</td>
+<td align="center">-Xmn或者-XX:NewSize=size和-XX:MaxNewSize=size</td>
+</tr>
+<tr>
+<td align="center">幸存区Survivor比例(动态)</td>
+<td align="center">-XX:InitialSurvivorRatio=ratio和-XX:+UseAdaptiveSizePolicy</td>
+</tr>
+<tr>
+<td align="center">幸存区Survivor比例</td>
+<td align="center">-XX:SurvivorRatio=ratio</td>
+</tr>
+<tr>
+<td align="center">晋升阈值</td>
+<td align="center">-XX:MaxTenuringThreshold=threshold</td>
+</tr>
+<tr>
+<td align="center">晋升详情</td>
+<td align="center">-XX:+PrintTenuringDistribution</td>
+</tr>
+<tr>
+<td align="center">GC详情</td>
+<td align="center">-XX:+PrintGCDetails -verbose:gc</td>
+</tr>
+<tr>
+<td align="center">FullGC前MinorGC</td>
+<td align="center">-XX:+ScavengeBeforeFullGC</td>
+</tr>
+</tbody></table>
+<h2 id="3-2-GC分析"><a href="#3-2-GC分析" class="headerlink" title="3.2 GC分析"></a>3.2 GC分析</h2><p>分析代码如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//参数： -Xms20m -Xmx20m -Xmn10m -XX:+UseSerialGC -XX:+PrintGCDetails -verbose:gc</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">TestDemo04</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _512KB = <span class="number">512</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _1MB = <span class="number">1</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _6MB = <span class="number">6</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _7MB = <span class="number">7</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _8MB = <span class="number">8</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args) &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Heap</span><br><span class="line"> def new generation   total <span class="number">9216</span>K, used <span class="number">2982</span>K [<span class="number">0x00000000fec00000</span>, <span class="number">0x00000000ff600000</span>, <span class="number">0x00000000ff600000</span>)</span><br><span class="line">  eden space <span class="number">8192</span>K,  <span class="number">36</span>% used [<span class="number">0x00000000fec00000</span>, <span class="number">0x00000000feee9818</span>, <span class="number">0x00000000ff400000</span>)</span><br><span class="line">  <span class="keyword">from</span> space <span class="number">1024</span>K,   <span class="number">0</span>% used [<span class="number">0x00000000ff400000</span>, <span class="number">0x00000000ff400000</span>, <span class="number">0x00000000ff500000</span>)</span><br><span class="line">  to   space <span class="number">1024</span>K,   <span class="number">0</span>% used [<span class="number">0x00000000ff500000</span>, <span class="number">0x00000000ff500000</span>, <span class="number">0x00000000ff600000</span>)</span><br><span class="line"> tenured generation   total <span class="number">10240</span>K, used <span class="number">0</span>K [<span class="number">0x00000000ff600000</span>, <span class="number">0x0000000100000000</span>, <span class="number">0x0000000100000000</span>)</span><br><span class="line">   the space <span class="number">10240</span>K,   <span class="number">0</span>% used [<span class="number">0x00000000ff600000</span>, <span class="number">0x00000000ff600000</span>, <span class="number">0x00000000ff600200</span>, <span class="number">0x0000000100000000</span>)</span><br><span class="line"> Metaspace       used <span class="number">3273</span>K, capacity <span class="number">4496</span>K, committed <span class="number">4864</span>K, reserved <span class="number">1056768</span>K</span><br><span class="line">  <span class="keyword">class</span> <span class="symbol">space</span>    <span class="symbol">used</span> <span class="symbol">354K, <span class="symbol">capacity</span></span> <span class="symbol">388K, <span class="symbol">committed</span></span> <span class="symbol">512K, <span class="symbol">reserved</span></span> <span class="symbol">1048576K</span></span><br></pre></td></tr></table></figure>
+<p>由以上的结果分析，并未发生GC</p>
+<p>这里继续分析：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//参数： -Xms20m -Xmx20m -Xmn10m -XX:+UseSerialGC -XX:+PrintGCDetails -verbose:gc</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">TestDemo04</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _512KB = <span class="number">512</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _1MB = <span class="number">1</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _6MB = <span class="number">6</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _7MB = <span class="number">7</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _8MB = <span class="number">8</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args) &#123;</span><br><span class="line">        ArrayList&lt;byte[]&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">        list.add(new byte[_7MB]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">[GC (Allocation Failure) [DefNew: 2981K-&gt;980K(9216K), 0.0017746 secs]</span> <span class="number">2981</span>K-&gt;<span class="number">980</span>K(<span class="number">19456</span>K), <span class="number">0.0018187</span> secs] [Times: user=<span class="number">0.00</span> sys=<span class="number">0.00</span>, real=<span class="number">0.00</span> secs] </span><br><span class="line">Heap</span><br><span class="line"> def new generation   total <span class="number">9216</span>K, used <span class="number">8394</span>K [<span class="number">0x00000000fec00000</span>, <span class="number">0x00000000ff600000</span>, <span class="number">0x00000000ff600000</span>)</span><br><span class="line">  eden space <span class="number">8192</span>K,  <span class="number">90</span>% used [<span class="number">0x00000000fec00000</span>, <span class="number">0x00000000ff33d8c0</span>, <span class="number">0x00000000ff400000</span>)</span><br><span class="line">  <span class="keyword">from</span> space <span class="number">1024</span>K,  <span class="number">95</span>% used [<span class="number">0x00000000ff500000</span>, <span class="number">0x00000000ff5f5228</span>, <span class="number">0x00000000ff600000</span>)</span><br><span class="line">  to   space <span class="number">1024</span>K,   <span class="number">0</span>% used [<span class="number">0x00000000ff400000</span>, <span class="number">0x00000000ff400000</span>, <span class="number">0x00000000ff500000</span>)</span><br><span class="line"> tenured generation   total <span class="number">10240</span>K, used <span class="number">0</span>K [<span class="number">0x00000000ff600000</span>, <span class="number">0x0000000100000000</span>, <span class="number">0x0000000100000000</span>)</span><br><span class="line">   the space <span class="number">10240</span>K,   <span class="number">0</span>% used [<span class="number">0x00000000ff600000</span>, <span class="number">0x00000000ff600000</span>, <span class="number">0x00000000ff600200</span>, <span class="number">0x0000000100000000</span>)</span><br><span class="line"> Metaspace       used <span class="number">3274</span>K, capacity <span class="number">4496</span>K, committed <span class="number">4864</span>K, reserved <span class="number">1056768</span>K</span><br><span class="line">  <span class="keyword">class</span> <span class="symbol">space</span>    <span class="symbol">used</span> <span class="symbol">354K, <span class="symbol">capacity</span></span> <span class="symbol">388K, <span class="symbol">committed</span></span> <span class="symbol">512K, <span class="symbol">reserved</span></span> <span class="symbol">1048576K</span></span><br></pre></td></tr></table></figure>
+<p>从结果第一行来看，JVM发生了一次MinorGC，跟第一次的结果有明显的变化。</p>
+<p>依次放入不同大小的byte[]，逐步分析…</p>
+<h2 id="3-3-大对象直接晋升老年代"><a href="#3-3-大对象直接晋升老年代" class="headerlink" title="3.3 大对象直接晋升老年代"></a>3.3 大对象直接晋升老年代</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//参数： -Xms20m -Xmx20m -Xmn10m -XX:+UseSerialGC -XX:+PrintGCDetails -verbose:gc</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">TestDemo04</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _512KB = <span class="number">512</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _1MB = <span class="number">1</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _6MB = <span class="number">6</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _7MB = <span class="number">7</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> _8MB = <span class="number">8</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> static <span class="built_in">void</span> main(String[] args) &#123;</span><br><span class="line">        ArrayList&lt;byte[]&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">        list.add(new byte[_8MB]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Heap</span><br><span class="line"> def new generation   total <span class="number">9216</span>K, used <span class="number">3145</span>K [<span class="number">0x00000000fec00000</span>, <span class="number">0x00000000ff600000</span>, <span class="number">0x00000000ff600000</span>)</span><br><span class="line">  eden space <span class="number">8192</span>K,  <span class="number">38</span>% used [<span class="number">0x00000000fec00000</span>, <span class="number">0x00000000fef127b8</span>, <span class="number">0x00000000ff400000</span>)</span><br><span class="line">  <span class="keyword">from</span> space <span class="number">1024</span>K,   <span class="number">0</span>% used [<span class="number">0x00000000ff400000</span>, <span class="number">0x00000000ff400000</span>, <span class="number">0x00000000ff500000</span>)</span><br><span class="line">  to   space <span class="number">1024</span>K,   <span class="number">0</span>% used [<span class="number">0x00000000ff500000</span>, <span class="number">0x00000000ff500000</span>, <span class="number">0x00000000ff600000</span>)</span><br><span class="line"> tenured generation   total <span class="number">10240</span>K, used <span class="number">8192</span>K [<span class="number">0x00000000ff600000</span>, <span class="number">0x0000000100000000</span>, <span class="number">0x0000000100000000</span>)</span><br><span class="line">   the space <span class="number">10240</span>K,  <span class="number">80</span>% used [<span class="number">0x00000000ff600000</span>, <span class="number">0x00000000ffe00010</span>, <span class="number">0x00000000ffe00200</span>, <span class="number">0x0000000100000000</span>)</span><br><span class="line"> Metaspace       used <span class="number">3274</span>K, capacity <span class="number">4496</span>K, committed <span class="number">4864</span>K, reserved <span class="number">1056768</span>K</span><br><span class="line">  <span class="keyword">class</span> <span class="symbol">space</span>    <span class="symbol">used</span> <span class="symbol">354K, <span class="symbol">capacity</span></span> <span class="symbol">388K, <span class="symbol">committed</span></span> <span class="symbol">512K, <span class="symbol">reserved</span></span> <span class="symbol">1048576K</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="4-垃圾回收器"><a href="#4-垃圾回收器" class="headerlink" title="4.垃圾回收器"></a>4.垃圾回收器</h1><h2 id="4-1-串行"><a href="#4-1-串行" class="headerlink" title="4.1 串行"></a>4.1 串行</h2><ol>
+<li>单线程</li>
+<li>堆内存较小，适合个人电脑</li>
+</ol>
+<p><img src="https://i.loli.net/2020/11/19/G4YJbeHdSOCu25F.png" alt="JVM-day02-09.png"></p>
+<pre><code>-XX:+UseSerialGC=Serial(新生代 复制算法) + SerialOld(老年代 标记整理算法)</code></pre>
+<h2 id="4-2-吞吐量优先"><a href="#4-2-吞吐量优先" class="headerlink" title="4.2 吞吐量优先"></a>4.2 吞吐量优先</h2><ol>
+<li>多线程</li>
+<li>堆内存较大，多核CPU</li>
+<li>让单位时间内，STW的时间最短 0.2 0.2 = 0.4 垃圾回收时间占比最低，这样就称为吞吐量高</li>
+</ol>
+<p><img src="https://i.loli.net/2020/11/19/MbmaChLi6DUENZK.png" alt="JVM-day02-10.png"></p>
+<pre><code>-XX:+UseParallelGC ~ -XX:+UseParallelOlgGC
+-XX:+UseAdaptiveSizePolicy (动态调整Eden和survivor的比例)
+-XX:GCTimeRatio=ratio
+-XX:MaxGCPauseMillis=ms
+-XX:ParallelGCThreads=n</code></pre>
+<h2 id="4-3-响应时间优先"><a href="#4-3-响应时间优先" class="headerlink" title="4.3 响应时间优先"></a>4.3 响应时间优先</h2><ol>
+<li>多线程</li>
+<li>堆内存较大，多核CPU</li>
+<li>尽可能让单次STW的时间最短 0.1 0.1 0.1 0.1 0.1 = 0.5</li>
+</ol>
+<p><img src="https://i.loli.net/2020/11/19/GndrwFVvLmu85Iy.png" alt="JVM-day02-11.png"></p>
+<pre><code>-XX:+UseConcMarkSweepGC(CMS  concurrent 并发) ~ -XX:+UseParNewGC(新生代) ~ SerialOld 
+-XX:ParallelGCThreads=n ~ -XX:ConcGCThreads=threads(CPU核数的1/4)
+-XX:CMSInitiatingOccupancyFraction=percent(默认65%)
+-XX:+CMSScavengeBeforeRemark</code></pre>
+<h2 id="4-4-G1"><a href="#4-4-G1" class="headerlink" title="4.4 G1"></a>4.4 G1</h2><p>定义：Garbage First</p>
+<pre><code>2004 论文发布
+2009 JDK 6u14体验
+2012 JDK 7u4官方支持
+2017 JDK 9 默认</code></pre>
+<p>适用场景：</p>
+<ol>
+<li>同时注重吞吐量（Throughput）和低延迟（Low Latency），默认的暂停目标是200ms</li>
+<li>超大堆内存，会将堆划分为多个大小相等的Region</li>
+<li>整体上是 标记+整理 算法，两个区域之间是 复制 算法</li>
+</ol>
+<p>相关JVM参数：</p>
+<pre><code>-XX:+UseG1GC
+-XX:G1HeapRegionSize=size
+-XX:MaxGCPauseMillis=time</code></pre>
+<h3 id="4-4-1-G1垃圾回收阶段"><a href="#4-4-1-G1垃圾回收阶段" class="headerlink" title="4.4.1 G1垃圾回收阶段"></a>4.4.1 G1垃圾回收阶段</h3><p><img src="https://i.loli.net/2020/11/19/L4zpt5fq21OhXKb.png" alt="JVM-day02-12.png"></p>
+<h3 id="4-4-2-Young-Collection"><a href="#4-4-2-Young-Collection" class="headerlink" title="4.4.2 Young Collection"></a>4.4.2 Young Collection</h3><p>会发生STW</p>
+<p><img src="https://i.loli.net/2020/11/19/StCqHFOeX4ymJ7f.png" alt="JVM-day02-13.png"></p>
+<p><img src="https://i.loli.net/2020/11/19/Py3rztefsKniFSA.png" alt="JVM-day02-14.png"></p>
+<p><img src="https://i.loli.net/2020/11/19/OyXe9g7Js3vl8fG.png" alt="JVM-day02-15.png"></p>
+<h3 id="4-4-3-Young-Collection-CM"><a href="#4-4-3-Young-Collection-CM" class="headerlink" title="4.4.3 Young Collection + CM"></a>4.4.3 Young Collection + CM</h3><ol>
+<li><p>在Young GC时会进行GC Root 的初始标记</p>
+</li>
+<li><p>老年代占用堆空间比例达到阈值时，进行并发标记（不会STW），由下面的JVM参数决定</p>
+<p> -XX:InitiatingHeapOccupancyPercent=percent(默认45%)</p>
+</li>
+</ol>
+<p><img src="https://i.loli.net/2020/11/19/ukdEBthpLx3Pb9S.png" alt="JVM-day02-16.png"></p>
+<h3 id="4-4-4-Mixed-Collection-混合回收"><a href="#4-4-4-Mixed-Collection-混合回收" class="headerlink" title="4.4.4 Mixed Collection 混合回收"></a>4.4.4 Mixed Collection 混合回收</h3><p>会对Eden,Survivor,Old进行全面垃圾回收</p>
+<ol>
+<li><p>最终标记（Remark）会STW</p>
+</li>
+<li><p>拷贝存活（Evacuation）会STW</p>
+<p> -XX:MaxGCPauseMillis=ms</p>
+</li>
+</ol>
+<p><img src="https://i.loli.net/2020/11/19/U7R5OVedAqnNMyZ.png" alt="JVM-day02-17.png"></p>
+<h3 id="4-4-5-Full-GC"><a href="#4-4-5-Full-GC" class="headerlink" title="4.4.5 Full GC"></a>4.4.5 Full GC</h3><ol>
+<li><p>SerialGC</p>
+<p> (1)新生代内存不足发生的垃圾回收 - MinorGC</p>
+<p> (2)老年代内存不足发生的垃圾回收 - FullGC</p>
+</li>
+<li><p>ParallelGC</p>
+<p> (1)新生代内存不足发生的垃圾回收 - MinorGC</p>
+<p> (2)老年代内存不足发生的垃圾回收 - FullGC</p>
+</li>
+<li><p>CMS</p>
+<p> (1)新生代内存不足发生的垃圾回收 - MinorGC</p>
+<p> (2)老年代内存不足</p>
+</li>
+<li><p>G1</p>
+<p> (1)新生代内存不足发生的垃圾回收 - MinorGC</p>
+<p> (2)老年代内存不足(根据阈值判断)</p>
+</li>
+</ol>
+<h3 id="4-4-6-Young-Collection-跨代引用"><a href="#4-4-6-Young-Collection-跨代引用" class="headerlink" title="4.4.6 Young Collection 跨代引用"></a>4.4.6 Young Collection 跨代引用</h3><p>新生代回收的跨代引用（老年代引用新生代）问题</p>
+<p><img src="https://i.loli.net/2020/11/19/YvR7xtQZAGTnXpV.png" alt="JVM-day02-18.png"></p>
+<ol>
+<li>卡表与Remembered Set</li>
+<li>在引用变更时通过post-write barrier + dirty card queue</li>
+<li>concurrent refinement threads 更新 Remembered Set</li>
+</ol>
+<p><img src="https://i.loli.net/2020/11/19/dIa38FkJHDbnYNB.png" alt="JVM-day02-19.png"></p>
+<h3 id="4-4-7-Remark"><a href="#4-4-7-Remark" class="headerlink" title="4.4.7 Remark"></a>4.4.7 Remark</h3><p>pre-write barrier(写屏障) + satb_mark_queue</p>
+<p><img src="https://i.loli.net/2020/11/19/xyYLTpCu38ksWgS.png" alt="JVM-day02-20.png"></p>
+<h3 id="4-4-8-JDK-8u20-字符串去重"><a href="#4-4-8-JDK-8u20-字符串去重" class="headerlink" title="4.4.8 JDK 8u20 字符串去重"></a>4.4.8 JDK 8u20 字符串去重</h3><p>优点：节省大量内存</p>
+<p>缺点：略微多占用了CPU时间，新生代回收时间略微增加</p>
+<pre><code>-XX:+UseStringDeduplication</code></pre>
+<p>如下：</p>
+<pre><code>String s1 = new String(&quot;hello&quot;);//char[]&#123;&#39;h&#39;,&#39;e&#39;,&#39;l&#39;,&#39;l&#39;,&#39;0&#39;&#125;
+String s2 = new String(&quot;hello&quot;);//char[]&#123;&#39;h&#39;,&#39;e&#39;,&#39;l&#39;,&#39;l&#39;,&#39;0&#39;&#125;</code></pre>
+<ol>
+<li><p>将所有新分配的字符串放入一个队列</p>
+</li>
+<li><p>当新生代回收时，G1并发检查是否有字符串重复</p>
+</li>
+<li><p>如果他们值一样，让他们引用同一个char[]</p>
+</li>
+<li><p>注意：与String.intern()不一样</p>
+<p> (1)String.intern()关注的是字符串对象</p>
+<p> (2)而字符串去重关注的是char[]</p>
+<p> (3)在JVM内部，使用了不同的字符串表</p>
+</li>
+</ol>
+<h3 id="4-4-9-JDK-8u40-并发标记类卸载"><a href="#4-4-9-JDK-8u40-并发标记类卸载" class="headerlink" title="4.4.9 JDK 8u40 并发标记类卸载"></a>4.4.9 JDK 8u40 并发标记类卸载</h3><p>所有对象都经过并发标记后，就能知道哪些类不再被使用，当一个类加载器的所有类都不再使用，则卸载它所加载的所有类</p>
+<p>-XX:+ClassUnloadingWithConcurrentMark 默认启用</p>
+<h3 id="4-4-10-JDK-8u60-回收巨型对象"><a href="#4-4-10-JDK-8u60-回收巨型对象" class="headerlink" title="4.4.10 JDK 8u60 回收巨型对象"></a>4.4.10 JDK 8u60 回收巨型对象</h3><ol>
+<li>一个对象大于region的一半时，称之为巨型对象</li>
+<li>G1不会对巨型对象进行拷贝</li>
+<li>回收时被优先考虑</li>
+<li>G1会跟踪老年代所有incoming引用，这样老年代incoming引用为0的巨型对象就可以在新生代垃圾回收时被处理掉</li>
+</ol>
+<h3 id="4-4-11-JDK-9-并发标记起始时间的调整（动态调整阈值）"><a href="#4-4-11-JDK-9-并发标记起始时间的调整（动态调整阈值）" class="headerlink" title="4.4.11 JDK 9 并发标记起始时间的调整（动态调整阈值）"></a>4.4.11 JDK 9 并发标记起始时间的调整（动态调整阈值）</h3><ol>
+<li><p>并发标记必须在堆空间占满前完成，否则退化为FullGC</p>
+</li>
+<li><p>JDK9 之前需要使用 -XX:InitiatingHeapOccupancyPercent</p>
+</li>
+<li><p>JDK9 可以动态调整</p>
+<p> (1)-XX:InitiatingHeapOccupancyPercent 用来设置初始值</p>
+<p> (2)进行数据采样并动态调整</p>
+<p> (3)总会添加一个安全的空档空间</p>
+</li>
+</ol>
+<h3 id="4-4-12-JDK-9-更高效的回收"><a href="#4-4-12-JDK-9-更高效的回收" class="headerlink" title="4.4.12 JDK 9 更高效的回收"></a>4.4.12 JDK 9 更高效的回收</h3><ol>
+<li>250+增强</li>
+<li>180+bug修复</li>
+</ol>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/12/gctuning/">JDK12</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/15/gctuning/introduction-garbage-collection-tuning.html">JDK15</a></p>
+<h1 id="5-垃圾回收调优"><a href="#5-垃圾回收调优" class="headerlink" title="5.垃圾回收调优"></a>5.垃圾回收调优</h1><ol>
+<li>掌握GC相关的JVM参数<a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/12/tools/java.html#GUID-4856361B-8BFD-4964-AE84-121F5F6CF111">参考Oracle官网介绍</a>，会基本的空间调整</li>
+<li>掌握相关工具</li>
+<li>调优跟应用、环境有关，没有放之四海而皆准的法则</li>
+</ol>
+<h2 id="5-1-调优领域"><a href="#5-1-调优领域" class="headerlink" title="5.1 调优领域"></a>5.1 调优领域</h2><ol>
+<li>内存</li>
+<li>锁竞争</li>
+<li>CPU占用</li>
+<li>IO</li>
+</ol>
+<h2 id="5-2-确定目标"><a href="#5-2-确定目标" class="headerlink" title="5.2 确定目标"></a>5.2 确定目标</h2><p>【低延迟】还是【高吞吐量】，选择合适的回收器</p>
+<ol>
+<li>CMS, G1, ZGC</li>
+<li>ParallelGC</li>
+<li>Zing</li>
+</ol>
+<h2 id="5-3-最快的GC-是不发生GC"><a href="#5-3-最快的GC-是不发生GC" class="headerlink" title="5.3 最快的GC 是不发生GC"></a>5.3 最快的GC 是不发生GC</h2><p>查看FullGC前后的内存占用，考虑下面几个问题：</p>
+<ol>
+<li><p>数据是不是太多？</p>
+<p> resultSet = statement.executeQuery(“select * from 大表 limit n”);</p>
+</li>
+<li><p>数据表示是否太臃肿？</p>
+<p> (1)对象图</p>
+<p> (2)对象大小 Object(16Byte) Integer(24Byte 包装类型) int(4Byte)</p>
+</li>
+<li><p>是否存在内存泄露？</p>
+<p> (1)static Map map</p>
+<p> (2)软</p>
+<p> (3)弱</p>
+<p> (4)第三方缓存实现</p>
+</li>
+</ol>
+<h2 id="5-4-新生代调优"><a href="#5-4-新生代调优" class="headerlink" title="5.4 新生代调优"></a>5.4 新生代调优</h2><p>新生代特点</p>
+<ol>
+<li><p>所有的new操作的内存分配非常廉价</p>
+<p> TLAB thread-local allocation buffer</p>
+</li>
+<li><p>死亡对象的回收代价是零</p>
+</li>
+<li><p>大部分对象用过即销毁</p>
+</li>
+<li><p>MinorGC的时间远远低于FullGC</p>
+</li>
+</ol>
+<p>问题：越大越好吗？</p>
+<p>-Xmn的官方解释：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/9/tools/java.htm#JSWOR624">参考链接</a></p>
+<pre><code>Sets the initial and maximum size (in bytes) of the heap for the young generation (nursery). Append the letter k or K to indicate kilobytes, m or M to indicate megabytes, or g or G to indicate gigabytes. The young generation region of the heap is used for new objects. GC is performed in this region more often than in other regions. If the size for the young generation is too small, then a lot of minor garbage collections are performed. If the size is too large, then only full garbage collections are performed, which can take a long time to complete. Oracle recommends that you keep the size for the young generation greater than 25% and less than 50% of the overall heap size. </code></pre>
+<ol>
+<li><p>新生代能容纳所有【并发量*（请求-响应）】的数据</p>
+</li>
+<li><p>幸存区大到能保留【当前活跃对象+需要晋升对象】</p>
+</li>
+<li><p>晋升阈值配置得当，让长时间存活对象尽快晋升</p>
+<p> -XX:MaxTenuringThreshold=threshold</p>
+<p> -XX:+PrintTenuringDistribution</p>
+</li>
+</ol>
+<h2 id="5-5-老年代调优"><a href="#5-5-老年代调优" class="headerlink" title="5.5 老年代调优"></a>5.5 老年代调优</h2><p>以CMS为例：</p>
+<ol>
+<li><p>CMS的老年代内存越大越好</p>
+</li>
+<li><p>先尝试不做调优，如果没有FullGC则无需调优，否则先尝试调优新生代</p>
+</li>
+<li><p>观察发生FullGC时老年代内存占用，将老年代内存预设调大1/4~1/3</p>
+<p> -XX:CMSInitiatingOccupancyFraction=percent</p>
+<p> Twitter工程师建议设置为0，表示老年代一旦有垃圾就回收，但是这种极端做法对CPU的要求特别高。</p>
+<p> 一般设置75%到80%之间。</p>
+</li>
+</ol>
+<h2 id="5-6-案例"><a href="#5-6-案例" class="headerlink" title="5.6 案例"></a>5.6 案例</h2><ol>
+<li><p>案例1：FullGC和MinorGC频繁</p>
+<p> 增大新生代的内存，gc频次相应降低</p>
+</li>
+<li><p>案例2：请求高峰期发生FullGC，单次暂停时间特别长（CMS）</p>
+</li>
+<li><p>案例3：老年代充裕情况下，发生FullGC（CMS jdk7）</p>
+<p> jdk7 堆中的永久代空间不足 导致FullGC</p>
+</li>
+</ol>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E5%AF%B9%E8%B1%A1%E5%8F%AF%E4%BB%A5%E5%9B%9E%E6%94%B6"><span class="toc-text">1.如何判断对象可以回收</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E6%B3%95"><span class="toc-text">1.1 引用计数法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E7%AE%97%E6%B3%95"><span class="toc-text">1.2 可达性分析算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8-%E7%BB%88%E7%BB%93%E5%99%A8%E5%BC%95%E7%94%A8"><span class="toc-text">1.3 四种引用 + 终结器引用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="toc-text">2.垃圾回收算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4"><span class="toc-text">2.1 标记清除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86"><span class="toc-text">2.2 标记整理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E5%A4%8D%E5%88%B6"><span class="toc-text">2.3 复制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%88%86%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-text">3.分代垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E7%9B%B8%E5%85%B3JVM%E5%8F%82%E6%95%B0"><span class="toc-text">3.1 相关JVM参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-GC%E5%88%86%E6%9E%90"><span class="toc-text">3.2 GC分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E5%A4%A7%E5%AF%B9%E8%B1%A1%E7%9B%B4%E6%8E%A5%E6%99%8B%E5%8D%87%E8%80%81%E5%B9%B4%E4%BB%A3"><span class="toc-text">3.3 大对象直接晋升老年代</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="toc-text">4.垃圾回收器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E4%B8%B2%E8%A1%8C"><span class="toc-text">4.1 串行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E5%90%9E%E5%90%90%E9%87%8F%E4%BC%98%E5%85%88"><span class="toc-text">4.2 吞吐量优先</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E5%93%8D%E5%BA%94%E6%97%B6%E9%97%B4%E4%BC%98%E5%85%88"><span class="toc-text">4.3 响应时间优先</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-G1"><span class="toc-text">4.4 G1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-1-G1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E9%98%B6%E6%AE%B5"><span class="toc-text">4.4.1 G1垃圾回收阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-2-Young-Collection"><span class="toc-text">4.4.2 Young Collection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-3-Young-Collection-CM"><span class="toc-text">4.4.3 Young Collection + CM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-4-Mixed-Collection-%E6%B7%B7%E5%90%88%E5%9B%9E%E6%94%B6"><span class="toc-text">4.4.4 Mixed Collection 混合回收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-5-Full-GC"><span class="toc-text">4.4.5 Full GC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-6-Young-Collection-%E8%B7%A8%E4%BB%A3%E5%BC%95%E7%94%A8"><span class="toc-text">4.4.6 Young Collection 跨代引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-7-Remark"><span class="toc-text">4.4.7 Remark</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-8-JDK-8u20-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8E%BB%E9%87%8D"><span class="toc-text">4.4.8 JDK 8u20 字符串去重</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-9-JDK-8u40-%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0%E7%B1%BB%E5%8D%B8%E8%BD%BD"><span class="toc-text">4.4.9 JDK 8u40 并发标记类卸载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-10-JDK-8u60-%E5%9B%9E%E6%94%B6%E5%B7%A8%E5%9E%8B%E5%AF%B9%E8%B1%A1"><span class="toc-text">4.4.10 JDK 8u60 回收巨型对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-11-JDK-9-%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0%E8%B5%B7%E5%A7%8B%E6%97%B6%E9%97%B4%E7%9A%84%E8%B0%83%E6%95%B4%EF%BC%88%E5%8A%A8%E6%80%81%E8%B0%83%E6%95%B4%E9%98%88%E5%80%BC%EF%BC%89"><span class="toc-text">4.4.11 JDK 9 并发标记起始时间的调整（动态调整阈值）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-12-JDK-9-%E6%9B%B4%E9%AB%98%E6%95%88%E7%9A%84%E5%9B%9E%E6%94%B6"><span class="toc-text">4.4.12 JDK 9 更高效的回收</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%B0%83%E4%BC%98"><span class="toc-text">5.垃圾回收调优</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%E8%B0%83%E4%BC%98%E9%A2%86%E5%9F%9F"><span class="toc-text">5.1 调优领域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E7%A1%AE%E5%AE%9A%E7%9B%AE%E6%A0%87"><span class="toc-text">5.2 确定目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-%E6%9C%80%E5%BF%AB%E7%9A%84GC-%E6%98%AF%E4%B8%8D%E5%8F%91%E7%94%9FGC"><span class="toc-text">5.3 最快的GC 是不发生GC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-%E6%96%B0%E7%94%9F%E4%BB%A3%E8%B0%83%E4%BC%98"><span class="toc-text">5.4 新生代调优</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-5-%E8%80%81%E5%B9%B4%E4%BB%A3%E8%B0%83%E4%BC%98"><span class="toc-text">5.5 老年代调优</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-6-%E6%A1%88%E4%BE%8B"><span class="toc-text">5.6 案例</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2020-11-03-JVM-day02/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
+     
+      <a href="/tags/JVM/"><i class="fa fa-tags"></i>JVM</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2020 <a href="https://blog.iyu.pub" target="_blank">https://blog.iyu.pub</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/2020-11-04-JVM-day03/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/2020-11-02-JVM-day01/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+
+
+  </body>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>CentOS 搭建 Git 服务器 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Linux,Git,Linux,CentOS," />
+  
+
+  
+  <meta name="description" content="当今江湖上Git当道，整理下，方便以后使用！">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: [],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2018-02-05
+    </span>
+    
+      <span>
+        | <a href="/categories/Linux/"><i class="fa fa-bookmark"></i>Linux</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>Unlock
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    CentOS 搭建 Git 服务器
+  </h1>
+  
+
+  
+
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <p>Git 是一款免费、开源的分布式版本控制系统，用于敏捷高效地处理任何或小或大的项目。</p>
+<p>这里以 CentOS 7.2 x64 的系统为环境，搭建 Git 服务器。</p>
+<h3 id="下载安装Git"><a href="#下载安装Git" class="headerlink" title="下载安装Git"></a>下载安装Git</h3><p>1.安装依赖库和编译工具</p>
+<p>为了后续安装能正常进行，我们先来安装一些相关依赖库和编译工具</p>
+<blockquote>
+<p>yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel</p>
+</blockquote>
+<p>安装编译工具:</p>
+<blockquote>
+<p>yum install gcc perl-ExtUtils-MakeMaker</p>
+</blockquote>
+<p>2.下载 Git</p>
+<p>选一个目录，用来放下载下来的安装包，这里将安装包放在 /usr/local/src 目录里</p>
+<blockquote>
+<p>cd /usr/local/src</p>
+</blockquote>
+<p>到官网找一个新版稳定的源码包下载到 /usr/local/src 文件夹里</p>
+<p>wget <a target="_blank" rel="noopener" href="https://www.kernel.org/pub/software/scm/git/git-2.10.0.tar.gz">https://www.kernel.org/pub/software/scm/git/git-2.10.0.tar.gz</a></p>
+<p>解压和编译:</p>
+<p>解压下载的源码包</p>
+<blockquote>
+<p>tar -zvxf git-2.10.0.tar.gz</p>
+</blockquote>
+<p>解压后进入 git-2.10.0 文件夹</p>
+<blockquote>
+<p>cd git-2.10.0</p>
+</blockquote>
+<p>执行编译</p>
+<blockquote>
+<p>make all prefix=/usr/local/git</p>
+</blockquote>
+<p>编译完成后, 安装到 /usr/local/git 目录下</p>
+<blockquote>
+<p>make install prefix=/usr/local/git</p>
+</blockquote>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>将 git 目录加入 PATH</p>
+<p>将原来的 PATH 指向目录修改为现在的目录:</p>
+<blockquote>
+<p>echo ‘export PATH=$PATH:/usr/local/git/bin’ &gt;&gt; /etc/bashrc</p>
+</blockquote>
+<p>生效环境变量；</p>
+<blockquote>
+<p>source /etc/bashrc</p>
+</blockquote>
+<p>此时我们能查看 git 版本号，说明我们已经安装成功了；</p>
+<blockquote>
+<p>git –version</p>
+</blockquote>
+<h3 id="创建Git账号密码"><a href="#创建Git账号密码" class="headerlink" title="创建Git账号密码"></a>创建Git账号密码</h3><p>创建 git 账号</p>
+<p>为我们刚刚搭建好的 git 创建一个账号</p>
+<blockquote>
+<p>useradd -m gituser</p>
+</blockquote>
+<p>然后为这个账号设置密码:</p>
+<blockquote>
+<p>passwd gituser</p>
+</blockquote>
+<h3 id="初始化Git仓库并配置用户权限"><a href="#初始化Git仓库并配置用户权限" class="headerlink" title="初始化Git仓库并配置用户权限"></a>初始化Git仓库并配置用户权限</h3><p>1.创建 git 仓库并初始化</p>
+<p>我们创建 /data/repositories 目录用于存放 git 仓库</p>
+<blockquote>
+<p>mkdir -p /data/repositories</p>
+</blockquote>
+<p>创建好后，初始化这个仓库</p>
+<blockquote>
+<p>cd /data/repositories/ &amp;&amp; git init –bare test.git</p>
+</blockquote>
+<p>2.配置用户权限</p>
+<p>给 git 仓库目录设置用户和用户组并设置权限</p>
+<pre>
+chown -R gituser:gituser /data/repositories
+chmod 755 /data/repositories
+</pre>
+
+<p> 查找 git-shell 所在目录, 编辑 /etc/passwd 文件，将最后一行关于 gituser 的登录 shell 配置改为 git-shell 的目录如下:</p>
+<pre>
+gituser:x:500:500::/home/gituser:/usr/local/git/bin/git-shell
+</pre>
+
+<p>3.使用搭建好的 Git 服务</p>
+<p>克隆 test repo 到本地:</p>
+<blockquote>
+<p>cd ~ &amp;&amp; git clone <a href="mailto:&#103;&#105;&#116;&#117;&#115;&#x65;&#x72;&#64;&#x31;&#50;&#51;&#46;&#x32;&#48;&#55;&#x2e;&#52;&#53;&#46;&#49;&#50;&#x33;">&#103;&#105;&#116;&#117;&#115;&#x65;&#x72;&#64;&#x31;&#50;&#51;&#46;&#x32;&#48;&#55;&#x2e;&#52;&#53;&#46;&#49;&#50;&#x33;</a>:/data/repositories/test.git</p>
+</blockquote>
+<h3 id="部署完成"><a href="#部署完成" class="headerlink" title="部署完成"></a>部署完成</h3><p>大功告成！</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85Git"><span class="toc-text">下载安装Git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-text">配置环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAGit%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81"><span class="toc-text">创建Git账号密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96Git%E4%BB%93%E5%BA%93%E5%B9%B6%E9%85%8D%E7%BD%AE%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90"><span class="toc-text">初始化Git仓库并配置用户权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E5%AE%8C%E6%88%90"><span class="toc-text">部署完成</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2018-02-05-centos-git/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Git/"><i class="fa fa-tags"></i>Git</a>
+     
+      <a href="/tags/Linux/"><i class="fa fa-tags"></i>Linux</a>
+     
+      <a href="/tags/CentOS/"><i class="fa fa-tags"></i>CentOS</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2020 <a href="https://blog.iyu.pub" target="_blank">https://blog.iyu.pub</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/2018-02-06-linux-svn/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/2018-02-03-baidupet/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+
+
+  </body>
+</html>

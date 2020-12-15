@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>JVM参数 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Java,Java,JVM," />
+  
+
+  
+  <meta name="description" content="JVM 参数使用手册">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: ["383060d16dbbd03a8df851cdc6f513f7fdf4dadd8ae0dc62ae87151f537ec38c", ],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-03-10
+    </span>
+    
+      <span>
+        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>Unlock
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    JVM参数
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://cn.bing.com/th?id=OHR.MauiEucalyptus_ZH-CN5616197787_1920x1080.jpg);"></figure>
+    </div>
+  
+
+  
+
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <h1 id="内存分配相关"><a href="#内存分配相关" class="headerlink" title="内存分配相关"></a>内存分配相关</h1><pre><code>Xms
+英文释义：Initial heap size(in bytes)
+中文释义：堆区初始值
+使用方法：-Xms2g 或 -XX:InitialHeapSize=2048m
+
+Xmx
+英文释义：Maximum heap size(in bytes)
+中文释义：堆区最大值
+使用方法：-Xmx2g 或 -XX:MaxHeapSize=2048m
+
+Xmn
+英文释义：Maximum new generation size(in bytes)
+中文释义：新生代最大值
+使用方法：-Xmn512m 或 -XX:MaxNewSize=512m
+
+PermSize、MetaspaceSize
+英文释义：Initial size of permanent generation(in bytes)
+中文释义：永久代（元空间）初始值
+使用方法：-XX:PermSize=128m（1.7 之前版本）、-XX:MetaspaceSize=128m（1.7 之后版本）
+
+MaxPermSize、MetaspaceSize
+英文释义：Maximum size of permanent generation(in bytes)
+中文释义：永久代（元空间）最大值
+使用方法：-XX:MaxPermSize=256m（1.7之前版本）、-XX：MaxMetaspaceSize=256m（1.7之后版本）
+
+Xss
+英文释义：Thread Stack Size(in Kbytes)
+中文释义：线程栈最大值
+使用方法：-Xss256k 或 -XX:ThreadStackSize=256k</code></pre>
+<h1 id="GC-策略相关"><a href="#GC-策略相关" class="headerlink" title="GC 策略相关"></a>GC 策略相关</h1><pre><code>SurvivorRatio
+英文释义：Rato of eden/survivor space size
+中文释义：Eden 区和 Survivor 的比值
+使用方法：-XX:SurvivorRatio=6
+使用经验：默认值为 8，假如设为 6，则表示每个 Survivor 区跟 Eden 区的比值为1:6，每个 Survivor 区占新生代的八分之一
+
+PretenureSizeThreshold
+英文释义：Maximum size in bytes of objects allocated in DefNew generation;zero means no maximum
+中文释义：可以在新生代直接分配的对象最大值，0表示没有最大值
+使用方法：-XX:PretenureSizeThreshold=1000000
+使用经验：设置该参数，可以使大于这个值的对象直接在老年代分配，避免在 Eden 区和 Survivor 区发生大量的内存复制，该参数只对 Serial 和 ParNew 收集器有效，Parallel Scavenge并不认识该参数
+
+MaxTenuringThreshold
+英文释义：Maximum value fo tenuring threshold
+中文释义：新生代最大年龄
+使用方法：-XX:MaxTenuringThreshold=10
+使用经验：每个对象在坚持过一次Minor GC之后，年龄就增加1，当超过这个参数值时就进入老年代，最大支持15
+
+ParallelGCThreads
+英文释义：Number of parallel threads parallel gc will use
+中文释义：并行执行gc的线程数
+使用方法：-XX:ParallelGCThreads=16
+
+UseSerialGC
+英文释义：Use the Serial garbage collector
+中文释义：新生代使用 Serial 垃圾收集器
+使用方法：开启 -XX:+UseSerialGC、关闭 -XX:-UseSerialGC
+使用经验：虚拟机在运行在 Client 模式下的默认值，老年代将会使用 SerialOld 垃圾收集器
+
+UseParNewGC
+英文释义：Use parallel threads in the new generation
+中文释义：新生代使用 ParNew 垃圾收集器
+使用方法：开启 -XX:+UseParNewGC、关闭 -XX:-UseParNewGC
+使用经验：老年代将使用 Serial Old 收集器
+
+CMSParallelRemarkEnabled
+英文释义：Whether parallel remark enabled (only if ParNewGC)
+中文释义：是否启用并行标记（仅限于ParNewGC）
+使用方法：开启 -XX:+CMSParallelRemarkEnabled、关闭 -XX:-CMSParallelRemarkEnabled
+
+UseParallelGC
+英文释义：Use the Parallel Scavenge garbage collector
+中文释义：新生代使用 Parallel Scavenge 垃圾收集器
+使用方法：开启 -XX:+UseParallelGC、关闭 -XX:-UseParallelGC
+使用经验：Linux下1.6,1.7,1.8 默认开启（1.9 后默认启用 G1 收集器），老年代将会使用 Serial Old 垃圾收集器
+
+UseAdaptiveSizePolicy
+英文释义：Use adaptive generation sizing policies
+中文释义：自适应调节策略，动态调整 Java 堆中各个区域的大小以及进入老年代的年龄
+使用方法：开启 -XX:+UseAdaptiveSizePolicy、关闭 -XX:-UseAdaptiveSizePolicy
+
+MaxTimeRatio
+英文释义：
+中文释义：GC 时间占总时间的比率，默认值为 99，即允许 1% 的 GC 时间。仅在 Parallel Scavenge 收集器时生效。
+使用方法：-XX:MaxTimeRatio=99
+
+MaxGCPauseMillis
+英文释义：Adaptive size policy maximum GC pause time goal in millisecond, or (G1 Only) the maximum GC time per MMU time slice
+中文释义：自适应策略的最大GC暂停时间目标（以毫秒为单位），或（仅G1）每个MMU时间片的最大GC时间
+使用方法：-XX:MaxGCPauseMillis=200
+
+UseParallelOldGC
+英文释义：Use the Parallel Old garbage collector
+中文释义：老年代使用 Parallel Old 收集器
+使用方法：开启 -XX:+UseParallelOldGC、关闭 -XX:-UseParallelOldGC
+使用经验：新生代将使用 Parallel Scavenge 收集器
+
+UseConcMarkSweepGC
+英文释义：Use Concurrent Mark-Sweep GC in the old generation
+中文释义：老年代使用 CMS 收集器
+使用方法：开启 -XX:+UseConcMarkSweepGC、关闭 -XX:-UseConcMarkSweepGC
+使用经验：年轻代将会使用 ParNew 收集器，如果出现&quot;Concurrent Mode Failure&quot;，会使用 Serial Old 收集器
+
+CMSInitiatingOccupancyFraction
+英文释义：Percentage CMS generation occupancy to start a CMS collection cycle. A negative value means that CMSTriggerRatio is used
+中文释义：触发执行 CMS 回收的老年代内存空间占用的百分比，负值表示使用 CMSTriggerRatio 设置的值
+使用方法：-XX:+CMSInitiatingOccupancyFraction=75
+
+UseCMSInitiatingOccupancyOnly
+英文释义：Only use occupancy as a criterion for staring a CMS collection
+中文释义：只根据占用情况作为开始执行CMS收集的标准
+使用方法：开启 -XX:+UseCMSInitiatingOccupancyOnly、关闭 -XX:-UseCMSInitiatingOccupancyOnly
+
+UseCMSCompactAtFullCollection
+英文释义：Use Mark-Sweep-Compact algorithm at full collections
+中文释义：设置 CMS 收集器在完成垃圾收集后是否要进行一次碎片整理
+使用方法：开启 -XX:+UseCMSCompactAtFullCollection、关闭 -XX:-UseCMSCompactAtFullCollection
+
+CMSFullGCsBeforeCompaction
+英文释义：Number of CMS full collection done before compaction if &gt; 0
+中文释义：设置 CMS 收集器在进行若干次垃圾收集后再启动一次内存碎片整理。
+使用方法：-XX:CMSFullGCsBeforeCompaction=1
+
+CMSClassUnloadingEnabled
+英文释义：Whether class unloading enabled when using CMS GC
+中文释义：当使用CMS GC时是否启用类卸载功能
+使用方法：开启 -XX:+CMSClassUnloadingEnabled、关闭 -XX:-CMSClassUnloadingEnabled
+
+UseG1GC
+英文释义：Use the Garbage-First garbage collector
+中文释义：使用G1垃圾收集器
+使用方法：开启 -XX:+UseG1GC、关闭 -XX:-UseG1GC
+使用经验：JDK 1.9 后默认选择的垃圾收集器
+
+DisableExplicitGC
+英文释义：Ignore calls to System.gc()
+中文释义：禁用 System.gc() 触发FullGC
+使用方法：开启 -XX:+DisableExplicitGC、关闭 -XX:-DisableExplicitGC
+使用经验：不建议开启，如果开启了这个参数可能会导致对外内存无法及时回收造成对外内存溢出</code></pre>
+<h1 id="GC日志相关"><a href="#GC日志相关" class="headerlink" title="GC日志相关"></a>GC日志相关</h1><pre><code>Xloggc
+英文释义：GC log file
+中文释义：GC日志文件路径
+使用方法：-Xloggc:/data/gclog/gc.log
+
+UseGCLogFileRotation
+英文释义：Rotate gclog files(for long running applications). It requires -Xloggc:
+中文释义：滚动GC日志文件，须配置Xloggc
+使用方法：开启 -XX:+UseGCLogFileRotation、关闭 -XX:-UseGCLogFileRotation
+
+NumberOfGCLogFiles
+英文释义：Number of gclog files in rotation(default:0,no rotation)
+中文释义：滚动 GC日志文件数，默认0，不滚动
+使用方法：-XX:NumberOfGCLogFiles=4
+
+GCLogFileSize
+英文释义：GC log file size,requires UseGCLogFileRotation. Set to 0 to only trigger rotation via jcmd
+中文释义：GC文件滚动大小，需配置UseGCLogFileRotation，设置为0表示仅通过jcmd命令触发
+使用方法：-XX:GCLogFileSize=100k
+
+PrintGCDetails
+英文释义：Print more details at garbage collection
+中文释义：GC时打印更多详细信息
+使用方法：开启 -XX:+PrintGCDetails、关闭 -XX:-PrintGCDetails
+使用经验：可以通过jinfo -flag [+|-]PrintGCDetails 或 jinfo -flag PrintGCDetails= 来动态开启或设置值
+
+PrintGCDateStamps
+英文释义：Print date stamps at garbage collection
+中文释义：GC时打印时间戳信息
+使用方法：开启 -XX:+PrintGCDateStamps、关闭 -XX:-PrintGCDateStamps
+使用经验：可以通过jinfo -flag [+|-] PrintGCDateStamps 或 jinfo -flag PrintGCDateStamps=来动态开启或设置值
+
+PrintTenuringDistribution
+英文释义：Print tenuring age information
+中文释义：打印存活实例年龄信息
+使用方法：开启 -XX:+PrintTenuringDistribution、关闭 -XX:-PrintTenuringDistribution
+
+PrintGCApplicationStoppedTime
+英文释义：Print the time of application has been stopped
+中文释义：打印应用暂停时间
+使用方法：开启 -XX:+PrintGCApplicationStoppedTime、关闭 -XX:-PrintGCApplicationStoppedTime
+
+PrintHeapAtGC
+英文释义：Print heap layout before and after each GC
+中文释义：GC前后打印堆区使用信息
+使用方法：开启 -XX:+PrintHeapAtGC、关闭 -XX:-PrintHeapAtGC</code></pre>
+<h1 id="异常相关"><a href="#异常相关" class="headerlink" title="异常相关"></a>异常相关</h1><pre><code>HeapDumpOnOutOfMemoryError
+英文释义：Dump heap to file when java.lang.OutOfMemoryError is thrown
+中文释义：抛出内存溢出错误时导出堆信息到指定文件
+使用方法：开启 -XX:+HeapDumpOnOutOfMemoryError、关闭 -XX:-HeapDumpOnOutOfMemoryError
+使用经验：可以通过 jinfo -flag [+|-]HeapDumpOnOutOfMemoryError 或 jinfo -flag HeapDumpOnOutOfMemoryError= 来动态开启或设置值
+
+HeapDumpPath
+英文释义：When HeapDumpOnOutOfMemoryError is on, the path(filename or directory) of the dump file(defaults to java_pid.hprof in the working directory)
+中文释义：当 HeapDumpOnOutOfMemoryError 开启的时候，dump 文件的保存路径，默认为工作目录下的 java_pid.hprof 文件
+使用方法：-XX:HeapDumpPath=/data/dump/jvm.dump</code></pre>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><pre><code>server
+英文释义：server mode
+中文释义：服务端模式
+使用方法：-server
+
+TieredCompilation
+英文释义：Enable tiered compilation
+中文释义：启用多层编译
+使用方法：开启 -XX:+TieredCompilation、关闭 -XX:-TieredCompilation</code></pre>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9B%B8%E5%85%B3"><span class="toc-text">内存分配相关</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GC-%E7%AD%96%E7%95%A5%E7%9B%B8%E5%85%B3"><span class="toc-text">GC 策略相关</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GC%E6%97%A5%E5%BF%97%E7%9B%B8%E5%85%B3"><span class="toc-text">GC日志相关</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E7%9B%B8%E5%85%B3"><span class="toc-text">异常相关</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2019-03-10-JVM-JVM%E5%8F%82%E6%95%B0/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
+     
+      <a href="/tags/JVM/"><i class="fa fa-tags"></i>JVM</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2020 <a href="https://blog.iyu.pub" target="_blank">https://blog.iyu.pub</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/2019-05-01-go_learn/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/2019-03-09-JVM-%E9%94%81%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+
+
+  </body>
+</html>

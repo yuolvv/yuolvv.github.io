@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>SpringBoot源码分析(2)-SpringBoot源码的模块和结构 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Java,Java,SpringBoot,Source," />
+  
+
+  
+  <meta name="description" content="&amp;emsp;&amp;emsp; 记录SpringBoot的源码分析过程-SpringBoot源码的模块和结构">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: ["383060d16dbbd03a8df851cdc6f513f7fdf4dadd8ae0dc62ae87151f537ec38c", ],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2020-11-16
+    </span>
+    
+      <span>
+        | <a href="/categories/Java/"><i class="fa fa-bookmark"></i>Java</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>Unlock
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    SpringBoot源码分析(2)-SpringBoot源码的模块和结构
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://cn.bing.com/th?id=OHR.MountTaranaki_ZH-CN1962085466_1920x1080.jpg);"></figure>
+    </div>
+  
+
+  
+
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <h1 id="1-源码模块"><a href="#1-源码模块" class="headerlink" title="1.源码模块"></a>1.源码模块</h1><p><img src="https://i.loli.net/2020/11/30/LoWP49Oe1Sflv6E.png" alt="sb09.png"></p>
+<p>源码项目主要有以下四个模块：</p>
+<pre><code>1. spring-boot-project：整个SpringBoot框架全部功能在这个模块实现，SpringBoot项目95%的代码都在这里实现，源码总共有26万行左右。
+
+2. Spring-boot-samples：包含了各种各样使用SpringBoot的简单demo，调试阅读源码的时候可以充分利用该模块。
+
+3. Spring-boot-sample-invoker：这个模块是跟samples模块有关，根pom.xml中有这么一句话：Samples are built via the invoker plugin，该模块无代码。
+
+4. Spring-boot-tests：SpringBoot的测试模块，跟部署测试和集成测试有关。</code></pre>
+<p>SpringBoot的全部功能在spring-boot-project模块实现，因此下面重点来介绍下 spring-boot-project 模块。</p>
+<h1 id="2-spring-boot-project-模块"><a href="#2-spring-boot-project-模块" class="headerlink" title="2.spring-boot-project 模块"></a>2.spring-boot-project 模块</h1><p><img src="https://i.loli.net/2020/11/30/trzZ3ESXChwdTce.png" alt="sb10.png"></p>
+<h3 id="1-spring-boot-parent"><a href="#1-spring-boot-parent" class="headerlink" title="1) spring-boot-parent"></a>1) spring-boot-parent</h3><p>这个模块没有代码，是spring-boot模块的父项目，被其他子模块继承。</p>
+<h3 id="2-spring-boot"><a href="#2-spring-boot" class="headerlink" title="2) spring-boot"></a>2) spring-boot</h3><p>这个模块是SpringBoot项目的核心，一些基础核心的功能都在这里实现，为SpringBoot的其他模块组件功能提供了支持，主要包括以下核心功能：</p>
+<pre><code>1. SpringApplication类，这个是SpringBoot的启动类，提供了一个静态的run方法来启动程序，该类主要用来创建并且刷新Spring容器ApplicationContext.
+
+2. 支持选择不同的容器比如Tomcat,Jetty等来作为应用的嵌入容器。
+
+3. 外部配置支持，执行java -jar xxx.jar命令时可以带一些参数，比如执行java -jar demo.jar --server.port=9999来将应用端口修改为9999.
+
+4. 内置了一些SpringBoot启动时的生命周期事件和一些容器初始化器(ApplicationContext initializers)，来执行一些SpringBoot启动时的初始化逻辑。</code></pre>
+<h3 id="3-spring-boot-autoconfigure"><a href="#3-spring-boot-autoconfigure" class="headerlink" title="3) spring-boot-autoconfigure"></a>3) spring-boot-autoconfigure</h3><p>这个模块跟SpringBoot的自动配置有关。比如SpringBoot能基于类路径来自动配置某个项目模块，自动配置最为关键的注解是@EnableAutoConfiguration,这个注解能触发Spring上下文的自动配置。另外一个重要的注解是@Conditional。</p>
+<p>除了根据类路径来进行自动配置外，还有根据容器中是否存在某个bean等方式来进行自动配置。</p>
+<h3 id="4-spring-boot-starters"><a href="#4-spring-boot-starters" class="headerlink" title="4) spring-boot-starters"></a>4) spring-boot-starters</h3><p>这个模块是跟SpringBoot的起步依赖有关。SpringBoot通过提供各种各样的起步依赖降低项目依赖的复杂度。起步依赖其实就是利用maven项目模型将其他相关的依赖给聚合起来，里面各种依赖的版本号都给定义好，避免用户在引入依赖时出现各种版本冲突，方便了我们的使用。</p>
+<pre><code>比如说：要用到activemq时，可以直接引入spring-boot-starter-activemq起步依赖即可，若SpringBoot官网或第三方组织没有提供相应的SpringBoot起步依赖时，可以进行定制自己的起步依赖。</code></pre>
+<p>注意，该模块没有代码，主要是通过maven的pom.xml来组织各种依赖。</p>
+<h3 id="5-spring-boot-cli"><a href="#5-spring-boot-cli" class="headerlink" title="5) spring-boot-cli"></a>5) spring-boot-cli</h3><p>Spring Boot CLI是一个命令行工具，如果想使用Spring快速开发，可以使用它。允许运行Groovy脚本，这意味着有一个熟悉的类似Java的语法，而没有那么多样板代码。还可以引导一个新项目或编写自己的命令。</p>
+<h3 id="6-spring-boot-actuator"><a href="#6-spring-boot-actuator" class="headerlink" title="6) spring-boot-actuator"></a>6) spring-boot-actuator</h3><p>SpringBoot的监控模块。可以通过HTTP端点或JMX等来管理和监控应用。审计、运行状况和度量收集可以自动应用到应用程序。这个监控模块是开箱即用的，提供了一系列端点包括HealthEndpoint, EnvironmentEndpoint和BeansEndpoint等端点。</p>
+<h3 id="7-spring-boot-actuator-autoconfigure"><a href="#7-spring-boot-actuator-autoconfigure" class="headerlink" title="7) spring-boot-actuator-autoconfigure"></a>7) spring-boot-actuator-autoconfigure</h3><p>这个模块为spring-boot-actuator监控模块提供自动配置的功能，通常也是根据类路径来进行配置。比如Micrometer存在于类路径中，那么将会自动配置MetricsEndpoint。</p>
+<h3 id="8-spring-boot-test"><a href="#8-spring-boot-test" class="headerlink" title="8) spring-boot-test"></a>8) spring-boot-test</h3><p>这个模块是spring-boot 测试有关的模块，包含了一些帮助测试的核心类和注解（比如@SpringBootTest）。</p>
+<h3 id="9-spring-boot-dependencies"><a href="#9-spring-boot-dependencies" class="headerlink" title="9) spring-boot-dependencies"></a>9) spring-boot-dependencies</h3><p>这个模块没有代码，主要是定义了一些SpringBoot的maven相关的一些依赖及其版本。</p>
+<h3 id="10-spring-boot-devtools"><a href="#10-spring-boot-devtools" class="headerlink" title="10) spring-boot-devtools"></a>10) spring-boot-devtools</h3><p>这个模块跟SpringBoot的热部署有关，即修改代码后无需重启应用即生效。</p>
+<h3 id="11-spring-boot-docs"><a href="#11-spring-boot-docs" class="headerlink" title="11) spring-boot-docs"></a>11) spring-boot-docs</h3><p>这个是跟文档相关的模块。</p>
+<h3 id="12-spring-boot-properties-migrator"><a href="#12-spring-boot-properties-migrator" class="headerlink" title="12) spring-boot-properties-migrator"></a>12) spring-boot-properties-migrator</h3><p>SpringBoot 对外部化配置原生支持迁移功能，所谓迁移，具体是指对应配置的属性名变动，仍可以使用原来的属性名配置。</p>
+<p>在 spring-configuration-metadata.json 的信息可以辅助 IDE 进行配置的提示，也可以用来完成配置的迁移。</p>
+<h3 id="13-spring-boot-test-autoconfigure"><a href="#13-spring-boot-test-autoconfigure" class="headerlink" title="13) spring-boot-test-autoconfigure"></a>13) spring-boot-test-autoconfigure</h3><p>这个模块是跟spring-boot-test的测试的自动配置有关。</p>
+<h3 id="14-spring-boot-tools"><a href="#14-spring-boot-tools" class="headerlink" title="14) spring-boot-tools"></a>14) spring-boot-tools</h3><p>这个模块是SpringBoot的工具相关的模块，提供了加载，maven插件，Gradle插件，metadata和后置处理相关的支持。</p>
+<p>上面介绍了这么多spring-boot-project模块下的子模块，真正要重点分析的模块有spring-boot，spring-boot-autoconfigure，spring-boot-starters和spring-boot-actuator模块。</p>
+<p><img src="https://i.loli.net/2020/11/30/9GBUZbXugcAeJdQ.png" alt="SpringBoot模块的思维导图"></p>
+<h1 id="3-SpringBoot模块间的POM关系"><a href="#3-SpringBoot模块间的POM关系" class="headerlink" title="3. SpringBoot模块间的POM关系"></a>3. SpringBoot模块间的POM关系</h1><p>根据上面SpringBoot的各个模块的具体功能，来看下SpringBoot模块的pom之间的关系。</p>
+<p><img src="https://i.loli.net/2020/11/30/mUMGABi17Yl2jQw.png" alt="sb12.png"></p>
+<p>根据上图可以看到：</p>
+<pre><code>1. spring-boot-build(pom.xml)是项目的根pom，其子pom有spring-boot-project(pom.xml)和spring-boot-dependencies(pom.xml)；
+
+2. spring-boot-dependencies(pom.xml)主要定义了SpringBoot项目的各种依赖及其版本，其子pom有spring-boot-parent(pom.xml)和spring-boot-starter-parent(pom.xml)；
+
+3. spring-boot-project(pom.xml)有聚合module的作用，其子模块并不继承于它，而是继承于spring-boot-parent(pom.xml)；
+
+4. spring-boot-parent(pom.xml)是spring-boot-project(pom.xml)的子module，但继承的父pom为spring-boot-dependencies(pom.xml)，其定义了一些properties等相关的东西。其子pom为spring-boot-project(pom.xml)的子module（注意除去spring-boot-dependencies(pom.xml)），比如有spring-boot(pom.xml),spring-boot-starters(pom.xml)和spring-boot-actuator(pom.xml)等；
+
+5. spring-boot-starters(pom.xml)是所有具体起步依赖的父pom，其子pom有spring-boot-starter-data-jdbc(pom.xml)和spring-boot-starter-data-redis(pom.xml)等。
+
+6. spring-boot-starter-parent(pom.xml)，是所有具体SpringBoot项目的父pom，比如SpringBoot自带的样例的spring-boot-samples(pom.xml)是继承于它的。</code></pre>
+<p>SpringBoot的各模块之间的pom关系有点复杂，可以打开idea的项目，逐个去捋一下。SpringBoot的父pom就是做一些版本管理，聚合模块之间的事情。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-boot/tree/v2.1.0.RELEASE">https://github.com/spring-projects/spring-boot/tree/v2.1.0.RELEASE</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/docs/1.5.2.RELEASE/reference/htmlsingle/#cli">https://docs.spring.io/spring-boot/docs/1.5.2.RELEASE/reference/htmlsingle/#cli</a></p>
+</li>
+</ol>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%BA%90%E7%A0%81%E6%A8%A1%E5%9D%97"><span class="toc-text">1.源码模块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-spring-boot-project-%E6%A8%A1%E5%9D%97"><span class="toc-text">2.spring-boot-project 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-spring-boot-parent"><span class="toc-text">1) spring-boot-parent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-spring-boot"><span class="toc-text">2) spring-boot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-spring-boot-autoconfigure"><span class="toc-text">3) spring-boot-autoconfigure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-spring-boot-starters"><span class="toc-text">4) spring-boot-starters</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-spring-boot-cli"><span class="toc-text">5) spring-boot-cli</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-spring-boot-actuator"><span class="toc-text">6) spring-boot-actuator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-spring-boot-actuator-autoconfigure"><span class="toc-text">7) spring-boot-actuator-autoconfigure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-spring-boot-test"><span class="toc-text">8) spring-boot-test</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-spring-boot-dependencies"><span class="toc-text">9) spring-boot-dependencies</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-spring-boot-devtools"><span class="toc-text">10) spring-boot-devtools</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-spring-boot-docs"><span class="toc-text">11) spring-boot-docs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-spring-boot-properties-migrator"><span class="toc-text">12) spring-boot-properties-migrator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-spring-boot-test-autoconfigure"><span class="toc-text">13) spring-boot-test-autoconfigure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-spring-boot-tools"><span class="toc-text">14) spring-boot-tools</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-SpringBoot%E6%A8%A1%E5%9D%97%E9%97%B4%E7%9A%84POM%E5%85%B3%E7%B3%BB"><span class="toc-text">3. SpringBoot模块间的POM关系</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/2020-11-16-SpringBoot-Source-02/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Java/"><i class="fa fa-tags"></i>Java</a>
+     
+      <a href="/tags/SpringBoot/"><i class="fa fa-tags"></i>SpringBoot</a>
+     
+      <a href="/tags/Source/"><i class="fa fa-tags"></i>Source</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2020 <a href="https://blog.iyu.pub" target="_blank">https://blog.iyu.pub</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/2020-11-17-SpringBoot-Source-03/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/2020-11-15-SpringBoot-Source-01/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+
+
+  </body>
+</html>
