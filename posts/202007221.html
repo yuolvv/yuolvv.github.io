@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>基于springboot+vue cli遇到的问题 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Note,web," />
+  
+
+  
+  <meta name="description" content=":::tip做了一个简单的图书管理系统，也就是实现了CRUD，记录一下中间遇到的问题，以及解决的办法。:::">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: [],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2020-07-22
+    </span>
+    
+      <span>
+        | <a href="/categories/Note/"><i class="fa fa-bookmark"></i>Note</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>Unlock
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    基于springboot+vue cli遇到的问题
+  </h1>
+  
+
+  
+
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <p>前后端分离，但是还没有加入权限认证，也是为加入权限认证做准备吧。</p>
+<h2 id="vue组件之间如何嵌套"><a href="#vue组件之间如何嵌套" class="headerlink" title="vue组件之间如何嵌套"></a>vue组件之间如何嵌套</h2><p>在以前的html中，一个页面显示的就是一个页面的内容，例如如果只是改变其中一部分内容，也是要重新写一个页面，引入了vue之后就不是这样了，页面还是那个页面，只是页面中出现的vue组件不同，因而渲染出不同的效果，同一个页面可由多个或者一个vue组件构成。</p>
+<p>在路由index.js加入如下内容</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">path</span>: <span class="string">&#x27;/home&#x27;</span>, <span class="attr">name</span>: <span class="string">&#x27;图书管理&#x27;</span> , <span class="attr">component</span>: Home,<span class="attr">redirect</span>: <span class="string">&#x27;/viewBook&#x27;</span>,</span><br><span class="line">  children: [</span><br><span class="line">    &#123;<span class="attr">path</span>: <span class="string">&#x27;/viewBook&#x27;</span>, <span class="attr">name</span>: <span class="string">&#x27;查看图书&#x27;</span> ,<span class="attr">component</span>: ViewBook&#125;,</span><br><span class="line">    &#123;<span class="attr">path</span>: <span class="string">&#x27;/addBook&#x27;</span>, <span class="attr">name</span>: <span class="string">&#x27;添加图书&#x27;</span> ,<span class="attr">component</span>: AddBook&#125;,</span><br><span class="line">    &#123;<span class="attr">path</span>: <span class="string">&#x27;/updateBook&#x27;</span>, <span class="attr">name</span>: <span class="string">&#x27;修改图书&#x27;</span> ,<span class="attr">component</span>: UpdateBook&#125;,</span><br><span class="line">  ]</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p><code>path</code>便代表访问这个页面的路径，<code>component</code>代表父组件的名字，<code>redirect</code>代表重定向，当用户访问这个路径，重定向到<code>viewBook</code>页面，<code>children</code>定义子组件，为数组类型，将在父组件中部分区域出现，其实也就是在父组件中<code>&lt;router-view/&gt;</code>位置出现。</p>
+<h2 id="如何动态读取路由以列表形式展示并进行路由跳转"><a href="#如何动态读取路由以列表形式展示并进行路由跳转" class="headerlink" title="如何动态读取路由以列表形式展示并进行路由跳转"></a>如何动态读取路由以列表形式展示并进行路由跳转</h2><p>有这样一个需求，用了element ui的布局，侧边栏有一级目录，二级目录等等，希望父组件自动添加在一级目录，它的子组件，添加到它的二级目录，其实用手写也是可以的，但是当组件多的时候，这是不方便的，还有就是点侧边栏的目录如何进行页面切换，我也没有搞明白。</p>
+<p>这里用到了vue的v-for感觉很好用啊，记得那时候自己纯原生用jsp和jquery可难受，列表可以展示，但是如何选择并请求后端接口，太麻烦。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-aside width=<span class="string">&quot;200px&quot;</span> style=<span class="string">&quot;background-color: rgb(238, 241, 246)&quot;</span>&gt;</span><br><span class="line">    &lt;el-menu router :<span class="keyword">default</span>-openeds=<span class="string">&quot;[&#x27;0&#x27;,&#x27;1&#x27;]&quot;</span>&gt;</span><br><span class="line">        &lt;el-submenu v-<span class="keyword">for</span>=<span class="string">&quot;(item,index1) in $router.options.routes&quot;</span> v-<span class="keyword">if</span>=<span class="string">&quot;item.path !== &#x27;/&#x27;&quot;</span> :index=<span class="string">&quot;&#x27;&#x27;+index1&quot;</span>&gt;</span><br><span class="line">            &lt;template  slot=<span class="string">&quot;title&quot;</span>&gt;<span class="xml"><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;el-icon-message&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span>&#123;&#123;item.name&#125;&#125;&lt;/template&gt;</span><br><span class="line">            &lt;el-menu-item v-<span class="keyword">for</span>=<span class="string">&quot;(items,index2) in item.children&quot;</span> :index=<span class="string">&quot;items.path&quot;</span>&gt;&#123;&#123;items.name&#125;&#125;&lt;/el-menu-item&gt;</span><br><span class="line">        &lt;/el-submenu&gt;</span><br><span class="line">    &lt;/el-menu&gt;</span><br><span class="line">&lt;/el-aside&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>v-for</code>类似<code>c</code>，<code>java</code>的<code>for</code>循环，<code>$router.options.routes</code>取的是路由的列表，但是都是一级目录，<code>v-xxx</code>等等都是写在标签之中，<code>:index</code>是唯一标识一个标签，当用户点击就会跳转到<code>:index</code>的值，如果它是一个路径的话，这也因此就能实现点击进行页面的切换，实际上是<code>vue</code>组件的切换。</p>
+<p><code>(item,index1)</code>第一个值<code>item</code>代表每次循环所取得的数组元素，<code>index1</code>代表数组得下标。</p>
+<h2 id="前端分页，后端如何分页查询"><a href="#前端分页，后端如何分页查询" class="headerlink" title="前端分页，后端如何分页查询"></a>前端分页，后端如何分页查询</h2><p>分页在此之前我也没有个概念，只知道把数据库数据部分查出来，或者全部查出来，其实，在此之前老师上课也讲过分页查询，只不过那时候不知道分页查询有什么用。</p>
+<p>在前端需要分页的页面中，需要添加如下内容：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-pagination</span><br><span class="line">    background</span><br><span class="line">    layout=<span class="string">&quot;prev, pager, next&quot;</span></span><br><span class="line">    :page-size=<span class="string">&quot;pageSize&quot;</span></span><br><span class="line">    @current-change=<span class="string">&quot;page&quot;</span></span><br><span class="line">    :total=<span class="string">&quot;total&quot;</span>&gt;</span><br><span class="line">&lt;/el-pagination&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>page-size</code>代表每一页有多少个元素，<code>total</code>代表一共有多少个元素，前边的<code>:</code>代表与元素进行绑定，<code>@current-change=&quot;page&quot;</code>代表当分页页面发生变化时，也就是用户点击发生跳转页面，将会触发<code>page</code>方法，可以对里面进行传参，代表跳转到了哪一页，这个很方面。</p>
+<p>page方法是这样的。<code>currentPage</code>便是代表跳转到了哪一页，使用<code>_this</code>原因是因为在<code>axios.get</code>内部有回调函数，如果还是使用this的话，这个this将会指向回调函数，会取不到值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">page</span>(<span class="params">currentPage</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> _this = <span class="built_in">this</span>;</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">currentPage==<span class="number">1</span></span>)</span>&#123;</span><br><span class="line">        _this.pages = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        _this.pages = (currentPage-<span class="number">1</span>) * _this.pageSize;</span><br><span class="line">    &#125;</span><br><span class="line">    axios.get(<span class="string">&#x27;http://47.92.23.236:9090/book/findByPage/&#x27;</span>+_this.pages+<span class="string">&#x27;/&#x27;</span>+_this.pageSize).then(<span class="function"><span class="keyword">function</span> (<span class="params">resp</span>) </span>&#123;</span><br><span class="line">        _this.tableData = resp.data;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的axios请求传入了两个参数一个是，需要跳转到哪个页面，页面的大小是多少，只需要进行简单计算起始位置，正好对应了后端limit，起始位置，元素个数。</p>
+<p>后端应该怎么做，接收到请求，拿到两个参数，查询数据库，返回结果，简单写下sql分页查询。这里<code>start</code>便代表开始的位置，<code>size</code>代表页面元素的个数。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findByPage&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;map&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;book&quot;</span>&gt;</span></span><br><span class="line">    select * from book limit #&#123;start&#125;,#&#123;size&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="前后端分离解决跨域问题"><a href="#前后端分离解决跨域问题" class="headerlink" title="前后端分离解决跨域问题"></a>前后端分离解决跨域问题</h2><p>也可以在每个<code>controller</code>类上添加注解去解决，但是不如添加一个配置类来的方便。在你的springboot项目中添加如下类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CorsConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCorsMappings</span><span class="params">(CorsRegistry registry)</span></span>&#123;</span><br><span class="line">        registry.addMapping(<span class="string">&quot;/**&quot;</span>)</span><br><span class="line">                .allowedOrigins(<span class="string">&quot;*&quot;</span>)</span><br><span class="line">                .allowedMethods(<span class="string">&quot;GET&quot;</span>,<span class="string">&quot;HEAD&quot;</span>,<span class="string">&quot;POST&quot;</span>,<span class="string">&quot;PUT&quot;</span>,<span class="string">&quot;DELETE&quot;</span>)</span><br><span class="line">                .allowCredentials(<span class="keyword">true</span>)</span><br><span class="line">                .maxAge(<span class="number">3600</span>)</span><br><span class="line">                .allowedHeaders(<span class="string">&quot;*&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vue%E7%BB%84%E4%BB%B6%E4%B9%8B%E9%97%B4%E5%A6%82%E4%BD%95%E5%B5%8C%E5%A5%97"><span class="toc-text">vue组件之间如何嵌套</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%8A%A8%E6%80%81%E8%AF%BB%E5%8F%96%E8%B7%AF%E7%94%B1%E4%BB%A5%E5%88%97%E8%A1%A8%E5%BD%A2%E5%BC%8F%E5%B1%95%E7%A4%BA%E5%B9%B6%E8%BF%9B%E8%A1%8C%E8%B7%AF%E7%94%B1%E8%B7%B3%E8%BD%AC"><span class="toc-text">如何动态读取路由以列表形式展示并进行路由跳转</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E5%88%86%E9%A1%B5%EF%BC%8C%E5%90%8E%E7%AB%AF%E5%A6%82%E4%BD%95%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2"><span class="toc-text">前端分页，后端如何分页查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98"><span class="toc-text">前后端分离解决跨域问题</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/202007221.html</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/web/"><i class="fa fa-tags"></i>web</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2023 <a href="https://blog.iyu.pub" target="_blank">https://blog.iyu.pub</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/202007241.html" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/202007191.html" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2133ab6ff866479db3e4979524888b83"}'></script>
+
+  </body>
+</html>

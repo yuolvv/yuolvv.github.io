@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>如何用Markdown画流程图 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Other,Markdown语法," />
+  
+
+  
+  <meta name="description" content=":::tip在写博客中发现了一个问题，发现很多问题的解决思路都使用都是用文字来表达的，但是文字的缺点就是太抽象，不容易理解，所以就想着用别的方法来改善表达的方式，这时候我想到了流程图，而强大的Markdown也可以做流程图。:::">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: [],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-05-28
+    </span>
+    
+      <span>
+        | <a href="/categories/Other/"><i class="fa fa-bookmark"></i>Other</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>Unlock
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    如何用Markdown画流程图
+  </h1>
+  
+
+  
+
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <p>此种方法只针对next主题用户，其他主题没用过，不提供方法。</p>
+<h1 id="首先需要安装安装插件"><a href="#首先需要安装安装插件" class="headerlink" title="首先需要安装安装插件"></a>首先需要安装安装插件</h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-filter-mermaid-diagrams</span><br></pre></td></tr></table></figure>
+<p>在你的博客目录下，用git执行这条命令。<br>然后就只需要在<code>themes/next/_config.yml</code>主题的配置文件中将</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mermaid:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p><code>mermaid</code>开启即可</p>
+<h2 id="在markdown使用mermaid"><a href="#在markdown使用mermaid" class="headerlink" title="在markdown使用mermaid"></a>在markdown使用mermaid</h2><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">···mermaid</span><br><span class="line">    <span class="keyword">graph</span> 流程图的方向</span><br><span class="line">    流程图的内容</span><br><span class="line">···</span><br><span class="line">使用的时候，需要将点换成反引号，下面都同理</span><br></pre></td></tr></table></figure>
+<h2 id="流程图的方向"><a href="#流程图的方向" class="headerlink" title="流程图的方向"></a>流程图的方向</h2><ul>
+<li>TB和TD 表示从上到下</li>
+<li>BT和DT 表示从下到上</li>
+<li>RL 表示从右到左</li>
+<li>LR 表示从左到右</li>
+</ul>
+<p><strong>示例</strong></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">···mermaid</span><br><span class="line">   graph <span class="built_in">LR</span></span><br><span class="line">   A --&gt; B</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+
+<p><strong>效果</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A --&gt; B</span><br></pre></td></tr></table></figure>
+
+<h2 id="流程图的基本图形"><a href="#流程图的基本图形" class="headerlink" title="流程图的基本图形"></a>流程图的基本图形</h2><p><strong>示例</strong></p>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">···<span class="variable">mermaid</span></span><br><span class="line">   <span class="variable">graph</span> <span class="variable">LR</span></span><br><span class="line">   <span class="variable">id</span>[带文本的矩形]</span><br><span class="line">   <span class="function"><span class="title">id4</span>(带文本的不对称的矩形)</span></span><br><span class="line">   <span class="variable">id3</span>&gt;带文本的不对称的矩形]</span><br><span class="line">   <span class="variable">id1</span>&#123;带文本的菱形&#125;</span><br><span class="line">   <span class="function"><span class="title">id2</span>((带文本的圆形))</span></span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+
+<p><strong>效果</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">id[带文本的矩形]</span><br><span class="line">id4(带文本的不对称的矩形)</span><br><span class="line">id3&gt;带文本的不对称的矩形]</span><br><span class="line">id1&#123;带文本的菱形&#125;</span><br><span class="line">id2((带文本的圆形))</span><br></pre></td></tr></table></figure>
+
+<h2 id="节点之间连接线的种类"><a href="#节点之间连接线的种类" class="headerlink" title="节点之间连接线的种类"></a>节点之间连接线的种类</h2><ul>
+<li>A –&gt; B  A带箭头指向B</li>
+<li>A — B  A不带箭头指向B</li>
+<li>A -.- B  A用虚线指向B</li>
+<li>A -.-&gt; B  A带箭头虚线指向B</li>
+<li>A ==&gt; B  A用加粗的箭头指向B</li>
+<li>A – 描述 — B  A不带箭头指向B并在中间加上文字描述</li>
+<li>A – 描述 –&gt; B  A带箭头指向B并在中间加上文字描述</li>
+<li>A -. 描述 .-&gt; B  A用带箭头的虚线指向B并在中间加上文字描述</li>
+<li>A == 描述 ==&gt; B  A用加粗的箭头指向B并在中间加上文字描述</li>
+</ul>
+<p><strong>示例</strong></p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">···mermaid</span><br><span class="line">   graph LR</span><br><span class="line">   A<span class="comment">[A]</span> --&gt; B<span class="comment">[B]</span> </span><br><span class="line">    A1<span class="comment">[A]</span> --- B1<span class="comment">[B]</span> </span><br><span class="line">    A4<span class="comment">[A]</span> -.- B4<span class="comment">[B]</span> </span><br><span class="line">    A5<span class="comment">[A]</span> -.-&gt; B5<span class="comment">[B]</span> </span><br><span class="line">    A7<span class="comment">[A]</span> ==&gt; B7<span class="comment">[B]</span> </span><br><span class="line">    A2<span class="comment">[A]</span> -- 描述 --- B2<span class="comment">[B]</span></span><br><span class="line">    A3<span class="comment">[A]</span> -- 描述 --&gt; B3<span class="comment">[B]</span> </span><br><span class="line">    A6<span class="comment">[A]</span> -. 描述 .-&gt; B6<span class="comment">[B]</span> </span><br><span class="line">    A8<span class="comment">[A]</span> == 描述 ==&gt; B8<span class="comment">[B]</span></span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+
+<p><strong>效果</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A[A] --&gt; B[B] </span><br><span class="line"> A1[A] --- B1[B] </span><br><span class="line"> A4[A] -.- B4[B] </span><br><span class="line"> A5[A] -.-&gt; B5[B] </span><br><span class="line"> A7[A] &#x3D;&#x3D;&gt; B7[B] </span><br><span class="line"> A2[A] -- 描述 --- B2[B]</span><br><span class="line"> A3[A] -- 描述 --&gt; B3[B] </span><br><span class="line"> A6[A] -. 描述 .-&gt; B6[B] </span><br><span class="line"> A8[A] &#x3D;&#x3D; 描述 &#x3D;&#x3D;&gt; B8[B]</span><br></pre></td></tr></table></figure>
+
+<h2 id="子流程图"><a href="#子流程图" class="headerlink" title="子流程图"></a>子流程图</h2><p><strong>使用规范</strong></p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">···subgraph <span class="built_in">title</span></span><br><span class="line">     <span class="keyword">graph</span> 流程图方向</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例</strong></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">···mermaid</span><br><span class="line">   graph TB</span><br><span class="line">    <span class="built_in">c1</span>--&gt;<span class="built_in">a2</span></span><br><span class="line">    subgraph one</span><br><span class="line">    <span class="built_in">a1</span>--&gt;<span class="built_in">a2</span></span><br><span class="line">    <span class="meta">end</span></span><br><span class="line">    subgraph two</span><br><span class="line">    b1--&gt;b2</span><br><span class="line">    <span class="meta">end</span></span><br><span class="line">    subgraph three</span><br><span class="line">    <span class="built_in">c1</span>--&gt;<span class="built_in">c2</span></span><br><span class="line">    <span class="meta">end</span></span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+
+<p><strong>效果</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line"> c1--&gt;a2</span><br><span class="line"> subgraph one</span><br><span class="line"> a1--&gt;a2</span><br><span class="line"> end</span><br><span class="line"> subgraph two</span><br><span class="line"> b1--&gt;b2</span><br><span class="line"> end</span><br><span class="line"> subgraph three</span><br><span class="line"> c1--&gt;c2</span><br><span class="line"> end</span><br></pre></td></tr></table></figure>
+
+<h2 id="写法实例"><a href="#写法实例" class="headerlink" title="写法实例"></a>写法实例</h2><p>绘制一个流程图，找出A、B、C三个数中最大的一个数</p>
+<p><strong>示例</strong></p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">···mermaid</span><br><span class="line">   graph LR</span><br><span class="line">    <span class="function"><span class="title">start</span>[开始] --&gt;</span> input[输入A,B,C]</span><br><span class="line">    <span class="function"><span class="title">input</span> --&gt;</span> conditionA&#123;A是否大于B&#125;</span><br><span class="line">    <span class="function"><span class="title">conditionA</span> -- YES --&gt;</span> conditionC&#123;A是否大于C&#125;</span><br><span class="line">    <span class="function"><span class="title">conditionA</span> -- NO --&gt;</span> conditionB&#123;B是否大于C&#125;</span><br><span class="line">    <span class="function"><span class="title">conditionC</span> -- YES --&gt;</span> printA[输出A]</span><br><span class="line">    <span class="function"><span class="title">conditionC</span> -- NO --&gt;</span> printC[输出C]</span><br><span class="line">    <span class="function"><span class="title">conditionB</span> -- YES --&gt;</span> printB[输出B]</span><br><span class="line">    <span class="function"><span class="title">conditionB</span> -- NO --&gt;</span> printC[输出C]</span><br><span class="line">    <span class="function"><span class="title">printA</span> --&gt;</span> stop[结束]</span><br><span class="line">    <span class="function"><span class="title">printC</span> --&gt;</span> stop</span><br><span class="line">    <span class="function"><span class="title">printB</span> --&gt;</span> stop</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+
+<p><strong>效果</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line"> start[开始] --&gt; input[输入A,B,C]</span><br><span class="line"> input --&gt; conditionA&#123;A是否大于B&#125;</span><br><span class="line"> conditionA -- YES --&gt; conditionC&#123;A是否大于C&#125;</span><br><span class="line"> conditionA -- NO --&gt; conditionB&#123;B是否大于C&#125;</span><br><span class="line"> conditionC -- YES --&gt; printA[输出A]</span><br><span class="line"> conditionC -- NO --&gt; printC[输出C]</span><br><span class="line"> conditionB -- YES --&gt; printB[输出B]</span><br><span class="line"> conditionB -- NO --&gt; printC[输出C]</span><br><span class="line"> printA --&gt; stop[结束]</span><br><span class="line"> printC --&gt; stop</span><br><span class="line"> printB --&gt; stop</span><br></pre></td></tr></table></figure>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A6%96%E5%85%88%E9%9C%80%E8%A6%81%E5%AE%89%E8%A3%85%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6"><span class="toc-text">首先需要安装安装插件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8markdown%E4%BD%BF%E7%94%A8mermaid"><span class="toc-text">在markdown使用mermaid</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E5%9B%BE%E7%9A%84%E6%96%B9%E5%90%91"><span class="toc-text">流程图的方向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%9B%BE%E5%BD%A2"><span class="toc-text">流程图的基本图形</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E4%B9%8B%E9%97%B4%E8%BF%9E%E6%8E%A5%E7%BA%BF%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="toc-text">节点之间连接线的种类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-text">子流程图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E6%B3%95%E5%AE%9E%E4%BE%8B"><span class="toc-text">写法实例</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/201905281.html</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Markdown%E8%AF%AD%E6%B3%95/"><i class="fa fa-tags"></i>Markdown语法</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2023 <a href="https://blog.iyu.pub" target="_blank">https://blog.iyu.pub</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/201905291.html" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/201905271.html" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2133ab6ff866479db3e4979524888b83"}'></script>
+
+  </body>
+</html>

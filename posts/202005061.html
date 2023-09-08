@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>web服务环境配置 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Note,ubuntu," />
+  
+
+  
+  <meta name="description" content="虽千万人吾往矣">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: [],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2020-05-06
+    </span>
+    
+      <span>
+        | <a href="/categories/Note/"><i class="fa fa-bookmark"></i>Note</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>Unlock
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    web服务环境配置
+  </h1>
+  
+
+  
+
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <h2 id="jdk"><a href="#jdk" class="headerlink" title="jdk"></a>jdk</h2><ol>
+<li>将jdk压缩包上传到服务器</li>
+</ol>
+<p>可以从官网下载，或者自己备份有。上传后文件名为</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdk-8u231-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>解压</li>
+</ol>
+<p>如果什么都不加，默认解压在当前目录下。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxvf jdk-8u231-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>环境变量配置</li>
+</ol>
+<p>在命令行输入此命令，打开环境变量配置文件。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/profile</span><br></pre></td></tr></table></figure>
+
+<p>下面的只需要改一下JAVA_HOME，推荐使用xftp查看路径，快捷高效。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">JAVA_HOME=/home/ubuntu/jdk1.8.0_231</span><br><span class="line">CLASSPATH=<span class="variable">$JAVA_HOME</span>/lib/</span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin</span><br><span class="line"><span class="built_in">export</span> PATH JAVA_HOME CLASSPATH</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>使配置生效</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+
+<h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><p>以前那个方法不行了，这次又换了一个。</p>
+<p>先运行<code>dpkg -l | grep mysql</code>查看有没有安装mysql，如果有输出就说明安装了，请参考，我的<a target="_blank" rel="noopener" href="https://srcrs.top/posts/202006191.html">ubuntu18.04彻底删除MySQL数据库</a>这篇文章就能解决你的问题。</p>
+<h3 id="安装mysql-server"><a href="#安装mysql-server" class="headerlink" title="安装mysql-server"></a>安装mysql-server</h3><ul>
+<li><p>安装MySQL<code>apt install mysql-server</code></p>
+</li>
+<li><p>查看是否安装成功<code>netstat -tap | grep mysql</code>,如果看到有mysql就说明安装成功。</p>
+</li>
+<li><p>输入<code>mysql</code>进入数据库，此时数据库是没有密码的。</p>
+</li>
+</ul>
+<h3 id="配置MySQL"><a href="#配置MySQL" class="headerlink" title="配置MySQL"></a>配置MySQL</h3><ul>
+<li><p>输入<code>mysql_secure_installation</code></p>
+</li>
+<li><p>secure enough. Would you like to setup VALIDATE PASSWORD plugin?    # 要安装验证密码插件吗?</p>
+</li>
+<li><p>Press y|Y for Yes, any other key for No: <code>N</code>    # 这里我选择N</p>
+</li>
+<li><p>New password:   # 输入要为root管理员设置的数据库密码</p>
+</li>
+<li><p>Re-enter new password:   # 再次输入密码</p>
+</li>
+<li><p>Remove anonymous users? (Press y|Y for Yes, any other key for No) : <code>y</code>     # 删除匿名账户<br>Success.</p>
+</li>
+<li><p>Disallow root login remotely? (Press y|Y for Yes, any other key for No) : <code>N</code>    # 是否禁止root管理员从远程登录？</p>
+</li>
+<li><p>Remove test database and access to it? (Press y|Y for Yes, any other key for No) : <code>y</code>   # 删除test数据库并取消对它的访问权限</p>
+</li>
+<li><p>Reload privilege tables now? (Press y|Y for Yes, any other key for No) : <code>y</code>   # 刷新授权表，让初始化后的设定立即生效</p>
+</li>
+</ul>
+<p>此时mysql就是初步配置好了，但是仍然不够。</p>
+<h3 id="配置MySQL允许远程访问"><a href="#配置MySQL允许远程访问" class="headerlink" title="配置MySQL允许远程访问"></a>配置MySQL允许远程访问</h3><ul>
+<li><p>编辑配置文件<code>vim /etc/mysql/mysql.conf.d/mysqld.cnf</code></p>
+</li>
+<li><p>注释<code>bind-address = 127.0.0.1</code></p>
+</li>
+<li><p>按Esc键，输入冒号，再输入wq，即可保存退出。</p>
+</li>
+<li><p>输入<code>mysql -uroot -p</code>加上你设置的密码，就能进入到数据库。</p>
+</li>
+<li><p>进行授权<code>grant all on *.* to root@&#39;%&#39; identified by &#39;你的密码&#39; with grant option;</code></p>
+</li>
+<li><p>刷新权限<code>flush privileges;</code></p>
+</li>
+<li><p>退出<code>exit</code></p>
+</li>
+<li><p>重启MySQL<code>systemctl restart mysql</code></p>
+</li>
+</ul>
+<p>接下来就可以远程访问了。</p>
+<h3 id="解决不用密码就能登录"><a href="#解决不用密码就能登录" class="headerlink" title="解决不用密码就能登录"></a>解决不用密码就能登录</h3><p>到现在发现不用密码也是能登录的，相当与以前设置的密码还没有生效。</p>
+<ul>
+<li><p>进入数据库<code>mysql -uroot -p</code></p>
+</li>
+<li><p>进入mysql<code>use mysql;</code></p>
+</li>
+<li><p>无password版本，即5.7以下包括5.7<code>update user set authentication_string=password(&quot;你的密码&quot;) where user=&#39;root&#39;;</code></p>
+</li>
+<li><p>大于5.7<code>update user set password=password(&#39;你的密码&#39;) where user=&#39;root&#39;;</code></p>
+</li>
+</ul>
+<p>不清楚这两条运行了，也没关系。</p>
+<ul>
+<li><p>update user set plugin=”mysql_native_password”;</p>
+</li>
+<li><p>刷新<code>flush privileges;</code></p>
+</li>
+<li><p>退出<code>exit</code></p>
+</li>
+<li><p>重启MySQL<code>systemctl restart mysql</code></p>
+</li>
+</ul>
+<h3 id="解决数据库大小写敏感问题"><a href="#解决数据库大小写敏感问题" class="headerlink" title="解决数据库大小写敏感问题"></a>解决数据库大小写敏感问题</h3><p>在windows中，数据库的大小写是不敏感的，而在Linux是区分大小写的。</p>
+<p>mysql是通过lower_case_table_names变量来处理大小写问题的。</p>
+<ul>
+<li><p>进入mysql<code>mysql -uroot -p</code>，回车输入你的密码</p>
+</li>
+<li><p>查询大小写变量<code>show variables like &#39;%case%&#39;;</code></p>
+</li>
+</ul>
+<p>输入如下内容，该变量值是0，说明对大小写是敏感的。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+------------------------+-------+</span><br><span class="line">| Variable_name          | Value |</span><br><span class="line">+------------------------+-------+</span><br><span class="line">| lower_case_file_system | OFF   |</span><br><span class="line">| lower_case_table_names | 0     |</span><br><span class="line">+------------------------+-------+</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>退出数据库，进入终端<code>vim /etc/mysql/mysql.conf.d/mysqld.cnf</code></p>
+</li>
+<li><p>在[mysqld]下面添加<code>lower_case_table_names=1</code></p>
+</li>
+<li><p>保存并退出</p>
+</li>
+<li><p>重启MySQL<code>systemctl restart mysql</code></p>
+</li>
+</ul>
+<p>至此，mysql算是差不多配置完了。如果再出问题，应该就是驱动和数据版本不匹配了。</p>
+<h2 id="tomcat"><a href="#tomcat" class="headerlink" title="tomcat"></a>tomcat</h2><ol>
+<li>下载tomcat</li>
+</ol>
+<p>地址：<a target="_blank" rel="noopener" href="https://tomcat.apache.org/download-90.cgi">tomcat 9.0.34</a></p>
+<ol start="2">
+<li>上传到服务器</li>
+</ol>
+<p>上传后名字为</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apache-tomcat-9.0.34.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>解压</li>
+</ol>
+<p>解压到当前目录</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxvf apache-tomcat-9.0.34.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>赋权限</li>
+</ol>
+<p>我不知有何用。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod 755 -R apache-tomcat-9.0.34</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>修改startup.sh启动脚本</li>
+</ol>
+<p>在apache-tomcat-9.0.34/bin目录中输入</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi startup.sh</span><br></pre></td></tr></table></figure>
+
+<p>在最后一行的前面添加如下内容，路径要符合自己的实际情况。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/home/ubuntu/jdk1.8.0_231</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:%&#123;JAVA_HOME&#125;/lib:%&#123;JRE_HOME&#125;/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#tomcat</span></span><br><span class="line"><span class="built_in">export</span> TOMCAT_HOME=/home/ubuntu/apache-tomcat-9.0.34</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>修改shutdown.sh关闭脚本</li>
+</ol>
+<p>在apache-tomcat-9.0.34/bin目录中输入</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi shutdown.sh</span><br></pre></td></tr></table></figure>
+
+<p>和上面哪个一样，在最后一行的前面添加如下内容，路径要符合自己的实际情况。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/home/ubuntu/jdk1.8.0_231</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:%&#123;JAVA_HOME&#125;/lib:%&#123;JRE_HOME&#125;/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#tomcat</span></span><br><span class="line"><span class="built_in">export</span> TOMCAT_HOME=/home/ubuntu/apache-tomcat-9.0.34</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>启动tomcat</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./startup.sh</span><br></pre></td></tr></table></figure>
+
+<p>提示如下内容则说明启动成功</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Using CATALINA_BASE:   /home/ubuntu/apache-tomcat-9.0.34</span><br><span class="line">Using CATALINA_HOME:   /home/ubuntu/apache-tomcat-9.0.34</span><br><span class="line">Using CATALINA_TMPDIR: /home/ubuntu/apache-tomcat-9.0.34/temp</span><br><span class="line">Using JRE_HOME:        /home/ubuntu/jdk1.8.0_231/jre</span><br><span class="line">Using CLASSPATH:       /home/ubuntu/apache-tomcat-9.0.34/bin/bootstrap.jar:/home/ubuntu/apache-tomcat-9.0.34/bin/tomcat-juli.jar</span><br><span class="line">Tomcat started.</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/dfce73d80ffb">Ubuntu18.04安装jdk</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/mier9042/article/details/106408075/">Ubuntu 18.04安装mysql</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixx3/article/details/80808484">Ubuntu18.04 安装tomcat</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhaopeng_yu/article/details/80785813">Linux下MySQL大小写敏感问题</a></p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#jdk"><span class="toc-text">jdk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql"><span class="toc-text">mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85mysql-server"><span class="toc-text">安装mysql-server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEMySQL"><span class="toc-text">配置MySQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEMySQL%E5%85%81%E8%AE%B8%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE"><span class="toc-text">配置MySQL允许远程访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E4%B8%8D%E7%94%A8%E5%AF%86%E7%A0%81%E5%B0%B1%E8%83%BD%E7%99%BB%E5%BD%95"><span class="toc-text">解决不用密码就能登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F%E9%97%AE%E9%A2%98"><span class="toc-text">解决数据库大小写敏感问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tomcat"><span class="toc-text">tomcat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/202005061.html</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/ubuntu/"><i class="fa fa-tags"></i>ubuntu</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2023 <a href="https://blog.iyu.pub" target="_blank">https://blog.iyu.pub</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/202005091.html" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/202005051.html" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2133ab6ff866479db3e4979524888b83"}'></script>
+
+  </body>
+</html>

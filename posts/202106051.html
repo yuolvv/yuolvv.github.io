@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>MySQL服务器集群的简单实现 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Note,mysql," />
+  
+
+  
+  <meta name="description" content="虽千万人吾往矣">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: [],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2021-06-05
+    </span>
+    
+      <span>
+        | <a href="/categories/Note/"><i class="fa fa-bookmark"></i>Note</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>Unlock
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    MySQL服务器集群的简单实现
+  </h1>
+  
+
+  
+
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>最近知道了几个关键词主从复制、读写分离、mysql集群。起因是我在做项目的时候，有的场景需要多写一行代码，作用是强制读取主库，起初也知道些许读写分离的思想，但是我好奇的是如何实现的强制读取主库，但是看了代码也没有发现是如何实现的。之后在网上搜索相关的知识，主从复制、读写分离、mysql集群等一股脑的都冒出来了，我开始了如下的实验之旅。</p>
+<h2 id="实验环境说明"><a href="#实验环境说明" class="headerlink" title="实验环境说明"></a>实验环境说明</h2><p>我使用的是一个免费、在线的docker容器<a target="_blank" rel="noopener" href="https://labs.play-with-docker.com/">play-with-docker</a>，只需要在<a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a>注册一个账号就可以使用。</p>
+<p>mysql镜像版本为mysql:latest，实际上对应的版本为8.0.25。</p>
+<p>需要一定的Linux、docker命令基础。</p>
+<h2 id="涉及的操作命令示例"><a href="#涉及的操作命令示例" class="headerlink" title="涉及的操作命令示例"></a>涉及的操作命令示例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看本地镜像</span></span><br><span class="line">docker images</span><br><span class="line"><span class="comment">#拉取MySQL镜像</span></span><br><span class="line">docker pull xxxxx</span><br><span class="line"><span class="comment">#运行镜像</span></span><br><span class="line">docker run -itd -name mysql-xxxxx -p xxxx:xxxx -e MYSQL_ROOT_PASSWORD=xxxxx mysql</span><br><span class="line"><span class="comment">#进入容器中</span></span><br><span class="line">docker <span class="built_in">exec</span> -it -e LANG=C.UTF-8 xxxxx bash</span><br><span class="line"><span class="comment">#查看容器的网络地址</span></span><br><span class="line">docker inspect xxxxx</span><br><span class="line"><span class="comment">#查看容器列表</span></span><br><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
+
+<h2 id="拉取MySQL镜像"><a href="#拉取MySQL镜像" class="headerlink" title="拉取MySQL镜像"></a>拉取MySQL镜像</h2><p>默认这种方式拉取的是最新的镜像文件，如果要拉取特定的版本则需要mysql在后面加上版本号，如mysql:5.7。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#拉取mysql镜像</span></span><br><span class="line">docker pull mysql</span><br></pre></td></tr></table></figure>
+
+<h2 id="主库容器操作"><a href="#主库容器操作" class="headerlink" title="主库容器操作"></a>主库容器操作</h2><h3 id="运行主库"><a href="#运行主库" class="headerlink" title="运行主库"></a>运行主库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd --name mysql-master -e MYSQL_ROOT_PASSWORD=123456 -p 3307:3306 mysql</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置主库my-cnf"><a href="#配置主库my-cnf" class="headerlink" title="配置主库my.cnf"></a>配置主库my.cnf</h3><p>首先需要查看一下主库的容器ID</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker ps -a</span><br><span class="line">CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS              PORTS                               NAMES</span><br><span class="line">03b4cbdd57a6   mysql     <span class="string">&quot;docker-entrypoint.s…&quot;</span>   About a minute ago   Up About a minute   33060/tcp, 0.0.0.0:3307-&gt;3306/tcp   mysql-master</span><br></pre></td></tr></table></figure>
+
+<p>CONTAINER ID便是容器ID，进入到容器的内部。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it -e LANG=C.UTF-8 03b4cbdd57a6 bash</span><br></pre></td></tr></table></figure>
+
+<p>此时，便进入到了容器的内部，这是一个非常干净的环境，类似于vi/vim需要手动安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get install vim</span><br></pre></td></tr></table></figure>
+
+<p>然后使用Vim进入编辑器，将以下内容填写到相应的位置并保存。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/mysql/my.cnf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">server-id&#x3D;1</span><br><span class="line">log-bin&#x3D;master-bin</span><br></pre></td></tr></table></figure>
+
+<p>修改完MySQL的配置文件，则需要将MySQL重启后才可以生效，但是常规的MySQL的重启的命令不可以，只好将主库容器重启，然后再进入到容器中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#重启容器</span></span><br><span class="line">docker restart 03b4cbdd57a6</span><br><span class="line"><span class="comment">#再次进入到容器中</span></span><br><span class="line">docker <span class="built_in">exec</span> -it -e LANG=C.UTF-8 03b4cbdd57a6 bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据库内部操作"><a href="#数据库内部操作" class="headerlink" title="数据库内部操作"></a>数据库内部操作</h3><p>接下来的操作需要进入到MySQL的内部进行操作。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#进入数据库</span></span><br><span class="line">mysql -uroot -p123456</span><br><span class="line"><span class="comment">#创建用户slave用户</span></span><br><span class="line">create user <span class="string">&#x27;slave&#x27;</span>@<span class="string">&#x27;%&#x27;</span> identified by <span class="string">&#x27;123456&#x27;</span>;</span><br><span class="line"><span class="comment">#授权</span></span><br><span class="line">grant replication slave,replication client on *.* to <span class="string">&#x27;slave&#x27;</span>@<span class="string">&#x27;%&#x27;</span>;</span><br><span class="line"><span class="comment">#防止密码简单报错</span></span><br><span class="line">alter user <span class="string">&#x27;slave&#x27;</span>@<span class="string">&#x27;%&#x27;</span> identified with mysql_native_password by <span class="string">&#x27;123456&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看配置的结果"><a href="#查看配置的结果" class="headerlink" title="查看配置的结果"></a>查看配置的结果</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看容器的运行状态</span></span><br><span class="line">show master status;</span><br></pre></td></tr></table></figure>
+
+<p>正常出现的结果为，需要记住File和Position，此后，退出数据库，退出容器，不要再做任何操作。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+<span class="comment">-------------------+----------+--------------+------------------+-------------------+</span></span><br><span class="line">| File              | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |</span><br><span class="line">+<span class="comment">-------------------+----------+--------------+------------------+-------------------+</span></span><br><span class="line">| master-bin.000001 |      996 |              |                  |                   |</span><br><span class="line">+<span class="comment">-------------------+----------+--------------+------------------+-------------------+</span></span><br></pre></td></tr></table></figure>
+
+<p>退出容器后，需要查看主库的网络ip，172.17.0.2便是。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker inspect 03b4cbdd57a6 | grep IPAddress</span><br><span class="line">            <span class="string">&quot;SecondaryIPAddresses&quot;</span>: null,</span><br><span class="line">            <span class="string">&quot;IPAddress&quot;</span>: <span class="string">&quot;172.17.0.2&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;IPAddress&quot;</span>: <span class="string">&quot;172.17.0.2&quot;</span>,</span><br></pre></td></tr></table></figure>
+
+<h2 id="从库容器操作"><a href="#从库容器操作" class="headerlink" title="从库容器操作"></a>从库容器操作</h2><h3 id="运行从库"><a href="#运行从库" class="headerlink" title="运行从库"></a>运行从库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd --name mysql-slave-1 -e MYSQL_ROOT_PASSWORD=123456 -p 3308:3306 mysql</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置从库my-cnf"><a href="#配置从库my-cnf" class="headerlink" title="配置从库my.cnf"></a>配置从库my.cnf</h3><p>同样需要查看一下从库的容器ID</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker ps -a</span><br><span class="line">CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                               NAMES</span><br><span class="line">120fb0493866   mysql     <span class="string">&quot;docker-entrypoint.s…&quot;</span>   23 seconds ago   Up 22 seconds   33060/tcp, 0.0.0.0:3308-&gt;3306/tcp   mysql-slave-1</span><br><span class="line">03b4cbdd57a6   mysql     <span class="string">&quot;docker-entrypoint.s…&quot;</span>   38 minutes ago   Up 11 minutes   33060/tcp, 0.0.0.0:3307-&gt;3306/tcp   mysql-master</span><br></pre></td></tr></table></figure>
+
+<p>进入到从库的内部</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it -e LANG=C.UTF-8 120fb0493866 bash</span><br></pre></td></tr></table></figure>
+
+<p>安装vim，编辑从库my.cnf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装vim</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install vim</span><br><span class="line"><span class="comment">#编辑my.cnf</span></span><br><span class="line">vim /etc/mysql/my.cnf</span><br></pre></td></tr></table></figure>
+
+<p>填写如下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">server-id&#x3D;2</span><br><span class="line">log-bin&#x3D;slave-1-bin</span><br><span class="line">binlog_ignore_db&#x3D;information_schema</span><br><span class="line">binlog_ignore_db&#x3D;performation_schema</span><br><span class="line">binlog_ignore_db&#x3D;mysql</span><br><span class="line">binlog_ignore_db&#x3D;sys</span><br><span class="line">binlog-format&#x3D;MIXED</span><br></pre></td></tr></table></figure>
+
+<p>退出容器，将容器重启。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#重启容器</span></span><br><span class="line">docker restart 120fb0493866</span><br><span class="line"><span class="comment">#再次进入到容器中</span></span><br><span class="line">docker <span class="built_in">exec</span> -it -e LANG=C.UTF-8 120fb0493866 bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据库内部操作-1"><a href="#数据库内部操作-1" class="headerlink" title="数据库内部操作"></a>数据库内部操作</h3><p>进入到数据库中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p123456</span><br></pre></td></tr></table></figure>
+
+<p>配置同步主库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">change</span> <span class="keyword">master</span> <span class="keyword">to</span> master_host=<span class="string">&#x27;172.17.0.2&#x27;</span>,master_port=<span class="number">3306</span>,master_user=<span class="string">&#x27;slave&#x27;</span>,master_password=<span class="string">&#x27;123456&#x27;</span>,master_log_file=<span class="string">&#x27;master-bin.000001&#x27;</span>,master_log_pos=<span class="number">996</span>,master_connect_retry=<span class="number">30</span>;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>master_host</td>
+<td>主库的网络地址</td>
+</tr>
+<tr>
+<td>master_port</td>
+<td>数据库端口，而不是外部端口</td>
+</tr>
+<tr>
+<td>master_user</td>
+<td>同步用户中间人</td>
+</tr>
+<tr>
+<td>master_password</td>
+<td>验证密码</td>
+</tr>
+<tr>
+<td>master_log_file</td>
+<td>同步的日志文件</td>
+</tr>
+<tr>
+<td>master_log_pos</td>
+<td>同步的日志文件位置</td>
+</tr>
+<tr>
+<td>master_connect_retry</td>
+<td>重连次数</td>
+</tr>
+</tbody></table>
+<h3 id="查看配置结果"><a href="#查看配置结果" class="headerlink" title="查看配置结果"></a>查看配置结果</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#开启同步</span></span><br><span class="line">start slave;</span><br><span class="line"><span class="comment">#查看是否连接正常</span></span><br><span class="line">show slave status \G</span><br></pre></td></tr></table></figure>
+
+<p>Slave_IO_Running和Slave_SQL_Running同为Yes就是正常的。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">*************************** 1. row ***************************</span><br><span class="line">               Slave_IO_State: Waiting for master to send event</span><br><span class="line">                  Master_Host: 172.17.0.2</span><br><span class="line">                  Master_User: slave</span><br><span class="line">                  Master_Port: 3306</span><br><span class="line">                Connect_Retry: 30</span><br><span class="line">              Master_Log_File: master-bin.000001</span><br><span class="line">          Read_Master_Log_Pos: 996</span><br><span class="line">               Relay_Log_File: 120fb0493866-relay-bin.000002</span><br><span class="line">                Relay_Log_Pos: 325</span><br><span class="line">        Relay_Master_Log_File: master-bin.000001</span><br><span class="line">             Slave_IO_Running: Yes</span><br><span class="line">            Slave_SQL_Running: Yes</span><br></pre></td></tr></table></figure>
+
+<p>退出容器。</p>
+<h2 id="实验测试结果"><a href="#实验测试结果" class="headerlink" title="实验测试结果"></a>实验测试结果</h2><p>测试过程准备如下：在主库中创建test库，然后查看从库中是否会同步test库。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#进入主库之中</span></span><br><span class="line">docker <span class="built_in">exec</span> -it -e LANG=C.UTF-8 03b4cbdd57a6 bash</span><br><span class="line"><span class="comment">#进入数据库内部</span></span><br><span class="line">mysql -uroot -p123456</span><br><span class="line"><span class="comment">#创建test库</span></span><br><span class="line">create database <span class="built_in">test</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#进入从库之中</span></span><br><span class="line">docker <span class="built_in">exec</span> -it -e LANG=C.UTF-8 120fb0493866 bash</span><br><span class="line"><span class="comment">#进入数据库内部</span></span><br><span class="line">mysql -uroot -p123456</span><br><span class="line"><span class="comment">#查看所有的数据库列表</span></span><br><span class="line">show databases;</span><br></pre></td></tr></table></figure>
+
+<p>查看到从库中确实也有了test库，说明主从复制成功。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show databases;</span><br><span class="line">+<span class="comment">--------------------+</span></span><br><span class="line">| Database           |</span><br><span class="line">+<span class="comment">--------------------+</span></span><br><span class="line">| information_schema |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| sys                |</span><br><span class="line">| test               |</span><br><span class="line">+<span class="comment">--------------------+</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><h3 id="修改了配置文件未生效"><a href="#修改了配置文件未生效" class="headerlink" title="修改了配置文件未生效"></a>修改了配置文件未生效</h3><p>每次修改完MySQL的配置文件，应该将数据库重启，因为在docker中我不知道该怎么同步，所以最后用重启docker的形式代替。</p>
+<h3 id="字符集问题"><a href="#字符集问题" class="headerlink" title="字符集问题"></a>字符集问题</h3><p>在进入容器的时候，我手动将字符集设置为UTF-8，是因为在此前我在数据库中插入中文数据的时候显示空白。</p>
+<h3 id="密码过于简单报错"><a href="#密码过于简单报错" class="headerlink" title="密码过于简单报错"></a>密码过于简单报错</h3><p>这也是我最明显能体会到5版本和8版本的区别，当用户的密码设置过于简单的时候，就会报出mysql_native_password错误，解决办法是执行下面这条命令。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> <span class="string">&#x27;slave&#x27;</span>@<span class="string">&#x27;%&#x27;</span> <span class="keyword">identified</span> <span class="keyword">with</span> mysql_native_password <span class="keyword">by</span> <span class="string">&#x27;123456&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="展望"><a href="#展望" class="headerlink" title="展望"></a>展望</h2><p>未来需要了解，例如为什么要使用读写分离，如何保证数据的一致性，主从复制的延迟有多久，为什么能做到主从复制，使用了什么协议。</p>
+<h2 id="参考文章列表"><a href="#参考文章列表" class="headerlink" title="参考文章列表"></a>参考文章列表</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903921677238285">Mysql主从复制原理及搭建</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m290345792/article/details/88316962">authentication plugin ‘caching_sha2_password’ 问题解决</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gu_wen_jie/article/details/102721524">MySQL-基于docker实现Replication集群主从复制及读写分离</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mafeng/p/10237692.html">docker查看容器的网络ip</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jb51.net/article/197042.htm">MySQL8.0中binlog的深入讲解</a></p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%B7%E5%9B%A0"><span class="toc-text">起因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83%E8%AF%B4%E6%98%8E"><span class="toc-text">实验环境说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%89%E5%8F%8A%E7%9A%84%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4%E7%A4%BA%E4%BE%8B"><span class="toc-text">涉及的操作命令示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%89%E5%8F%96MySQL%E9%95%9C%E5%83%8F"><span class="toc-text">拉取MySQL镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E5%BA%93%E5%AE%B9%E5%99%A8%E6%93%8D%E4%BD%9C"><span class="toc-text">主库容器操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E4%B8%BB%E5%BA%93"><span class="toc-text">运行主库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%B8%BB%E5%BA%93my-cnf"><span class="toc-text">配置主库my.cnf</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E9%83%A8%E6%93%8D%E4%BD%9C"><span class="toc-text">数据库内部操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="toc-text">查看配置的结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E5%BA%93%E5%AE%B9%E5%99%A8%E6%93%8D%E4%BD%9C"><span class="toc-text">从库容器操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E4%BB%8E%E5%BA%93"><span class="toc-text">运行从库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%BB%8E%E5%BA%93my-cnf"><span class="toc-text">配置从库my.cnf</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E9%83%A8%E6%93%8D%E4%BD%9C-1"><span class="toc-text">数据库内部操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE%E7%BB%93%E6%9E%9C"><span class="toc-text">查看配置结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="toc-text">实验测试结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E4%BA%86%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%9C%AA%E7%94%9F%E6%95%88"><span class="toc-text">修改了配置文件未生效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E9%9B%86%E9%97%AE%E9%A2%98"><span class="toc-text">字符集问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%86%E7%A0%81%E8%BF%87%E4%BA%8E%E7%AE%80%E5%8D%95%E6%8A%A5%E9%94%99"><span class="toc-text">密码过于简单报错</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%95%E6%9C%9B"><span class="toc-text">展望</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0%E5%88%97%E8%A1%A8"><span class="toc-text">参考文章列表</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/202106051.html</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/mysql/"><i class="fa fa-tags"></i>mysql</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2023 <a href="https://blog.iyu.pub" target="_blank">https://blog.iyu.pub</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/202106191.html" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/202105241.html" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2133ab6ff866479db3e4979524888b83"}'></script>
+
+  </body>
+</html>

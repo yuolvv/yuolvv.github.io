@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="听风行" />
+  
+  
+  <title>TSP货郎问题 | 听风行</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Algorithm,回溯," />
+  
+
+  
+  <meta name="description" content=":::tip前有八皇后，后有货郎。货郎问题，给定n个城市的集合，从一个城市到另一个城市的距离为正整数，求一条最短且每个城市恰好经过一次的巡回路线。:::">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"JUB4uWwzKVKwbNzwRvkxgw9F-gzGzoHsz","appkey":"tLtzj0dg7LQTGu9dEY57RYef","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2015-07-01",
+    passwords: [],
+    is_post: true,
+    lock: false,
+    author: "听风行",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">听风行</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 虽千万人吾往矣</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/yuolvv/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-05-29
+    </span>
+    
+      <span>
+        | <a href="/categories/Algorithm/"><i class="fa fa-bookmark"></i>Algorithm</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>Unlock
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    TSP货郎问题
+  </h1>
+  
+
+  
+
+  <article class="passage-article">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-2795125801721613"
+        data-ad-slot="7468094198"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <h2 id="问题引入"><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h2><p>某售货员要到若干城市去推销商品，各城市间的距离已知。他要选定一条从驻地出发经过所有的城市最后回到驻地的周游路线，使得总的路程最短。下图就是这几个城市间的距离关系。</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="495px" viewBox="-0.5 -0.5 495 571" content="&lt;mxfile host=&quot;www.draw.io&quot; modified=&quot;2020-01-18T15:09:32.633Z&quot; agent=&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36&quot; etag=&quot;wqmHcgly4xs1Sdh4O2BA&quot; version=&quot;12.5.5&quot; type=&quot;device&quot;&gt;&lt;diagram id=&quot;Ilk0kB2bfpFxpE3zXlI1&quot; name=&quot;第 1 页&quot;&gt;7Vpbl5owEP41Pu4eLhHlcdfdbc/ptqen+7DtYwoR6EbCxqjYX98giVwUREEBt77ITO6Zb75MBgb6ZBZ+ojBwvxIb4YGm2OFAfxho/AdM/hdp1rFmZGixwqGeHavURPHi/UVCqQjtwrPRPFOREYKZF2SVFvF9ZLGMDlJKVtlqU4KzowbQQTuKFwviXe2rZzM31o61UaL/jDzHlSOrhljwDMrKYiVzF9pklVLpjwN9Qglh8dMsnCAcbZ7cl7jdU0HpdmIU+axKgx9fRjP89Pqsv/6+Ye9gHDjLbzeilzlbywUjm69fiIQylzjEh/gx0d7zhQRRKfb8Ny5aC7pE0RgqFyhZ+PZGUriUtH8mJBBV/iDG1sLQcMEIV7lshkUpCj32M2p+OxTSL9FZ9PwQpoW1FHxG16lGkfhL9hcJSbONJNvFa48WXLilcn/IglqoZB+lkRmkDmIlFY2t5bnLIDJDfEK8HUUYMm+ZnQgU2HW29RLz8gdh4SOsLVxvCfFCjDTQDMynez8lfMVpHBjvCyILbuYba93xCryjMCnkT070r8pu+KzinmL9Lrgw5o4bgWjlegy9BHCzqyvOHVkYwHkQe/PUCyM4ia6WiDIUlltrd3MlGUlOEVSk6UJepRxbqNyUT0td4+bQu+p8atr1to54wPnUtOulPPECzqdVdD6zpvNtmt5RCtepCgHxfDZP9fw9UiSwA2YWdiBH0weqD3UlB7R4Agnstis5HYmgq0hUTkGi0hoSVbMiEtUCqjoTFA9A75JQG3YVaieRXntQMyoiLSbHtiIO40wRh9aviKOtCGPUVWc7idfbizDUqhFGbV6vZe5xZ83dr9tc5VMctGlt80zcqveCW/VxLqw2W+ZayfX/va8u2co830H3azWZIqfZuP+Bfvhf19yv+eSWYhFMaKbFQNOnUwNFi8+bbVTVbHzPWdY+c0bJG5qI0XziRzadehjnVBB7js9Fi9sIcf19ZEHPgvhOFMw828ZFgMjySRPhbQ4DQ3W4gwGwBwP62TDQ2Yxaz+LdygFQ3cvl/hyYPjJvjdRvBLI403LF2f7j1YkuSzJtqlJnlHhvdkZpKk2igpbpzPxwdAaULJ3pw90j7bJ0dmW5smxEqVyOzirf3uve5/YTjTYuJRrN2F98LJ8BtXQYUDCLSxFa86nA4witclh9NYQ27BqfXVc6sgd8VveCXMBn5YFTU3xW0E1H6Kyzudaevceq/Mq03WRP88nW404v7cOdXiB7emkt5xbkF16tIWD44RCQzy+poOUAZktqnSP9nqX4qwYwqQ9lGw1gQHkAk8/8nBjAHBimIMl1oQBGaztfrlZ+z3g1hAbyX6Ce7UzjYvJleQyZ5Pt8/fEf&lt;/diagram&gt;&lt;/mxfile&gt;" onclick="(function(svg){var src=window.event.target||window.event.srcElement;while (src!=null&amp;&amp;src.nodeName.toLowerCase()!='a'){src=src.parentNode;}if(src==null){if(svg.wnd!=null&amp;&amp;!svg.wnd.closed){svg.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&amp;&amp;evt.source==svg.wnd){svg.wnd.postMessage(decodeURIComponent(svg.getAttribute('content')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);svg.wnd=window.open('https://www.draw.io/?client=1&amp;lightbox=1&amp;edit=_blank');}}})(this);" style="cursor:pointer;max-width:100%;max-height:571px;"><defs/><g><path d="M 250 140 L 250 80 M 254 80 L 254 140 M 254 80" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><ellipse cx="252" cy="270" rx="40" ry="40" fill="#ffffff" stroke="#000000" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 78px; height: 1px; padding-top: 270px; margin-left: 214px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "><font style="font-size: 48px">1</font></div></div></div></foreignObject><text x="252" y="274" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">1</text></switch></g><path d="M 452 38 L 494 38 L 494 532 L 462 532 M 462 528 L 490 528 L 490 42 L 452 42 M 462 528" fill="none" stroke="#000000" stroke-miterlimit="1.42" pointer-events="all"/><path d="M 42 42 L 4 42 L 4 528 L 32 528 M 32 532 L 0 532 L 0 38 L 42 38 M 32 532" fill="none" stroke="#000000" stroke-miterlimit="1.42" pointer-events="all"/><path d="M 292 38 L 412 38 M 412 42 L 292 42 M 412 42" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><ellipse cx="252" cy="40" rx="40" ry="40" fill="#ffffff" stroke="#000000" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 78px; height: 1px; padding-top: 40px; margin-left: 214px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "><font style="font-size: 48px">2</font></div></div></div></foreignObject><text x="252" y="44" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">2</text></switch></g><path d="M 232 532 L 112 532 M 112 528 L 232 528 M 112 528" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><path d="M 420 490 L 420 380 M 424 380 L 424 490 M 424 380" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><ellipse cx="422" cy="530" rx="40" ry="40" fill="#ffffff" stroke="#000000" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 78px; height: 1px; padding-top: 530px; margin-left: 384px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "><font style="font-size: 48px">3</font></div></div></div></foreignObject><text x="422" y="534" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">3</text></switch></g><path d="M 70 490 L 70 380 M 74 380 L 74 490 M 74 380" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><ellipse cx="72" cy="530" rx="40" ry="40" fill="#ffffff" stroke="#000000" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 78px; height: 1px; padding-top: 530px; margin-left: 34px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "><font style="font-size: 48px">4</font></div></div></div></foreignObject><text x="72" y="534" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">4</text></switch></g><rect x="232" y="515" width="40" height="30" fill="none" stroke="none" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 38px; height: 1px; padding-top: 530px; margin-left: 234px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "><font style="font-size: 48px" color="#ff6e30">7</font></div></div></div></foreignObject><text x="252" y="534" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">7</text></switch></g><path d="M 382 532 L 272 532 M 272 528 L 382 528 M 272 528" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="402" y="350" width="40" height="30" fill="none" stroke="none" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 38px; height: 1px; padding-top: 365px; margin-left: 404px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "><font style="font-size: 48px" color="#ff6e30">9</font></div></div></div></foreignObject><text x="422" y="369" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">9</text></switch></g><path d="M 292 268 L 424 268 L 424 350 M 420 350 L 420 272 L 292 272 M 420 350" fill="none" stroke="#000000" stroke-miterlimit="1.42" pointer-events="all"/><rect x="52" y="350" width="40" height="30" fill="none" stroke="none" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 38px; height: 1px; padding-top: 365px; margin-left: 54px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "><font style="font-size: 48px" color="#ff6e30">4</font></div></div></div></foreignObject><text x="72" y="369" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">4</text></switch></g><path d="M 212 272 L 74 272 L 74 350 M 70 350 L 70 268 L 212 268 M 70 350" fill="none" stroke="#000000" stroke-miterlimit="1.42" pointer-events="all"/><path d="M 82 38 L 212 38 M 212 42 L 82 42 M 212 42" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="42" y="25" width="40" height="30" fill="none" stroke="none" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 38px; height: 1px; padding-top: 40px; margin-left: 44px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "><font style="font-size: 48px" color="#ff6e30">2</font></div></div></div></foreignObject><text x="62" y="44" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">2</text></switch></g><rect x="232" y="140" width="40" height="30" fill="none" stroke="none" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 38px; height: 1px; padding-top: 155px; margin-left: 234px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "><font style="font-size: 48px" color="#ff6e30">5</font></div></div></div></foreignObject><text x="252" y="159" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">5</text></switch></g><path d="M 250 230 L 250 170 M 254 170 L 254 230 M 254 170" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="412" y="25" width="40" height="30" fill="none" stroke="none" pointer-events="all"/><g transform="translate(-0.5 -0.5)"><switch><foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 38px; height: 1px; padding-top: 40px; margin-left: 414px;"><div style="box-sizing: border-box; font-size: 0; text-align: center; "><div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; "><font style="font-size: 48px" color="#ff6e30">13</font></div></div></div></foreignObject><text x="432" y="44" fill="#000000" font-family="Helvetica" font-size="12px" text-anchor="middle">13</text></switch></g></g></svg></p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>从一个城市出发，每个城市都要走一遍，最后还要回到出发的城市，上面这个图一共有四个城市，那么我该怎么走呢，首先我要选择一个起点吧，我就选从<code>1</code>这个点出发，那么下一个点，就要选择<code>1</code>的邻接点了，可以看到<code>2</code>,<code>3</code>,<code>4</code>都与<code>1</code>直接相连，那么我就在选择去<code>2</code>吧，到了<code>2</code>之后，又要向下一个城市出发了，与<code>2</code>邻接的点有<code>1</code>,<code>3</code>,<code>4</code>，但是<code>1</code>我们已经走过了，如果所有的城市都走过了，就可以回到<code>1</code>，但是现在<code>3</code>,<code>4</code>点还没走，所以只能选择<code>3</code>,<code>4</code>点了，那我就选择走<code>3</code>吧，到达<code>3</code>之后，就只剩<code>4</code>没走了，所以直接从<code>3</code>到达<code>4</code>，此时所有的点我们都已经走完了，我们要回到出发的那个点,即<code>1</code>。<code>1</code>-<code>2</code>-<code>3</code>-<code>4</code>-<code>1</code>,这个便是其中的一种情况。<br>其实，我们求得就是这n城市的一个排列，而所有的情况有n!我们要在这么多的情况中，找到一条最短的回路，这条路径也叫做哈密顿回路。<br>这便是当从<code>1</code>开始走的所有情况</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="681px" viewBox="-0.5 -0.5 681 271" content="&lt;mxfile host=&quot;www.draw.io&quot; modified=&quot;2020-01-18T15:19:58.068Z&quot; agent=&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36&quot; etag=&quot;JhTKFPB0ZVgHt7j3eWQg&quot; version=&quot;12.5.5&quot; type=&quot;device&quot;&gt;&lt;diagram id=&quot;6Hs5VScGU09iu3XLjD_x&quot; name=&quot;第 1 页&quot;&gt;1Zpdb5swFIZ/DZeTsE0JuW2WdbuYNKlSd1l52AUkiCPH5GO/flBsCLaqeFKLT6VcJAfz4ZcH5zlRIrJpzg+S7sufgvE6wjE7R+RrhDFKMI76V8wuQ2WV6kIhK6YHTYXH6i/XxVhX24rxw2ygEqJW1X5ezMVux3M1q1EpxWk+7EXU87PuacGdwmNOa7f6u2KqHKoZXk3177wqSnNmlK6HLQ01g/VMDiVl4nRVItuIbKQQanjXnDe87sMzuQz7fXtj63hhku+Uzw6/sucfOT0+NOXhqX1a1+y5OH7RRznSup1P+KAuJoLuMF3aXI/kUvHzm5eAxol1RHDRcCUv3RC9QxInwy4aBhPN6SpZXSqvQiW6RvW9LMYDT9Pt3ugZ/8fssTN77MxeinbHeH8UFJH7dwgBpfMQUBw4BeKk4CLAuodCf+T1H3HaToX710K3oU+l6p6cMaZ+rzlUopU5v42jorLg6vaN8whd8pqq6ji/jnePMHEiJB8Pkv00BQfp7vOBlAADKXUiTD4epDQBBtLq84GUAgMpC7EiIXtFygKDtIYDEvYEKQMGkhHxZZek8SRQSEKuKYNHydw6OCwFEW5if70FZwmQcSe+LEFTbuQ69wLrUmI3b8FZAiTd3ixBs27kavcC69JdBo0lQN6d+rIETbxREPNeQTNvBEi9vVmC5t44iHvbXRxOQ/9MC8i9M0+WMDT3Npktuy7ZfVx4lgC5t+nPbsMETb5xEPm2G7nwMAGSb9Og3YYJmn3jIPZtd3LhYQJk38i3lcPQ9BsH0W+7lQsPEyD9Rr7+jaH5N3H9e4GVye7lgsNEAPk38hVwspyAdx+nv/G8brv6MxTZ/gM=&lt;/diagram&gt;&lt;/mxfile&gt;" onclick="(function(svg){var src=window.event.target||window.event.srcElement;while (src!=null&amp;&amp;src.nodeName.toLowerCase()!='a'){src=src.parentNode;}if(src==null){if(svg.wnd!=null&amp;&amp;!svg.wnd.closed){svg.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&amp;&amp;evt.source==svg.wnd){svg.wnd.postMessage(decodeURIComponent(svg.getAttribute('content')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);svg.wnd=window.open('https://www.draw.io/?client=1&amp;lightbox=1&amp;edit=_blank');}}})(this);" style="cursor:pointer;max-width:100%;max-height:271px;"><defs/><g><ellipse cx="340" cy="15" rx="40" ry="15" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="339.5" y="19.5">1</text></g><rect x="60" y="80" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="99.5" y="99.5">2</text></g><path d="M 340 30 L 340 45 Q 340 55 330 55 L 110 55 Q 100 55 100 64.32 L 100 73.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 100 78.88 L 96.5 71.88 L 100 73.63 L 103.5 71.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="300" y="80" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="339.5" y="99.5">3</text></g><path d="M 340 30 L 340 45 Q 340 55 340 64.32 L 340 73.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 340 78.88 L 336.5 71.88 L 340 73.63 L 343.5 71.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="540" y="80" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="579.5" y="99.5">4</text></g><path d="M 340 30 L 340 45 Q 340 55 350 55 L 570 55 Q 580 55 580 64.32 L 580 73.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 580 78.88 L 576.5 71.88 L 580 73.63 L 583.5 71.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="0" y="160" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="39.5" y="179.5">3</text></g><path d="M 100 110 L 100 125 Q 100 135 90 135 L 50 135 Q 40 135 40 144.32 L 40 153.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 40 158.88 L 36.5 151.88 L 40 153.63 L 43.5 151.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="120" y="160" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="159.5" y="179.5">4</text></g><path d="M 100 110 L 100 125 Q 100 135 110 135 L 150 135 Q 160 135 160 144.32 L 160 153.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 160 158.88 L 156.5 151.88 L 160 153.63 L 163.5 151.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="240" y="160" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="279.5" y="179.5">2</text></g><path d="M 340 110 L 340 125 Q 340 135 330 135 L 290 135 Q 280 135 280 144.32 L 280 153.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 280 158.88 L 276.5 151.88 L 280 153.63 L 283.5 151.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="360" y="160" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="399.5" y="179.5">4</text></g><path d="M 340 110 L 340 125 Q 340 135 350 135 L 390 135 Q 400 135 400 144.32 L 400 153.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 400 158.88 L 396.5 151.88 L 400 153.63 L 403.5 151.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="480" y="160" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="519.5" y="179.5">2</text></g><path d="M 580 110 L 580 125 Q 580 135 570 135 L 530 135 Q 520 135 520 144.32 L 520 153.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 520 158.88 L 516.5 151.88 L 520 153.63 L 523.5 151.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="600" y="160" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="639.5" y="179.5">3</text></g><path d="M 580 110 L 580 125 Q 580 135 590 135 L 630 135 Q 640 135 640 144.32 L 640 153.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 640 158.88 L 636.5 151.88 L 640 153.63 L 643.5 151.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="0" y="240" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="39.5" y="259.5">4</text></g><path d="M 40 190 L 40 205 Q 40 215 40 224.32 L 40 233.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 40 238.88 L 36.5 231.88 L 40 233.63 L 43.5 231.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="120" y="240" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="159.5" y="259.5">3</text></g><path d="M 160 190 L 160 205 Q 160 215 160 224.32 L 160 233.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 160 238.88 L 156.5 231.88 L 160 233.63 L 163.5 231.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="240" y="240" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="279.5" y="259.5">4</text></g><path d="M 280 190 L 280 205 Q 280 215 280 224.32 L 280 233.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 280 238.88 L 276.5 231.88 L 280 233.63 L 283.5 231.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="360" y="240" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="399.5" y="259.5">2</text></g><path d="M 400 190 L 400 205 Q 400 215 400 224.32 L 400 233.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 400 238.88 L 396.5 231.88 L 400 233.63 L 403.5 231.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="480" y="240" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="519.5" y="259.5">3</text></g><path d="M 520 190 L 520 205 Q 520 215 520 224.32 L 520 233.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 520 238.88 L 516.5 231.88 L 520 233.63 L 523.5 231.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/><rect x="600" y="240" width="80" height="30" rx="4.5" ry="4.5" fill="#ffffff" stroke="#000000" pointer-events="all"/><g fill="#000000" font-family="Helvetica" text-anchor="middle" font-size="12px"><text x="639.5" y="259.5">2</text></g><path d="M 640 190 L 640 205 Q 640 215 640 224.32 L 640 233.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/><path d="M 640 238.88 L 636.5 231.88 L 640 233.63 L 643.5 231.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/></g></svg></p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>既然哪条回路是最短的我也不知道，那么我把所有的情况都列举一遍，看看哪条路径长度是最短的，那么这条回路就是一条最短的哈密顿回路，抱着这样的思路就开始写吧。</p>
+<h2 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h2><h3 id="存储方式"><a href="#存储方式" class="headerlink" title="存储方式"></a>存储方式</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N=<span class="number">110</span>;<span class="comment">//假设最大的结点数</span></span><br><span class="line"><span class="keyword">int</span> s[N][N];<span class="comment">//存储边的长度</span></span><br><span class="line"><span class="keyword">int</span> a[N];<span class="comment">//保存每次排列的结果</span></span><br><span class="line"><span class="keyword">int</span> b[N];<span class="comment">//保存最终的排列结果</span></span><br><span class="line"><span class="keyword">int</span> Min=<span class="number">1e6</span>+<span class="number">2</span>;<span class="comment">//保存最小的权值</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fill(s[<span class="number">0</span>],s[<span class="number">0</span>]+(n+<span class="number">1</span>)*(n+<span class="number">1</span>),<span class="number">0</span>);</span><br><span class="line">    fill(a,a+N,<span class="number">0</span>);</span><br><span class="line">    fill(b,b+N,<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="排列组合未优化版"><a href="#排列组合未优化版" class="headerlink" title="排列组合未优化版"></a>排列组合未优化版</h3><p>下面实现排列的思想是这样的，在第一行有n列，选择其中一列放下，再在第二行选择一个位置，但是这个位置不可以和第一行放在同一列，直到n行都排完，则实现了排列一次，然后就按照这个路径求它的权值，直到找到一个最小的权值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isok</span><span class="params">(<span class="keyword">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i!=c;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(a[i]==a[c])&#123;<span class="comment">//只要不在同一列就可</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sddr</span><span class="params">(<span class="keyword">int</span> row,<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(row&gt;n)   <span class="keyword">return</span> ;<span class="comment">//当行数大于n时结束，不允许越界</span></span><br><span class="line">    <span class="keyword">if</span>(row==n)&#123;</span><br><span class="line">        <span class="keyword">int</span> sum=<span class="number">0</span>;<span class="comment">//保存当前的权值</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            sum += s[a[i<span class="number">-1</span>]][a[i]]</span><br><span class="line">        &#125;</span><br><span class="line">        sum += s[a[n<span class="number">-1</span>]][a[<span class="number">0</span>]];</span><br><span class="line">        <span class="keyword">if</span>(sum&lt;Min)&#123;<span class="comment">//如果当前的权值sum小于最小的权值Min则要进行更新</span></span><br><span class="line">            Min=sum;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">               b[i]=a[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            a[row]=i+<span class="number">1</span>;<span class="comment">//第row行放在第几列</span></span><br><span class="line">            <span class="keyword">if</span>(isok(row))&#123;<span class="comment">//判断row行的第i+1列是否可以放</span></span><br><span class="line">                sddr(row+<span class="number">1</span>,n);<span class="comment">//如果可以放就下一行</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是这样是没有优化的，必须把每条路径求出来之后，才能知道总的路径长度，下一篇在分析下怎么优化剪枝，具有未来判断性。</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%BC%95%E5%85%A5"><span class="toc-text">问题引入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-text">问题分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="toc-text">解决办法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-text">实现步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F"><span class="toc-text">存储方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88%E6%9C%AA%E4%BC%98%E5%8C%96%E7%89%88"><span class="toc-text">排列组合未优化版</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 听风行</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://blog.iyu.pub/posts/201905291.html</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/%E5%9B%9E%E6%BA%AF/"><i class="fa fa-tags"></i>回溯</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">友链推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://www.iyu.pub" target="_blank">听风行官网</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://browser.iyu.pub" target="_blank">TingBrowser</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.zhyui.com" target="_blank">Timogal</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://www.sqliu.cn" target="_blank">桥帮主</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">服务器推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=5e3lfzbh" target="_blank">阿里云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=4a5ddee5a29f458f6de46e4f27bc904e&from=console" target="_blank">腾讯云服务器</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://cloud.baidu.com/campaign/partner/index.html?teamCode=GC6E98UL" target="_blank">百度云服务器</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">社交の平台</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://twitter.com/tingfengxing" target="_blank">Twitter</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://www.facebook.com/tingfengxing" target="_blank">Facebook</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> <a href="mailto:Email: 0@iyu.pub">Email: 0@iyu.pub
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2015~2023 <a href="https://blog.iyu.pub" target="_blank">https://blog.iyu.pub</a>.
+      Created by <a href="https://177.im/" target="_blank">听风行</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/posts/201906012.html" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/posts/201905281.html" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88629664-2"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-88629664-2');
+  </script>
+
+
+
+  <script async>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+  </script>
+
+
+
+
+    
+
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2133ab6ff866479db3e4979524888b83"}'></script>
+
+  </body>
+</html>
